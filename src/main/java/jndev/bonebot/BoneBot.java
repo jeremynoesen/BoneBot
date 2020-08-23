@@ -26,6 +26,11 @@ public class BoneBot extends ListenerAdapter {
     private static final ArrayList<String> quotes = new ArrayList<>();
     
     /**
+     * list of phrases loaded from the phrases file
+     */
+    private static final ArrayList<String> phrases = new ArrayList<>();
+    
+    /**
      * list of memes loaded from the memes folder
      */
     private static final ArrayList<File> memes = new ArrayList<>();
@@ -49,6 +54,14 @@ public class BoneBot extends ListenerAdapter {
                 .setActivity(Activity.playing("Trombone"))
                 .build();
         // initialize bot
+        
+        try {
+            Scanner fileScanner = new Scanner(new File("src/main/resources/phrases.txt"));
+            while (fileScanner.hasNextLine()) phrases.add(fileScanner.nextLine());
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        // read phrases from file
         
         try {
             Scanner fileScanner = new Scanner(new File("src/main/resources/quotes.txt"));
@@ -78,6 +91,16 @@ public class BoneBot extends ListenerAdapter {
         
         if (e.getAuthor().getAsTag().equals("Jeremaster101#0494") && msg.equals("!reload")) {
             try {
+                Scanner fileScanner = new Scanner(new File("src/main/resources/phrases.txt"));
+                phrases.clear();
+                while (fileScanner.hasNextLine()) phrases.add(fileScanner.nextLine());
+                e.getChannel().sendMessage("Loaded " + phrases.size() + " phrases").queue();
+            } catch (FileNotFoundException ex) {
+                ex.printStackTrace();
+            }
+            // read phrases from file
+            
+            try {
                 Scanner fileScanner = new Scanner(new File("src/main/resources/quotes.txt"));
                 quotes.clear();
                 while (fileScanner.hasNextLine()) quotes.add(fileScanner.nextLine());
@@ -95,55 +118,13 @@ public class BoneBot extends ListenerAdapter {
         }
         // reload all files
         
-        if ((msg.contains("link") || msg.contains("app")) && msg.contains("?")) {
-            if (msg.contains("box"))
-                e.getChannel().sendMessage("> " + e.getMessage().getContentDisplay() + "\n" +
-                        e.getAuthor().getAsMention() + " - Here's the link to Box: https://iastate.box.com/v/ISUCFVMB2020").queue();
-            // send the box link when someone asks for the box app/link with ?
-            
-            if (msg.contains("band"))
-                e.getChannel().sendMessage("> " + e.getMessage().getContentDisplay() + "\n" +
-                        e.getAuthor().getAsMention() + " - Here's the link to Band: https://band.us/band/80638831").queue();
-            // send the band link when someone asks for the band app/link with ?
+        for (String phrase : phrases) {
+            String[] split = phrase.split(" / ");
+            if (msg.contains(split[0])) {
+                e.getChannel().sendMessage(split[1]).queue();
+            }
         }
-        
-        if (msg.contains("pregame") && msg.contains("order")) {
-            e.getChannel().sendMessage("> " + e.getMessage().getContentDisplay() + "\n" +
-                    e.getAuthor().getAsMention() + " - Here is the order for pregame:\n" +
-                    "Fights Fanfare\n" +
-                    "Iowa State Fights\n" +
-                    "For I For S\n" +
-                    "National Anthem\n" +
-                    "The Bells of Iowa State\n" +
-                    "Go Cyclones Go\n" +
-                    "Rise Sons of Iowa State").queue();
-        }
-        // send the order for pregame when someone uses "pregame" and "order" in the same message
-        
-        if (msg.contains("is gone") || msg.contains("am gone") || msg.contains("are gone")) {
-            e.getChannel().sendMessage(":crab:").queue();
-        }
-        // send the crab emote whenever someone says something is/am/are gone
-        
-        if (msg.contains("buh")) {
-            e.getChannel().sendMessage(":buh:").queue();
-        }
-        // send the buh emote when someone says "buh"
-        
-        if (msg.contains("pog")) {
-            e.getChannel().sendMessage(":poggers:").queue();
-        }
-        // send the poggers emote when someone says "pog..."
-        
-        if (msg.contains("fire up") && msg.contains("emails")) {
-            e.getChannel().sendMessage(":email:").queue();
-        }
-        // send the email emote when someone says "fire up ... emails"
-        
-        if (msg.contains("randy")) {
-            e.getChannel().sendMessage(":fish:").queue();
-        }
-        // send a fish when someone mentions randy
+        // respond to a phrase if a trigger word is said
         
         if (msg.equals("!quote")) {
             Random r = new Random();
