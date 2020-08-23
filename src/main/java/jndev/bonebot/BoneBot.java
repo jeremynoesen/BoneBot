@@ -28,7 +28,7 @@ public class BoneBot extends ListenerAdapter {
         }
         // prevent bot from starting without a token
         
-        JDABuilder.createDefault(args[0])
+        JDABuilder.createLight(args[0])
                 .addEventListeners(new BoneBot())
                 .setActivity(Activity.playing("Trombone"))
                 .build();
@@ -53,12 +53,25 @@ public class BoneBot extends ListenerAdapter {
                 e.getChannel().sendMessage("> " + e.getMessage().getContentDisplay() + "\n" +
                         e.getAuthor().getAsMention() + " - Here's the link to Box: https://iastate.box.com/v/ISUCFVMB2020").queue();
             // send the box link when someone asks for the box app/link with ?
-    
+            
             if (msg.contains("band"))
                 e.getChannel().sendMessage("> " + e.getMessage().getContentDisplay() + "\n" +
                         e.getAuthor().getAsMention() + " - Here's the link to Band: https://band.us/band/80638831").queue();
             // send the band link when someone asks for the band app/link with ?
         }
+        
+        if (msg.contains("pregame") && msg.contains("order")) {
+            e.getChannel().sendMessage("> " + e.getMessage().getContentDisplay() + "\n" +
+                    e.getAuthor().getAsMention() + " - Here is the order for pregame:\n" +
+                    "Fights Fanfare\n" +
+                    "Iowa State Fights\n" +
+                    "For I For S\n" +
+                    "National Anthem\n" +
+                    "The Bells of Iowa State\n" +
+                    "Go Cyclones Go\n" +
+                    "Rise Sons of Iowa State").queue();
+        }
+        // send the order for pregame when someone uses "pregame" and "order" in the same message
         
         if (msg.contains("is gone") || msg.contains("am gone") || msg.contains("are gone")) {
             e.getChannel().sendMessage(":crab:").queue();
@@ -69,12 +82,12 @@ public class BoneBot extends ListenerAdapter {
             e.getChannel().sendMessage(":buh:").queue();
         }
         // send the buh emote when someone says "buh"
-    
+        
         if (msg.contains("pog")) {
             e.getChannel().sendMessage(":poggers:").queue();
         }
         // send the poggers emote when someone says "pog..."
-    
+        
         if (msg.contains("fire up") && msg.contains("emails")) {
             e.getChannel().sendMessage(":email:").queue();
         }
