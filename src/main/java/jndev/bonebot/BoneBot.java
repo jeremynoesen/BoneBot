@@ -6,8 +6,11 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import javax.security.auth.login.LoginException;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Scanner;
 
 /**
  * BoneBot is a simple discord bot for the ISUCF'V'MB Trombone discord
@@ -15,6 +18,16 @@ import java.util.Random;
  * @author JNDev (Jeremaster101)
  */
 public class BoneBot extends ListenerAdapter {
+    
+    /**
+     * list of quotes loaded from the quotes file
+     */
+    private static ArrayList<String> quotes = new ArrayList<>();
+    
+    /**
+     * list of memes loaded from the memes folder
+     */
+    private static ArrayList<File> memes = new ArrayList<>();
     
     /**
      * create the bot and run it
@@ -35,6 +48,21 @@ public class BoneBot extends ListenerAdapter {
                 .setActivity(Activity.playing("Trombone"))
                 .build();
         // initialize bot
+    
+        Scanner fileScanner = null;
+        try {
+            fileScanner = new Scanner(new File("src/main/resources/quotes.txt"));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        quotes.add(fileScanner.nextLine());
+        // read quotes from file
+        
+        File dir = new File("src/main/resources/memes");
+        for(File f : dir.listFiles()) {
+            memes.add(f);
+        }
+        // load all meme files
     }
     
     /**
@@ -95,15 +123,22 @@ public class BoneBot extends ListenerAdapter {
         }
         // send the email emote when someone says "fire up ... emails"
         
-        ArrayList<String> quotes = new ArrayList<>();
-        quotes.add("Okay you know what, fuck messenger. I turned off game notifications. It stops sending me " +
-                "notifications for people starting games, but then I still get \"Sam just played BLAZAMBO for 69 " +
-                "points!\" every 10 seconds. it's fucking maddening and there's no escape from it.");
+        if (msg.contains("randy")) {
+            e.getChannel().sendMessage(":fish:").queue();
+        }
+        // send a fish when someone mentions randy
         
-        if(msg.equals("!quote")) {
+        if (msg.equals("!quote")) {
             Random r = new Random();
             int randInt = r.nextInt(quotes.size());
             e.getChannel().sendMessage(quotes.get(randInt)).queue();
+        }
+        // send random quote when "!quote" is typed
+    
+        if (msg.equals("!meme")) {
+            Random r = new Random();
+            int randInt = r.nextInt(memes.size());
+            e.getChannel().sendFile(memes.get(randInt)).queue();
         }
         // send random quote when "!quote" is typed
         
