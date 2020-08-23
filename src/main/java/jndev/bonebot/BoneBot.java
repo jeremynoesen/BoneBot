@@ -9,6 +9,7 @@ import javax.security.auth.login.LoginException;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -22,18 +23,18 @@ public class BoneBot extends ListenerAdapter {
     /**
      * list of quotes loaded from the quotes file
      */
-    private static ArrayList<String> quotes = new ArrayList<>();
+    private static final ArrayList<String> quotes = new ArrayList<>();
     
     /**
      * list of memes loaded from the memes folder
      */
-    private static ArrayList<File> memes = new ArrayList<>();
+    private static final ArrayList<File> memes = new ArrayList<>();
     
     /**
      * create the bot and run it
      *
      * @param args arg 0 is the bot token
-     * @throws LoginException
+     * @throws LoginException when unable to log in to bot account
      */
     public static void main(String[] args) throws LoginException {
         
@@ -48,20 +49,17 @@ public class BoneBot extends ListenerAdapter {
                 .setActivity(Activity.playing("Trombone"))
                 .build();
         // initialize bot
-    
-        Scanner fileScanner = null;
+        
         try {
-            fileScanner = new Scanner(new File("src/main/resources/quotes.txt"));
+            Scanner fileScanner = new Scanner(new File("src/main/resources/quotes.txt"));
+            while (fileScanner.hasNextLine()) quotes.add(fileScanner.nextLine());
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        quotes.add(fileScanner.nextLine());
         // read quotes from file
         
         File dir = new File("src/main/resources/memes");
-        for(File f : dir.listFiles()) {
-            memes.add(f);
-        }
+        memes.addAll(Arrays.asList(dir.listFiles()));
         // load all meme files
     }
     
@@ -77,6 +75,25 @@ public class BoneBot extends ListenerAdapter {
         
         String msg = e.getMessage().getContentRaw().toLowerCase();
         // convert whole message to lowercase for parsing
+        
+        if (e.getAuthor().getAsTag().equals("Jeremaster101#0494") && msg.equals("!reload")) {
+            try {
+                Scanner fileScanner = new Scanner(new File("src/main/resources/quotes.txt"));
+                quotes.clear();
+                while (fileScanner.hasNextLine()) quotes.add(fileScanner.nextLine());
+                e.getChannel().sendMessage("Loaded " + quotes.size() + " quotes").queue();
+            } catch (FileNotFoundException ex) {
+                ex.printStackTrace();
+            }
+            // read quotes from file
+            
+            File dir = new File("src/main/resources/memes");
+            memes.clear();
+            memes.addAll(Arrays.asList(dir.listFiles()));
+            e.getChannel().sendMessage("Loaded " + memes.size() + " memes").queue();
+            // load all meme files
+        }
+        // reload all files
         
         if ((msg.contains("link") || msg.contains("app")) && msg.contains("?")) {
             if (msg.contains("box"))
@@ -134,7 +151,7 @@ public class BoneBot extends ListenerAdapter {
             e.getChannel().sendMessage(quotes.get(randInt)).queue();
         }
         // send random quote when "!quote" is typed
-    
+        
         if (msg.equals("!meme")) {
             Random r = new Random();
             int randInt = r.nextInt(memes.size());
