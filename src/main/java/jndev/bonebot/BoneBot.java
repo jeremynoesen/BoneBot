@@ -138,7 +138,7 @@ public class BoneBot extends ListenerAdapter {
             int randInt = r.nextInt(memes.size());
             e.getChannel().sendFile(memes.get(randInt)).queue();
         }
-        // send random quote when "!quote" is typed
+        // send random meme when "!meme" is typed
         
     }
 }
