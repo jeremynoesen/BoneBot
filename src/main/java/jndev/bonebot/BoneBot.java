@@ -55,8 +55,16 @@ public class BoneBot extends ListenerAdapter {
                 .build();
         // initialize bot
         
+        loadFiles();
+    }
+    
+    /**
+     * load all data from files
+     */
+    private static void loadFiles() {
         try {
             Scanner fileScanner = new Scanner(new File("phrases.txt"));
+            phrases.clear();
             while (fileScanner.hasNextLine()) phrases.add(fileScanner.nextLine());
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -65,6 +73,7 @@ public class BoneBot extends ListenerAdapter {
         
         try {
             Scanner fileScanner = new Scanner(new File("quotes.txt"));
+            quotes.clear();
             while (fileScanner.hasNextLine()) quotes.add(fileScanner.nextLine());
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -72,6 +81,7 @@ public class BoneBot extends ListenerAdapter {
         // read quotes from file
         
         File dir = new File("memes");
+        memes.clear();
         memes.addAll(Arrays.asList(dir.listFiles()));
         // load all meme files
     }
@@ -90,31 +100,8 @@ public class BoneBot extends ListenerAdapter {
         // convert whole message to lowercase for parsing
         
         if (e.getAuthor().getAsTag().equals("Jeremaster101#0494") && msg.equals("!reload")) {
-            try {
-                Scanner fileScanner = new Scanner(new File("phrases.txt"));
-                phrases.clear();
-                while (fileScanner.hasNextLine()) phrases.add(fileScanner.nextLine());
-                e.getChannel().sendMessage("Loaded " + phrases.size() + " phrases").queue();
-            } catch (FileNotFoundException ex) {
-                ex.printStackTrace();
-            }
-            // read phrases from file
-            
-            try {
-                Scanner fileScanner = new Scanner(new File("quotes.txt"));
-                quotes.clear();
-                while (fileScanner.hasNextLine()) quotes.add(fileScanner.nextLine());
-                e.getChannel().sendMessage("Loaded " + quotes.size() + " quotes").queue();
-            } catch (FileNotFoundException ex) {
-                ex.printStackTrace();
-            }
-            // read quotes from file
-            
-            File dir = new File("memes");
-            memes.clear();
-            memes.addAll(Arrays.asList(dir.listFiles()));
-            e.getChannel().sendMessage("Loaded " + memes.size() + " memes").queue();
-            // load all meme files
+            loadFiles();
+            e.getMessage().delete().queue();
         }
         // reload all files
         
