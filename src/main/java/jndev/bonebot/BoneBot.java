@@ -6,6 +6,8 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import javax.security.auth.login.LoginException;
+import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * BoneBot is a simple discord bot for the ISUCF'V'MB Trombone discord
@@ -92,6 +94,18 @@ public class BoneBot extends ListenerAdapter {
             e.getChannel().sendMessage(":email:").queue();
         }
         // send the email emote when someone says "fire up ... emails"
+        
+        ArrayList<String> quotes = new ArrayList<>();
+        quotes.add("Okay you know what, fuck messenger. I turned off game notifications. It stops sending me " +
+                "notifications for people starting games, but then I still get \"Sam just played BLAZAMBO for 69 " +
+                "points!\" every 10 seconds. it's fucking maddening and there's no escape from it.");
+        
+        if(msg.equals("!quote")) {
+            Random r = new Random();
+            int randInt = r.nextInt(quotes.size());
+            e.getChannel().sendMessage(quotes.get(randInt)).queue();
+        }
+        // send random quote when "!quote" is typed
         
     }
 }
