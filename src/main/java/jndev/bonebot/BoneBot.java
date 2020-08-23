@@ -56,7 +56,7 @@ public class BoneBot extends ListenerAdapter {
         // initialize bot
         
         try {
-            Scanner fileScanner = new Scanner(new File("src/main/resources/phrases.txt"));
+            Scanner fileScanner = new Scanner(new File("phrases.txt"));
             while (fileScanner.hasNextLine()) phrases.add(fileScanner.nextLine());
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -64,14 +64,14 @@ public class BoneBot extends ListenerAdapter {
         // read phrases from file
         
         try {
-            Scanner fileScanner = new Scanner(new File("src/main/resources/quotes.txt"));
+            Scanner fileScanner = new Scanner(new File("quotes.txt"));
             while (fileScanner.hasNextLine()) quotes.add(fileScanner.nextLine());
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
         // read quotes from file
         
-        File dir = new File("src/main/resources/memes");
+        File dir = new File("memes");
         memes.addAll(Arrays.asList(dir.listFiles()));
         // load all meme files
     }
@@ -91,7 +91,7 @@ public class BoneBot extends ListenerAdapter {
         
         if (e.getAuthor().getAsTag().equals("Jeremaster101#0494") && msg.equals("!reload")) {
             try {
-                Scanner fileScanner = new Scanner(new File("src/main/resources/phrases.txt"));
+                Scanner fileScanner = new Scanner(new File("phrases.txt"));
                 phrases.clear();
                 while (fileScanner.hasNextLine()) phrases.add(fileScanner.nextLine());
                 e.getChannel().sendMessage("Loaded " + phrases.size() + " phrases").queue();
@@ -101,7 +101,7 @@ public class BoneBot extends ListenerAdapter {
             // read phrases from file
             
             try {
-                Scanner fileScanner = new Scanner(new File("src/main/resources/quotes.txt"));
+                Scanner fileScanner = new Scanner(new File("quotes.txt"));
                 quotes.clear();
                 while (fileScanner.hasNextLine()) quotes.add(fileScanner.nextLine());
                 e.getChannel().sendMessage("Loaded " + quotes.size() + " quotes").queue();
@@ -110,7 +110,7 @@ public class BoneBot extends ListenerAdapter {
             }
             // read quotes from file
             
-            File dir = new File("src/main/resources/memes");
+            File dir = new File("memes");
             memes.clear();
             memes.addAll(Arrays.asList(dir.listFiles()));
             e.getChannel().sendMessage("Loaded " + memes.size() + " memes").queue();
