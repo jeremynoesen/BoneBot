@@ -99,7 +99,7 @@ public class BoneBot extends ListenerAdapter {
         String msg = e.getMessage().getContentRaw().toLowerCase();
         // convert whole message to lowercase for parsing
         
-        if (e.getAuthor().getAsTag().equals("Jeremaster101#0494") && msg.equals("!reload")) {
+        if (msg.equals("!reload")) {
             loadFiles();
             e.getMessage().delete().queue();
         }
