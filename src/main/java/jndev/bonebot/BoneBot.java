@@ -9,7 +9,7 @@ import org.apache.commons.text.WordUtils;
 import javax.imageio.ImageIO;
 import javax.security.auth.login.LoginException;
 import java.awt.*;
-import java.awt.image.RenderedImage;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -100,9 +100,6 @@ public class BoneBot extends ListenerAdapter {
      */
     @Override
     public void onMessageReceived(MessageReceivedEvent e) {
-        if (e.getAuthor().isBot() || e.getAuthor().isFake()) return;
-        // ignore messages from bots to prevent loops
-        
         String msg = e.getMessage().getContentRaw().toLowerCase();
         // convert whole message to lowercase for parsing
         
@@ -119,27 +116,18 @@ public class BoneBot extends ListenerAdapter {
             for (String trigger : triggers) {
                 if (msg.contains(trigger)) count++;
             }
-            if (count == triggers.length) {
+            if (count == triggers.length && !e.getAuthor().isBot()) {
                 e.getChannel().sendMessage(triggerAndPhrase[1]).queue();
             }
         }
         // respond to a phrase if a trigger word is said
-
-//        if (msg.equals("!meme")) {
-//            Random r = new Random(System.nanoTime());
-//            e.getMessage().delete().queue();
-//            e.getChannel().sendFile(images.get(r.nextInt(images.size()))).queue();
-//            r = new Random(System.nanoTime() - System.currentTimeMillis());
-//            e.getChannel().sendMessage(texts.get(r.nextInt(texts.size()))).queue();
-//        }
-//        // send random image combined with a random text when "!meme" is typed
         
         if (msg.equals("!meme")) {
             try {
                 e.getMessage().delete().queue();
                 Random r = new Random(System.nanoTime());
                 int imageIndex = r.nextInt(images.size());
-                Image image = ImageIO.read(images.get(imageIndex));
+                BufferedImage image = ImageIO.read(images.get(imageIndex));
                 String format = images.get(imageIndex).getName().split("\\.")[1];
                 r = new Random(System.nanoTime() - System.currentTimeMillis());
                 String text = texts.get(r.nextInt(texts.size()));
@@ -147,7 +135,7 @@ public class BoneBot extends ListenerAdapter {
                 Graphics graphics = image.getGraphics();
 //                graphics.setFont(graphics.getFont().deriveFont(image.getWidth(null) / 18f));
                 graphics.setFont(new Font(Font.MONOSPACED, Font.BOLD, image.getWidth(null) / 15));
-                String wrapped = WordUtils.wrap(text, 25, " // ", false);
+                String wrapped = WordUtils.wrap(text, 20, " // ", false);
                 String[] lines = wrapped.split(" // ");
                 for (int i = 0; i < lines.length; i++) {
                     String line = lines[i].trim();
@@ -157,12 +145,12 @@ public class BoneBot extends ListenerAdapter {
                 }
                 graphics.dispose();
                 File file = new File("meme." + format);
-                ImageIO.write((RenderedImage) image, format.toLowerCase(), file);
+                ImageIO.write(image, format.toLowerCase(), file);
                 e.getChannel().sendFile(file).queue();
+                file.delete();
                 
-            } catch (IOException ex) {
-                e.getChannel().sendMessage("Error generating meme!").queue();
-                ex.printStackTrace();
+            } catch (IOException | IllegalArgumentException ex) {
+                e.getChannel().sendMessage("!meme").queue();
             }
         }
         // send random image combined with a random text when "!meme" is typed
