@@ -4,10 +4,15 @@ import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import org.apache.commons.text.WordUtils;
 
+import javax.imageio.ImageIO;
 import javax.security.auth.login.LoginException;
+import java.awt.*;
+import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
@@ -111,23 +116,52 @@ public class BoneBot extends ListenerAdapter {
             String[] triggerAndPhrase = phrase.split(" // ");
             String[] triggers = triggerAndPhrase[0].split(" / ");
             int count = 0;
-            for(String trigger : triggers) {
-                if(msg.contains(trigger)) count++;
+            for (String trigger : triggers) {
+                if (msg.contains(trigger)) count++;
             }
             if (count == triggers.length) {
                 e.getChannel().sendMessage(triggerAndPhrase[1]).queue();
             }
         }
         // respond to a phrase if a trigger word is said
+
+//        if (msg.equals("!meme")) {
+//            Random r = new Random(System.nanoTime());
+//            e.getMessage().delete().queue();
+//            e.getChannel().sendFile(images.get(r.nextInt(images.size()))).queue();
+//            r = new Random(System.nanoTime() - System.currentTimeMillis());
+//            e.getChannel().sendMessage(texts.get(r.nextInt(texts.size()))).queue();
+//        }
+//        // send random image combined with a random text when "!meme" is typed
         
         if (msg.equals("!meme")) {
-            Random r = new Random();
-            e.getMessage().delete().queue();
-            e.getChannel().sendFile(images.get(r.nextInt(images.size()))).queue();
-            r = new Random(e.getMessageIdLong());
-            e.getChannel().sendMessage(texts.get(r.nextInt(texts.size()))).queue();
+            try {
+                e.getMessage().delete().queue();
+                Random r = new Random(System.nanoTime());
+                int imageIndex = r.nextInt(images.size());
+                Image image = ImageIO.read(images.get(imageIndex));
+                r = new Random(System.nanoTime() - System.currentTimeMillis());
+                String text = texts.get(r.nextInt(texts.size()));
+                
+                Graphics graphics = image.getGraphics();
+                graphics.setFont(graphics.getFont().deriveFont(image.getWidth(null) / 18f));
+                String wrapped = WordUtils.wrap(text, 30, " // ", false);
+                String[] lines = wrapped.split(" // ");
+                for (int i = 0; i < lines.length; i++) {
+                    lines[i] = lines[i].trim();
+                    graphics.drawString(lines[i], (image.getWidth(null) - ((lines[i].length()) * (image.getWidth(null) / 36))) / 2, 5 + image.getHeight(null) - ((lines.length - i) * (image.getWidth(null) / 18)));
+                }
+                graphics.dispose();
+                File file = new File("temp.jpg");
+                ImageIO.write((RenderedImage) image, "jpg", file);
+                e.getChannel().sendFile(file).queue();
+                
+                
+            } catch (IOException ex) {
+                e.getChannel().sendMessage("Error generating meme!").queue();
+                ex.printStackTrace();
+            }
         }
         // send random image combined with a random text when "!meme" is typed
-        
     }
 }
