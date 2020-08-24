@@ -21,19 +21,19 @@ import java.util.Scanner;
 public class BoneBot extends ListenerAdapter {
     
     /**
-     * list of quotes loaded from the quotes file
+     * list of texts loaded from the texts file
      */
-    private static final ArrayList<String> quotes = new ArrayList<>();
+    private static final ArrayList<String> texts = new ArrayList<>();
     
     /**
-     * list of phrases loaded from the phrases file
+     * list of phrases loaded from the responses file
      */
-    private static final ArrayList<String> phrases = new ArrayList<>();
+    private static final ArrayList<String> responses = new ArrayList<>();
     
     /**
-     * list of memes loaded from the memes folder
+     * list of images loaded from the images folder
      */
-    private static final ArrayList<File> memes = new ArrayList<>();
+    private static final ArrayList<File> images = new ArrayList<>();
     
     /**
      * create the bot and run it
@@ -63,9 +63,9 @@ public class BoneBot extends ListenerAdapter {
      */
     private static void loadFiles() {
         try {
-            Scanner fileScanner = new Scanner(new File("phrases.txt"));
-            phrases.clear();
-            while (fileScanner.hasNextLine()) phrases.add(fileScanner.nextLine());
+            Scanner fileScanner = new Scanner(new File("src/main/resources/responses.txt"));
+            responses.clear();
+            while (fileScanner.hasNextLine()) responses.add(fileScanner.nextLine());
             fileScanner.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -73,18 +73,18 @@ public class BoneBot extends ListenerAdapter {
         // read phrases from file
         
         try {
-            Scanner fileScanner = new Scanner(new File("quotes.txt"));
-            quotes.clear();
-            while (fileScanner.hasNextLine()) quotes.add(fileScanner.nextLine());
+            Scanner fileScanner = new Scanner(new File("src/main/resources/text.txt"));
+            texts.clear();
+            while (fileScanner.hasNextLine()) texts.add(fileScanner.nextLine());
             fileScanner.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
         // read quotes from file
         
-        File dir = new File("memes");
-        memes.clear();
-        memes.addAll(Arrays.asList(dir.listFiles()));
+        File dir = new File("src/main/resources/images");
+        images.clear();
+        images.addAll(Arrays.asList(dir.listFiles()));
         // load all meme files
     }
     
@@ -107,7 +107,7 @@ public class BoneBot extends ListenerAdapter {
         }
         // reload all files
         
-        for (String phrase : phrases) {
+        for (String phrase : responses) {
             String[] triggerAndPhrase = phrase.split(" // ");
             String[] triggers = triggerAndPhrase[0].split(" / ");
             int count = 0;
@@ -123,11 +123,11 @@ public class BoneBot extends ListenerAdapter {
         if (msg.equals("!meme")) {
             Random r = new Random(System.nanoTime() * System.currentTimeMillis());
             e.getMessage().delete().queue();
-            e.getChannel().sendFile(memes.get(r.nextInt(memes.size()))).queue();
+            e.getChannel().sendFile(images.get(r.nextInt(images.size()))).queue();
             r = new Random(System.nanoTime() + System.currentTimeMillis());
-            e.getChannel().sendMessage(quotes.get(r.nextInt(quotes.size()))).queue();
+            e.getChannel().sendMessage(texts.get(r.nextInt(texts.size()))).queue();
         }
-        // send random meme combined with a random quote when "!meme" is typed
+        // send random image combined with a random text when "!meme" is typed
         
     }
 }
