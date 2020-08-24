@@ -140,22 +140,25 @@ public class BoneBot extends ListenerAdapter {
                 Random r = new Random(System.nanoTime());
                 int imageIndex = r.nextInt(images.size());
                 Image image = ImageIO.read(images.get(imageIndex));
+                String format = images.get(imageIndex).getName().split("\\.")[1];
                 r = new Random(System.nanoTime() - System.currentTimeMillis());
                 String text = texts.get(r.nextInt(texts.size()));
                 
                 Graphics graphics = image.getGraphics();
-                graphics.setFont(graphics.getFont().deriveFont(image.getWidth(null) / 18f));
-                String wrapped = WordUtils.wrap(text, 30, " // ", false);
+//                graphics.setFont(graphics.getFont().deriveFont(image.getWidth(null) / 18f));
+                graphics.setFont(new Font(Font.MONOSPACED, Font.BOLD, image.getWidth(null) / 15));
+                String wrapped = WordUtils.wrap(text, 25, " // ", false);
                 String[] lines = wrapped.split(" // ");
                 for (int i = 0; i < lines.length; i++) {
-                    lines[i] = lines[i].trim();
-                    graphics.drawString(lines[i], (image.getWidth(null) - ((lines[i].length()) * (image.getWidth(null) / 36))) / 2, 5 + image.getHeight(null) - ((lines.length - i) * (image.getWidth(null) / 18)));
+                    String line = lines[i].trim();
+                    graphics.drawString(line,
+                            (image.getWidth(null) - ((line.length()) * (int) (graphics.getFont().getSize2D() * 5.0 / 8.1))) / 2,
+                            image.getHeight(null) - (int) ((lines.length - i) * graphics.getFont().getSize() * 1.25));
                 }
                 graphics.dispose();
-                File file = new File("temp.jpg");
-                ImageIO.write((RenderedImage) image, "jpg", file);
+                File file = new File("meme." + format);
+                ImageIO.write((RenderedImage) image, format.toLowerCase(), file);
                 e.getChannel().sendFile(file).queue();
-                
                 
             } catch (IOException ex) {
                 e.getChannel().sendMessage("Error generating meme!").queue();
