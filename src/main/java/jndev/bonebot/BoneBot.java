@@ -13,10 +13,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * BoneBot is a simple discord bot for the ISUCF'V'MB Trombone discord
@@ -134,8 +131,12 @@ public class BoneBot extends ListenerAdapter {
                 String text = texts.get(r.nextInt(texts.size()));
                 
                 Graphics graphics = image.getGraphics();
-//                graphics.setFont(graphics.getFont().deriveFont(image.getWidth(null) / 18f));
                 graphics.setFont(new Font(Font.MONOSPACED, Font.BOLD, image.getWidth(null) / 15));
+                
+                HashMap<RenderingHints.Key, Object> hints = new HashMap<>();
+                hints.put(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                ((Graphics2D) graphics).addRenderingHints(hints);
+                
                 String wrapped = WordUtils.wrap(text, 20, " // ", false);
                 String[] lines = wrapped.split(" // ");
                 for (int i = 0; i < lines.length; i++) {
