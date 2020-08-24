@@ -108,9 +108,14 @@ public class BoneBot extends ListenerAdapter {
         // reload all files
         
         for (String phrase : phrases) {
-            String[] split = phrase.split(" / ");
-            if (msg.contains(split[0])) {
-                e.getChannel().sendMessage(split[1]).queue();
+            String[] triggerAndPhrase = phrase.split(" // ");
+            String[] triggers = triggerAndPhrase[0].split(" / ");
+            int count = 0;
+            for(String trigger : triggers) {
+                if(msg.contains(trigger)) count++;
+            }
+            if (count == triggers.length) {
+                e.getChannel().sendMessage(triggerAndPhrase[1]).queue();
             }
         }
         // respond to a phrase if a trigger word is said
