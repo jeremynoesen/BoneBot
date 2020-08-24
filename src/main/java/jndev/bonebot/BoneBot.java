@@ -120,21 +120,13 @@ public class BoneBot extends ListenerAdapter {
         }
         // respond to a phrase if a trigger word is said
         
-        if (msg.equals("!quote")) {
-            Random r = new Random();
-            int randInt = r.nextInt(quotes.size());
-            e.getMessage().delete().queue();
-            e.getChannel().sendMessage(quotes.get(randInt)).queue();
-        }
-        // send random quote when "!quote" is typed
-        
         if (msg.equals("!meme")) {
             Random r = new Random();
-            int randInt = r.nextInt(memes.size());
             e.getMessage().delete().queue();
-            e.getChannel().sendFile(memes.get(randInt)).queue();
+            e.getChannel().sendFile(memes.get(r.nextInt(memes.size()))).queue();
+            e.getChannel().sendMessage(quotes.get(r.nextInt(quotes.size()))).queue();
         }
-        // send random meme when "!meme" is typed
+        // send random meme combined with a random quote when "!meme" is typed
         
     }
 }
