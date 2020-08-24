@@ -121,10 +121,10 @@ public class BoneBot extends ListenerAdapter {
         // respond to a phrase if a trigger word is said
         
         if (msg.equals("!meme")) {
-            Random r = new Random(System.nanoTime() * System.currentTimeMillis());
+            Random r = new Random();
             e.getMessage().delete().queue();
             e.getChannel().sendFile(images.get(r.nextInt(images.size()))).queue();
-            r = new Random(System.nanoTime() + System.currentTimeMillis());
+            r = new Random(e.getMessageIdLong());
             e.getChannel().sendMessage(texts.get(r.nextInt(texts.size()))).queue();
         }
         // send random image combined with a random text when "!meme" is typed

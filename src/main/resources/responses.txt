@@ -9,3 +9,4 @@ box / link // Here's the link to Box: https://iastate.box.com/v/ISUCFVMB2020
 box / app // Here's the link to Box: https://iastate.box.com/v/ISUCFVMB2020
 band / link // Here's the link to Band: https://band.us/band/80638831
 band / app // Here's the link to Band: https://band.us/band/80638831
+uh oh // stinky
