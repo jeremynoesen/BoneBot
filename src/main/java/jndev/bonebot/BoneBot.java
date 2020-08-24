@@ -66,6 +66,7 @@ public class BoneBot extends ListenerAdapter {
             Scanner fileScanner = new Scanner(new File("phrases.txt"));
             phrases.clear();
             while (fileScanner.hasNextLine()) phrases.add(fileScanner.nextLine());
+            fileScanner.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -75,6 +76,7 @@ public class BoneBot extends ListenerAdapter {
             Scanner fileScanner = new Scanner(new File("quotes.txt"));
             quotes.clear();
             while (fileScanner.hasNextLine()) quotes.add(fileScanner.nextLine());
+            fileScanner.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
