@@ -117,7 +117,8 @@ public class BoneBot extends ListenerAdapter {
                 if (msg.contains(trigger)) count++;
             }
             if (count == triggers.length && !e.getAuthor().isBot()) {
-                e.getChannel().sendMessage(triggerAndPhrase[1]).queue();
+                e.getChannel().sendMessage(triggerAndPhrase[1]
+                        .replace("$USER$", e.getAuthor().getAsMention())).queue();
             }
         }
         // respond to a phrase if a trigger word is said
