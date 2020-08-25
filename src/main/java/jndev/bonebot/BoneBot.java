@@ -44,6 +44,10 @@ public class BoneBot extends ListenerAdapter {
      * @throws LoginException when unable to log in to bot account
      */
     public static void main(String[] args) throws LoginException {
+    
+        System.setProperty("apple.awt.UIElement", "true");
+        java.awt.Toolkit.getDefaultToolkit();
+        // hide dock icon on my mac
         
         if (args.length < 1) {
             System.out.println("You have to provide a token as first argument!");
@@ -65,7 +69,7 @@ public class BoneBot extends ListenerAdapter {
      */
     private static void loadFiles() {
         try {
-            Scanner fileScanner = new Scanner(new File("src/main/resources/responses.txt"));
+            Scanner fileScanner = new Scanner(new File("responses.txt"));
             responses.clear();
             while (fileScanner.hasNextLine()) responses.add(fileScanner.nextLine());
             fileScanner.close();
@@ -75,7 +79,7 @@ public class BoneBot extends ListenerAdapter {
         // read phrases from file
         
         try {
-            Scanner fileScanner = new Scanner(new File("src/main/resources/text.txt"));
+            Scanner fileScanner = new Scanner(new File("text.txt"));
             texts.clear();
             while (fileScanner.hasNextLine()) texts.add(fileScanner.nextLine());
             fileScanner.close();
@@ -84,7 +88,7 @@ public class BoneBot extends ListenerAdapter {
         }
         // read quotes from file
         
-        File dir = new File("src/main/resources/images");
+        File dir = new File("images");
         images.clear();
         images.addAll(Arrays.asList(dir.listFiles()));
         // load all meme files
