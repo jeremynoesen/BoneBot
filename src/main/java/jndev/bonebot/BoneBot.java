@@ -63,6 +63,7 @@ public class BoneBot extends ListenerAdapter {
         // initialize bot
         
         loadFiles();
+        // load data files
     }
     
     /**
@@ -134,13 +135,14 @@ public class BoneBot extends ListenerAdapter {
                 String format = images.get(imageIndex).getName().split("\\.")[1];
                 r = new Random((int) Math.sqrt(System.nanoTime()));
                 String text = texts.get(r.nextInt(texts.size()));
+                // load up text and image
                 
                 Graphics graphics = image.getGraphics();
                 graphics.setFont(new Font(Font.MONOSPACED, Font.BOLD, image.getWidth(null) / 15));
-                
                 HashMap<RenderingHints.Key, Object> hints = new HashMap<>();
                 hints.put(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
                 ((Graphics2D) graphics).addRenderingHints(hints);
+                // graphics settings
                 
                 String wrapped = WordUtils.wrap(text, 20, " // ", false);
                 String[] lines = wrapped.split(" // ");
@@ -151,13 +153,17 @@ public class BoneBot extends ListenerAdapter {
                             image.getHeight(null) - (int) ((lines.length - i) * graphics.getFont().getSize() * 1.25));
                 }
                 graphics.dispose();
+                // apply text to image
+                
                 File file = new File("meme." + format);
                 ImageIO.write(image, format.toLowerCase(), file);
                 e.getChannel().sendFile(file).queue();
                 file.delete();
+                // send file and delete after sending
                 
             } catch (IOException | IllegalArgumentException ex) {
                 e.getChannel().sendMessage("!meme").queue();
+                // retry making a meme if it fails
             }
         }
         // send random image combined with a random text when "!meme" is typed
