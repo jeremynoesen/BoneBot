@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 /**
  * BoneBot is a simple discord bot for the ISUCF'V'MB Trombone discord
@@ -106,7 +107,7 @@ public class BoneBot extends ListenerAdapter {
         
         if (msg.equals("!reload")) {
             loadFiles();
-            e.getMessage().delete().queue();
+            e.getMessage().delete().queueAfter(1, TimeUnit.SECONDS);
         }
         // reload all files
         
@@ -126,12 +127,12 @@ public class BoneBot extends ListenerAdapter {
         
         if (msg.equals("!meme")) {
             try {
-                e.getMessage().delete().queue();
+                e.getMessage().delete().queueAfter(1, TimeUnit.SECONDS);
                 Random r = new Random(System.nanoTime());
                 int imageIndex = r.nextInt(images.size());
                 BufferedImage image = ImageIO.read(images.get(imageIndex));
                 String format = images.get(imageIndex).getName().split("\\.")[1];
-                r = new Random(System.nanoTime() - System.currentTimeMillis());
+                r = new Random((int) Math.sqrt(System.nanoTime()));
                 String text = texts.get(r.nextInt(texts.size()));
                 
                 Graphics graphics = image.getGraphics();
