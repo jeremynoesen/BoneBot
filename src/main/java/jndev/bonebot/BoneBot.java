@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 /**
  * BoneBot is a simple discord bot for the ISUCF'V'MB Trombone discord
@@ -134,20 +135,23 @@ public class BoneBot extends ListenerAdapter {
                 String format;
                 File original;
                 String text;
+                boolean deleteOriginal;
                 
-                if (e.getMessage().getAttachments().size() == 1) {
-                    original = e.getMessage().getAttachments().get(0).downloadToFile().get();
+                if (e.getMessage().getAttachments().size() > 0 && e.getMessage().getAttachments().get(0).isImage()) {
+                    original = e.getMessage().getAttachments().get(0).downloadToFile().get(2, TimeUnit.SECONDS);
+                    deleteOriginal = true;
                 } else {
                     Random r = new Random(System.nanoTime());
                     int imageIndex = r.nextInt(images.size());
                     original = images.get(imageIndex);
+                    deleteOriginal = false;
                 }
                 image = ImageIO.read(original);
                 format = original.getName().substring(original.getName().lastIndexOf(".") + 1);
                 // get random image or image from message
                 
                 String textInput = e.getMessage().getContentStripped().replace("!meme", "").trim();
-                if(!textInput.equals("")) {
+                if (!textInput.isEmpty() || !textInput.equals("")) {
                     text = textInput;
                 } else {
                     Random r = new Random((int) Math.sqrt(System.nanoTime()));
@@ -179,9 +183,10 @@ public class BoneBot extends ListenerAdapter {
                 ImageIO.write(image, format.toLowerCase(), modified);
                 e.getChannel().sendFile(modified).queueAfter(2, TimeUnit.SECONDS);
                 modified.delete();
+                if (deleteOriginal) original.delete();
                 // send file and delete after sending
                 
-            } catch (IOException | IllegalArgumentException | ExecutionException | InterruptedException ex) {
+            } catch (IOException | IllegalArgumentException | ExecutionException | InterruptedException | TimeoutException ex) {
                 e.getChannel().sendMessage("Error generating meme!").queue();
                 ex.printStackTrace();
                 // show error message if meme generation fails
