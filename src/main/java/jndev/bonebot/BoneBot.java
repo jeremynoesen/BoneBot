@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.ExecutionException;
 
 /**
  * BoneBot is a simple discord bot for the ISUCF'V'MB Trombone discord
@@ -124,17 +125,33 @@ public class BoneBot extends ListenerAdapter {
         }
         // respond to a phrase if a trigger word is said
         
-        if (msg.equals("!meme") || msg.equals("!mem") || msg.equals("!m") || msg.equals("!meem")) {
+        if (msg.startsWith("!meme")) {
             try {
                 e.getChannel().sendTyping().queue();
-                Random r = new Random(System.nanoTime());
-                int imageIndex = r.nextInt(images.size());
-                BufferedImage image = ImageIO.read(images.get(imageIndex));
-                String format = images.get(imageIndex).getName().substring(
-                        images.get(imageIndex).getName().lastIndexOf(".") + 1);
-                r = new Random((int) Math.sqrt(System.nanoTime()));
-                String text = texts.get(r.nextInt(texts.size()));
-                // load up text and image
+                
+                BufferedImage image;
+                String format;
+                File original;
+                String text;
+                
+                if (e.getMessage().getAttachments().size() == 1) {
+                    original = e.getMessage().getAttachments().get(0).downloadToFile().get();
+                } else {
+                    Random r = new Random(System.nanoTime());
+                    int imageIndex = r.nextInt(images.size());
+                    original = images.get(imageIndex);
+                }
+                image = ImageIO.read(original);
+                format = original.getName().substring(original.getName().lastIndexOf(".") + 1);
+                // get random image or image from message
+                
+                if(!e.getMessage().getContentStripped().replace("!meme", "").trim().equals("")) {
+                    text = e.getMessage().getContentStripped().replace("!meme", "").trim();
+                } else {
+                    Random r = new Random((int) Math.sqrt(System.nanoTime()));
+                    text = texts.get(r.nextInt(texts.size()));
+                }
+                // get random or user input text
                 
                 Graphics graphics = image.getGraphics();
                 graphics.setFont(new Font(Font.MONOSPACED, Font.BOLD, image.getWidth(null) / 15));
@@ -156,13 +173,13 @@ public class BoneBot extends ListenerAdapter {
                 graphics.dispose();
                 // apply text to image
                 
-                File file = new File("meme." + format.toLowerCase());
-                ImageIO.write(image, format.toLowerCase(), file);
-                e.getChannel().sendFile(file).queue();
-                file.delete();
+                File modified = new File("meme." + format.toLowerCase());
+                ImageIO.write(image, format.toLowerCase(), modified);
+                e.getChannel().sendFile(modified).queue();
+                modified.delete();
                 // send file and delete after sending
                 
-            } catch (IOException | IllegalArgumentException ex) {
+            } catch (IOException | IllegalArgumentException | ExecutionException | InterruptedException ex) {
                 e.getChannel().sendMessage("Error generating meme!").queue();
                 ex.printStackTrace();
                 // show error message if meme generation fails
