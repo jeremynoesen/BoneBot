@@ -80,6 +80,7 @@ public class BoneBot extends ListenerAdapter {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+        System.out.println("Loaded " + responses.size() + " responses");
         // read phrases from file
         
         try {
@@ -90,11 +91,13 @@ public class BoneBot extends ListenerAdapter {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+        System.out.println("Loaded " + texts.size() + " text lines");
         // read quotes from file
         
         File dir = new File("images");
         images.clear();
         images.addAll(Arrays.asList(dir.listFiles()));
+        System.out.println("Loaded " + images.size() + " images");
         // load all meme files
     }
     
@@ -109,7 +112,10 @@ public class BoneBot extends ListenerAdapter {
         // convert whole message to lowercase for parsing
         
         if (msg.equals("!reload")) {
+            e.getChannel().sendTyping().queue();
             loadFiles();
+            e.getChannel().sendMessage("Loaded " + responses.size() + " responses, " + texts.size() +
+                    " text lines, and " + images.size() + " images.").queue();
         }
         // reload all files
         
@@ -120,7 +126,7 @@ public class BoneBot extends ListenerAdapter {
             for (String trigger : triggers) {
                 if (msg.contains(trigger.toLowerCase())) count++;
             }
-            if (count == triggers.length && !e.getAuthor().isBot()) {
+            if (count == triggers.length && !e.getAuthor().isBot() && !msg.contains("!meme")) {
                 e.getChannel().sendMessage(triggerAndPhrase[1]
                         .replace("$USER$", e.getAuthor().getAsMention())).queue();
             }
@@ -130,12 +136,14 @@ public class BoneBot extends ListenerAdapter {
         if (msg.startsWith("!meme")) {
             try {
                 e.getChannel().sendTyping().queue();
+                // typing indicator as loading icon
                 
                 BufferedImage image;
                 String format;
                 File original;
                 String text;
                 boolean deleteOriginal;
+                // variables
                 
                 if (e.getMessage().getAttachments().size() > 0 && e.getMessage().getAttachments().get(0).isImage()) {
                     original = e.getMessage().getAttachments().get(0).downloadToFile().get(2, TimeUnit.SECONDS);
