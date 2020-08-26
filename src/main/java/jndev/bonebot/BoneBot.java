@@ -14,7 +14,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 
 /**
  * BoneBot is a simple discord bot for the ISUCF'V'MB Trombone discord
@@ -45,7 +44,7 @@ public class BoneBot extends ListenerAdapter {
      * @throws LoginException when unable to log in to bot account
      */
     public static void main(String[] args) throws LoginException {
-    
+        
         System.setProperty("apple.awt.UIElement", "true");
         java.awt.Toolkit.getDefaultToolkit();
         // hide dock icon on my mac
@@ -108,7 +107,6 @@ public class BoneBot extends ListenerAdapter {
         
         if (msg.equals("!reload")) {
             loadFiles();
-            e.getMessage().delete().queueAfter(1, TimeUnit.SECONDS);
         }
         // reload all files
         
@@ -128,11 +126,12 @@ public class BoneBot extends ListenerAdapter {
         
         if (msg.equals("!meme")) {
             try {
-                e.getMessage().delete().queueAfter(1, TimeUnit.SECONDS);
+                e.getChannel().sendTyping().queue();
                 Random r = new Random(System.nanoTime());
                 int imageIndex = r.nextInt(images.size());
                 BufferedImage image = ImageIO.read(images.get(imageIndex));
-                String format = images.get(imageIndex).getName().split("\\.")[1];
+                String format = images.get(imageIndex).getName().substring(
+                        images.get(imageIndex).getName().lastIndexOf(".") + 1);
                 r = new Random((int) Math.sqrt(System.nanoTime()));
                 String text = texts.get(r.nextInt(texts.size()));
                 // load up text and image
@@ -149,21 +148,24 @@ public class BoneBot extends ListenerAdapter {
                 for (int i = 0; i < lines.length; i++) {
                     String line = lines[i].trim();
                     graphics.drawString(line,
-                            (image.getWidth(null) - ((line.length()) * (int) (graphics.getFont().getSize2D() * 5.0 / 8.1))) / 2,
-                            image.getHeight(null) - (int) ((lines.length - i) * graphics.getFont().getSize() * 1.25));
+                            (image.getWidth(null) - ((line.length()) * (int)
+                                    (graphics.getFont().getSize2D() * 5.0 / 8.1))) / 2,
+                            image.getHeight(null) - (int) ((lines.length - i) *
+                                    graphics.getFont().getSize() * 1.25));
                 }
                 graphics.dispose();
                 // apply text to image
                 
-                File file = new File("meme." + format);
+                File file = new File("meme." + format.toLowerCase());
                 ImageIO.write(image, format.toLowerCase(), file);
                 e.getChannel().sendFile(file).queue();
                 file.delete();
                 // send file and delete after sending
                 
             } catch (IOException | IllegalArgumentException ex) {
-                e.getChannel().sendMessage("!meme").queue();
-                // retry making a meme if it fails
+                e.getChannel().sendMessage("Error generating meme!").queue();
+                ex.printStackTrace();
+                // show error message if meme generation fails
             }
         }
         // send random image combined with a random text when "!meme" is typed
