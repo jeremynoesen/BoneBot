@@ -115,7 +115,7 @@ public class BoneBot extends ListenerAdapter {
             String[] triggers = triggerAndPhrase[0].split(" / ");
             int count = 0;
             for (String trigger : triggers) {
-                if (msg.contains(trigger)) count++;
+                if (msg.contains(trigger.toLowerCase())) count++;
             }
             if (count == triggers.length && !e.getAuthor().isBot()) {
                 e.getChannel().sendMessage(triggerAndPhrase[1]
@@ -124,7 +124,7 @@ public class BoneBot extends ListenerAdapter {
         }
         // respond to a phrase if a trigger word is said
         
-        if (msg.equals("!meme")) {
+        if (msg.equals("!meme") || msg.equals("!mem") || msg.equals("!m") || msg.equals("!meem")) {
             try {
                 e.getChannel().sendTyping().queue();
                 Random r = new Random(System.nanoTime());
