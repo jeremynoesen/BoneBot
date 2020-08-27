@@ -2,6 +2,7 @@ package jndev.bonebot;
 
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
+import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.apache.commons.text.WordUtils;
@@ -39,6 +40,11 @@ public class BoneBot extends ListenerAdapter {
      * list of images loaded from the images folder
      */
     private static final ArrayList<File> images = new ArrayList<>();
+    
+    /**
+     * cooldowns used for meme generation
+     */
+    private static final HashMap<User, Long> memeCooldowns = new HashMap<>();
     
     /**
      * create the bot and run it
@@ -134,70 +140,81 @@ public class BoneBot extends ListenerAdapter {
         // respond to a phrase if a trigger word is said
         
         if (msg.startsWith("!meme")) {
-            try {
-                e.getChannel().sendTyping().queue();
-                // typing indicator as loading icon
-                
-                BufferedImage image;
-                String format;
-                File original;
-                String text;
-                boolean deleteOriginal;
-                // variables
-                
-                if (e.getMessage().getAttachments().size() > 0 && e.getMessage().getAttachments().get(0).isImage()) {
-                    original = e.getMessage().getAttachments().get(0).downloadToFile().get(2, TimeUnit.SECONDS);
-                    deleteOriginal = true;
-                } else {
-                    Random r = new Random(System.nanoTime());
-                    int imageIndex = r.nextInt(images.size());
-                    original = images.get(imageIndex);
-                    deleteOriginal = false;
+            
+            int cooldown = 60;
+            
+            if (!memeCooldowns.containsKey(e.getAuthor()) || System.currentTimeMillis() - memeCooldowns.get(e.getAuthor()) >= cooldown * 1000) {
+                try {
+                    e.getChannel().sendTyping().queue();
+                    // typing indicator as loading icon
+                    
+                    BufferedImage image;
+                    String format;
+                    File original;
+                    String text;
+                    boolean deleteOriginal;
+                    // variables
+                    
+                    if (e.getMessage().getAttachments().size() > 0 && e.getMessage().getAttachments().get(0).isImage()) {
+                        original = e.getMessage().getAttachments().get(0).downloadToFile().get(2, TimeUnit.SECONDS);
+                        deleteOriginal = true;
+                    } else {
+                        Random r = new Random(System.nanoTime());
+                        int imageIndex = r.nextInt(images.size());
+                        original = images.get(imageIndex);
+                        deleteOriginal = false;
+                    }
+                    image = ImageIO.read(original);
+                    format = original.getName().substring(original.getName().lastIndexOf(".") + 1);
+                    // get random image or image from message
+                    
+                    String textInput = e.getMessage().getContentStripped().replace("!meme", "").trim();
+                    if (!textInput.isEmpty() || !textInput.equals("")) {
+                        text = textInput;
+                    } else {
+                        Random r = new Random((int) Math.sqrt(System.nanoTime()));
+                        text = texts.get(r.nextInt(texts.size()));
+                    }
+                    // get random or user input text
+                    
+                    Graphics graphics = image.getGraphics();
+                    graphics.setFont(new Font(Font.MONOSPACED, Font.BOLD, image.getWidth(null) / 15));
+                    HashMap<RenderingHints.Key, Object> hints = new HashMap<>();
+                    hints.put(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                    ((Graphics2D) graphics).addRenderingHints(hints);
+                    // graphics settings
+                    
+                    String wrapped = WordUtils.wrap(text, 20, " // ", false);
+                    String[] lines = wrapped.split(" // ");
+                    for (int i = 0; i < lines.length; i++) {
+                        String line = lines[i].trim();
+                        graphics.drawString(line,
+                                (image.getWidth(null) - ((line.length()) * (int)
+                                        (graphics.getFont().getSize2D() * 5.0 / 8.1))) / 2,
+                                image.getHeight(null) - (int) ((lines.length - i) *
+                                        graphics.getFont().getSize() * 1.25));
+                    }
+                    graphics.dispose();
+                    // apply text to image
+                    
+                    File modified = new File("meme." + format.toLowerCase());
+                    ImageIO.write(image, format.toLowerCase(), modified);
+                    e.getChannel().sendFile(modified).queueAfter(2, TimeUnit.SECONDS);
+                    modified.delete();
+                    if (deleteOriginal) original.delete();
+                    // send file and delete after sending
+                    
+                    memeCooldowns.put(e.getAuthor(), System.currentTimeMillis());
+                    
+                } catch (IOException | IllegalArgumentException | ExecutionException | InterruptedException | TimeoutException ex) {
+                    e.getChannel().sendMessage("Error generating meme!").queue();
+                    ex.printStackTrace();
+                    // show error message if meme generation fails
                 }
-                image = ImageIO.read(original);
-                format = original.getName().substring(original.getName().lastIndexOf(".") + 1);
-                // get random image or image from message
-                
-                String textInput = e.getMessage().getContentStripped().replace("!meme", "").trim();
-                if (!textInput.isEmpty() || !textInput.equals("")) {
-                    text = textInput;
-                } else {
-                    Random r = new Random((int) Math.sqrt(System.nanoTime()));
-                    text = texts.get(r.nextInt(texts.size()));
-                }
-                // get random or user input text
-                
-                Graphics graphics = image.getGraphics();
-                graphics.setFont(new Font(Font.MONOSPACED, Font.BOLD, image.getWidth(null) / 15));
-                HashMap<RenderingHints.Key, Object> hints = new HashMap<>();
-                hints.put(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                ((Graphics2D) graphics).addRenderingHints(hints);
-                // graphics settings
-                
-                String wrapped = WordUtils.wrap(text, 20, " // ", false);
-                String[] lines = wrapped.split(" // ");
-                for (int i = 0; i < lines.length; i++) {
-                    String line = lines[i].trim();
-                    graphics.drawString(line,
-                            (image.getWidth(null) - ((line.length()) * (int)
-                                    (graphics.getFont().getSize2D() * 5.0 / 8.1))) / 2,
-                            image.getHeight(null) - (int) ((lines.length - i) *
-                                    graphics.getFont().getSize() * 1.25));
-                }
-                graphics.dispose();
-                // apply text to image
-                
-                File modified = new File("meme." + format.toLowerCase());
-                ImageIO.write(image, format.toLowerCase(), modified);
-                e.getChannel().sendFile(modified).queueAfter(2, TimeUnit.SECONDS);
-                modified.delete();
-                if (deleteOriginal) original.delete();
-                // send file and delete after sending
-                
-            } catch (IOException | IllegalArgumentException | ExecutionException | InterruptedException | TimeoutException ex) {
-                e.getChannel().sendMessage("Error generating meme!").queue();
-                ex.printStackTrace();
-                // show error message if meme generation fails
+            } else {
+                long timeLeft = cooldown - (System.currentTimeMillis() - memeCooldowns.get(e.getAuthor())) / 1000;
+                e.getChannel().sendMessage(e.getAuthor().getAsMention() + " You can't generate another meme for "
+                        + timeLeft + " seconds!").queue();
             }
         }
         // send random image combined with a random text when "!meme" is typed
