@@ -14,6 +14,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -159,21 +160,21 @@ public class BoneBot extends ListenerAdapter {
                     String format;
                     File original;
                     String text;
-                    boolean deleteOriginal;
                     // variables
                     
                     if (e.getMessage().getAttachments().size() > 0 && e.getMessage().getAttachments().get(0).isImage()) {
+                        format = e.getMessage().getAttachments().get(0).getFileExtension();
                         original = e.getMessage().getAttachments().get(0).downloadToFile(
-                                "temp/upload" + memeCount).get(2, TimeUnit.SECONDS);
-                        deleteOriginal = true;
+                                "temp/upload" + memeCount + "." + format)
+                                .get(2, TimeUnit.SECONDS);
+                        original.deleteOnExit();
                     } else {
                         Random r = new Random(System.nanoTime());
                         int imageIndex = r.nextInt(images.size());
                         original = images.get(imageIndex);
-                        deleteOriginal = false;
+                        format = original.getName().substring(original.getName().lastIndexOf(".") + 1);
                     }
                     image = ImageIO.read(original);
-                    format = original.getName().substring(original.getName().lastIndexOf(".") + 1);
                     // get random image or image from message
                     
                     String textInput = e.getMessage().getContentStripped().replace("!meme", "").trim();
@@ -221,21 +222,33 @@ public class BoneBot extends ListenerAdapter {
                     ImageIO.write(image, format.toLowerCase(), modified);
                     e.getChannel().sendFile(modified).queueAfter(2, TimeUnit.SECONDS);
                     modified.deleteOnExit();
-                    if (deleteOriginal) original.deleteOnExit();
                     memeCount++;
                     // send file and delete after sending
                     
                     memeCooldowns.put(e.getAuthor(), System.currentTimeMillis());
                     
                 } catch (IOException | IllegalArgumentException | ExecutionException | InterruptedException | TimeoutException ex) {
-                    e.getChannel().sendMessage("Error generating meme!").queue();
+                    e.getChannel().sendMessage("Error generating meme! " +
+                            e.getJDA().getUserByTag("Jeremaster101#0494").getAsMention()).queue();
+                    File log = new File("log.txt");
+                    try {
+                        PrintWriter pw = new PrintWriter(log);
+                        pw.println(ex.getMessage());
+                        for (StackTraceElement ste : ex.getStackTrace()) {
+                            pw.println(ste.toString());
+                        }
+                        pw.println();
+                        pw.close();
+                    } catch (FileNotFoundException fileNotFoundException) {
+                        fileNotFoundException.printStackTrace();
+                    }
                     ex.printStackTrace();
-                    // show error message if meme generation fails
+                    // show error message if meme generation fails and create log
                 }
             } else {
                 long timeLeft = cooldown - (System.currentTimeMillis() - memeCooldowns.get(e.getAuthor())) / 1000;
-                e.getChannel().sendMessage(e.getAuthor().getAsMention() + " You can't generate another meme for "
-                        + timeLeft + " seconds!").queue();
+                e.getChannel().sendMessage(e.getAuthor().getAsMention() + " can generate another meme in "
+                        + timeLeft + " seconds.").queue();
                 // let user know they can't make a meme until the delay is up
             }
         }
