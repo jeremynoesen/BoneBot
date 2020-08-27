@@ -188,6 +188,18 @@ public class BoneBot extends ListenerAdapter {
                     String[] lines = wrapped.split(" // ");
                     for (int i = 0; i < lines.length; i++) {
                         String line = lines[i].trim();
+                        int outlineWidth = 2;
+                        for (int j = -outlineWidth; j <= outlineWidth; j++) {
+                            for (int k = -outlineWidth; k <= outlineWidth; k++) {
+                                graphics.setColor(Color.BLACK);
+                                graphics.drawString(line,
+                                        j + (image.getWidth(null) - ((line.length()) * (int)
+                                                (graphics.getFont().getSize2D() * 5.0 / 8.1))) / 2,
+                                        k + image.getHeight(null) - (int) ((lines.length - i) *
+                                                graphics.getFont().getSize() * 1.25));
+                            }
+                        }
+                        graphics.setColor(Color.WHITE);
                         graphics.drawString(line,
                                 (image.getWidth(null) - ((line.length()) * (int)
                                         (graphics.getFont().getSize2D() * 5.0 / 8.1))) / 2,
@@ -195,7 +207,7 @@ public class BoneBot extends ListenerAdapter {
                                         graphics.getFont().getSize() * 1.25));
                     }
                     graphics.dispose();
-                    // apply text to image
+                    // apply outlined text to image
                     
                     File modified = new File("meme." + format.toLowerCase());
                     ImageIO.write(image, format.toLowerCase(), modified);
