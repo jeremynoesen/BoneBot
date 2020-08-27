@@ -47,6 +47,11 @@ public class BoneBot extends ListenerAdapter {
     private static final HashMap<User, Long> memeCooldowns = new HashMap<>();
     
     /**
+     * number of memes created. helpful to separate meme files to prevent overwriting a meme being processed
+     */
+    private static int memeCount;
+    
+    /**
      * create the bot and run it
      *
      * @param args arg 0 is the bot token
@@ -71,6 +76,7 @@ public class BoneBot extends ListenerAdapter {
         // initialize bot
         
         loadFiles();
+        memeCount = 0;
         // load data files
     }
     
@@ -143,7 +149,8 @@ public class BoneBot extends ListenerAdapter {
             int cooldown = 60;
             // cooldown for this command
             
-            if (!memeCooldowns.containsKey(e.getAuthor()) || System.currentTimeMillis() - memeCooldowns.get(e.getAuthor()) >= cooldown * 1000) {
+            if (!memeCooldowns.containsKey(e.getAuthor()) ||
+                    System.currentTimeMillis() - memeCooldowns.get(e.getAuthor()) >= cooldown * 1000) {
                 try {
                     e.getChannel().sendTyping().queue();
                     // typing indicator as loading icon
@@ -156,7 +163,8 @@ public class BoneBot extends ListenerAdapter {
                     // variables
                     
                     if (e.getMessage().getAttachments().size() > 0 && e.getMessage().getAttachments().get(0).isImage()) {
-                        original = e.getMessage().getAttachments().get(0).downloadToFile().get(2, TimeUnit.SECONDS);
+                        original = e.getMessage().getAttachments().get(0).downloadToFile(
+                                "temp/upload" + memeCount).get(2, TimeUnit.SECONDS);
                         deleteOriginal = true;
                     } else {
                         Random r = new Random(System.nanoTime());
@@ -209,11 +217,12 @@ public class BoneBot extends ListenerAdapter {
                     graphics.dispose();
                     // apply outlined text to image
                     
-                    File modified = new File("meme." + format.toLowerCase());
+                    File modified = new File("temp/meme" + memeCount + "." + format.toLowerCase());
                     ImageIO.write(image, format.toLowerCase(), modified);
                     e.getChannel().sendFile(modified).queueAfter(2, TimeUnit.SECONDS);
-                    modified.delete();
-                    if (deleteOriginal) original.delete();
+                    modified.deleteOnExit();
+                    if (deleteOriginal) original.deleteOnExit();
+                    memeCount++;
                     // send file and delete after sending
                     
                     memeCooldowns.put(e.getAuthor(), System.currentTimeMillis());
