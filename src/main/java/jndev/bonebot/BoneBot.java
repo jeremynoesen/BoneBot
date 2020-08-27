@@ -118,7 +118,6 @@ public class BoneBot extends ListenerAdapter {
         // convert whole message to lowercase for parsing
         
         if (msg.equals("!reload")) {
-            e.getChannel().sendTyping().queue();
             loadFiles();
             e.getChannel().sendMessage("Loaded " + responses.size() + " responses, " + texts.size() +
                     " text lines, and " + images.size() + " images.").queue();
@@ -142,6 +141,7 @@ public class BoneBot extends ListenerAdapter {
         if (msg.startsWith("!meme")) {
             
             int cooldown = 60;
+            // cooldown for this command
             
             if (!memeCooldowns.containsKey(e.getAuthor()) || System.currentTimeMillis() - memeCooldowns.get(e.getAuthor()) >= cooldown * 1000) {
                 try {
@@ -215,6 +215,7 @@ public class BoneBot extends ListenerAdapter {
                 long timeLeft = cooldown - (System.currentTimeMillis() - memeCooldowns.get(e.getAuthor())) / 1000;
                 e.getChannel().sendMessage(e.getAuthor().getAsMention() + " You can't generate another meme for "
                         + timeLeft + " seconds!").queue();
+                // let user know they can't make a meme until the delay is up
             }
         }
         // send random image combined with a random text when "!meme" is typed
