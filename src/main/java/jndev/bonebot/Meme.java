@@ -187,8 +187,8 @@ public class Meme {
      */
     private void processImage() {
         double ratio = image.getHeight() / (double) image.getWidth();
-        int width = 512;
-        int height = (int) (512 * ratio);
+        int width = 768;
+        int height = (int) (768 * ratio);
         meme = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         Graphics graphics = meme.getGraphics();
         graphics.setFont(new Font(Font.MONOSPACED, Font.BOLD, meme.getWidth(null) / 15));
@@ -202,23 +202,23 @@ public class Meme {
         String[] lines = wrapped.split(" // ");
         for (int i = 0; i < lines.length; i++) {
             String line = lines[i].trim();
-            int outlineWidth = 2;
+            int outlineWidth = 3;
             for (int j = -outlineWidth; j <= outlineWidth; j++) {
                 for (int k = -outlineWidth; k <= outlineWidth; k++) {
                     graphics.setColor(Color.BLACK);
                     graphics.drawString(line,
                             j + (meme.getWidth(null) - ((line.length()) * (int)
                                     (graphics.getFont().getSize2D() * 5.0 / 8.1))) / 2,
-                            k + meme.getHeight(null) - (int) ((lines.length - i) *
-                                    graphics.getFont().getSize() * 1.25));
+                            k + meme.getHeight(null) - (int) ((lines.length - i - 0.5) *
+                                    graphics.getFont().getSize() * 1.2));
                 }
             }
             graphics.setColor(Color.WHITE);
             graphics.drawString(line,
                     (meme.getWidth(null) - ((line.length()) * (int)
                             (graphics.getFont().getSize2D() * 5.0 / 8.1))) / 2,
-                    meme.getHeight(null) - (int) ((lines.length - i) *
-                            graphics.getFont().getSize() * 1.25));
+                    meme.getHeight(null) - (int) ((lines.length - i - 0.5) *
+                            graphics.getFont().getSize() * 1.2));
         }
         graphics.dispose();
     }
