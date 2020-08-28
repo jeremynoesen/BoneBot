@@ -6,6 +6,7 @@ import org.apache.commons.text.WordUtils;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.font.GlyphVector;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -187,12 +188,12 @@ public class Meme {
      */
     private void processImage() throws IOException, FontFormatException {
         double ratio = image.getHeight() / (double) image.getWidth();
-        int width = 768;
-        int height = (int) (768 * ratio);
+        int width = 1024;
+        int height = (int) (width * ratio);
         meme = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         Graphics graphics = meme.getGraphics();
         File fontFile = new File("/System/Library/Fonts/Supplemental/Impact.ttf");
-        Font font = Font.createFont(Font.TRUETYPE_FONT, fontFile).deriveFont(64f);
+        Font font = Font.createFont(Font.TRUETYPE_FONT, fontFile).deriveFont(85f);
         graphics.setFont(font);
         FontMetrics metrics = graphics.getFontMetrics(font);
         HashMap<RenderingHints.Key, Object> hints = new HashMap<>();
@@ -200,26 +201,25 @@ public class Meme {
         hints.put(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
         ((Graphics2D) graphics).addRenderingHints(hints);
         graphics.drawImage(image, 0, 0, width, height, null);
-        
         String wrapped = WordUtils.wrap(text, 25, " // ", false);
         String[] lines = wrapped.split(" // ");
         for (int i = 0; i < lines.length; i++) {
             String line = lines[i].trim();
-            int outlineWidth = 2;
-            for (int j = -outlineWidth; j <= outlineWidth; j++) {
-                for (int k = -outlineWidth; k <= outlineWidth; k++) {
-                    graphics.setColor(Color.BLACK);
-                    graphics.drawString(line,
-                            j + (meme.getWidth(null) - metrics.stringWidth(line)) / 2,
-                            k + meme.getHeight(null) - (int) ((lines.length - i - 0.5) *
-                                    graphics.getFont().getSize()));
-                }
-            }
+            graphics.setColor(Color.BLACK);
+            Graphics2D g2d = (Graphics2D) graphics;
+            GlyphVector gv = font.createGlyphVector(g2d.getFontRenderContext(), line);
+            Shape shape = gv.getOutline();
+            g2d.setStroke(new BasicStroke(6.0f));
+            g2d.translate((int) ((meme.getWidth(null) - metrics.stringWidth(line)) / 2.0),
+                    (int) (meme.getHeight(null) - (lines.length - i - 0.5) * graphics.getFont().getSize()));
+            g2d.draw(shape);
+            g2d.translate((int) -((meme.getWidth(null) - metrics.stringWidth(line)) / 2.0),
+                    (int) -(meme.getHeight(null) - (lines.length - i - 0.5) * graphics.getFont().getSize()));
             graphics.setColor(Color.WHITE);
             graphics.drawString(line,
-                    (meme.getWidth(null) - metrics.stringWidth(line)) / 2,
-                    meme.getHeight(null) - (int) ((lines.length - i - 0.5) *
-                            graphics.getFont().getSize()));
+                    (int) ((meme.getWidth(null) - metrics.stringWidth(line)) / 2.0),
+                    (int) (meme.getHeight(null) - (lines.length - i - 0.5) * graphics.getFont().getSize()));
+            g2d.dispose();
         }
         graphics.dispose();
     }
