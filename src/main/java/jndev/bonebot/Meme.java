@@ -7,6 +7,7 @@ import org.apache.commons.text.WordUtils;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.font.GlyphVector;
+import java.awt.font.TextLayout;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -207,9 +208,8 @@ public class Meme {
             String line = lines[i].trim();
             graphics.setColor(Color.BLACK);
             Graphics2D g2d = (Graphics2D) graphics;
-            GlyphVector gv = font.createGlyphVector(g2d.getFontRenderContext(), line);
-            Shape shape = gv.getOutline();
-            g2d.setStroke(new BasicStroke(6.0f));
+            Shape shape = new TextLayout(line, font, g2d.getFontRenderContext()).getOutline(null);
+            g2d.setStroke(new BasicStroke(6f));
             g2d.translate((int) ((meme.getWidth(null) - metrics.stringWidth(line)) / 2.0),
                     (int) (meme.getHeight(null) - (lines.length - i - 0.5) * graphics.getFont().getSize()));
             g2d.draw(shape);
