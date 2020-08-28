@@ -77,6 +77,7 @@ public class BoneBot extends ListenerAdapter {
         // initialize bot
         
         loadFiles();
+        MemeGenerator.loadData();
         memeCount = 0;
         // load data files
     }
@@ -144,114 +145,123 @@ public class BoneBot extends ListenerAdapter {
             }
         }
         // respond to a phrase if a trigger word is said
-        
-        if (msg.startsWith("!meme")) {
-            
-            int cooldown = 60;
-            // cooldown for this command
-            
-            if (!memeCooldowns.containsKey(e.getAuthor()) ||
-                    System.currentTimeMillis() - memeCooldowns.get(e.getAuthor()) >= cooldown * 1000) {
-                try {
-                    e.getChannel().sendTyping().queue();
-                    // typing indicator as loading icon
-                    
-                    BufferedImage image;
-                    String format;
-                    File original;
-                    String text;
-                    // variables
-                    
-                    if (e.getMessage().getAttachments().size() > 0 && e.getMessage().getAttachments().get(0).isImage()) {
-                        format = e.getMessage().getAttachments().get(0).getFileExtension();
-                        original = e.getMessage().getAttachments().get(0).downloadToFile(
-                                "temp/upload" + memeCount + "." + format)
-                                .get(2, TimeUnit.SECONDS);
-                        original.deleteOnExit();
-                    } else {
-                        Random r = new Random(System.nanoTime());
-                        int imageIndex = r.nextInt(images.size());
-                        original = images.get(imageIndex);
-                        format = original.getName().substring(original.getName().lastIndexOf(".") + 1);
-                    }
-                    image = ImageIO.read(original);
-                    // get random image or image from message
-                    
-                    String textInput = e.getMessage().getContentStripped().replace("!meme", "").trim();
-                    if (!textInput.isEmpty() || !textInput.equals("")) {
-                        text = textInput;
-                    } else {
-                        Random r = new Random((int) Math.sqrt(System.nanoTime()));
-                        text = texts.get(r.nextInt(texts.size()));
-                    }
-                    // get random or user input text
-                    
-                    Graphics graphics = image.getGraphics();
-                    graphics.setFont(new Font(Font.MONOSPACED, Font.BOLD, image.getWidth(null) / 15));
-                    HashMap<RenderingHints.Key, Object> hints = new HashMap<>();
-                    hints.put(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                    ((Graphics2D) graphics).addRenderingHints(hints);
-                    // graphics settings
-                    
-                    String wrapped = WordUtils.wrap(text, 20, " // ", false);
-                    String[] lines = wrapped.split(" // ");
-                    for (int i = 0; i < lines.length; i++) {
-                        String line = lines[i].trim();
-                        int outlineWidth = 2;
-                        for (int j = -outlineWidth; j <= outlineWidth; j++) {
-                            for (int k = -outlineWidth; k <= outlineWidth; k++) {
-                                graphics.setColor(Color.BLACK);
-                                graphics.drawString(line,
-                                        j + (image.getWidth(null) - ((line.length()) * (int)
-                                                (graphics.getFont().getSize2D() * 5.0 / 8.1))) / 2,
-                                        k + image.getHeight(null) - (int) ((lines.length - i) *
-                                                graphics.getFont().getSize() * 1.25));
-                            }
-                        }
-                        graphics.setColor(Color.WHITE);
-                        graphics.drawString(line,
-                                (image.getWidth(null) - ((line.length()) * (int)
-                                        (graphics.getFont().getSize2D() * 5.0 / 8.1))) / 2,
-                                image.getHeight(null) - (int) ((lines.length - i) *
-                                        graphics.getFont().getSize() * 1.25));
-                    }
-                    graphics.dispose();
-                    // apply outlined text to image
-                    
-                    File modified = new File("temp/meme" + memeCount + "." + format.toLowerCase());
-                    ImageIO.write(image, format.toLowerCase(), modified);
-                    e.getChannel().sendFile(modified).queueAfter(2, TimeUnit.SECONDS);
-                    modified.deleteOnExit();
-                    memeCount++;
-                    // send file and delete after sending
-                    
-                    memeCooldowns.put(e.getAuthor(), System.currentTimeMillis());
-                    
-                } catch (IOException | IllegalArgumentException | ExecutionException | InterruptedException | TimeoutException ex) {
-                    e.getChannel().sendMessage("Error generating meme! " +
-                            e.getJDA().getUserByTag("Jeremaster101#0494").getAsMention()).queue();
-                    File log = new File("log.txt");
-                    try {
-                        PrintWriter pw = new PrintWriter(log);
-                        pw.println(ex.getMessage());
-                        for (StackTraceElement ste : ex.getStackTrace()) {
-                            pw.println(ste.toString());
-                        }
-                        pw.println();
-                        pw.close();
-                    } catch (FileNotFoundException fileNotFoundException) {
-                        fileNotFoundException.printStackTrace();
-                    }
-                    ex.printStackTrace();
-                    // show error message if meme generation fails and create log
-                }
-            } else {
-                long timeLeft = cooldown - (System.currentTimeMillis() - memeCooldowns.get(e.getAuthor())) / 1000;
-                e.getChannel().sendMessage(e.getAuthor().getAsMention() + " can generate another meme in "
-                        + timeLeft + " seconds.").queue();
-                // let user know they can't make a meme until the delay is up
+    
+        if(msg.startsWith("!meme")) {
+            try {
+                new MemeGenerator(e.getMessage()).send();
+            } catch (IOException | TimeoutException | ExecutionException | InterruptedException exception) {
+                exception.printStackTrace();
+                //todo logging
             }
         }
+        // send random image combined with a random text when "!meme" is typed
+        
+//        if (msg.startsWith("!meme")) {
+//            int cooldown = 60;
+//            // cooldown for this command
+//
+//            if (!memeCooldowns.containsKey(e.getAuthor()) ||
+//                    System.currentTimeMillis() - memeCooldowns.get(e.getAuthor()) >= cooldown * 1000) {
+//                try {
+//                    e.getChannel().sendTyping().queue();
+//                    // typing indicator as loading icon
+//
+//                    BufferedImage image;
+//                    String format;
+//                    File original;
+//                    String text;
+//                    // variables
+//
+//                    if (e.getMessage().getAttachments().size() > 0 && e.getMessage().getAttachments().get(0).isImage()) {
+//                        format = e.getMessage().getAttachments().get(0).getFileExtension();
+//                        original = e.getMessage().getAttachments().get(0).downloadToFile(
+//                                "temp/upload" + memeCount + "." + format)
+//                                .get(2, TimeUnit.SECONDS);
+//                        original.deleteOnExit();
+//                    } else {
+//                        Random r = new Random(System.nanoTime());
+//                        int imageIndex = r.nextInt(images.size());
+//                        original = images.get(imageIndex);
+//                        format = original.getName().substring(original.getName().lastIndexOf(".") + 1);
+//                    }
+//                    image = ImageIO.read(original);
+//                    // get random image or image from message
+//
+//                    String textInput = e.getMessage().getContentStripped().replace("!meme", "").trim();
+//                    if (!textInput.isEmpty() || !textInput.equals("")) {
+//                        text = textInput;
+//                    } else {
+//                        Random r = new Random((int) Math.sqrt(System.nanoTime()));
+//                        text = texts.get(r.nextInt(texts.size()));
+//                    }
+//                    // get random or user input text
+//
+//                    Graphics graphics = image.getGraphics();
+//                    graphics.setFont(new Font(Font.MONOSPACED, Font.BOLD, image.getWidth(null) / 15));
+//                    HashMap<RenderingHints.Key, Object> hints = new HashMap<>();
+//                    hints.put(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+//                    ((Graphics2D) graphics).addRenderingHints(hints);
+//                    // graphics settings
+//
+//                    String wrapped = WordUtils.wrap(text, 20, " // ", false);
+//                    String[] lines = wrapped.split(" // ");
+//                    for (int i = 0; i < lines.length; i++) {
+//                        String line = lines[i].trim();
+//                        int outlineWidth = 2;
+//                        for (int j = -outlineWidth; j <= outlineWidth; j++) {
+//                            for (int k = -outlineWidth; k <= outlineWidth; k++) {
+//                                graphics.setColor(Color.BLACK);
+//                                graphics.drawString(line,
+//                                        j + (image.getWidth(null) - ((line.length()) * (int)
+//                                                (graphics.getFont().getSize2D() * 5.0 / 8.1))) / 2,
+//                                        k + image.getHeight(null) - (int) ((lines.length - i) *
+//                                                graphics.getFont().getSize() * 1.25));
+//                            }
+//                        }
+//                        graphics.setColor(Color.WHITE);
+//                        graphics.drawString(line,
+//                                (image.getWidth(null) - ((line.length()) * (int)
+//                                        (graphics.getFont().getSize2D() * 5.0 / 8.1))) / 2,
+//                                image.getHeight(null) - (int) ((lines.length - i) *
+//                                        graphics.getFont().getSize() * 1.25));
+//                    }
+//                    graphics.dispose();
+//                    // apply outlined text to image
+//
+//                    File modified = new File("temp/meme" + memeCount + "." + format.toLowerCase());
+//                    ImageIO.write(image, format.toLowerCase(), modified);
+//                    e.getChannel().sendFile(modified).queueAfter(2, TimeUnit.SECONDS);
+//                    modified.deleteOnExit();
+//                    memeCount++;
+//                    // send file and delete after sending
+//
+//                    memeCooldowns.put(e.getAuthor(), System.currentTimeMillis());
+//
+//                } catch (IOException | IllegalArgumentException | ExecutionException | InterruptedException | TimeoutException ex) {
+//                    e.getChannel().sendMessage("Error generating meme! " +
+//                            e.getJDA().getUserByTag("Jeremaster101#0494").getAsMention()).queue();
+//                    File log = new File("log.txt");
+//                    try {
+//                        PrintWriter pw = new PrintWriter(log);
+//                        pw.println(ex.getMessage());
+//                        for (StackTraceElement ste : ex.getStackTrace()) {
+//                            pw.println(ste.toString());
+//                        }
+//                        pw.println();
+//                        pw.close();
+//                    } catch (FileNotFoundException fileNotFoundException) {
+//                        fileNotFoundException.printStackTrace();
+//                    }
+//                    ex.printStackTrace();
+//                    // show error message if meme generation fails and create log
+//                }
+//            } else {
+//                long timeLeft = cooldown - (System.currentTimeMillis() - memeCooldowns.get(e.getAuthor())) / 1000;
+//                e.getChannel().sendMessage(e.getAuthor().getAsMention() + " can generate another meme in "
+//                        + timeLeft + " seconds.").queue();
+//                // let user know they can't make a meme until the delay is up
+//            }
+//        }
         // send random image combined with a random text when "!meme" is typed
     }
 }
