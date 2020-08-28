@@ -2,7 +2,6 @@ package jndev.bonebot;
 
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import javax.security.auth.login.LoginException;
@@ -21,7 +20,6 @@ public class BoneBot extends ListenerAdapter {
      * @throws LoginException when unable to log in to bot account
      */
     public static void main(String[] args) throws LoginException {
-        
         System.setProperty("apple.awt.UIElement", "true");
         java.awt.Toolkit.getDefaultToolkit();
         
@@ -31,30 +29,11 @@ public class BoneBot extends ListenerAdapter {
         }
         
         JDABuilder.createLight(args[0])
-                .addEventListeners(new BoneBot())
+                .addEventListeners(new Listener())
                 .setActivity(Activity.playing("Trombone"))
                 .build();
         
         Meme.loadData();
         Responder.loadData();
-    }
-    
-    /**
-     * respond to users when they say certain key words
-     *
-     * @param e message received event
-     */
-    @Override
-    public void onMessageReceived(MessageReceivedEvent e) {
-        String msg = e.getMessage().getContentRaw();
-    
-        Responder.respond(e.getMessage());
-    
-        if (msg.equals("!reload")) {
-            Meme.loadData();
-            Responder.loadData();
-        }
-        
-        if (msg.startsWith("!meme")) new Meme(e.getMessage()).generate();
     }
 }
