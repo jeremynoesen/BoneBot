@@ -20,7 +20,7 @@ public class Logger {
         File log = new File("log.txt");
         try {
             PrintWriter pw = new PrintWriter(log);
-            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/YYYY HH:mm:ss");
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
             LocalDateTime now = LocalDateTime.now();
             System.out.println(dtf.format(now));
             pw.println(exception.getMessage());
