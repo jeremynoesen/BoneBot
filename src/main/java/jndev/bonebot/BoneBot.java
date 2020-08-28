@@ -27,7 +27,7 @@ public class BoneBot {
             System.exit(1);
         }
         
-        JDABuilder.createLight(args[0])
+        JDABuilder.createDefault(args[0])
                 .addEventListeners(new Listener())
                 .setActivity(Activity.playing("Trombone"))
                 .build();
