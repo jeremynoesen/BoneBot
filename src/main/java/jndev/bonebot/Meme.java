@@ -120,7 +120,7 @@ public class Meme {
                 command.getChannel().sendFile(convertToFile()).queueAfter(2, TimeUnit.SECONDS);
                 updateCooldown();
             }
-        } catch (IOException | TimeoutException | ExecutionException | InterruptedException exception) {
+        } catch (IOException | TimeoutException | ExecutionException | InterruptedException | FontFormatException exception) {
             command.getChannel().sendMessage("Error generating meme! " +
                     command.getJDA().getUserByTag("Jeremaster101#0494").getAsMention());
             Logger.log(exception);
@@ -185,20 +185,23 @@ public class Meme {
     /**
      * generate a meme using the input text and image
      */
-    private void processImage() {
+    private void processImage() throws IOException, FontFormatException {
         double ratio = image.getHeight() / (double) image.getWidth();
         int width = 768;
         int height = (int) (768 * ratio);
         meme = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         Graphics graphics = meme.getGraphics();
-        graphics.setFont(new Font(Font.MONOSPACED, Font.BOLD, meme.getWidth(null) / 15));
+        File fontFile = new File("/System/Library/Fonts/Supplemental/Impact.ttf");
+        Font font = Font.createFont(Font.TRUETYPE_FONT, fontFile).deriveFont(64f);
+        graphics.setFont(font);
+        FontMetrics metrics = graphics.getFontMetrics(font);
         HashMap<RenderingHints.Key, Object> hints = new HashMap<>();
         hints.put(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         hints.put(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
         ((Graphics2D) graphics).addRenderingHints(hints);
         graphics.drawImage(image, 0, 0, width, height, null);
         
-        String wrapped = WordUtils.wrap(text, 24, " // ", false);
+        String wrapped = WordUtils.wrap(text, 25, " // ", false);
         String[] lines = wrapped.split(" // ");
         for (int i = 0; i < lines.length; i++) {
             String line = lines[i].trim();
@@ -207,18 +210,16 @@ public class Meme {
                 for (int k = -outlineWidth; k <= outlineWidth; k++) {
                     graphics.setColor(Color.BLACK);
                     graphics.drawString(line,
-                            j + (meme.getWidth(null) - ((line.length()) * (int)
-                                    (graphics.getFont().getSize2D() * 5.0 / 8.1))) / 2,
+                            j + (meme.getWidth(null) - metrics.stringWidth(line)) / 2,
                             k + meme.getHeight(null) - (int) ((lines.length - i - 0.5) *
-                                    graphics.getFont().getSize() * 1.2));
+                                    graphics.getFont().getSize()));
                 }
             }
             graphics.setColor(Color.WHITE);
             graphics.drawString(line,
-                    (meme.getWidth(null) - ((line.length()) * (int)
-                            (graphics.getFont().getSize2D() * 5.0 / 8.1))) / 2,
+                    (meme.getWidth(null) - metrics.stringWidth(line)) / 2,
                     meme.getHeight(null) - (int) ((lines.length - i - 0.5) *
-                            graphics.getFont().getSize() * 1.2));
+                            graphics.getFont().getSize()));
         }
         graphics.dispose();
     }
