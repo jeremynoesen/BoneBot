@@ -219,7 +219,6 @@ public class Meme {
             graphics.drawString(line,
                     (int) ((meme.getWidth(null) - metrics.stringWidth(line)) / 2.0),
                     (int) (meme.getHeight(null) - (lines.length - i - 0.5) * graphics.getFont().getSize()));
-            g2d.dispose();
         }
         graphics.dispose();
     }
