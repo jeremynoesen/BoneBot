@@ -45,7 +45,7 @@ public class Responder {
             for (String trigger : triggers) {
                 if (msg.contains(trigger.toLowerCase())) count++;
             }
-            if (count == triggers.length && !message.getAuthor().isBot() && !msg.startsWith("!")) {
+            if (count == triggers.length) {
                 message.getChannel().sendMessage(triggerAndPhrase[1]
                         .replace("$USER$", message.getAuthor().getAsMention())).queue();
             }

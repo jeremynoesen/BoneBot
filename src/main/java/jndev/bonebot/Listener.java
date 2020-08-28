@@ -15,15 +15,17 @@ public class Listener extends ListenerAdapter {
      */
     @Override
     public void onMessageReceived(MessageReceivedEvent e) {
-        String msg = e.getMessage().getContentRaw();
-        
-        Responder.respond(e.getMessage());
-        
-        if (msg.equals("!reload")) {
-            Meme.loadData();
-            Responder.loadData();
+        if (!e.getAuthor().isBot()) {
+            String msg = e.getMessage().getContentRaw();
+            
+            Responder.respond(e.getMessage());
+            
+            if (msg.equals("!reload")) {
+                Meme.loadData();
+                Responder.loadData();
+            }
+            
+            if (msg.startsWith("!meme")) Meme.generate(e.getMessage());
         }
-        
-        if (msg.startsWith("!meme")) Meme.generate(e.getMessage());
     }
 }
