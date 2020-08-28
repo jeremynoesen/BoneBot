@@ -115,7 +115,7 @@ public class Meme {
             command.getChannel().sendMessage("Error generating meme! " +
                     command.getJDA().getUserByTag("Jeremaster101#0494").getAsMention());
             Logger.log(exception);
-    
+            
         }
     }
     
