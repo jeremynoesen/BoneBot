@@ -202,7 +202,7 @@ public class Meme {
         String[] lines = wrapped.split(" // ");
         for (int i = 0; i < lines.length; i++) {
             String line = lines[i].trim();
-            int outlineWidth = 3;
+            int outlineWidth = 2;
             for (int j = -outlineWidth; j <= outlineWidth; j++) {
                 for (int k = -outlineWidth; k <= outlineWidth; k++) {
                     graphics.setColor(Color.BLACK);
