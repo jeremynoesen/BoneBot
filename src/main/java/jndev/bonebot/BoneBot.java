@@ -5,20 +5,14 @@ import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import org.apache.commons.text.WordUtils;
 
-import javax.imageio.ImageIO;
 import javax.security.auth.login.LoginException;
-import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.*;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Scanner;
 
 /**
  * BoneBot is a simple discord bot for the ISUCF'V'MB Trombone discord
@@ -77,7 +71,7 @@ public class BoneBot extends ListenerAdapter {
         // initialize bot
         
         loadFiles();
-        MemeGenerator.loadData();
+        Meme.loadData();
         memeCount = 0;
         // load data files
     }
@@ -145,17 +139,10 @@ public class BoneBot extends ListenerAdapter {
             }
         }
         // respond to a phrase if a trigger word is said
-    
-        if(msg.startsWith("!meme")) {
-            try {
-                new MemeGenerator(e.getMessage()).send();
-            } catch (IOException | TimeoutException | ExecutionException | InterruptedException exception) {
-                exception.printStackTrace();
-                //todo logging
-            }
-        }
-        // send random image combined with a random text when "!meme" is typed
         
+        if (msg.startsWith("!meme")) new Meme(e.getMessage()).generate();
+        // send random image combined with a random text when "!meme" is typed
+
 //        if (msg.startsWith("!meme")) {
 //            int cooldown = 60;
 //            // cooldown for this command

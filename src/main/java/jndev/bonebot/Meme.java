@@ -10,12 +10,15 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Random;
+import java.util.Scanner;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-public class MemeGenerator {
+public class Meme {
     
     /**
      * list of texts loaded from the texts file
@@ -67,7 +70,7 @@ public class MemeGenerator {
      *
      * @param command command containing meme arguments
      */
-    public MemeGenerator(Message command) {
+    public Meme(Message command) {
         this.command = command;
     }
     
@@ -95,17 +98,20 @@ public class MemeGenerator {
     
     /**
      * send a meme to a channel
-     *
-     * @throws IOException
      */
-    public void send() throws IOException, InterruptedException, ExecutionException, TimeoutException {
-        if (checkCooldown()) {
-            command.getChannel().sendTyping().queue();
-            setText();
-            setImage();
-            generate();
-            command.getChannel().sendFile(convertToFile()).queueAfter(2, TimeUnit.SECONDS);
-            updateCooldown();
+    public void generate() {
+        try {
+            if (checkCooldown()) {
+                command.getChannel().sendTyping().queue();
+                setText();
+                setImage();
+                processImage();
+                command.getChannel().sendFile(convertToFile()).queueAfter(2, TimeUnit.SECONDS);
+                updateCooldown();
+            }
+        } catch (IOException | TimeoutException | ExecutionException | InterruptedException exception) {
+            exception.printStackTrace();
+            //todo logging
         }
     }
     
@@ -166,16 +172,20 @@ public class MemeGenerator {
     /**
      * generate a meme using the input text and image
      */
-    private void generate() {
-        meme = new BufferedImage(image.getWidth(), image.getHeight(), image.getType());
+    private void processImage() {
+        double ratio = image.getHeight() / (double) image.getWidth();
+        int width = 512;
+        int height = (int) (512 * ratio);
+        meme = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         Graphics graphics = meme.getGraphics();
-        graphics.drawImage(image, 0, 0, null);
         graphics.setFont(new Font(Font.MONOSPACED, Font.BOLD, meme.getWidth(null) / 15));
         HashMap<RenderingHints.Key, Object> hints = new HashMap<>();
         hints.put(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        hints.put(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
         ((Graphics2D) graphics).addRenderingHints(hints);
+        graphics.drawImage(image, 0, 0, width, height, null);
         
-        String wrapped = WordUtils.wrap(text, 20, " // ", false);
+        String wrapped = WordUtils.wrap(text, 24, " // ", false);
         String[] lines = wrapped.split(" // ");
         for (int i = 0; i < lines.length; i++) {
             String line = lines[i].trim();
