@@ -77,14 +77,14 @@ public class Meme {
     /**
      * load external data files
      */
-    public static void loadData() { //todo logging
+    public static void loadData() {
         try {
             Scanner fileScanner = new Scanner(new File("text.txt"));
             texts.clear();
             while (fileScanner.hasNextLine()) texts.add(fileScanner.nextLine());
             fileScanner.close();
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            Logger.log(e);
         }
         
         File dir = new File("images");
@@ -92,7 +92,9 @@ public class Meme {
         for (File file : dir.listFiles()) {
             try {
                 images.add(ImageIO.read(file));
-            } catch (IOException ignored) {}
+            } catch (IOException e) {
+                Logger.log(e);
+            }
         }
     }
     
@@ -110,8 +112,10 @@ public class Meme {
                 updateCooldown();
             }
         } catch (IOException | TimeoutException | ExecutionException | InterruptedException exception) {
-            exception.printStackTrace();
-            //todo logging
+            command.getChannel().sendMessage("Error generating meme! " +
+                    command.getJDA().getUserByTag("Jeremaster101#0494").getAsMention());
+            Logger.log(exception);
+    
         }
     }
     
