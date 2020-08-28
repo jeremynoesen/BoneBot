@@ -123,7 +123,7 @@ public class Meme {
             }
         } catch (IOException | TimeoutException | ExecutionException | InterruptedException | FontFormatException exception) {
             command.getChannel().sendMessage("Error generating meme! " +
-                    command.getJDA().getUserByTag("Jeremaster101#0494").getAsMention());
+                    command.getJDA().getUserByTag("Jeremaster101#0494").getAsMention()).queue();
             Logger.log(exception);
             
         }
@@ -193,7 +193,7 @@ public class Meme {
         meme = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         Graphics graphics = meme.getGraphics();
         File fontFile = new File("/System/Library/Fonts/Supplemental/Impact.ttf");
-        Font font = Font.createFont(Font.TRUETYPE_FONT, fontFile).deriveFont(85f);
+        Font font = Font.createFont(Font.TRUETYPE_FONT, fontFile).deriveFont(96f);
         graphics.setFont(font);
         FontMetrics metrics = graphics.getFontMetrics(font);
         HashMap<RenderingHints.Key, Object> hints = new HashMap<>();
@@ -201,7 +201,7 @@ public class Meme {
         hints.put(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
         ((Graphics2D) graphics).addRenderingHints(hints);
         graphics.drawImage(image, 0, 0, width, height, null);
-        String wrapped = WordUtils.wrap(text, 25, " // ", false);
+        String wrapped = WordUtils.wrap(text, 24, " // ", false);
         String[] lines = wrapped.split(" // ");
         for (int i = 0; i < lines.length; i++) {
             String line = lines[i].trim();
