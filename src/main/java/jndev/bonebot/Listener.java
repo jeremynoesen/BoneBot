@@ -24,6 +24,6 @@ public class Listener extends ListenerAdapter {
             Responder.loadData();
         }
         
-        if (msg.startsWith("!meme")) new Meme(e.getMessage()).generate();
+        if (msg.startsWith("!meme")) Meme.generate(e.getMessage());
     }
 }

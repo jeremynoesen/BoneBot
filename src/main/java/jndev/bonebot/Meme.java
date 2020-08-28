@@ -70,7 +70,7 @@ public class Meme {
      *
      * @param command command containing meme arguments
      */
-    public Meme(Message command) {
+    private Meme(Message command) {
         this.command = command;
     }
     
@@ -99,9 +99,18 @@ public class Meme {
     }
     
     /**
-     * send a meme to a channel
+     * generate and send a meme
+     *
+     * @param command command entered by user
      */
-    public void generate() {
+    public static void generate(Message command) {
+        new Meme(command).generate();
+    }
+    
+    /**
+     * generate and send a meme
+     */
+    private void generate() {
         try {
             if (checkCooldown()) {
                 command.getChannel().sendTyping().queue();
