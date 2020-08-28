@@ -152,7 +152,7 @@ public class Meme {
      * set the text input from a discord message or a random to use to generate a meme
      */
     private void setText() {
-        String input = command.getContentStripped().replace("!meme", "").trim();
+        String input = command.getContentStripped().replaceFirst("!meme", "").trim();
         if (!input.isEmpty() || !input.equals("")) {
             this.text = input;
         } else {
