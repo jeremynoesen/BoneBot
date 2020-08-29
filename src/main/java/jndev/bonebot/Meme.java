@@ -6,16 +6,12 @@ import org.apache.commons.text.WordUtils;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.font.GlyphVector;
 import java.awt.font.TextLayout;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -202,23 +198,24 @@ public class Meme {
         hints.put(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
         ((Graphics2D) graphics).addRenderingHints(hints);
         graphics.drawImage(image, 0, 0, width, height, null);
-        String wrapped = WordUtils.wrap(text, 22, " // ", false);
-        String[] lines = wrapped.split(" // ");
-        for (int i = 0; i < lines.length; i++) {
-            String line = lines[i].trim();
+        ArrayList<String> lines = new ArrayList<>();
+        String[] sections = text.split("\n");
+        for(String section : sections) lines.addAll(Arrays.asList(WordUtils.wrap(section, 22).split("\n")));
+        for (int i = 0; i < lines.size(); i++) {
+            String line = lines.get(i).trim();
             graphics.setColor(Color.BLACK);
             Graphics2D g2d = (Graphics2D) graphics;
             Shape shape = new TextLayout(line, font, g2d.getFontRenderContext()).getOutline(null);
             g2d.setStroke(new BasicStroke(6f));
             g2d.translate((int) ((meme.getWidth(null) - metrics.stringWidth(line)) / 2.0),
-                    (int) (meme.getHeight(null) - (lines.length - i - 0.5) * graphics.getFont().getSize()));
+                    (int) (meme.getHeight(null) - (lines.size() - i - 0.5) * graphics.getFont().getSize()));
             g2d.draw(shape);
             g2d.translate((int) -((meme.getWidth(null) - metrics.stringWidth(line)) / 2.0),
-                    (int) -(meme.getHeight(null) - (lines.length - i - 0.5) * graphics.getFont().getSize()));
+                    (int) -(meme.getHeight(null) - (lines.size() - i - 0.5) * graphics.getFont().getSize()));
             graphics.setColor(Color.WHITE);
             graphics.drawString(line,
                     (int) ((meme.getWidth(null) - metrics.stringWidth(line)) / 2.0),
-                    (int) (meme.getHeight(null) - (lines.length - i - 0.5) * graphics.getFont().getSize()));
+                    (int) (meme.getHeight(null) - (lines.size() - i - 0.5) * graphics.getFont().getSize()));
         }
         graphics.dispose();
     }
