@@ -203,6 +203,7 @@ public class Meme {
         for(String section : sections) lines.addAll(Arrays.asList(WordUtils.wrap(section, 22).split("\n")));
         for (int i = 0; i < lines.size(); i++) {
             String line = lines.get(i).trim();
+            if(line.isEmpty() || line.equals("")) continue;
             graphics.setColor(Color.BLACK);
             Graphics2D g2d = (Graphics2D) graphics;
             Shape shape = new TextLayout(line, font, g2d.getFontRenderContext()).getOutline(null);
