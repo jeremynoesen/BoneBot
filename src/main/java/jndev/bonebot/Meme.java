@@ -202,7 +202,7 @@ public class Meme {
         hints.put(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
         ((Graphics2D) graphics).addRenderingHints(hints);
         graphics.drawImage(image, 0, 0, width, height, null);
-        String wrapped = WordUtils.wrap(text, 24, " // ", false);
+        String wrapped = WordUtils.wrap(text, 22, " // ", false);
         String[] lines = wrapped.split(" // ");
         for (int i = 0; i < lines.length; i++) {
             String line = lines[i].trim();
