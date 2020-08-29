@@ -26,6 +26,7 @@ public class Responder {
             responses.clear();
             while (fileScanner.hasNextLine()) responses.add(fileScanner.nextLine());
             fileScanner.close();
+            responses.trimToSize();
         } catch (FileNotFoundException e) {
             Logger.log(e);
         }

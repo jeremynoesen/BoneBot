@@ -29,6 +29,7 @@ public class Logger {
             }
             pw.println();
             pw.close();
+            log = null;
         } catch (FileNotFoundException fileNotFoundException) {
             fileNotFoundException.printStackTrace();
         }

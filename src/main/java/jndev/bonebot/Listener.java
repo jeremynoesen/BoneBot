@@ -16,16 +16,14 @@ public class Listener extends ListenerAdapter {
     @Override
     public void onMessageReceived(MessageReceivedEvent e) {
         if (!e.getAuthor().isBot()) {
-            String msg = e.getMessage().getContentRaw();
             
             Responder.respond(e.getMessage());
             
-            if (msg.equals("!reload")) {
-                Meme.loadData();
-                Responder.loadData();
+            if (e.getMessage().getContentRaw().startsWith("!meme")) {
+                Meme.generate(e.getMessage());
+                Runtime.getRuntime().gc();
             }
             
-            if (msg.startsWith("!meme")) Meme.generate(e.getMessage());
         }
     }
 }
