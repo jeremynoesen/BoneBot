@@ -204,19 +204,19 @@ public class Meme {
         for (int i = 0; i < lines.size(); i++) {
             String line = lines.get(i).trim();
             if(line.isEmpty() || line.equals("")) continue;
-            graphics.setColor(Color.BLACK);
-            Graphics2D g2d = (Graphics2D) graphics;
-            Shape shape = new TextLayout(line, font, g2d.getFontRenderContext()).getOutline(null);
-            g2d.setStroke(new BasicStroke(6f));
-            g2d.translate((int) ((meme.getWidth(null) - metrics.stringWidth(line)) / 2.0),
-                    (int) (meme.getHeight(null) - (lines.size() - i - 0.5) * graphics.getFont().getSize()));
-            g2d.draw(shape);
-            g2d.translate((int) -((meme.getWidth(null) - metrics.stringWidth(line)) / 2.0),
-                    (int) -(meme.getHeight(null) - (lines.size() - i - 0.5) * graphics.getFont().getSize()));
             graphics.setColor(Color.WHITE);
             graphics.drawString(line,
                     (int) ((meme.getWidth(null) - metrics.stringWidth(line)) / 2.0),
                     (int) (meme.getHeight(null) - (lines.size() - i - 0.5) * graphics.getFont().getSize()));
+            Graphics2D g2d = (Graphics2D) graphics;
+            Shape shape = new TextLayout(line, font, g2d.getFontRenderContext()).getOutline(null);
+            g2d.setStroke(new BasicStroke(3f));
+            g2d.translate((int) ((meme.getWidth(null) - metrics.stringWidth(line)) / 2.0),
+                    (int) (meme.getHeight(null) - (lines.size() - i - 0.5) * graphics.getFont().getSize()));
+            graphics.setColor(Color.BLACK);
+            g2d.draw(shape);
+            g2d.translate((int) -((meme.getWidth(null) - metrics.stringWidth(line)) / 2.0),
+                    (int) -(meme.getHeight(null) - (lines.size() - i - 0.5) * graphics.getFont().getSize()));
         }
         graphics.dispose();
     }
