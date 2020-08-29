@@ -9,24 +9,15 @@ import java.awt.*;
 import java.awt.font.TextLayout;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.*;
+import java.io.RandomAccessFile;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Random;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 public class Meme {
-    
-    /**
-     * list of texts loaded from the texts file
-     */
-    private static final ArrayList<String> texts = new ArrayList<>();
-    
-    /**
-     * list of images loaded from the images folder
-     */
-    private static final ArrayList<BufferedImage> images = new ArrayList<>();
     
     /**
      * cooldowns used for meme generation
@@ -73,36 +64,14 @@ public class Meme {
     }
     
     /**
-     * load external data files
-     */
-    public static void loadData() {
-        try {
-            Scanner fileScanner = new Scanner(new File("text.txt"));
-            texts.clear();
-            while (fileScanner.hasNextLine()) texts.add(fileScanner.nextLine());
-            fileScanner.close();
-        } catch (FileNotFoundException e) {
-            Logger.log(e);
-        }
-        
-        File dir = new File("images");
-        images.clear();
-        for (File file : dir.listFiles()) {
-            try {
-                images.add(ImageIO.read(file));
-            } catch (IOException e) {
-                Logger.log(e);
-            }
-        }
-    }
-    
-    /**
      * generate and send a meme
      *
      * @param command command entered by user
      */
     public static void generate(Message command) {
-        new Meme(command).generate();
+        Meme m = new Meme(command);
+        m.generate();
+        m = null;
     }
     
     /**
@@ -115,10 +84,13 @@ public class Meme {
                 setText();
                 setImage();
                 processImage();
-                command.getChannel().sendFile(convertToFile()).queueAfter(2, TimeUnit.SECONDS);
+                command.getChannel().sendFile(convertToFile()).queue();
                 updateCooldown();
+                image = null;
+                meme = null;
+                text = null;
             }
-        } catch (IOException | TimeoutException | ExecutionException | InterruptedException | FontFormatException exception) {
+        } catch (IOException | ExecutionException | InterruptedException | FontFormatException exception) {
             command.getChannel().sendMessage("Error generating meme! " +
                     command.getJDA().getUserByTag("Jeremaster101#0494").getAsMention()).queue();
             Logger.log(exception);
@@ -149,13 +121,19 @@ public class Meme {
     /**
      * set the text input from a discord message or a random to use to generate a meme
      */
-    private void setText() {
+    private void setText() throws IOException {
         String input = command.getContentStripped().replaceFirst("!meme", "").trim();
         if (!input.isEmpty() || !input.equals("")) {
             this.text = input;
         } else {
             Random r = new Random((int) Math.sqrt(System.nanoTime()));
-            this.text = texts.get(Math.abs(r.nextInt(texts.size())));
+            RandomAccessFile textFile = new RandomAccessFile("text.txt", "r");
+            long l = textFile.length();
+            long rand = r.nextInt((int) l);
+            textFile.seek(rand);
+            textFile.readLine();
+            this.text = textFile.readLine();
+            textFile.close();
         }
     }
     
@@ -164,19 +142,18 @@ public class Meme {
      *
      * @throws InterruptedException
      * @throws ExecutionException
-     * @throws TimeoutException
      * @throws IOException
      */
-    private void setImage() throws InterruptedException, ExecutionException, TimeoutException, IOException {
+    private void setImage() throws InterruptedException, ExecutionException, IOException {
         if (command.getAttachments().size() > 0 && command.getAttachments().get(0).isImage()) {
             File file = command.getAttachments().get(0).downloadToFile(
-                    "temp/upload" + memeCount + ".png")
-                    .get(2, TimeUnit.SECONDS);
+                    "temp/upload" + memeCount + ".jpg").get();
             file.deleteOnExit();
             this.image = ImageIO.read(file);
         } else {
             Random r = new Random(System.nanoTime());
-            this.image = images.get(Math.abs(r.nextInt(images.size())));
+            File dir = new File("images");
+            this.image = ImageIO.read(dir.listFiles()[r.nextInt(dir.listFiles().length)]);
         }
     }
     
@@ -187,28 +164,26 @@ public class Meme {
         double ratio = image.getHeight() / (double) image.getWidth();
         int width = 1024;
         int height = (int) (width * ratio);
-        meme = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        meme = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         Graphics graphics = meme.getGraphics();
+        Graphics2D g2d = (Graphics2D) graphics;
         File fontFile = new File("/System/Library/Fonts/Supplemental/Impact.ttf");
         Font font = Font.createFont(Font.TRUETYPE_FONT, fontFile).deriveFont(96f);
         graphics.setFont(font);
         FontMetrics metrics = graphics.getFontMetrics(font);
-        HashMap<RenderingHints.Key, Object> hints = new HashMap<>();
-        hints.put(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        hints.put(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
-        ((Graphics2D) graphics).addRenderingHints(hints);
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
         graphics.drawImage(image, 0, 0, width, height, null);
         ArrayList<String> lines = new ArrayList<>();
         String[] sections = text.split("\n");
-        for(String section : sections) lines.addAll(Arrays.asList(WordUtils.wrap(section, 22).split("\n")));
+        for (String section : sections) lines.addAll(Arrays.asList(WordUtils.wrap(section, 22).split("\n")));
         for (int i = 0; i < lines.size(); i++) {
             String line = lines.get(i).trim();
-            if(line.isEmpty() || line.equals("")) continue;
+            if (line.isEmpty()) continue;
             graphics.setColor(Color.WHITE);
             graphics.drawString(line,
                     (int) ((meme.getWidth(null) - metrics.stringWidth(line)) / 2.0),
                     (int) (meme.getHeight(null) - (lines.size() - i - 0.5) * graphics.getFont().getSize()));
-            Graphics2D g2d = (Graphics2D) graphics;
             Shape shape = new TextLayout(line, font, g2d.getFontRenderContext()).getOutline(null);
             g2d.setStroke(new BasicStroke(3f));
             g2d.translate((int) ((meme.getWidth(null) - metrics.stringWidth(line)) / 2.0),
@@ -219,6 +194,7 @@ public class Meme {
                     (int) -(meme.getHeight(null) - (lines.size() - i - 0.5) * graphics.getFont().getSize()));
         }
         graphics.dispose();
+        g2d.dispose();
     }
     
     /**
@@ -228,8 +204,8 @@ public class Meme {
      * @throws IOException
      */
     private File convertToFile() throws IOException {
-        File file = new File("temp/meme" + memeCount + ".png");
-        ImageIO.write(meme, "png", file);
+        File file = new File("temp/meme" + memeCount + ".jpg");
+        ImageIO.write(meme, "jpg", file);
         file.deleteOnExit();
         memeCount++;
         return file;
