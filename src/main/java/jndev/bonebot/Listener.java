@@ -24,6 +24,11 @@ public class Listener extends ListenerAdapter {
                 Runtime.getRuntime().gc();
             }
             
+            if(e.getMessage().getContentRaw().equals("!reload")) {
+                Responder.loadData();
+                Meme.loadData();
+            }
+            
         }
     }
 }

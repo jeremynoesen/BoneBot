@@ -32,6 +32,7 @@ public class BoneBot {
                 .setActivity(Activity.playing("Trombone"))
                 .build();
         
-        Responder.load();
+        Responder.loadData();
+        Meme.loadData();
     }
 }
