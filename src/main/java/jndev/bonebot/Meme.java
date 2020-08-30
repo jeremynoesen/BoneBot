@@ -71,7 +71,7 @@ public class Meme {
      */
     public static void loadData() {
         try {
-            Scanner fileScanner = new Scanner(new File("responses.txt"));
+            Scanner fileScanner = new Scanner(new File("text.txt"));
             texts.clear();
             while (fileScanner.hasNextLine()) texts.add(fileScanner.nextLine());
             fileScanner.close();
