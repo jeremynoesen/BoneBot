@@ -20,7 +20,7 @@ public class Responder {
     /**
      * load all data from responses file
      */
-    public static void load() {
+    public static void loadData() {
         try {
             Scanner fileScanner = new Scanner(new File("responses.txt"));
             responses.clear();

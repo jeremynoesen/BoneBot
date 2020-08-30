@@ -9,6 +9,7 @@ import java.awt.*;
 import java.awt.font.TextLayout;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
@@ -19,6 +20,11 @@ public class Meme {
      * cooldowns used for meme generation
      */
     private static final HashMap<User, Long> memeCooldowns = new HashMap<>();
+    
+    /**
+     * list of text lines loaded from the text file
+     */
+    private static final ArrayList<String> texts = new ArrayList<>();
     
     /**
      * number of memes created. helpful to separate meme files to prevent overwriting a meme being processed
@@ -57,6 +63,22 @@ public class Meme {
      */
     private Meme(Message command) {
         this.command = command;
+    }
+    
+    /**
+     * load all data from texts file. images aren't preloaded to save on memory and the images can be individually
+     * loaded
+     */
+    public static void loadData() {
+        try {
+            Scanner fileScanner = new Scanner(new File("responses.txt"));
+            texts.clear();
+            while (fileScanner.hasNextLine()) texts.add(fileScanner.nextLine());
+            fileScanner.close();
+            texts.trimToSize();
+        } catch (FileNotFoundException e) {
+            Logger.log(e);
+        }
     }
     
     /**
@@ -116,24 +138,13 @@ public class Meme {
     /**
      * set the text input from a discord message or a random to use to generate a meme
      */
-    private void setText() throws IOException {
+    private void setText() {
         String input = command.getContentStripped().replaceFirst("!meme", "").trim();
         if (!input.isEmpty() || !input.equals("")) {
             this.text = input;
         } else {
-            Random r = new Random((int) Math.sqrt(System.nanoTime()));
-            File file = new File("text.txt");
-            Scanner sc = new Scanner(file);
-            int n = 1;
-            while (sc.hasNextLine()) {
-                String line = sc.nextLine();
-                if(r.nextInt(n) == 0) {
-                    text = line;
-                }
-                n++;
-            }
-            sc.close();
-            file = null;
+            Random r = new Random();
+            this.text = texts.get(r.nextInt(texts.size()));
         }
     }
     
@@ -152,10 +163,10 @@ public class Meme {
             this.image = ImageIO.read(file);
             file = null;
         } else {
-            Random r = new Random(System.nanoTime());
+            Random r = new Random();
             File dir = new File("images");
             int rand = r.nextInt(dir.listFiles().length);
-            while(dir.listFiles()[rand].isHidden()) {
+            while (dir.listFiles()[rand].isHidden()) {
                 rand = r.nextInt(dir.listFiles().length);
             }
             this.image = ImageIO.read(dir.listFiles()[rand]);
