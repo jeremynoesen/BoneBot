@@ -10,11 +10,7 @@ import java.awt.font.TextLayout;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.io.RandomAccessFile;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 
 public class Meme {
@@ -127,13 +123,18 @@ public class Meme {
             this.text = input;
         } else {
             Random r = new Random((int) Math.sqrt(System.nanoTime()));
-            RandomAccessFile textFile = new RandomAccessFile("text.txt", "r");
-            long l = textFile.length();
-            long rand = r.nextInt((int) l);
-            textFile.seek(rand);
-            textFile.readLine();
-            this.text = textFile.readLine();
-            textFile.close();
+            File file = new File("text.txt");
+            Scanner sc = new Scanner(file);
+            int n = 1;
+            while (sc.hasNextLine()) {
+                String line = sc.nextLine();
+                if(r.nextInt(n) == 0) {
+                    text = line;
+                }
+                n++;
+            }
+            sc.close();
+            file = null;
         }
     }
     
@@ -150,10 +151,12 @@ public class Meme {
                     "temp/upload" + memeCount + ".jpg").get();
             file.deleteOnExit();
             this.image = ImageIO.read(file);
+            file = null;
         } else {
             Random r = new Random(System.nanoTime());
             File dir = new File("images");
             this.image = ImageIO.read(dir.listFiles()[r.nextInt(dir.listFiles().length)]);
+            dir = null;
         }
     }
     
