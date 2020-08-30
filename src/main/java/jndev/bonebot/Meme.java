@@ -90,7 +90,6 @@ public class Meme {
             command.getChannel().sendMessage("Error generating meme! " +
                     command.getJDA().getUserByTag("Jeremaster101#0494").getAsMention()).queue();
             Logger.log(exception);
-            
         }
     }
     
@@ -155,7 +154,11 @@ public class Meme {
         } else {
             Random r = new Random(System.nanoTime());
             File dir = new File("images");
-            this.image = ImageIO.read(dir.listFiles()[r.nextInt(dir.listFiles().length)]);
+            int rand = r.nextInt(dir.listFiles().length);
+            while(dir.listFiles()[rand].isHidden()) {
+                rand = r.nextInt(dir.listFiles().length);
+            }
+            this.image = ImageIO.read(dir.listFiles()[rand]);
             dir = null;
         }
     }
