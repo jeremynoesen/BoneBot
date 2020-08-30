@@ -32,6 +32,6 @@ public class BoneBot {
                 .setActivity(Activity.playing("Trombone"))
                 .build();
         
-        Responder.loadData();
+        Responder.load();
     }
 }
