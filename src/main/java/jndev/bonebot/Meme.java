@@ -193,22 +193,24 @@ public class Meme {
         graphics.drawImage(image, 0, 0, width, height, null);
         ArrayList<String> lines = new ArrayList<>();
         String[] sections = text.split("\n");
-        for (String section : sections) lines.addAll(Arrays.asList(WordUtils.wrap(section, 22).split("\n")));
+        for (String section : sections)
+            lines.addAll(Arrays.asList(
+                    WordUtils.wrap(section, 18, "\n", true).split("\n")));
         for (int i = 0; i < lines.size(); i++) {
-            String line = lines.get(i).trim();
+            String line = lines.get(i).trim().toUpperCase();
             if (line.isEmpty()) continue;
             graphics.setColor(Color.WHITE);
             graphics.drawString(line,
                     (int) ((meme.getWidth(null) - metrics.stringWidth(line)) / 2.0),
-                    (int) (meme.getHeight(null) - (lines.size() - i - 0.5) * graphics.getFont().getSize()));
+                    (int) (meme.getHeight(null) - (lines.size() - i - 0.75) * graphics.getFont().getSize()));
             Shape shape = new TextLayout(line, font, g2d.getFontRenderContext()).getOutline(null);
             g2d.setStroke(new BasicStroke(3f));
             g2d.translate((int) ((meme.getWidth(null) - metrics.stringWidth(line)) / 2.0),
-                    (int) (meme.getHeight(null) - (lines.size() - i - 0.5) * graphics.getFont().getSize()));
+                    (int) (meme.getHeight(null) - (lines.size() - i - 0.75) * graphics.getFont().getSize()));
             graphics.setColor(Color.BLACK);
             g2d.draw(shape);
             g2d.translate((int) -((meme.getWidth(null) - metrics.stringWidth(line)) / 2.0),
-                    (int) -(meme.getHeight(null) - (lines.size() - i - 0.5) * graphics.getFont().getSize()));
+                    (int) -(meme.getHeight(null) - (lines.size() - i - 0.75) * graphics.getFont().getSize()));
         }
         graphics.dispose();
         g2d.dispose();
