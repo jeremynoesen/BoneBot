@@ -1,7 +1,7 @@
 package jndev.bonebot;
 
+import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.User;
 import org.apache.commons.text.WordUtils;
 
 import javax.imageio.ImageIO;
@@ -11,15 +11,13 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Random;
+import java.util.Scanner;
 import java.util.concurrent.ExecutionException;
 
 public class Meme {
-    
-    /**
-     * cooldowns used for meme generation
-     */
-    private static final HashMap<User, Long> memeCooldowns = new HashMap<>();
     
     /**
      * list of text lines loaded from the text file
@@ -30,11 +28,6 @@ public class Meme {
      * number of memes created. helpful to separate meme files to prevent overwriting a meme being processed
      */
     private static int memeCount;
-    
-    /**
-     * cooldown for use of meme generation
-     */
-    private static final int cooldown = 60;
     
     /**
      * meme text
@@ -87,6 +80,7 @@ public class Meme {
      * @param command command entered by user
      */
     public static void generate(Message command) {
+        command.getJDA().getPresence().setActivity(Activity.playing("Meme Generator"));
         Meme m = new Meme(command);
         m.generate();
         m = null;
@@ -97,41 +91,18 @@ public class Meme {
      */
     private void generate() {
         try {
-            if (checkCooldown()) {
-                command.getChannel().sendTyping().queue();
-                setText();
-                setImage();
-                processImage();
-                command.getChannel().sendFile(convertToFile()).queue();
-                updateCooldown();
-                image = null;
-                meme = null;
-                text = null;
-            }
+            command.getChannel().sendTyping().queue();
+            setText();
+            setImage();
+            processImage();
+            command.getChannel().sendFile(convertToFile()).queue();
+            image = null;
+            meme = null;
+            text = null;
         } catch (IOException | ExecutionException | InterruptedException | FontFormatException exception) {
             command.getChannel().sendMessage("Error generating meme! " +
                     command.getJDA().getUserByTag("Jeremaster101#0494").getAsMention()).queue();
             Logger.log(exception);
-        }
-    }
-    
-    /**
-     * check if a user's cooldown is up so they can use the meme generator
-     *
-     * @return true if they can generate a meme
-     */
-    private boolean checkCooldown() {
-        if (memeCooldowns.containsKey(command.getAuthor())) {
-            if (System.currentTimeMillis() - memeCooldowns.get(command.getAuthor()) >= cooldown * 1000) {
-                return true;
-            } else {
-                long timeLeft = cooldown - (System.currentTimeMillis() - memeCooldowns.get(command.getAuthor())) / 1000;
-                command.getChannel().sendMessage(command.getAuthor().getAsMention() + " can generate another meme in "
-                        + timeLeft + " seconds.").queue();
-                return false;
-            }
-        } else {
-            return true;
         }
     }
     
@@ -228,12 +199,5 @@ public class Meme {
         file.deleteOnExit();
         memeCount++;
         return file;
-    }
-    
-    /**
-     * update a user's cooldown time to the current time
-     */
-    private void updateCooldown() {
-        memeCooldowns.put(command.getAuthor(), System.currentTimeMillis());
     }
 }
