@@ -5,6 +5,7 @@ import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
 
 import javax.security.auth.login.LoginException;
+import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -37,48 +38,31 @@ public class BoneBot {
         Responder.loadData();
         Meme.loadData();
         
-        long prev = System.currentTimeMillis();
-        while (true) {
-            if (System.currentTimeMillis() - prev >= 30000) {
-                prev = System.currentTimeMillis();
-                Random random = new Random();
-                int randInt = random.nextInt(11);
-                switch (randInt) {
-                    case 0:
-                        jda.getPresence().setActivity(Activity.playing("Bone Cheer"));
-                        break;
-                    case 1:
-                        jda.getPresence().setActivity(Activity.playing("Beer Barrel"));
-                        break;
-                    case 2:
-                        jda.getPresence().setActivity(Activity.playing("Hero"));
-                        break;
-                    case 3:
-                        jda.getPresence().setActivity(Activity.playing("Sleepers, Wake!"));
-                        break;
-                    case 4:
-                        jda.getPresence().setActivity(Activity.playing("Pregame, off the field"));
-                        break;
-                    case 5:
-                        jda.getPresence().setActivity(Activity.playing("Bass Trombone"));
-                        break;
-                    case 6:
-                        jda.getPresence().setActivity(Activity.watching("Spaceballs"));
-                        break;
-                    case 7:
-                        jda.getPresence().setActivity(Activity.watching("Top Secret"));
-                        break;
-                    case 8:
-                        jda.getPresence().setActivity(Activity.playing("Full Throwdown"));
-                        break;
-                    case 9:
-                        jda.getPresence().setActivity(Activity.playing("Crab Rave"));
-                        break;
-                    case 10:
-                        jda.getPresence().setActivity(Activity.playing("Trombone"));
-                        break;
+        Random random = new Random();
+        
+        ArrayList<String> msgs = new ArrayList<>();
+        msgs.add("Bone Cheer");
+        msgs.add("Beer Barrel");
+        msgs.add("Hero");
+        msgs.add("Sleepers, Wake!");
+        msgs.add("Pregame, off the field");
+        msgs.add("Bass Trombone");
+        msgs.add("Spaceballs");
+        msgs.add("Top Secret");
+        msgs.add("Full Throwdown");
+        msgs.add("Crab Rave");
+        msgs.add("Trombone");
+        
+        new Thread(() -> {
+            while (true) {
+                try {
+                    Thread.sleep(30000);
+                } catch (InterruptedException ignored) {
                 }
+                
+                jda.getPresence().setActivity(Activity.playing(msgs.get(random.nextInt(msgs.size()))));
+                
             }
-        }
+        }).start();
     }
 }
