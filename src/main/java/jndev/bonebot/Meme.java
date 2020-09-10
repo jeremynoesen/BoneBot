@@ -95,10 +95,16 @@ public class Meme {
             setText();
             setImage();
             processImage();
-            command.getChannel().sendFile(convertToFile()).queue();
+            File file = convertToFile();
+            command.getChannel().sendFile(file).queue();
+            image.flush();
+            meme.flush();
             image = null;
             meme = null;
             text = null;
+            file.delete();
+            file = null;
+            System.gc();
         } catch (IOException | ExecutionException | InterruptedException | FontFormatException exception) {
             command.getChannel().sendMessage("Error generating meme! " +
                     command.getJDA().getUserByTag("Jeremaster101#0494").getAsMention()).queue();
@@ -130,8 +136,8 @@ public class Meme {
         if (command.getAttachments().size() > 0 && command.getAttachments().get(0).isImage()) {
             File file = command.getAttachments().get(0).downloadToFile(
                     "temp/upload" + memeCount + ".jpg").get();
-            file.deleteOnExit();
             this.image = ImageIO.read(file);
+            file.delete();
             file = null;
         } else {
             Random r = new Random();
@@ -196,7 +202,6 @@ public class Meme {
     private File convertToFile() throws IOException {
         File file = new File("temp/meme" + memeCount + ".jpg");
         ImageIO.write(meme, "jpg", file);
-        file.deleteOnExit();
         memeCount++;
         return file;
     }
