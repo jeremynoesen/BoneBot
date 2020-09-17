@@ -5,6 +5,8 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 /**
  * all listeners for the bot
+ *
+ * @author JNDev (Jeremaster101)
  */
 public class Listener extends ListenerAdapter {
     

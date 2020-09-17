@@ -8,6 +8,8 @@ import java.time.format.DateTimeFormatter;
 
 /**
  * logger to write errors to a log file
+ *
+ * @author JNDev (Jeremaster101)
  */
 public class Logger {
     

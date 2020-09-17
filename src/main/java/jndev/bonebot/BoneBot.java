@@ -2,11 +2,9 @@ package jndev.bonebot;
 
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
-import net.dv8tion.jda.api.entities.Activity;
 
+import javax.imageio.ImageIO;
 import javax.security.auth.login.LoginException;
-import java.util.ArrayList;
-import java.util.Random;
 
 /**
  * BoneBot is a simple discord bot for the ISUCF'V'MB Trombone discord
@@ -32,37 +30,13 @@ public class BoneBot {
         
         JDA jda = JDABuilder.createLight(args[0])
                 .addEventListeners(new Listener())
-                .setActivity(Activity.playing("Trombone"))
                 .build();
         
+        ImageIO.setUseCache(false);
         Responder.loadData();
         Meme.loadData();
+        Status.loadData();
         
-        Random random = new Random();
-        
-        ArrayList<String> msgs = new ArrayList<>();
-        msgs.add("Bone Cheer");
-        msgs.add("Beer Barrel");
-        msgs.add("Hero");
-        msgs.add("Sleepers, Wake!");
-        msgs.add("Pregame, off the field");
-        msgs.add("Bass Trombone");
-        msgs.add("Spaceballs");
-        msgs.add("Top Secret");
-        msgs.add("Full Throwdown");
-        msgs.add("Crab Rave");
-        msgs.add("Trombone");
-        
-        new Thread(() -> {
-            while (true) {
-                try {
-                    Thread.sleep(30000);
-                } catch (InterruptedException ignored) {
-                }
-                
-                jda.getPresence().setActivity(Activity.playing(msgs.get(random.nextInt(msgs.size()))));
-                
-            }
-        }).start();
+        Status.setStatus(jda);
     }
 }
