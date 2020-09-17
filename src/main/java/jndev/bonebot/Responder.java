@@ -1,6 +1,5 @@
 package jndev.bonebot;
 
-import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Message;
 
 import java.io.File;
@@ -10,6 +9,8 @@ import java.util.Scanner;
 
 /**
  * responder to words and phrases in a message
+ *
+ * @author JNDev (Jeremaster101)
  */
 public class Responder {
     
@@ -48,7 +49,6 @@ public class Responder {
                 if (msg.contains(trigger.toLowerCase())) count++;
             }
             if (count == triggers.length) {
-                message.getJDA().getPresence().setActivity(Activity.playing("Discord"));
                 message.getChannel().sendMessage(triggerAndPhrase[1]
                         .replace("$USER$", message.getAuthor().getAsMention())).queue();
             }

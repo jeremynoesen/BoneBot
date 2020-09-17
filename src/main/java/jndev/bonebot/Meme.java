@@ -1,6 +1,5 @@
 package jndev.bonebot;
 
-import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Message;
 import org.apache.commons.text.WordUtils;
 
@@ -17,6 +16,11 @@ import java.util.Random;
 import java.util.Scanner;
 import java.util.concurrent.ExecutionException;
 
+/**
+ * meme generator
+ *
+ * @author JNDev (Jeremaster101)
+ */
 public class Meme {
     
     /**
@@ -80,7 +84,6 @@ public class Meme {
      * @param command command entered by user
      */
     public static void generate(Message command) {
-        command.getJDA().getPresence().setActivity(Activity.playing("Meme Generator"));
         Meme m = new Meme(command);
         m.generate();
         m = null;
