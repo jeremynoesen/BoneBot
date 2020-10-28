@@ -10,11 +10,11 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
-import java.util.concurrent.ExecutionException;
 
 /**
  * meme generator
@@ -86,7 +86,6 @@ public class Meme {
     public static void generate(Message command) {
         Meme m = new Meme(command);
         m.generate();
-        m = null;
     }
     
     /**
@@ -95,8 +94,7 @@ public class Meme {
     private void generate() {
         try {
             command.getChannel().sendTyping().queue();
-            setText();
-            setImage();
+            readTextAndImage();
             processImage();
             File file = convertToFile();
             command.getChannel().sendFile(file).queue();
@@ -106,9 +104,8 @@ public class Meme {
             meme = null;
             text = null;
             file.delete();
-            file = null;
             System.gc();
-        } catch (IOException | ExecutionException | InterruptedException | FontFormatException exception) {
+        } catch (IOException | FontFormatException exception) {
             command.getChannel().sendMessage("Error generating meme! " +
                     command.getJDA().getUserByTag("Jeremaster101#0494").getAsMention()).queue();
             Logger.log(exception);
@@ -116,32 +113,19 @@ public class Meme {
     }
     
     /**
-     * set the text input from a discord message or a random to use to generate a meme
-     */
-    private void setText() {
-        String input = command.getContentStripped().replaceFirst("!meme", "").trim();
-        if (!input.isEmpty() || !input.equals("")) {
-            this.text = input;
-        } else {
-            Random r = new Random();
-            this.text = texts.get(r.nextInt(texts.size()));
-        }
-    }
-    
-    /**
-     * read an image from a discord message or a random to use to generate a meme
+     * read an image from a discord message, user mention, or a random to use to generate a meme, as well as grab the
+     * text from the message or use a random to make a meme
      *
-     * @throws InterruptedException
-     * @throws ExecutionException
      * @throws IOException
      */
-    private void setImage() throws InterruptedException, ExecutionException, IOException {
+    private void readTextAndImage() throws IOException {
+        String input = command.getContentRaw().replaceFirst("!meme", "").trim();
         if (command.getAttachments().size() > 0 && command.getAttachments().get(0).isImage()) {
-            File file = command.getAttachments().get(0).downloadToFile(
-                    "temp/upload" + memeCount + ".jpg").get();
-            this.image = ImageIO.read(file);
-            file.delete();
-            file = null;
+            this.image = ImageIO.read(new URL(command.getAttachments().get(0).getUrl()));
+        } else if (command.getMentionedUsers().size() > 0) {
+            this.image = ImageIO.read(new URL(command.getMentionedUsers().get(0).getEffectiveAvatarUrl()));
+            for (int i = 0; i < command.getMentionedUsers().size(); i++)
+                input = input.replace("<@!" + command.getMentionedUsers().get(i).getIdLong() + ">", "").trim();
         } else {
             Random r = new Random();
             File dir = new File("images");
@@ -150,7 +134,12 @@ public class Meme {
                 rand = r.nextInt(dir.listFiles().length);
             }
             this.image = ImageIO.read(dir.listFiles()[rand]);
-            dir = null;
+        }
+        if (!input.isEmpty() || !input.equals("")) {
+            this.text = input;
+        } else {
+            Random r = new Random();
+            this.text = texts.get(r.nextInt(texts.size()));
         }
     }
     
