@@ -3,14 +3,11 @@ package jndev.bonebot;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Activity;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.Scanner;
 
 /**
  * class to handle now playing status of the bot
@@ -22,22 +19,7 @@ public class Status {
     /**
      * list of now playing statuses loaded from the statuses file
      */
-    private static final ArrayList<String> statuses = new ArrayList<>();
-    
-    /**
-     * load all data from responses file
-     */
-    public static void loadData() {
-        try {
-            Scanner fileScanner = new Scanner(new File("statuses.txt"));
-            statuses.clear();
-            while (fileScanner.hasNextLine()) statuses.add(fileScanner.nextLine());
-            fileScanner.close();
-            statuses.trimToSize();
-        } catch (FileNotFoundException e) {
-            Logger.log(e);
-        }
-    }
+    public static final ArrayList<String> statuses = new ArrayList<>();
     
     /**
      * set the status for the bot. this only needs to be called once

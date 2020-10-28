@@ -2,10 +2,7 @@ package jndev.bonebot;
 
 import net.dv8tion.jda.api.entities.Message;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 /**
  * responder to words and phrases in a message
@@ -17,22 +14,7 @@ public class Responder {
     /**
      * list of phrases loaded from the responses file
      */
-    private static final ArrayList<String> responses = new ArrayList<>();
-    
-    /**
-     * load all data from responses file
-     */
-    public static void loadData() {
-        try {
-            Scanner fileScanner = new Scanner(new File("responses.txt"));
-            responses.clear();
-            while (fileScanner.hasNextLine()) responses.add(fileScanner.nextLine());
-            fileScanner.close();
-            responses.trimToSize();
-        } catch (FileNotFoundException e) {
-            Logger.log(e);
-        }
-    }
+    public static final ArrayList<String> responses = new ArrayList<>();
     
     /**
      * respond to a message if a trigger phrase is said
