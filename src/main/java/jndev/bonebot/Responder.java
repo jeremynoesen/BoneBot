@@ -24,15 +24,16 @@ public class Responder {
     public static void respond(Message message) {
         String msg = message.getContentRaw().toLowerCase();
         for (String phrase : responses) {
-            String[] triggerAndPhrase = phrase.split(" // ");
-            String[] triggers = triggerAndPhrase[0].split(" / ");
+            String[] triggerAndPhrases = phrase.split(" // ");
+            String[] triggers = triggerAndPhrases[0].split(" / ");
             int count = 0;
             for (String trigger : triggers) {
                 if (msg.contains(trigger.toLowerCase())) count++;
             }
             if (count == triggers.length) {
-                message.getChannel().sendMessage(triggerAndPhrase[1]
-                        .replace("$USER$", message.getAuthor().getAsMention())).queue();
+                for (int i = 1; i < triggerAndPhrases.length; i++)
+                    message.getChannel().sendMessage(triggerAndPhrases[1]
+                            .replace("$USER$", message.getAuthor().getAsMention())).queue();
             }
         }
     }

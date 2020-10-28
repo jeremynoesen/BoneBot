@@ -25,14 +25,15 @@ public class Reactor {
     public static void react(Message message) {
         String msg = message.getContentRaw().toLowerCase();
         for (String phrase : reactions) {
-            String[] triggerAndEmote = phrase.split(" // ");
-            String[] triggers = triggerAndEmote[0].split(" / ");
+            String[] triggerAndEmotes = phrase.split(" // ");
+            String[] triggers = triggerAndEmotes[0].split(" / ");
             int count = 0;
             for (String trigger : triggers) {
                 if (msg.contains(trigger.toLowerCase())) count++;
             }
             if (count == triggers.length) {
-                message.addReaction(triggerAndEmote[1]).queue();
+                for (int i = 1; i < triggerAndEmotes.length; i++)
+                    message.addReaction(triggerAndEmotes[i]).queue();
             }
         }
     }
