@@ -8,13 +8,11 @@ import java.awt.*;
 import java.awt.font.TextLayout;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
-import java.util.Scanner;
 
 /**
  * meme generator
@@ -26,7 +24,7 @@ public class Meme {
     /**
      * list of text lines loaded from the text file
      */
-    private static final ArrayList<String> texts = new ArrayList<>();
+    public static final ArrayList<String> texts = new ArrayList<>();
     
     /**
      * number of memes created. helpful to separate meme files to prevent overwriting a meme being processed
@@ -60,22 +58,6 @@ public class Meme {
      */
     private Meme(Message command) {
         this.command = command;
-    }
-    
-    /**
-     * load all data from texts file. images aren't preloaded to save on memory and the images can be individually
-     * loaded
-     */
-    public static void loadData() {
-        try {
-            Scanner fileScanner = new Scanner(new File("text.txt"));
-            texts.clear();
-            while (fileScanner.hasNextLine()) texts.add(fileScanner.nextLine());
-            fileScanner.close();
-            texts.trimToSize();
-        } catch (FileNotFoundException e) {
-            Logger.log(e);
-        }
     }
     
     /**
