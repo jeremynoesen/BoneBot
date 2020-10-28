@@ -107,7 +107,9 @@ public class Meme {
         } else if (command.getMentionedUsers().size() > 0) {
             this.image = ImageIO.read(new URL(command.getMentionedUsers().get(0).getEffectiveAvatarUrl()));
             for (int i = 0; i < command.getMentionedUsers().size(); i++)
-                input = input.replace("<@!" + command.getMentionedUsers().get(i).getIdLong() + ">", "").trim();
+                input = input.replace(command.getMentionedUsers().get(i).getAsMention(), "")
+                        .replace("<@!" + command.getMentionedUsers().get(i).getIdLong() + ">", "")
+                        .replace("  ", " ").trim();
         } else {
             Random r = new Random();
             File dir = new File("images");
