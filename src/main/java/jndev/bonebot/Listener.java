@@ -23,6 +23,7 @@ public class Listener extends ListenerAdapter {
                 Runtime.getRuntime().gc();
             } else {
                 Responder.respond(e.getMessage());
+                Reactor.react(e.getMessage());
             }
         }
     }
