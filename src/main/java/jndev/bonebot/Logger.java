@@ -24,14 +24,13 @@ public class Logger {
             PrintWriter pw = new PrintWriter(log);
             DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
             LocalDateTime now = LocalDateTime.now();
-            System.out.println(dtf.format(now));
+            pw.println(now.format(dtf));
             pw.println(exception.getMessage());
             for (StackTraceElement ste : exception.getStackTrace()) {
                 pw.println(ste.toString());
             }
             pw.println();
             pw.close();
-            log = null;
         } catch (FileNotFoundException fileNotFoundException) {
             fileNotFoundException.printStackTrace();
         }
