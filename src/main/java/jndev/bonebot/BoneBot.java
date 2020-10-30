@@ -32,6 +32,9 @@ public class BoneBot {
                 .addEventListeners(new Listener())
                 .build();
         
+        Halloween halloween = new Halloween(jda);
+        jda.addEventListener(halloween);
+        
         ImageIO.setUseCache(false);
         Loader.loadData("responses.txt", Responder.responses);
         Loader.loadData("texts.txt", Meme.texts);
