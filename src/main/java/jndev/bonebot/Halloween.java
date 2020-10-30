@@ -33,9 +33,19 @@ public class Halloween extends ListenerAdapter {
     private final HashMap<User, Integer> data;
     
     /**
-     * user candy counts
+     * trick or treat cooldown
      */
-    private final HashMap<User, Long> cooldowns;
+    private final HashMap<User, Long> totCooldowns;
+    
+    /**
+     * give cooldown
+     */
+    private final HashMap<User, Long> giveCooldowns;
+    
+    /**
+     * give cooldown
+     */
+    private final HashMap<User, Long> stealCooldowns;
     
     /**
      * initialize the entire halloween event
@@ -44,7 +54,9 @@ public class Halloween extends ListenerAdapter {
      */
     public Halloween(JDA jda) {
         data = new HashMap<>();
-        cooldowns = new HashMap<>();
+        totCooldowns = new HashMap<>();
+        giveCooldowns = new HashMap<>();
+        stealCooldowns = new HashMap<>();
         loadData(jda);
         Runtime.getRuntime().addShutdownHook(new Thread(this::saveData));
     }
@@ -58,36 +70,112 @@ public class Halloween extends ListenerAdapter {
     public void onMessageReceived(MessageReceivedEvent e) {
         if (!e.getAuthor().isBot()) {
             String msg = e.getMessage().getContentRaw();
+            
             if (msg.startsWith("!halloween")) {
+                
                 showInfo(e.getChannel());
+                
             } else {
+                
                 Month month = LocalDateTime.now().getMonth();
                 int day = LocalDateTime.now().getDayOfMonth();
                 if (month == Month.OCTOBER && day == 31) {
+                    
                     if (msg.startsWith("!trickortreat") || msg.startsWith("!tot")) {
-                        if (!cooldowns.containsKey(e.getAuthor()) ||
-                                System.currentTimeMillis() - cooldowns.get(e.getAuthor()) >= 10000) {
-                            cooldowns.put(e.getAuthor(), System.currentTimeMillis());
+                        
+                        if (!totCooldowns.containsKey(e.getAuthor()) ||
+                                System.currentTimeMillis() - totCooldowns.get(e.getAuthor()) >= 10000) {
+                            
+                            totCooldowns.put(e.getAuthor(), System.currentTimeMillis());
                             Random random = new Random();
-                            if (random.nextInt(2) == 0) {
+                            
+                            if (random.nextInt(3) == 0) {
                                 takeCandy(e.getAuthor(), e.getChannel());
                             } else {
                                 giveCandy(e.getAuthor(), e.getChannel());
                             }
+                            
                         } else {
+                            
                             MessageEmbed messageEmbed = createEmbed("Wait!",
                                     e.getAuthor().getAsMention() + " can trick or treat in " + (10 -
-                                            ((System.currentTimeMillis() - cooldowns.get(e.getAuthor())) / 1000)) + " seconds",
+                                            ((System.currentTimeMillis() - totCooldowns.get(e.getAuthor())) / 1000)) + " seconds",
                                     Color.ORANGE);
                             e.getChannel().sendMessage(messageEmbed).queue();
                         }
+                        
+                    } else if (msg.startsWith("!give")) {
+                        
+                        if (!giveCooldowns.containsKey(e.getAuthor()) ||
+                                System.currentTimeMillis() - giveCooldowns.get(e.getAuthor()) >= 30000) {
+                            
+                            if (e.getMessage().getMentionedUsers().size() == 1) {
+                                giveCandy(e.getAuthor(),
+                                        e.getMessage().getMentionedUsers().get(0), e.getChannel());
+                            } else {
+                                MessageEmbed messageEmbed = createEmbed("Error!",
+                                        "That command requires a mentioned user",
+                                        Color.ORANGE);
+                                e.getChannel().sendMessage(messageEmbed).queue();
+                            }
+                            
+                        } else {
+                            
+                            MessageEmbed messageEmbed = createEmbed("Wait!",
+                                    e.getAuthor().getAsMention() + " can give 🍫 in " + (30 -
+                                            ((System.currentTimeMillis() - giveCooldowns.get(e.getAuthor())) / 1000)) + " seconds",
+                                    Color.ORANGE);
+                            e.getChannel().sendMessage(messageEmbed).queue();
+                        }
+                        
+                    } else if (msg.startsWith("!steal")) {
+                        
+                        if (!stealCooldowns.containsKey(e.getAuthor()) ||
+                                System.currentTimeMillis() - stealCooldowns.get(e.getAuthor()) >= 60000) {
+                            
+                            if (e.getMessage().getMentionedUsers().size() == 1) {
+                                Random random = new Random();
+                                
+                                if (random.nextInt(3) == 0) {
+                                    takeCandy(e.getMessage().getMentionedUsers().get(0), e.getAuthor(),
+                                            e.getChannel());
+                                } else {
+                                    MessageEmbed messageEmbed = createEmbed("Failed Theft!",
+                                            e.getAuthor().getAsMention() + " tried to steal 🍫 from " +
+                                                    e.getMessage().getMentionedUsers().get(0).getAsMention() + " but failed",
+                                            Color.ORANGE);
+                                    e.getChannel().sendMessage(messageEmbed).queue();
+                                }
+                            } else {
+                                MessageEmbed messageEmbed = createEmbed("Error!",
+                                        "That command requires a mentioned user",
+                                        Color.ORANGE);
+                                e.getChannel().sendMessage(messageEmbed).queue();
+                            }
+                            
+                        } else {
+                            
+                            MessageEmbed messageEmbed = createEmbed("Wait!",
+                                    e.getAuthor().getAsMention() + " can steal 🍫 in " + (60 -
+                                            ((System.currentTimeMillis() - stealCooldowns.get(e.getAuthor())) / 1000)) + " seconds",
+                                    Color.ORANGE);
+                            e.getChannel().sendMessage(messageEmbed).queue();
+                        }
+                        
                     } else if (msg.startsWith("!bag")) {
+                        
                         getBag(e.getAuthor(), e.getChannel());
+                        
                     } else if (msg.startsWith("!leaderboard") || msg.startsWith("!lb")) {
+                        
                         showLeaderboard(e.getChannel());
+                        
                     }
+                    
                 } else if (msg.startsWith("!trickortreat") || msg.startsWith("!tot") || msg.startsWith("!bag") ||
-                        msg.startsWith("!leaderboard") || msg.startsWith("!lb")) {
+                        msg.startsWith("!leaderboard") || msg.startsWith("!lb") || msg.startsWith("!give") ||
+                        msg.startsWith("!steal")) {
+                    
                     MessageEmbed messageEmbed = createEmbed("It Is Not Halloween!",
                             "This can only be done on Halloween",
                             Color.ORANGE);
@@ -212,8 +300,10 @@ public class Halloween extends ListenerAdapter {
                         "2. Receive a treat, or be tricked and lose candy\n" +
                         "3. Type !bag to see how much candy you have\n" +
                         "4. Type !leaderboard or !lb to see the top 10 users\n" +
-                        "5. Get the most candy by the end of Halloween\n" +
-                        "6. Win 1 month of Discord Nitro Classic\n" +
+                        "5. Give people candy with !give @user (30 second cooldown)\n" +
+                        "6. Try to steal candy with !steal @user (60 second cooldown)\n" +
+                        "7. Get the most candy by the end of Halloween\n" +
+                        "8. Win 1 month of Discord Nitro Classic\n" +
                         "\n" +
                         "Trick or treating starts on Halloween. Good luck!",
                 Color.MAGENTA);
@@ -256,5 +346,57 @@ public class Halloween extends ListenerAdapter {
         }
         MessageEmbed messageEmbed = createEmbed("Leaderboard", leaderboard.toString(), Color.MAGENTA);
         channel.sendMessage(messageEmbed).queue();
+    }
+    
+    /**
+     * give a user a piece of candy
+     *
+     * @param from    user sending the candy
+     * @param to      user receiving the candy
+     * @param channel channel to send embeds to
+     */
+    private void giveCandy(User from, User to, MessageChannel channel) {
+        if (data.containsKey(from) && data.get(from) >= 1) {
+            data.put(from, data.get(from) - 1);
+            if (data.containsKey(to)) {
+                data.put(to, data.get(to) + 1);
+            } else {
+                data.put(to, 1);
+            }
+            MessageEmbed messageEmbed = createEmbed("Candy Given!",
+                    to.getAsMention() + " received 1 🍫 from " + from.getAsMention(), Color.GREEN);
+            channel.sendMessage(messageEmbed).queue();
+            giveCooldowns.put(from, System.currentTimeMillis());
+        } else {
+            MessageEmbed messageEmbed = createEmbed("No Candy!",
+                    from.getAsMention() + " does not have any 🍫", Color.ORANGE);
+            channel.sendMessage(messageEmbed).queue();
+        }
+    }
+    
+    /**
+     * take a piece of candy from another user
+     *
+     * @param from    user being taken from
+     * @param to      user taking the candy
+     * @param channel channel to send embeds to
+     */
+    private void takeCandy(User from, User to, MessageChannel channel) {
+        if (data.containsKey(from) && data.get(from) >= 1) {
+            data.put(from, data.get(from) - 1);
+            if (data.containsKey(to)) {
+                data.put(to, data.get(to) + 1);
+            } else {
+                data.put(to, 1);
+            }
+            MessageEmbed messageEmbed = createEmbed("Candy Stolen!",
+                    to.getAsMention() + " stole 1 🍫 from " + from.getAsMention(), Color.GREEN);
+            channel.sendMessage(messageEmbed).queue();
+            stealCooldowns.put(to, System.currentTimeMillis());
+        } else {
+            MessageEmbed messageEmbed = createEmbed("No Candy!",
+                    from.getAsMention() + " does not have any 🍫", Color.ORANGE);
+            channel.sendMessage(messageEmbed).queue();
+        }
     }
 }
