@@ -60,36 +60,39 @@ public class Halloween extends ListenerAdapter {
             String msg = e.getMessage().getContentRaw();
             if (msg.startsWith("!halloween")) {
                 showInfo(e.getChannel());
-            } else if (msg.startsWith("!trickortreat") || msg.startsWith("!tot")) {
+            } else {
                 Month month = LocalDateTime.now().getMonth();
                 int day = LocalDateTime.now().getDayOfMonth();
                 if (month == Month.OCTOBER && day == 31) {
-                    if (!cooldowns.containsKey(e.getAuthor()) ||
-                            System.currentTimeMillis() - cooldowns.get(e.getAuthor()) >= 10000) {
-                        cooldowns.put(e.getAuthor(), System.currentTimeMillis());
-                        Random random = new Random();
-                        if (random.nextInt(2) == 0) {
-                            takeCandy(e.getAuthor(), e.getChannel());
+                    if (msg.startsWith("!trickortreat") || msg.startsWith("!tot")) {
+                        if (!cooldowns.containsKey(e.getAuthor()) ||
+                                System.currentTimeMillis() - cooldowns.get(e.getAuthor()) >= 10000) {
+                            cooldowns.put(e.getAuthor(), System.currentTimeMillis());
+                            Random random = new Random();
+                            if (random.nextInt(2) == 0) {
+                                takeCandy(e.getAuthor(), e.getChannel());
+                            } else {
+                                giveCandy(e.getAuthor(), e.getChannel());
+                            }
                         } else {
-                            giveCandy(e.getAuthor(), e.getChannel());
+                            MessageEmbed messageEmbed = createEmbed("Wait!",
+                                    e.getAuthor().getAsMention() + " can trick or treat in " + (10 -
+                                            ((System.currentTimeMillis() - cooldowns.get(e.getAuthor())) / 1000)) + " seconds",
+                                    Color.ORANGE);
+                            e.getChannel().sendMessage(messageEmbed).queue();
                         }
-                    } else {
-                        MessageEmbed messageEmbed = createEmbed("Wait!",
-                                e.getAuthor().getAsMention() + " can trick or treat in " + (10 -
-                                        ((System.currentTimeMillis() - cooldowns.get(e.getAuthor())) / 1000)) + " seconds",
-                                Color.ORANGE);
-                        e.getChannel().sendMessage(messageEmbed).queue();
+                    } else if (msg.startsWith("!bag")) {
+                        getBag(e.getAuthor(), e.getChannel());
+                    } else if (msg.startsWith("!leaderboard") || msg.startsWith("!lb")) {
+                        showLeaderboard(e.getChannel());
                     }
-                } else {
+                } else if (msg.startsWith("!trickortreat") || msg.startsWith("!tot") || msg.startsWith("!bag") ||
+                        msg.startsWith("!leaderboard") || msg.startsWith("!lb")) {
                     MessageEmbed messageEmbed = createEmbed("It Is Not Halloween!",
-                            e.getAuthor().getAsMention() + " you cannot do this until halloween",
+                            "This can only be done on Halloween",
                             Color.ORANGE);
                     e.getChannel().sendMessage(messageEmbed).queue();
                 }
-            } else if (msg.startsWith("!bag")) {
-                getBag(e.getAuthor(), e.getChannel());
-            } else if (msg.startsWith("!leaderboard") || msg.startsWith("!lb")) {
-                showLeaderboard(e.getChannel());
             }
         }
     }
@@ -206,9 +209,9 @@ public class Halloween extends ListenerAdapter {
                 "Halloween Trick or Treat Virtual Competition",
                 "How to play:\n" +
                         "1. Type !trickortreat or !tot (10 second cooldown)\n" +
-                        "2. Randomly receive a treat, or be tricked and lose candy\n" +
+                        "2. Receive a treat, or be tricked and lose candy\n" +
                         "3. Type !bag to see how much candy you have\n" +
-                        "4. type !leaderboard or !lb to see the top 10 users\n" +
+                        "4. Type !leaderboard or !lb to see the top 10 users\n" +
                         "5. Get the most candy by the end of Halloween\n" +
                         "6. Win 1 month of Discord Nitro Classic\n" +
                         "\n" +
@@ -242,7 +245,7 @@ public class Halloween extends ListenerAdapter {
             curCount = -1;
         }
         StringBuilder leaderboard = new StringBuilder();
-        if(users.size() > 0) {
+        if (users.size() > 0) {
             for (int i = 0; i < users.size(); i++) {
                 User user = users.get(i);
                 int count = counts.get(i);
