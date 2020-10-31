@@ -89,7 +89,7 @@ public class Halloween extends ListenerAdapter {
                             totCooldowns.put(e.getAuthor(), System.currentTimeMillis());
                             Random random = new Random();
                             
-                            if (random.nextInt(3) == 0) {
+                            if (random.nextInt(5) < 2) {
                                 takeCandy(e.getAuthor(), e.getChannel());
                             } else {
                                 giveCandy(e.getAuthor(), e.getChannel());
@@ -112,6 +112,7 @@ public class Halloween extends ListenerAdapter {
                             if (e.getMessage().getMentionedUsers().size() == 1) {
                                 giveCandy(e.getAuthor(),
                                         e.getMessage().getMentionedUsers().get(0), e.getChannel());
+                                giveCooldowns.put(e.getAuthor(), System.currentTimeMillis());
                             } else {
                                 MessageEmbed messageEmbed = createEmbed("Error!",
                                         "That command requires a mentioned user",
@@ -131,12 +132,11 @@ public class Halloween extends ListenerAdapter {
                     } else if (msg.startsWith("!steal")) {
                         
                         if (!stealCooldowns.containsKey(e.getAuthor()) ||
-                                System.currentTimeMillis() - stealCooldowns.get(e.getAuthor()) >= 60000) {
+                                System.currentTimeMillis() - stealCooldowns.get(e.getAuthor()) >= 15000) {
                             
                             if (e.getMessage().getMentionedUsers().size() == 1) {
                                 Random random = new Random();
-                                
-                                if (random.nextInt(3) == 0) {
+                                if (random.nextInt(5) >= 2) {
                                     takeCandy(e.getMessage().getMentionedUsers().get(0), e.getAuthor(),
                                             e.getChannel());
                                 } else {
@@ -146,6 +146,7 @@ public class Halloween extends ListenerAdapter {
                                             Color.ORANGE);
                                     e.getChannel().sendMessage(messageEmbed).queue();
                                 }
+                                stealCooldowns.put(e.getAuthor(), System.currentTimeMillis());
                             } else {
                                 MessageEmbed messageEmbed = createEmbed("Error!",
                                         "That command requires a mentioned user",
@@ -156,7 +157,7 @@ public class Halloween extends ListenerAdapter {
                         } else {
                             
                             MessageEmbed messageEmbed = createEmbed("Wait!",
-                                    e.getAuthor().getAsMention() + " can steal 🍫 in " + (60 -
+                                    e.getAuthor().getAsMention() + " can steal 🍫 in " + (15 -
                                             ((System.currentTimeMillis() - stealCooldowns.get(e.getAuthor())) / 1000)) + " seconds",
                                     Color.ORANGE);
                             e.getChannel().sendMessage(messageEmbed).queue();
@@ -301,7 +302,7 @@ public class Halloween extends ListenerAdapter {
                         "3. Type !bag to see how much candy you have\n" +
                         "4. Type !leaderboard or !lb to see the top 10 users\n" +
                         "5. Give people candy with !give @user (30 second cooldown)\n" +
-                        "6. Try to steal candy with !steal @user (60 second cooldown)\n" +
+                        "6. Try to steal candy with !steal @user (15 second cooldown)\n" +
                         "7. Get the most candy by the end of Halloween\n" +
                         "8. Win 1 month of Discord Nitro Classic\n" +
                         "\n" +
@@ -366,7 +367,6 @@ public class Halloween extends ListenerAdapter {
             MessageEmbed messageEmbed = createEmbed("Candy Given!",
                     to.getAsMention() + " received 1 🍫 from " + from.getAsMention(), Color.GREEN);
             channel.sendMessage(messageEmbed).queue();
-            giveCooldowns.put(from, System.currentTimeMillis());
         } else {
             MessageEmbed messageEmbed = createEmbed("No Candy!",
                     from.getAsMention() + " does not have any 🍫", Color.ORANGE);
@@ -392,7 +392,6 @@ public class Halloween extends ListenerAdapter {
             MessageEmbed messageEmbed = createEmbed("Candy Stolen!",
                     to.getAsMention() + " stole 1 🍫 from " + from.getAsMention(), Color.GREEN);
             channel.sendMessage(messageEmbed).queue();
-            stealCooldowns.put(to, System.currentTimeMillis());
         } else {
             MessageEmbed messageEmbed = createEmbed("No Candy!",
                     from.getAsMention() + " does not have any 🍫", Color.ORANGE);
