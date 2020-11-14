@@ -31,16 +31,17 @@ public class BoneBot {
         JDA jda = JDABuilder.createLight(args[0])
                 .addEventListeners(new Listener())
                 .build();
-        
-        Halloween halloween = new Halloween(jda);
-        jda.addEventListener(halloween);
+
+//        Halloween halloween = new Halloween(jda);
+//        jda.addEventListener(halloween);
         
         ImageIO.setUseCache(false);
+        
         Loader.loadData("responses.txt", Responder.responses);
         Loader.loadData("texts.txt", Meme.texts);
         Loader.loadData("statuses.txt", Status.statuses);
         Loader.loadData("reactions.txt", Reactor.reactions);
-    
+        
         Status.setStatus(jda);
     }
 }
