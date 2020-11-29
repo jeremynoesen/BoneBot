@@ -20,10 +20,10 @@ public class Listener extends ListenerAdapter {
     @Override
     public void onMessageReceived(MessageReceivedEvent e) {
         if (!e.getAuthor().isBot()) {
-            if (e.getMessage().getContentRaw().startsWith("!meme")) {
+            if (e.getMessage().getContentRaw().startsWith("bbmeme")) {
                 Meme.generate(e.getMessage());
                 Runtime.getRuntime().gc();
-            } else if (e.getMessage().getContentRaw().startsWith("!restart")) {
+            } else if (e.getMessage().getContentRaw().startsWith("bbrestart")) {
                 e.getChannel().sendMessage("Restarting...").queue();
                 e.getChannel().sendTyping().queue();
                 System.exit(0);
