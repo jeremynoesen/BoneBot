@@ -28,5 +28,3 @@ shadowJar {
     mergeServiceFiles()
     archiveFileName = 'BoneBot.jar'
 }
-
-jar.dependsOn shadowJar
