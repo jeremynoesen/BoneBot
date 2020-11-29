@@ -24,7 +24,8 @@ public class Listener extends ListenerAdapter {
                 Meme.generate(e.getMessage());
                 Runtime.getRuntime().gc();
             } else if (e.getMessage().getContentRaw().startsWith("!restart")) {
-                e.getChannel().sendMessage("Restarting...");
+                e.getChannel().sendMessage("Restarting...").queue();
+                e.getChannel().sendTyping().queue();
                 System.exit(0);
             } else {
                 Responder.respond(e.getMessage());
