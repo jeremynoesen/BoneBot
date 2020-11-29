@@ -25,6 +25,7 @@ public class Listener extends ListenerAdapter {
                 Runtime.getRuntime().gc();
             } else if (e.getMessage().getContentRaw().startsWith("!restart")) {
                 try {
+                    e.getChannel().sendMessage("Restarting...").queue();
                     Runtime.getRuntime().exec("/bin/sh /Users/Jeremy/BoneBot/restart.command");
                 } catch (IOException ioException) {
                     Logger.log(ioException);

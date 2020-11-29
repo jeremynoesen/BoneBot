@@ -1,22 +1,30 @@
 plugins {
-    id'application'
-    id'com.github.johnrengelman.shadow' version '5.2.0'
+    id 'java'
+    id 'application'
+    id 'com.github.johnrengelman.shadow' version '6.0.0'
 }
 
-mainClassName = 'jndev.bonebot.BoneBot'
-
+group 'jndev'
 version '1.0'
-def jdaVersion = '4.2.0_168'
-
-sourceCompatibility = targetCompatibility = 1.8
+compileJava.options.encoding = 'UTF-8'
 
 repositories {
+    mavenCentral()
     jcenter()
+    mavenLocal()
 }
 
 dependencies {
-    compile "net.dv8tion:JDA:$jdaVersion"
-    compile 'org.apache.commons:commons-text:1.6'
+    implementation 'com.github.jengelman.gradle.plugins:shadow:2.0.1'
+    implementation 'net.dv8tion:JDA:4.2.0_168'
+    implementation 'org.apache.commons:commons-text:1.6'
 }
 
-compileJava.options.encoding = 'UTF-8'
+application {
+    mainClassName = 'jndev.bonebot.BoneBot'
+}
+
+shadowJar {
+    mergeServiceFiles()
+    archiveFileName = 'BoneBot.jar'
+}
