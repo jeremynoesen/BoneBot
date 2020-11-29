@@ -21,6 +21,7 @@ public class Logger {
     public static void log(Exception exception) {
         File log = new File("log.txt");
         try {
+            exception.printStackTrace();
             PrintWriter pw = new PrintWriter(log);
             DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
             LocalDateTime now = LocalDateTime.now();
