@@ -24,20 +24,8 @@ public class Listener extends ListenerAdapter {
                 Meme.generate(e.getMessage());
                 Runtime.getRuntime().gc();
             } else if (e.getMessage().getContentRaw().startsWith("!restart")) {
-                try {
-                    e.getChannel().sendMessage("Restarting...").queue();
-                    Runtime.getRuntime().exec("/bin/sh restart.command");
-                } catch (IOException ioException) {
-                    Logger.log(ioException);
-                }
-            } else if (e.getMessage().getContentRaw().startsWith("!update")) {
-                try {
-                    e.getChannel().sendMessage("Updating from GitHub...").queue();
-                    Runtime.getRuntime().exec("/bin/sh update.command");
-                    e.getChannel().sendMessage("Done!").queue();
-                } catch (IOException ioException) {
-                    Logger.log(ioException);
-                }
+                e.getChannel().sendMessage("Restarting...");
+                System.exit(0);
             } else {
                 Responder.respond(e.getMessage());
                 Reactor.react(e.getMessage());
