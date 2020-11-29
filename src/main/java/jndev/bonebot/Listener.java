@@ -26,7 +26,15 @@ public class Listener extends ListenerAdapter {
             } else if (e.getMessage().getContentRaw().startsWith("!restart")) {
                 try {
                     e.getChannel().sendMessage("Restarting...").queue();
-                    Runtime.getRuntime().exec("/bin/sh /Users/Jeremy/BoneBot/restart.command");
+                    Runtime.getRuntime().exec("/bin/sh restart.command");
+                } catch (IOException ioException) {
+                    Logger.log(ioException);
+                }
+            } else if (e.getMessage().getContentRaw().startsWith("!update")) {
+                try {
+                    e.getChannel().sendMessage("Updating from GitHub...").queue();
+                    Runtime.getRuntime().exec("/bin/sh update.command");
+                    e.getChannel().sendMessage("Done!").queue();
                 } catch (IOException ioException) {
                     Logger.log(ioException);
                 }
