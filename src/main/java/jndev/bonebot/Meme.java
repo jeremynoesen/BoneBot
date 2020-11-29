@@ -101,7 +101,7 @@ public class Meme {
      * @throws IOException
      */
     private void readTextAndImage() throws IOException {
-        String input = command.getContentRaw().replaceFirst("!meme", "").trim();
+        String input = command.getContentRaw().replaceFirst("bbmeme", "").trim();
         if (command.getAttachments().size() > 0 && command.getAttachments().get(0).isImage()) {
             this.image = ImageIO.read(new URL(command.getAttachments().get(0).getUrl()));
         } else if (command.getMentionedUsers().size() > 0) {
