@@ -3,6 +3,8 @@ package jndev.bonebot;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
+import java.io.IOException;
+
 /**
  * all listeners for the bot
  *
@@ -21,6 +23,12 @@ public class Listener extends ListenerAdapter {
             if (e.getMessage().getContentRaw().startsWith("!meme")) {
                 Meme.generate(e.getMessage());
                 Runtime.getRuntime().gc();
+            } else if (e.getMessage().getContentRaw().startsWith("!restart")) {
+                try {
+                    Runtime.getRuntime().exec("/bin/sh /Users/Jeremy/BoneBot/restart.command");
+                } catch (IOException ioException) {
+                    Logger.log(ioException);
+                }
             } else {
                 Responder.respond(e.getMessage());
                 Reactor.react(e.getMessage());
