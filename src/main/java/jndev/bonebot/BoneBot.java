@@ -37,10 +37,10 @@ public class BoneBot {
         
         ImageIO.setUseCache(false);
         
-        Loader.loadData("responses.txt", Responder.responses);
-        Loader.loadData("texts.txt", Meme.texts);
-        Loader.loadData("statuses.txt", Status.statuses);
-        Loader.loadData("reactions.txt", Reactor.reactions);
+        Loader.loadData("resources/responses.txt", Responder.responses);
+        Loader.loadData("resources/texts.txt", Meme.texts);
+        Loader.loadData("resources/statuses.txt", Status.statuses);
+        Loader.loadData("resources/reactions.txt", Reactor.reactions);
         
         Status.setStatus(jda);
     }
