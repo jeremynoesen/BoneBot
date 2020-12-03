@@ -44,3 +44,6 @@ rm -rf botdir/BoneBot
 cd botdir
 java -jar botdir/BoneBot.jar token
 ```
+
+## Contributing
+To contribute to this repo, you can fork the release branch, make your edits and additions, and then create a pull request back to the release branch. You are also free to do whatever with your fork according to the license.
