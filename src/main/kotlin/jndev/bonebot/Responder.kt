@@ -29,8 +29,10 @@ object Responder {
                 if (msg.contains(trigger.toLowerCase())) count++
             }
             if (count == triggers.size) {
-                for (i in 1 until triggerAndPhrases.size) message.channel.sendMessage(triggerAndPhrases[1]
-                        .replace("\$USER$", message.author.asMention)).queue()
+                for (i in 1 until triggerAndPhrases.size) message.channel.sendMessage(
+                    triggerAndPhrases[1]
+                        .replace("\$USER$", message.author.asMention)
+                ).queue()
             }
         }
     }

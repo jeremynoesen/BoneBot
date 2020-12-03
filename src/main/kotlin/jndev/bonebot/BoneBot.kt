@@ -28,8 +28,8 @@ object BoneBot {
             exitProcess(1)
         }
         val jda = JDABuilder.createLight(args[0])
-                .addEventListeners(Listener())
-                .build()
+            .addEventListeners(Listener())
+            .build()
 
 //        Halloween halloween = new Halloween(jda);
 //        jda.addEventListener(halloween);
