@@ -94,11 +94,11 @@ private constructor(
         } else {
             val r = Random()
             val dir = File("images")
-            var rand = r.nextInt(dir.listFiles().size)
-            while (dir.listFiles()[rand].isHidden) {
-                rand = r.nextInt(dir.listFiles().size)
+            var rand = r.nextInt(dir.listFiles()!!.size)
+            while (dir.listFiles()!![rand].isHidden) {
+                rand = r.nextInt(dir.listFiles()!!.size)
             }
-            image = ImageIO.read(dir.listFiles()[rand])
+            image = ImageIO.read(dir.listFiles()!![rand])
         }
         text = if (!input.isEmpty() || input != "") {
             input

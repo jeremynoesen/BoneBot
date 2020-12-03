@@ -22,7 +22,7 @@ object Loader {
             fileScanner.close()
             list.trimToSize()
         } catch (e: FileNotFoundException) {
-            Logger.log(e)
+            File(filePath)
         }
     }
 }
