@@ -58,7 +58,8 @@ class Halloween(jda: JDA) : ListenerAdapter() {
                 if (month == Month.OCTOBER && day == 31) {
                     if (msg.startsWith("!trickortreat") || msg.startsWith("!tot")) {
                         if (!totCooldowns.containsKey(e.author) ||
-                                System.currentTimeMillis() - totCooldowns[e.author]!! >= 10000) {
+                            System.currentTimeMillis() - totCooldowns[e.author]!! >= 10000
+                        ) {
                             totCooldowns[e.author] = System.currentTimeMillis()
                             val random = Random()
                             if (random.nextInt(5) < 2) {
@@ -67,59 +68,77 @@ class Halloween(jda: JDA) : ListenerAdapter() {
                                 giveCandy(e.author, e.channel)
                             }
                         } else {
-                            val messageEmbed = createEmbed("Wait!",
-                                    e.author.asMention + " can trick or treat in " + (10 -
-                                            (System.currentTimeMillis() - totCooldowns[e.author]!!) / 1000) + " seconds",
-                                    Color.ORANGE)
+                            val messageEmbed = createEmbed(
+                                "Wait!",
+                                e.author.asMention + " can trick or treat in " + (10 -
+                                        (System.currentTimeMillis() - totCooldowns[e.author]!!) / 1000) + " seconds",
+                                Color.ORANGE
+                            )
                             e.channel.sendMessage(messageEmbed).queue()
                         }
                     } else if (msg.startsWith("!give")) {
                         if (!giveCooldowns.containsKey(e.author) ||
-                                System.currentTimeMillis() - giveCooldowns[e.author]!! >= 30000) {
+                            System.currentTimeMillis() - giveCooldowns[e.author]!! >= 30000
+                        ) {
                             if (e.message.mentionedUsers.size == 1) {
-                                giveCandy(e.author,
-                                        e.message.mentionedUsers[0], e.channel)
+                                giveCandy(
+                                    e.author,
+                                    e.message.mentionedUsers[0], e.channel
+                                )
                                 giveCooldowns[e.author] = System.currentTimeMillis()
                             } else {
-                                val messageEmbed = createEmbed("Error!",
-                                        "That command requires a mentioned user",
-                                        Color.ORANGE)
+                                val messageEmbed = createEmbed(
+                                    "Error!",
+                                    "That command requires a mentioned user",
+                                    Color.ORANGE
+                                )
                                 e.channel.sendMessage(messageEmbed).queue()
                             }
                         } else {
-                            val messageEmbed = createEmbed("Wait!",
-                                    e.author.asMention + " can give 🍫 in " + (30 -
-                                            (System.currentTimeMillis() - giveCooldowns[e.author]!!) / 1000) + " seconds",
-                                    Color.ORANGE)
+                            val messageEmbed = createEmbed(
+                                "Wait!",
+                                e.author.asMention + " can give 🍫 in " + (30 -
+                                        (System.currentTimeMillis() - giveCooldowns[e.author]!!) / 1000) + " seconds",
+                                Color.ORANGE
+                            )
                             e.channel.sendMessage(messageEmbed).queue()
                         }
                     } else if (msg.startsWith("!steal")) {
                         if (!stealCooldowns.containsKey(e.author) ||
-                                System.currentTimeMillis() - stealCooldowns[e.author]!! >= 15000) {
+                            System.currentTimeMillis() - stealCooldowns[e.author]!! >= 15000
+                        ) {
                             if (e.message.mentionedUsers.size == 1) {
                                 val random = Random()
                                 if (random.nextInt(5) >= 2) {
-                                    takeCandy(e.message.mentionedUsers[0], e.author,
-                                            e.channel)
+                                    takeCandy(
+                                        e.message.mentionedUsers[0], e.author,
+                                        e.channel
+                                    )
                                 } else {
-                                    val messageEmbed = createEmbed("Failed Theft!",
-                                            e.author.asMention + " tried to steal 🍫 from " +
-                                                    e.message.mentionedUsers[0].asMention + " but failed",
-                                            Color.ORANGE)
+                                    val messageEmbed = createEmbed(
+                                        "Failed Theft!",
+                                        e.author.asMention + " tried to steal 🍫 from " +
+                                                e.message.mentionedUsers[0].asMention + " but failed",
+                                        Color.ORANGE
+                                    )
                                     e.channel.sendMessage(messageEmbed).queue()
                                 }
                                 stealCooldowns[e.author] = System.currentTimeMillis()
                             } else {
-                                val messageEmbed = createEmbed("Error!",
-                                        "That command requires a mentioned user",
-                                        Color.ORANGE)
+                                val messageEmbed = createEmbed(
+                                    "Error!",
+                                    "That command requires a mentioned user",
+                                    Color.ORANGE
+                                )
                                 e.channel.sendMessage(messageEmbed).queue()
                             }
                         } else {
-                            val messageEmbed = createEmbed("Wait!",
-                                    e.author.asMention + " can steal 🍫 in " + (15 -
-                                            (System.currentTimeMillis() - stealCooldowns[e.author]!!) / 1000) + " seconds",
-                                    Color.ORANGE)
+                            val messageEmbed = createEmbed(
+                                "Wait!",
+                                e.author.asMention + " can steal 🍫 in " + (15 -
+                                        (System.currentTimeMillis() - stealCooldowns[e.author]!!) / 1000) + " seconds",
+                                Color.ORANGE
+                            )
                             e.channel.sendMessage(messageEmbed).queue()
                         }
                     } else if (msg.startsWith("!bag")) {
@@ -128,11 +147,14 @@ class Halloween(jda: JDA) : ListenerAdapter() {
                         showLeaderboard(e.channel)
                     }
                 } else if (msg.startsWith("!trickortreat") || msg.startsWith("!tot") || msg.startsWith("!bag") ||
-                        msg.startsWith("!leaderboard") || msg.startsWith("!lb") || msg.startsWith("!give") ||
-                        msg.startsWith("!steal")) {
-                    val messageEmbed = createEmbed("It Is Not Halloween!",
-                            "This can only be done on Halloween",
-                            Color.ORANGE)
+                    msg.startsWith("!leaderboard") || msg.startsWith("!lb") || msg.startsWith("!give") ||
+                    msg.startsWith("!steal")
+                ) {
+                    val messageEmbed = createEmbed(
+                        "It Is Not Halloween!",
+                        "This can only be done on Halloween",
+                        Color.ORANGE
+                    )
                     e.channel.sendMessage(messageEmbed).queue()
                 }
             }
@@ -201,8 +223,10 @@ class Halloween(jda: JDA) : ListenerAdapter() {
         } else {
             data[user] = 1
         }
-        val messageEmbed = createEmbed("Treat!",
-                user.asMention + " received 1 🍫", Color.GREEN)
+        val messageEmbed = createEmbed(
+            "Treat!",
+            user.asMention + " received 1 🍫", Color.GREEN
+        )
         channel.sendMessage(messageEmbed).queue()
     }
 
@@ -215,13 +239,17 @@ class Halloween(jda: JDA) : ListenerAdapter() {
     private fun takeCandy(user: User, channel: MessageChannel) {
         if (data.containsKey(user) && data[user]!! >= 1) {
             data[user] = data[user]!! - 1
-            val messageEmbed = createEmbed("Trick!",
-                    user.asMention + " lost 1 🍫", Color.ORANGE)
+            val messageEmbed = createEmbed(
+                "Trick!",
+                user.asMention + " lost 1 🍫", Color.ORANGE
+            )
             channel.sendMessage(messageEmbed).queue()
         } else {
             data[user] = 0
-            val messageEmbed = createEmbed("Trick!",
-                    user.asMention + " had no 🍫 to lose", Color.ORANGE)
+            val messageEmbed = createEmbed(
+                "Trick!",
+                user.asMention + " had no 🍫 to lose", Color.ORANGE
+            )
             channel.sendMessage(messageEmbed).queue()
         }
     }
@@ -236,8 +264,10 @@ class Halloween(jda: JDA) : ListenerAdapter() {
         if (!data.containsKey(user)) {
             data[user] = 0
         }
-        val messageEmbed = createEmbed("Candy Bag",
-                user.asMention + " currently has " + data[user] + " 🍫", Color.MAGENTA)
+        val messageEmbed = createEmbed(
+            "Candy Bag",
+            user.asMention + " currently has " + data[user] + " 🍫", Color.MAGENTA
+        )
         channel.sendMessage(messageEmbed).queue()
     }
 
@@ -248,8 +278,8 @@ class Halloween(jda: JDA) : ListenerAdapter() {
      */
     private fun showInfo(channel: MessageChannel) {
         val messageEmbed = createEmbed(
-                "Halloween Trick or Treat Virtual Competition",
-                """
+            "Halloween Trick or Treat Virtual Competition",
+            """
                       How to play:
                       1. Type !trickortreat or !tot (10 second cooldown)
                       2. Receive a treat, or be tricked and lose candy
@@ -262,7 +292,8 @@ class Halloween(jda: JDA) : ListenerAdapter() {
                       
                       Trick or treating starts on Halloween. Good luck!
                       """.trimIndent(),
-                Color.MAGENTA)
+            Color.MAGENTA
+        )
         channel.sendMessage(messageEmbed).queue()
     }
 
@@ -319,12 +350,16 @@ class Halloween(jda: JDA) : ListenerAdapter() {
             } else {
                 data[to] = 1
             }
-            val messageEmbed = createEmbed("Candy Given!",
-                    to.asMention + " received 1 🍫 from " + from.asMention, Color.GREEN)
+            val messageEmbed = createEmbed(
+                "Candy Given!",
+                to.asMention + " received 1 🍫 from " + from.asMention, Color.GREEN
+            )
             channel.sendMessage(messageEmbed).queue()
         } else {
-            val messageEmbed = createEmbed("No Candy!",
-                    from.asMention + " does not have any 🍫", Color.ORANGE)
+            val messageEmbed = createEmbed(
+                "No Candy!",
+                from.asMention + " does not have any 🍫", Color.ORANGE
+            )
             channel.sendMessage(messageEmbed).queue()
         }
     }
@@ -344,12 +379,16 @@ class Halloween(jda: JDA) : ListenerAdapter() {
             } else {
                 data[to] = 1
             }
-            val messageEmbed = createEmbed("Candy Stolen!",
-                    to.asMention + " stole 1 🍫 from " + from.asMention, Color.GREEN)
+            val messageEmbed = createEmbed(
+                "Candy Stolen!",
+                to.asMention + " stole 1 🍫 from " + from.asMention, Color.GREEN
+            )
             channel.sendMessage(messageEmbed).queue()
         } else {
-            val messageEmbed = createEmbed("No Candy!",
-                    from.asMention + " does not have any 🍫", Color.ORANGE)
+            val messageEmbed = createEmbed(
+                "No Candy!",
+                from.asMention + " does not have any 🍫", Color.ORANGE
+            )
             channel.sendMessage(messageEmbed).queue()
         }
     }

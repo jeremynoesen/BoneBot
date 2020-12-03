@@ -23,10 +23,11 @@ class Meme
  * @param command command containing meme arguments
  */
 private constructor(
-        /**
-         * command message
-         */
-        private val command: Message) {
+    /**
+     * command message
+     */
+    private val command: Message
+) {
     /**
      * meme text
      */
@@ -60,12 +61,16 @@ private constructor(
             file.delete()
             System.gc()
         } catch (exception: IOException) {
-            command.channel.sendMessage("Error generating meme! " +
-                    command.jda.getUserByTag("Jeremaster101#0494")!!.asMention).queue()
+            command.channel.sendMessage(
+                "Error generating meme! " +
+                        command.jda.getUserByTag("Jeremaster101#0494")!!.asMention
+            ).queue()
             Logger.log(exception)
         } catch (exception: FontFormatException) {
-            command.channel.sendMessage("Error generating meme! " +
-                    command.jda.getUserByTag("Jeremaster101#0494")!!.asMention).queue()
+            command.channel.sendMessage(
+                "Error generating meme! " +
+                        command.jda.getUserByTag("Jeremaster101#0494")!!.asMention
+            ).queue()
             Logger.log(exception)
         }
     }
@@ -84,8 +89,8 @@ private constructor(
         } else if (command.mentionedUsers.size > 0) {
             image = ImageIO.read(URL(command.mentionedUsers[0].effectiveAvatarUrl))
             for (i in command.mentionedUsers.indices) input = input.replace(command.mentionedUsers[i].asMention, "")
-                    .replace("<@!" + command.mentionedUsers[i].idLong + ">", "")
-                    .replace("  ", " ").trim { it <= ' ' }
+                .replace("<@!" + command.mentionedUsers[i].idLong + ">", "")
+                .replace("  ", " ").trim { it <= ' ' }
         } else {
             val r = Random()
             val dir = File("images")
@@ -123,23 +128,32 @@ private constructor(
         graphics.drawImage(image, 0, 0, width, height, null)
         val lines = ArrayList<String>()
         val sections = text!!.split("\n").toTypedArray()
-        for (section in sections) lines.addAll(listOf(
-                *WordUtils.wrap(section, 18, "\n", true).split("\n").toTypedArray()))
+        for (section in sections) lines.addAll(
+            listOf(
+                *WordUtils.wrap(section, 18, "\n", true).split("\n").toTypedArray()
+            )
+        )
         for (i in lines.indices) {
             val line = lines[i].trim { it <= ' ' }.toUpperCase()
             if (line.isEmpty()) continue
             graphics.setColor(Color.WHITE)
-            graphics.drawString(line,
-                    ((meme!!.getWidth(null) - metrics.stringWidth(line)) / 2.0).toInt(),
-                    (meme!!.getHeight(null) - (lines.size - i - 0.75) * graphics.getFont().size).toInt())
+            graphics.drawString(
+                line,
+                ((meme!!.getWidth(null) - metrics.stringWidth(line)) / 2.0).toInt(),
+                (meme!!.getHeight(null) - (lines.size - i - 0.75) * graphics.getFont().size).toInt()
+            )
             val shape = TextLayout(line, font, g2d.fontRenderContext).getOutline(null)
             g2d.stroke = BasicStroke(3f)
-            g2d.translate(((meme!!.getWidth(null) - metrics.stringWidth(line)) / 2.0).toInt(),
-                    (meme!!.getHeight(null) - (lines.size - i - 0.75) * graphics.getFont().size).toInt())
+            g2d.translate(
+                ((meme!!.getWidth(null) - metrics.stringWidth(line)) / 2.0).toInt(),
+                (meme!!.getHeight(null) - (lines.size - i - 0.75) * graphics.getFont().size).toInt()
+            )
             graphics.setColor(Color.BLACK)
             g2d.draw(shape)
-            g2d.translate((-((meme!!.getWidth(null) - metrics.stringWidth(line)) / 2.0)).toInt(),
-                    (-(meme!!.getHeight(null) - (lines.size - i - 0.75) * graphics.getFont().size)).toInt())
+            g2d.translate(
+                (-((meme!!.getWidth(null) - metrics.stringWidth(line)) / 2.0)).toInt(),
+                (-(meme!!.getHeight(null) - (lines.size - i - 0.75) * graphics.getFont().size)).toInt()
+            )
         }
         graphics.dispose()
         g2d.dispose()
