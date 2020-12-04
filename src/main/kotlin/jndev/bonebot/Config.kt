@@ -38,20 +38,22 @@ object Config {
             val fileScanner = Scanner(File("resources/config.txt"))
             while (fileScanner.hasNextLine()) {
                 val lineScanner = Scanner(fileScanner.nextLine())
-                when{
-                    lineScanner.next().equals("response-cooldown:") -> {
+                val key = lineScanner.next()
+                when {
+                    key.equals("response-cooldown:") -> {
                         responseCooldown = lineScanner.nextInt()
                     }
-                    lineScanner.next().equals("react-cooldown:") -> {
+                    key.equals("react-cooldown:") -> {
                         reactCooldown = lineScanner.nextInt()
                     }
-                    lineScanner.next().equals("meme-cooldown:") -> {
+                    key.equals("meme-cooldown:") -> {
                         memeCooldown = lineScanner.nextInt();
                     }
-                    lineScanner.next().equals("status-cooldown:") -> {
+                    key.equals("status-cooldown:") -> {
                         statusCooldown = lineScanner.nextInt();
                     }
                 }
+                lineScanner.close()
             }
             fileScanner.close()
         } catch (e: FileNotFoundException) {
