@@ -1,5 +1,8 @@
-package jndev.bonebot
+package jndev.bonebot.listener
 
+import jndev.bonebot.modules.Meme
+import jndev.bonebot.modules.Reactor
+import jndev.bonebot.modules.Responder
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import net.dv8tion.jda.api.hooks.ListenerAdapter
 

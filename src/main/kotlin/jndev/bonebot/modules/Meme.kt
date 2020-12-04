@@ -1,5 +1,7 @@
-package jndev.bonebot
+package jndev.bonebot.modules
 
+import jndev.bonebot.config.Config
+import jndev.bonebot.util.Logger
 import net.dv8tion.jda.api.entities.Message
 import org.apache.commons.text.WordUtils
 import java.awt.*

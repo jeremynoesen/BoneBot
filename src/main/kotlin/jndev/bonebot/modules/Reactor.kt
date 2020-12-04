@@ -1,5 +1,6 @@
-package jndev.bonebot
+package jndev.bonebot.modules
 
+import jndev.bonebot.config.Config
 import net.dv8tion.jda.api.entities.Message
 import java.util.*
 

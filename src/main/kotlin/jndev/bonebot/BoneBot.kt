@@ -1,5 +1,12 @@
 package jndev.bonebot
 
+import jndev.bonebot.config.Config
+import jndev.bonebot.config.Loader
+import jndev.bonebot.listener.Listener
+import jndev.bonebot.modules.Meme
+import jndev.bonebot.modules.Reactor
+import jndev.bonebot.modules.Responder
+import jndev.bonebot.modules.Status
 import net.dv8tion.jda.api.JDABuilder
 import java.awt.Toolkit
 import javax.imageio.ImageIO
