@@ -45,5 +45,14 @@ cd botdir
 java -jar botdir/BoneBot.jar token
 ```
 
+## Configuration
+Configuration for meme images, texts, responder messages, reactor triggers, and status messages are all highlighted under **Usage**. There is a general config that handles cooldowns for all of these. These values are in seconds, and are the default values. After changing any of these values, save the file, and restart the bot.
+```
+response-cooldown: 180
+react-cooldown: 60
+meme-cooldown: 10
+status-cooldown: 60
+```
+
 ## Contributing
 To contribute to this repo, you can fork the release branch, make your edits and additions, and then create a pull request back to the release branch. You are also free to do whatever with your fork according to the license.
