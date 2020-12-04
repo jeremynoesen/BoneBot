@@ -34,7 +34,7 @@ object Reactor {
             for (trigger in triggers) {
                 if (msg.contains(trigger.toLowerCase())) count++
             }
-            if (count == triggers.size && (System.currentTimeMillis() - prevTime) >= Config.responseCooldown * 1000) {
+            if (count == triggers.size && (System.currentTimeMillis() - prevTime) >= Config.reactCooldown * 1000) {
                 prevTime = System.currentTimeMillis()
                 for (i in 1 until triggerAndEmotes.size) message.addReaction(triggerAndEmotes[i]).queue()
             }
