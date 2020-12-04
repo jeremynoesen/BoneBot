@@ -9,10 +9,16 @@ import java.util.*
  * @author JNDev (Jeremaster101)
  */
 object Reactor {
+
     /**
      * list of phrases loaded from the responses file
      */
     val reactions = ArrayList<String>()
+
+    /**
+     * last time the responder sent a message in milliseconds
+     */
+    private var prevTime = 0L
 
     /**
      * react to a message if a trigger phrase is said
@@ -28,7 +34,8 @@ object Reactor {
             for (trigger in triggers) {
                 if (msg.contains(trigger.toLowerCase())) count++
             }
-            if (count == triggers.size) {
+            if (count == triggers.size && (System.currentTimeMillis() - prevTime) >= Config.responseCooldown * 1000) {
+                prevTime = System.currentTimeMillis()
                 for (i in 1 until triggerAndEmotes.size) message.addReaction(triggerAndEmotes[i]).queue()
             }
         }

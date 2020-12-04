@@ -9,6 +9,7 @@ import java.util.*
  * @author JNDev (Jeremaster101)
  */
 object Responder {
+
     /**
      * list of phrases loaded from the responses file
      */
