@@ -47,31 +47,36 @@ private constructor(
      * generate and send a meme
      */
     private fun generate() {
-        try {
-            command.channel.sendTyping().queue()
-            readTextAndImage()
-            processImage()
-            val file = convertToFile()
-            command.channel.sendFile(file).queue()
-            image!!.flush()
-            meme!!.flush()
-            image = null
-            meme = null
-            text = null
-            file.delete()
-            System.gc()
-        } catch (exception: IOException) {
-            command.channel.sendMessage(
-                "Error generating meme! " +
-                        command.jda.getUserByTag("Jeremaster101#0494")!!.asMention
-            ).queue()
-            Logger.log(exception)
-        } catch (exception: FontFormatException) {
-            command.channel.sendMessage(
-                "Error generating meme! " +
-                        command.jda.getUserByTag("Jeremaster101#0494")!!.asMention
-            ).queue()
-            Logger.log(exception)
+        if ((System.currentTimeMillis() - prevTime) >= Config.memeCooldown * 1000) {
+            try {
+                command.channel.sendTyping().queue()
+                readTextAndImage()
+                processImage()
+                val file = convertToFile()
+                command.channel.sendFile(file).queue()
+                image!!.flush()
+                meme!!.flush()
+                image = null
+                meme = null
+                text = null
+                file.delete()
+                prevTime = System.currentTimeMillis()
+                System.gc()
+            } catch (exception: IOException) {
+                command.channel.sendMessage(
+                    "Error generating meme! " +
+                            command.jda.getUserByTag("Jeremaster101#0494")!!.asMention
+                ).queue()
+                Logger.log(exception)
+            } catch (exception: FontFormatException) {
+                command.channel.sendMessage(
+                    "Error generating meme! " +
+                            command.jda.getUserByTag("Jeremaster101#0494")!!.asMention
+                ).queue()
+                Logger.log(exception)
+            }
+        } else {
+            command.delete().queue()
         }
     }
 
@@ -183,6 +188,11 @@ private constructor(
          * number of memes created. helpful to separate meme files to prevent overwriting a meme being processed
          */
         private var memeCount = 0
+
+        /**
+         * last time the meme generator was used in milliseconds
+         */
+        private var prevTime = 0L
 
         /**
          * generate and send a meme

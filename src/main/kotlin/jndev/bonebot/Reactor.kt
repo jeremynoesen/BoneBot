@@ -16,7 +16,7 @@ object Reactor {
     val reactions = ArrayList<String>()
 
     /**
-     * last time the responder sent a message in milliseconds
+     * last time the reactor reacted to a message in milliseconds
      */
     private var prevTime = 0L
 
