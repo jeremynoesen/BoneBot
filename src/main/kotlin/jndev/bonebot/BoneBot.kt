@@ -34,6 +34,7 @@ object BoneBot {
 //        Halloween halloween = new Halloween(jda);
 //        jda.addEventListener(halloween);
         ImageIO.setUseCache(false)
+        Config.load()
         Loader.loadData("resources/responses.txt", Responder.responses)
         Loader.loadData("resources/texts.txt", Meme.texts)
         Loader.loadData("resources/statuses.txt", Status.statuses)
