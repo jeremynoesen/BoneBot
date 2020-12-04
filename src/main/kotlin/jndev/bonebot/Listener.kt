@@ -2,7 +2,6 @@ package jndev.bonebot
 
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import net.dv8tion.jda.api.hooks.ListenerAdapter
-import kotlin.system.exitProcess
 
 /**
  * all listeners for the bot
@@ -25,7 +24,7 @@ class Listener : ListenerAdapter() {
                 e.message.contentRaw.startsWith("bbrestart") -> {
                     e.channel.sendMessage("Restarting...").queue()
                     e.channel.sendTyping().queue()
-                    exitProcess(0)
+                    System.exit(0)
                 }
                 else -> {
                     Responder.respond(e.message)
