@@ -24,7 +24,7 @@ object Status {
         Thread {
             while (true) {
                 try {
-                    Thread.sleep(60000)
+                    Thread.sleep(Config.statusCooldown * 1000L)
                 } catch (ignored: InterruptedException) {
                 }
                 val random = Random()
