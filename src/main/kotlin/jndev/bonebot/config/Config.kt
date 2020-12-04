@@ -1,4 +1,4 @@
-package jndev.bonebot
+package jndev.bonebot.config
 
 import java.io.File
 import java.io.FileNotFoundException

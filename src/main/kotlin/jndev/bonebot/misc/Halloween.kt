@@ -1,5 +1,6 @@
-package jndev.bonebot
+package jndev.bonebot.misc
 
+import jndev.bonebot.util.Logger
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.entities.MessageChannel
