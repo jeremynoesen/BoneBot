@@ -15,6 +15,11 @@ object Responder {
     val responses = ArrayList<String>()
 
     /**
+     * last time the responder sent a message in milliseconds
+     */
+    private var prevTime = 0L
+
+    /**
      * respond to a message if a trigger phrase is said
      *
      * @param message message to check and respond to
@@ -28,7 +33,8 @@ object Responder {
             for (trigger in triggers) {
                 if (msg.contains(trigger.toLowerCase())) count++
             }
-            if (count == triggers.size) {
+            if (count == triggers.size && (System.currentTimeMillis() - prevTime) >= Config.responseCooldown * 1000) {
+                prevTime = System.currentTimeMillis()
                 for (i in 1 until triggerAndPhrases.size) message.channel.sendMessage(
                     triggerAndPhrases[1]
                         .replace("\$USER$", message.author.asMention)
