@@ -2,6 +2,7 @@ package jndev.bonebot.config
 
 import java.io.File
 import java.io.FileNotFoundException
+import java.io.PrintWriter
 import java.util.*
 
 /**
@@ -22,7 +23,10 @@ object Loader {
             fileScanner.close()
             list.trimToSize()
         } catch (e: FileNotFoundException) {
-            File(filePath)
+            val file = File(filePath)
+            val pw = PrintWriter(file)
+            pw.println()
+            pw.close()
         }
     }
 }
