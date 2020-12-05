@@ -33,6 +33,7 @@ class Listener : ListenerAdapter() {
                         e.channel.sendMessage("Restarting...").queue()
                         e.channel.sendTyping().queue()
                         e.jda.shutdown()
+                        System.exit(0)
                     } else {
                         e.message.delete().queue()
                     }
