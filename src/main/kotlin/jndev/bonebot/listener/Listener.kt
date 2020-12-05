@@ -29,7 +29,7 @@ class Listener : ListenerAdapter() {
                     Runtime.getRuntime().gc()
                 }
                 e.message.contentRaw.startsWith(Config.commandPrefix + "restart") -> {
-                    if (e.author == e.guild.owner?.user) {
+                    if (e.member!!.isOwner) {
                         e.channel.sendMessage("Restarting...").queue()
                         e.channel.sendTyping().queue()
                         e.jda.shutdown()
