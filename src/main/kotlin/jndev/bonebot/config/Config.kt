@@ -75,12 +75,12 @@ object Config {
         } catch (e: FileNotFoundException) {
             val file = File("resources/config.txt")
             val pw = PrintWriter(file)
-            pw.println("response-cooldown: 180")
-            pw.println("react-cooldown: 60")
-            pw.println("meme-cooldown: 5")
-            pw.println("status-cooldown: 60")
-            pw.println("command-cooldown: 5")
-            pw.println("command-prefix: bb")
+            pw.println("response-cooldown: " + reactCooldown)
+            pw.println("react-cooldown: " + reactCooldown)
+            pw.println("meme-cooldown: " + memeCooldown)
+            pw.println("status-cooldown: " + statusCooldown)
+            pw.println("command-cooldown: " + commandCooldown)
+            pw.println("command-prefix: " + commandPrefix)
             pw.close()
         }
     }
