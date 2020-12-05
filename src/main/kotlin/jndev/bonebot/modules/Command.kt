@@ -27,11 +27,11 @@ object Command {
      * @param message message to check and respond to
      */
     fun perform(message: Message) {
-        val msg = message.contentRaw.toLowerCase()
+        var msg = message.contentRaw.toLowerCase()
         if (msg.startsWith(Config.commandPrefix)) {
-            msg.replaceFirst(Config.commandPrefix, "");
-            for (phrase in commands) {
-                val commandAndMessage = phrase.split(" // ").toTypedArray()
+            msg = msg.replaceFirst(Config.commandPrefix, "");
+            for (command in commands) {
+                val commandAndMessage = command.split(" // ").toTypedArray()
                 if (msg.startsWith(commandAndMessage[0]) && (System.currentTimeMillis() - prevTime) >= Config.commandCooldown * 1000) {
                     prevTime = System.currentTimeMillis()
                     for (i in 1 until commandAndMessage.size) message.channel.sendMessage(
