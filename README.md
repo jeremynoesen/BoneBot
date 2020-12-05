@@ -12,10 +12,13 @@ BoneBot was originally written as a meme-generating Discord bot for the ISUCF'V'
 The command `bbmeme <optional text> <optional image>` generates a meme. If an image or text is provided, the generator will use these, otherwise, random images and text lines will be used. These text lines will be in `texts.txt` and the images will be placed in a folder called `images` in the bot install directory. The images should ideally be JPEG or PNG format. The texts file will designate a new line as a separator for different texts.
 
 ### Responder
-BoneBot can respond to messages based on phrases set in `responses.txt`. The format is `trigger // response` and for trigger phrases with multiple parts that can be separate or out of order, you can do `part1 / part2 / etc // response`. When the bot sees a message with all of the trigger phrases, the response will be sent as a message from the bot.
+BoneBot can respond to messages based on phrases set in `responses.txt`. The format is `trigger // response` and for trigger phrases with multiple parts that can be separate or out of order with multiple responses that send in order, you can do `part1 / part2 / etc // response1 // response2`. When the bot sees a message with all of the trigger phrases, the response will be sent as a message from the bot.
 
 ### Reactor
 BoneBot can react with emotes to messages in a similar way to responding. These are set up in `reactions.txt` and have the same format as responses, except the response is replaced with an emote. You can either put a standard emoji as the response, or you can put the raw discord emoji code for custom emotes. You can get this in discord by typing \ and then :emote: and it will give you the emote as its code.
+
+### Commands
+BoneBot allows for custom commands to be made to provide one or multi message responses. The format is the same as responder, but without multiple trigger parts. You do not need to include the command prefix, that is automatically added on.
 
 ### Status
 BoneBot can have various now playing statuses shown in Discord. You can put custom statuses in `statuses.txt`. Each new line designates a different status message.
@@ -50,8 +53,9 @@ Configuration for meme images, texts, responder messages, reactor triggers, and 
 ```
 response-cooldown: 180
 react-cooldown: 60
-meme-cooldown: 10
+meme-cooldown: 5
 status-cooldown: 60
+command-cooldown: 5
 ```
 
 ## Contributing

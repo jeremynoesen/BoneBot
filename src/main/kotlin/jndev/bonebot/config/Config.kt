@@ -23,12 +23,17 @@ object Config {
     /**
      * cooldown for meme generator, in seconds
      */
-    var memeCooldown = 10
+    var memeCooldown = 5
 
     /**
      * cooldown for status updater, in seconds
      */
     var statusCooldown = 60
+
+    /**
+     * cooldown for commands, in seconds
+     */
+    var commandCooldown = 5
 
     /**
      * load config values, write default config if missing
@@ -52,6 +57,9 @@ object Config {
                     key.equals("status-cooldown:") -> {
                         statusCooldown = lineScanner.nextInt();
                     }
+                    key.equals("command-cooldown:") -> {
+                        commandCooldown = lineScanner.nextInt();
+                    }
                 }
                 lineScanner.close()
             }
@@ -61,8 +69,9 @@ object Config {
             val pw = PrintWriter(file)
             pw.println("response-cooldown: 180")
             pw.println("react-cooldown: 60")
-            pw.println("meme-cooldown: 10")
+            pw.println("meme-cooldown: 5")
             pw.println("status-cooldown: 60")
+            pw.println("command-cooldown: 5")
             pw.close()
         }
     }

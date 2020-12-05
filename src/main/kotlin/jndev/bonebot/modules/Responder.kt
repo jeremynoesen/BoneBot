@@ -38,8 +38,7 @@ object Responder {
             if (count == triggers.size && (System.currentTimeMillis() - prevTime) >= Config.responseCooldown * 1000) {
                 prevTime = System.currentTimeMillis()
                 for (i in 1 until triggerAndPhrases.size) message.channel.sendMessage(
-                    triggerAndPhrases[1]
-                        .replace("\$USER$", message.author.asMention)
+                    triggerAndPhrases[1].replace("\$USER$", message.author.asMention)
                 ).queue()
             }
         }
