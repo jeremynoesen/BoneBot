@@ -18,13 +18,13 @@ BoneBot can respond to messages based on phrases set in `responses.txt`. The for
 BoneBot can react with emotes to messages in a similar way to responding. These are set up in `reactions.txt` and have the same format as responses, except the response is replaced with an emote. You can either put a standard emoji as the response, or you can put the raw discord emoji code for custom emotes. You can get this in discord by typing \ and then :emote: and it will give you the emote as its code.
 
 ### Commands
-BoneBot allows for custom commands to be made to provide one or multi message responses. The format is the same as responder, but without multiple trigger parts. You do not need to include the command prefix, that is automatically added on. The prefix can be customized in `config.txt`. Changing it from "bb" to something else also affect the restart and meme commands. You can type `bbhelp` to view all commands, including a list of custom added commands
+BoneBot allows for custom commands to be made to provide one or multi message responses. The format is the same as responder, but without multiple trigger parts. You do not need to include the command prefix, that is automatically added on. The prefix can be customized in `config.txt`. Changing it from "bb" to something else also affect the restart and meme commands.
 
 ### Status
 BoneBot can have various now playing statuses shown in Discord. You can put custom statuses in `statuses.txt`. Each new line designates a different status message.
 
 ### Other
-The command `bbrestart` is used to restart the bot. If not set up with a launch daemon, the bot will just shut down.
+The command `bbrestart` is used to restart the bot. If not set up with a launch daemon, the bot will just shut down. Only the server owner can run this command. You can type `bbhelp` to view all commands, including a list of custom added commands.
 
 ## Building
 To build, clone or download this repository. With Gradle installed, run `gradle build` in the directory of the project. After that, a file called "BoneBot.jar" should have been created.
