@@ -28,8 +28,8 @@ object Command {
      */
     fun perform(message: Message) {
         val msg = message.contentRaw.toLowerCase()
-        if (msg.startsWith("bb")) {
-            msg.replaceFirst("bb", "");
+        if (msg.startsWith(Config.commandPrefix)) {
+            msg.replaceFirst(Config.commandPrefix, "");
             for (phrase in commands) {
                 val commandAndMessage = phrase.split(" // ").toTypedArray()
                 if (msg.startsWith(commandAndMessage[0]) && (System.currentTimeMillis() - prevTime) >= Config.commandCooldown * 1000) {

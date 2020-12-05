@@ -36,6 +36,11 @@ object Config {
     var commandCooldown = 5
 
     /**
+     * command prefix
+     */
+    var commandPrefix = "bb"
+
+    /**
      * load config values, write default config if missing
      */
     fun load() {
@@ -60,6 +65,9 @@ object Config {
                     key.equals("command-cooldown:") -> {
                         commandCooldown = lineScanner.nextInt();
                     }
+                    key.equals("command-prefix:") -> {
+                        commandPrefix = lineScanner.next();
+                    }
                 }
                 lineScanner.close()
             }
@@ -72,6 +80,7 @@ object Config {
             pw.println("meme-cooldown: 5")
             pw.println("status-cooldown: 60")
             pw.println("command-cooldown: 5")
+            pw.println("command-prefix: bb")
             pw.close()
         }
     }
