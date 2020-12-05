@@ -32,11 +32,15 @@ object Command {
             msg = msg.replaceFirst(Config.commandPrefix, "");
             for (command in commands) {
                 val commandAndMessage = command.split(" // ").toTypedArray()
-                if (msg.startsWith(commandAndMessage[0]) && (System.currentTimeMillis() - prevTime) >= Config.commandCooldown * 1000) {
-                    prevTime = System.currentTimeMillis()
-                    for (i in 1 until commandAndMessage.size) message.channel.sendMessage(
-                        commandAndMessage[1].replace("\$USER$", message.author.asMention)
-                    ).queue()
+                if (msg.startsWith(commandAndMessage[0])) {
+                    if ((System.currentTimeMillis() - prevTime) >= Config.commandCooldown * 1000) {
+                        prevTime = System.currentTimeMillis()
+                        for (i in 1 until commandAndMessage.size) message.channel.sendMessage(
+                            commandAndMessage[1].replace("\$USER$", message.author.asMention)
+                        ).queue()
+                    } else {
+                        message.delete().queue();
+                    }
                 }
             }
         }
