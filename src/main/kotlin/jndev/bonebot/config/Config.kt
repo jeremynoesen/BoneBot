@@ -41,6 +41,11 @@ object Config {
     var commandPrefix = "bb"
 
     /**
+     * bot token
+     */
+    var botToken = ""
+
+    /**
      * load config values, write default config if missing
      */
     fun load() {
@@ -68,6 +73,9 @@ object Config {
                     key.equals("command-prefix:") -> {
                         commandPrefix = lineScanner.next();
                     }
+                    key.equals("bot-token:") -> {
+                        botToken = lineScanner.next();
+                    }
                 }
                 lineScanner.close()
             }
@@ -81,6 +89,7 @@ object Config {
             pw.println("status-cooldown: " + statusCooldown)
             pw.println("command-cooldown: " + commandCooldown)
             pw.println("command-prefix: " + commandPrefix)
+            pw.println("botToken: TOKEN_HERE")
             pw.close()
         }
     }
