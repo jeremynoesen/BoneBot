@@ -36,7 +36,7 @@ Create a new folder where you would like the bot to be installed. Next, place `B
 To start the bot, you can run in terminal, or create a script to run `java -jar /path/to/BoneBot.jar <bot token>`. This will start the bot and generate needed files. If using a script to start the bot automatically along with a launch daemon, set the service to start back up on a successful exit. This will allow `bbrestart` to function properly. Restarting the bot is necessary after modifying any of the text files.
 
 ## Script
-This is a script that can be used to install and run the bot. Replace `botdir` with the directory you placed the bot in, and `token` with your Discord bot token. Use this instead of the previously mentioned steps for installing and running for an automatically updating bot and/or quick install. You will need to restart the bot after updating text files.
+This is a script that can be used to install and run the bot. Replace `botdir` with the directory you placed the bot in. Use this instead of the previously mentioned steps for installing and running for an automatically updating bot and/or quick installation. You will need to restart the bot after updating text files.
 ```
 cd botdir
 git clone https://github.com/Jeremaster101/BoneBot.git
@@ -45,11 +45,11 @@ gradle build
 cp botdir/BoneBot/build/libs/BoneBot.jar botdir
 rm -rf botdir/BoneBot
 cd botdir
-java -jar botdir/BoneBot.jar token
+java -jar botdir/BoneBot.jar
 ```
 
 ## Configuration
-Configuration for meme images, texts, responder messages, reactor triggers, and status messages are all highlighted under **Usage**. There is a general config that handles cooldowns for all of these. These values are in seconds, and are the default values. After changing any of these values, save the file, and restart the bot.
+Configuration for meme images, texts, responder messages, reactor triggers, and status messages are all highlighted under **Usage**. There is a general config that handles cool downs for all of these. These values are in seconds, and are the default values. After changing any of these values, save the file, and restart the bot.
 ```
 response-cooldown: 180
 react-cooldown: 60
@@ -57,6 +57,7 @@ meme-cooldown: 5
 status-cooldown: 60
 command-cooldown: 5
 command-prefix: bb
+bot-token: TOKEN_HERE
 ```
 
 ## Contributing
