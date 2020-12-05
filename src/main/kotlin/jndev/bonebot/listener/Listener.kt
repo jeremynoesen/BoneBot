@@ -29,6 +29,7 @@ class Listener : ListenerAdapter() {
                 e.message.contentRaw.startsWith(Config.commandPrefix + "restart") -> {
                     e.channel.sendMessage("Restarting...").queue()
                     e.channel.sendTyping().queue()
+                    Thread.sleep(100L)
                     System.exit(0)
                 }
                 else -> {
