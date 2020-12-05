@@ -1,5 +1,7 @@
 package jndev.bonebot.listener
 
+import jndev.bonebot.config.Config
+import jndev.bonebot.modules.Command
 import jndev.bonebot.modules.Meme
 import jndev.bonebot.modules.Reactor
 import jndev.bonebot.modules.Responder
@@ -20,17 +22,18 @@ class Listener : ListenerAdapter() {
     override fun onMessageReceived(e: MessageReceivedEvent) {
         if (!e.author.isBot) {
             when {
-                e.message.contentRaw.startsWith("bbmeme") -> {
+                e.message.contentRaw.startsWith(Config.commandPrefix + "meme") -> {
                     Meme.generate(e.message)
                     Runtime.getRuntime().gc()
                 }
-                e.message.contentRaw.startsWith("bbrestart") -> {
+                e.message.contentRaw.startsWith(Config.commandPrefix + "restart") -> {
                     e.channel.sendMessage("Restarting...").queue()
                     e.channel.sendTyping().queue()
                     System.exit(0)
                 }
                 else -> {
                     Responder.respond(e.message)
+                    Command.perform(e.message)
                     Reactor.react(e.message)
                 }
             }
