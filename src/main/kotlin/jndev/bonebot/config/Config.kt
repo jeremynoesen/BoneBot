@@ -53,28 +53,27 @@ object Config {
             val fileScanner = Scanner(File("resources/config.txt"))
             while (fileScanner.hasNextLine()) {
                 val lineScanner = Scanner(fileScanner.nextLine())
-                val key = lineScanner.next()
-                when {
-                    key.equals("response-cooldown:") -> {
+                when (lineScanner.next()) {
+                    "response-cooldown:" -> {
                         responseCooldown = lineScanner.nextInt()
                     }
-                    key.equals("react-cooldown:") -> {
+                    "react-cooldown:" -> {
                         reactCooldown = lineScanner.nextInt()
                     }
-                    key.equals("meme-cooldown:") -> {
-                        memeCooldown = lineScanner.nextInt();
+                    "meme-cooldown:" -> {
+                        memeCooldown = lineScanner.nextInt()
                     }
-                    key.equals("status-cooldown:") -> {
-                        statusCooldown = lineScanner.nextInt();
+                    "status-cooldown:" -> {
+                        statusCooldown = lineScanner.nextInt()
                     }
-                    key.equals("command-cooldown:") -> {
-                        commandCooldown = lineScanner.nextInt();
+                    "command-cooldown:" -> {
+                        commandCooldown = lineScanner.nextInt()
                     }
-                    key.equals("command-prefix:") -> {
-                        commandPrefix = lineScanner.next();
+                    "command-prefix:" -> {
+                        commandPrefix = lineScanner.next()
                     }
-                    key.equals("bot-token:") -> {
-                        botToken = lineScanner.next();
+                    "bot-token:" -> {
+                        botToken = lineScanner.next()
                     }
                 }
                 lineScanner.close()
@@ -83,12 +82,12 @@ object Config {
         } catch (e: FileNotFoundException) {
             val file = File("resources/config.txt")
             val pw = PrintWriter(file)
-            pw.println("response-cooldown: " + reactCooldown)
-            pw.println("react-cooldown: " + reactCooldown)
-            pw.println("meme-cooldown: " + memeCooldown)
-            pw.println("status-cooldown: " + statusCooldown)
-            pw.println("command-cooldown: " + commandCooldown)
-            pw.println("command-prefix: " + commandPrefix)
+            pw.println("response-cooldown: $reactCooldown")
+            pw.println("react-cooldown: $reactCooldown")
+            pw.println("meme-cooldown: $memeCooldown")
+            pw.println("status-cooldown: $statusCooldown")
+            pw.println("command-cooldown: $commandCooldown")
+            pw.println("command-prefix: $commandPrefix")
             pw.println("botToken: TOKEN_HERE")
             pw.close()
         }
