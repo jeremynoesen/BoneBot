@@ -107,7 +107,7 @@ private constructor(
             }
             image = ImageIO.read(dir.listFiles()!![rand])
         }
-        text = if (!input.isEmpty() || input != "") {
+        text = if (input.isNotEmpty() || input != "") {
             input
         } else {
             val r = Random()

@@ -29,7 +29,7 @@ object Command {
     fun perform(message: Message) {
         var msg = message.contentRaw.toLowerCase()
         if (msg.startsWith(Config.commandPrefix)) {
-            msg = msg.replaceFirst(Config.commandPrefix, "");
+            msg = msg.replaceFirst(Config.commandPrefix, "")
             for (command in commands) {
                 val commandAndMessage = command.split(" // ").toTypedArray()
                 if (msg.startsWith(commandAndMessage[0])) {
@@ -39,7 +39,7 @@ object Command {
                             commandAndMessage[1].replace("\$USER$", message.author.asMention)
                         ).queue()
                     } else {
-                        message.delete().queue();
+                        message.delete().queue()
                     }
                 }
             }
