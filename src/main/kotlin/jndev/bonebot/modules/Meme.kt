@@ -90,7 +90,7 @@ private constructor(
      */
     @Throws(IOException::class)
     private fun readTextAndImage() {
-        var input = command.contentRaw.replaceFirst("bbmeme".toRegex(), "").trim { it <= ' ' }
+        var input = command.contentRaw.replaceFirst(Config.commandPrefix + "meme", "").trim { it <= ' ' }
         if (command.attachments.size > 0 && command.attachments[0].isImage) {
             image = ImageIO.read(URL(command.attachments[0].url))
         } else if (command.mentionedUsers.size > 0) {
