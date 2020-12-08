@@ -48,10 +48,11 @@ class Listener : ListenerAdapter() {
                         i++
                     }
                     val embedBuilder = EmbedBuilder()
-                    embedBuilder.setAuthor("BoneBot Help", null, e.jda.selfUser.avatarUrl)
+                    val name = e.jda.selfUser.name
+                    embedBuilder.setAuthor("$name Help", null, e.jda.selfUser.avatarUrl)
                     embedBuilder.setColor(Color(0, 151, 255))
                     embedBuilder.setDescription(
-                        "**BoneBot Commands:**\n" +
+                        "**Default Commands:**\n" +
                                 "• `" + Config.commandPrefix + "meme <optional text> <optional image or mention>`: Generate" +
                                 " a meme with input or random text, input or random image, or user avatar.\n" +
                                 "• `" + Config.commandPrefix + "restart`: Restart the bot if set up properly, otherwise shut down.\n\n" +
