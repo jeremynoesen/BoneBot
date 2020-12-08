@@ -10,7 +10,7 @@ import javax.imageio.ImageIO
 import javax.security.auth.login.LoginException
 
 /**
- * BoneBot is a simple discord bot for the ISUCF'V'MB Trombone discord
+ * Main class, initializes bot, loads all data, and initializes modules
  *
  * @author JNDev (Jeremaster101)
  */
