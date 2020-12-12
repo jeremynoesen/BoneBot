@@ -36,7 +36,7 @@ Create a new folder where you would like the bot to be installed. Next, place `B
 To start the bot, you can run in terminal, or create a script to run `java -jar /path/to/BoneBot.jar`. This will start the bot and generate needed files. If using a script to start the bot automatically along with a launch daemon, set the service to start back up on a successful exit. This will allow `bbrestart` to function properly. Restarting the bot is necessary after modifying any of the text files.
 
 ## Script
-This is a script that can be used to install and run the bot. Replace `botdir` with the directory you placed the bot in. Use this instead of the previously mentioned steps for installing and running for an automatically updating bot and/or quick installation. You will need to restart the bot after updating text files.
+This is a script that can be used to install and run the bot. Replace `botdir` with the directory you placed the bot in. Use this instead of the previously mentioned steps for installing and running for an automatically updating bot and/or quick installation. You will need to restart the bot after updating text files. If you would like to make a simple start script, remove all but the first and last lines of this script.
 ```
 cd botdir
 git clone https://github.com/Jeremaster101/BoneBot.git
