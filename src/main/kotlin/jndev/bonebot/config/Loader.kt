@@ -7,6 +7,8 @@ import java.util.*
 
 /**
  * handles loading string files into string lists
+ *
+ * @author Jeremy Noesen
  */
 object Loader {
     /**

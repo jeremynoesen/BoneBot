@@ -13,7 +13,7 @@ import java.awt.Color
 /**
  * all listeners for the bot
  *
- * @author JNDev (Jeremaster101)
+ * @author Jeremy Noesen
  */
 class Listener : ListenerAdapter() {
     /**

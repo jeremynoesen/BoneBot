@@ -7,7 +7,7 @@ import java.util.*
 /**
  * command handler with simple message responses
  *
- * @author JNDev (Jeremaster101)
+ * @author Jeremy Noesen
  */
 object Command {
 

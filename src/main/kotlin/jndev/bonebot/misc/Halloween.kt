@@ -20,7 +20,7 @@ import java.util.*
 /**
  * Halloween trick or treating virtual event
  *
- * @author JNDev (Jeremaster101)
+ * @author Jeremy Noesen
  */
 class Halloween(jda: JDA) : ListenerAdapter() {
     /**
