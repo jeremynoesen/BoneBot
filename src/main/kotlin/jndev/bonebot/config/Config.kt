@@ -7,6 +7,8 @@ import java.util.*
 
 /**
  * class to handle config values
+ *
+ * @author Jeremy Noesen
  */
 object Config {
 

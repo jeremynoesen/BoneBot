@@ -7,7 +7,7 @@ import java.util.*
 /**
  * responder to words and phrases in a message
  *
- * @author JNDev (Jeremaster101)
+ * @author Jeremy Noesen
  */
 object Reactor {
 

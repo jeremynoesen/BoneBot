@@ -12,7 +12,7 @@ import javax.security.auth.login.LoginException
 /**
  * Main class, initializes bot, loads all data, and initializes modules
  *
- * @author JNDev (Jeremaster101)
+ * @author Jeremy Noesen
  */
 object BoneBot {
     /**

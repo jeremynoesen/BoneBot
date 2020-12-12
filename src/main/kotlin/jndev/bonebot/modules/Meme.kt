@@ -16,7 +16,7 @@ import javax.imageio.ImageIO
 /**
  * meme generator
  *
- * @author JNDev (Jeremaster101)
+ * @author Jeremy Noesen
  */
 class Meme
 /**

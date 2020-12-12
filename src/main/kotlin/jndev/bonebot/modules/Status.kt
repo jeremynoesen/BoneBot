@@ -8,7 +8,7 @@ import java.util.*
 /**
  * class to handle now playing status of the bot
  *
- * @author JNDev (Jeremaster101)
+ * @author Jeremy Noesen
  */
 object Status {
     /**
