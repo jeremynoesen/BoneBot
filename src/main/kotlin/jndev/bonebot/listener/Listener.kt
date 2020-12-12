@@ -56,8 +56,7 @@ class Listener : ListenerAdapter() {
                                 "• `" + Config.commandPrefix + "meme <optional text> <optional image or mention>`: Generate" +
                                 " a meme with input or random text, input or random image, or user avatar.\n" +
                                 "• `" + Config.commandPrefix + "restart`: Restart the bot if set up properly, otherwise shut down.\n\n" +
-                                "**Custom Commands:**\n" + commandList + "\n\n[GitHub](https://github.com/Jeremaster101/BoneBot)" +
-                                " | [Discord](https://discord.gg/up8CUuW)"
+                                "**Custom Commands:**\n" + commandList + "\n\n[GitHub](https://github.com/Jeremaster101/BoneBot)"
                     )
                     e.channel.sendMessage(embedBuilder.build()).queue()
                 }
