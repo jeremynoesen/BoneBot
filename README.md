@@ -1,4 +1,4 @@
-# BoneBot
+![Banner](https://i.imgur.com/pRvViK1.png)
 
 ## About
 BoneBot is a simple discord bot that can respond to phrases, react to messages, and generate memes on demand to add more life to a discord server.
