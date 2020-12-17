@@ -1,8 +1,9 @@
-package jndev.bonebot
+package jeremynoesen.bonebot
 
-import jndev.bonebot.config.Config
-import jndev.bonebot.config.Loader
-import jndev.bonebot.listener.Listener
+import jeremynoesen.bonebot.config.Config
+import jeremynoesen.bonebot.config.Loader
+import jeremynoesen.bonebot.listener.Listener
+import jeremynoesen.bonebot.modules.*
 import jndev.bonebot.modules.*
 import net.dv8tion.jda.api.JDABuilder
 import java.awt.Toolkit

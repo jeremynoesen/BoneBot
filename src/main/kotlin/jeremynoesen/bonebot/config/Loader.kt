@@ -1,4 +1,4 @@
-package jndev.bonebot.config
+package jeremynoesen.bonebot.config
 
 import java.io.File
 import java.io.FileNotFoundException

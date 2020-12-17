@@ -23,7 +23,7 @@ dependencies {
 }
 
 application {
-    mainClassName = 'jndev.bonebot.BoneBot'
+    mainClassName = 'jeremynoesen.bonebot.BoneBot'
 }
 
 shadowJar {

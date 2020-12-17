@@ -1,7 +1,7 @@
-package jndev.bonebot.modules
+package jeremynoesen.bonebot.modules
 
-import jndev.bonebot.config.Config
-import jndev.bonebot.util.Logger
+import jeremynoesen.bonebot.config.Config
+import jeremynoesen.bonebot.util.Logger
 import net.dv8tion.jda.api.entities.Message
 import org.apache.commons.text.WordUtils
 import java.awt.*
