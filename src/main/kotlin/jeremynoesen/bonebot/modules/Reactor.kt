@@ -1,6 +1,6 @@
-package jndev.bonebot.modules
+package jeremynoesen.bonebot.modules
 
-import jndev.bonebot.config.Config
+import jeremynoesen.bonebot.config.Config
 import net.dv8tion.jda.api.entities.Message
 import java.util.*
 

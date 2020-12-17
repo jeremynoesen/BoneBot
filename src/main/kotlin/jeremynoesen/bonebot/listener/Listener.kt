@@ -1,10 +1,10 @@
-package jndev.bonebot.listener
+package jeremynoesen.bonebot.listener
 
-import jndev.bonebot.config.Config
-import jndev.bonebot.modules.Command
-import jndev.bonebot.modules.Meme
-import jndev.bonebot.modules.Reactor
-import jndev.bonebot.modules.Responder
+import jeremynoesen.bonebot.config.Config
+import jeremynoesen.bonebot.modules.Command
+import jeremynoesen.bonebot.modules.Meme
+import jeremynoesen.bonebot.modules.Reactor
+import jeremynoesen.bonebot.modules.Responder
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import net.dv8tion.jda.api.hooks.ListenerAdapter
