@@ -5,7 +5,7 @@ plugins {
     id 'org.jetbrains.kotlin.jvm' version '1.4.20'
 }
 
-group 'jndev.bonebot'
+group 'jeremynoesen.bonebot'
 version '1.0'
 compileJava.options.encoding = 'UTF-8'
 
