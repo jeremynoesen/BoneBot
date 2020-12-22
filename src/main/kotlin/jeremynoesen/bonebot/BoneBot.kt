@@ -4,7 +4,6 @@ import jeremynoesen.bonebot.config.Config
 import jeremynoesen.bonebot.config.Loader
 import jeremynoesen.bonebot.listener.Listener
 import jeremynoesen.bonebot.modules.*
-import jndev.bonebot.modules.*
 import net.dv8tion.jda.api.JDABuilder
 import java.awt.Toolkit
 import javax.imageio.ImageIO
