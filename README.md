@@ -27,7 +27,7 @@ BoneBot can have various now playing statuses shown in Discord. You can put cust
 The command `bbrestart` is used to restart the bot. If not set up with a launch daemon, the bot will just shut down. Only the server owner can run this command. You can type `bbhelp` to view all commands, including a list of custom added commands.
 
 ## Building
-To build, clone or download this repository. With Gradle installed, run `gradle build` in the directory of the project. After that, a file called "BoneBot.jar" should have been created.
+To build, clone or download this repository. With Gradle installed, run `gradle build` in the directory of the project. After that, a file called "BoneBot.jar" should have been created. You can also grab `BoneBot.jar` from the latest release.
 
 ## Installation
 Create a new folder where you would like the bot to be installed. Next, place `BoneBot.jar` in this directory. Next, you are going to want to head over to the Discord Developer Portal and create an application. After doing so, add a bot to the application in the bot tab. You can customize everything here as you please, as it is your own instance of the bot.
@@ -39,7 +39,7 @@ To start the bot, you can run in terminal, or create a script to run `java -jar 
 This is a script that can be used to install and run the bot. Replace `botdir` with the directory you placed the bot in. Use this instead of the previously mentioned steps for installing and running for an automatically updating bot and/or quick installation. You will need to restart the bot after updating text files. If you would like to make a simple start script, remove all but the first and last lines of this script.
 ```
 cd botdir
-git clone https://github.com/Jeremaster101/BoneBot.git
+git clone https://github.com/jeremynoesen/BoneBot.git
 cd botdir/BoneBot
 gradle build
 cp botdir/BoneBot/build/libs/BoneBot.jar botdir
