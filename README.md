@@ -59,6 +59,3 @@ command-cooldown: 5
 command-prefix: bb
 bot-token: TOKEN_HERE
 ```
-
-## Contributing
-To contribute to this repo, you can fork the release branch, make your edits and additions, and then create a pull request back to the release branch. You are also free to do whatever with your fork according to the license.
