@@ -53,28 +53,22 @@ private constructor(
             try {
                 command.channel.sendTyping().queue()
                 readTextAndImage()
-                processImage()
-                val file = convertToFile()
-                command.channel.sendFile(file).queue()
-                image!!.flush()
-                meme!!.flush()
-                image = null
-                meme = null
-                text = null
-                file.delete()
-                prevTime = System.currentTimeMillis()
-                System.gc()
-            } catch (exception: IOException) {
-                command.channel.sendMessage(
-                    "Error generating meme! " +
-                            command.jda.getUserByTag("Jeremaster101#0494")!!.asMention
-                ).queue()
-                Logger.log(exception)
-            } catch (exception: FontFormatException) {
-                command.channel.sendMessage(
-                    "Error generating meme! " +
-                            command.jda.getUserByTag("Jeremaster101#0494")!!.asMention
-                ).queue()
+                if (image != null && text != null) {
+                    processImage()
+                    val file = convertToFile()
+                    command.channel.sendFile(file).queue()
+                    image!!.flush()
+                    meme!!.flush()
+                    image = null
+                    meme = null
+                    text = null
+                    file.delete()
+                    prevTime = System.currentTimeMillis()
+                    System.gc()
+                } else {
+                    command.channel.sendMessage("Please provide the missing text or image!").queue()
+                }
+            } catch (exception: Exception) {
                 Logger.log(exception)
             }
         } else {
@@ -100,16 +94,19 @@ private constructor(
                 .replace("  ", " ").trim { it <= ' ' }
         } else {
             val r = Random()
-            val dir = File("images")
-            var rand = r.nextInt(dir.listFiles()!!.size)
-            while (dir.listFiles()!![rand].isHidden) {
-                rand = r.nextInt(dir.listFiles()!!.size)
+            val dir = File("resources/images")
+            if (dir.listFiles()!!.isNotEmpty()) {
+                var rand = r.nextInt(dir.listFiles()!!.size)
+                while (dir.listFiles()!![rand].isHidden) {
+                    rand = r.nextInt(dir.listFiles()!!.size)
+                }
+                image = ImageIO.read(dir.listFiles()!![rand])
             }
-            image = ImageIO.read(dir.listFiles()!![rand])
         }
-        text = if (input.isNotEmpty() || input != "") {
-            input
-        } else {
+
+        if (input.isNotEmpty()) {
+            text = input
+        } else if (texts.isNotEmpty()) {
             val r = Random()
             texts[r.nextInt(texts.size)]
         }
