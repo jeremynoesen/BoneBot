@@ -6,9 +6,7 @@ import jeremynoesen.bonebot.listener.Listener
 import jeremynoesen.bonebot.modules.*
 import jeremynoesen.bonebot.util.Logger
 import net.dv8tion.jda.api.JDABuilder
-import java.awt.Toolkit
 import java.io.File
-import java.lang.Exception
 import javax.imageio.ImageIO
 import javax.security.auth.login.LoginException
 
@@ -24,12 +22,9 @@ object BoneBot {
      * @param args
      * @throws LoginException when unable to log in to bot account
      */
-    @Throws(LoginException::class)
     @JvmStatic
     fun main(args: Array<String>) {
         try {
-            System.setProperty("apple.awt.UIElement", "true")
-            Toolkit.getDefaultToolkit()
             ImageIO.setUseCache(false)
             File("resources").mkdir()
             File("resources/images").mkdir()
