@@ -24,12 +24,12 @@ object Logger {
             val pw = PrintWriter(log)
             val dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")
             val now = LocalDateTime.now()
-            pw.println(now.format(dtf))
-            pw.println(exception.message)
+            pw.appendLine(now.format(dtf))
+            pw.appendLine(exception.message)
             for (ste in exception.stackTrace) {
-                pw.println(ste.toString())
+                pw.appendLine(ste.toString())
             }
-            pw.println()
+            pw.appendLine()
             pw.close()
         } catch (fileNotFoundException: FileNotFoundException) {
             fileNotFoundException.printStackTrace()
