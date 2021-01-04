@@ -1,11 +1,10 @@
-package jeremynoesen.bonebot.listener
+package jeremynoesen.bonebot
 
-import jeremynoesen.bonebot.config.Config
+import jeremynoesen.bonebot.Config
 import jeremynoesen.bonebot.modules.Command
 import jeremynoesen.bonebot.modules.Meme
 import jeremynoesen.bonebot.modules.Reactor
 import jeremynoesen.bonebot.modules.Responder
-import jeremynoesen.bonebot.util.Logger
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import net.dv8tion.jda.api.hooks.ListenerAdapter

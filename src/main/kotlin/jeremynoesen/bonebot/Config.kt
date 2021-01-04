@@ -1,6 +1,7 @@
-package jeremynoesen.bonebot.config
+package jeremynoesen.bonebot
 
-import jeremynoesen.bonebot.util.Logger
+import jeremynoesen.bonebot.Logger
+import jeremynoesen.bonebot.modules.*
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.PrintWriter
@@ -53,6 +54,9 @@ object Config {
      */
     fun loadData() {
         try {
+            File("resources").mkdir()
+            File("resources/images").mkdir()
+
             val fileScanner = Scanner(File("resources/config.txt"))
             while (fileScanner.hasNextLine()) {
                 val lineScanner = Scanner(fileScanner.nextLine())
@@ -82,6 +86,7 @@ object Config {
                 lineScanner.close()
             }
             fileScanner.close()
+
         } catch (e: FileNotFoundException) {
             val file = File("resources/config.txt")
             val pw = PrintWriter(file)
@@ -92,6 +97,43 @@ object Config {
             pw.println("command-cooldown: $commandCooldown")
             pw.println("command-prefix: $commandPrefix")
             pw.println("botToken: TOKEN_HERE")
+            pw.close()
+        } catch (e: Exception) {
+            Logger.log(e)
+        }
+
+        try {
+            loadData("resources/commands.txt", Command.commands)
+            loadData("resources/responses.txt", Responder.responses)
+            loadData("resources/texts.txt", Meme.texts)
+            loadData("resources/statuses.txt", Status.statuses)
+            loadData("resources/reactions.txt", Reactor.reactions)
+        } catch (e: Exception) {
+            Logger.log(e)
+        }
+    }
+
+    /**
+     * load all data from file to array list
+     *
+     * @param filePath path to file holding the data
+     * @param list     list to load data into
+     */
+    private fun loadData(filePath: String, list: ArrayList<String>) {
+        try {
+            val fileScanner = Scanner(File(filePath))
+            list.clear()
+            while (fileScanner.hasNextLine()) {
+                val line = fileScanner.nextLine()
+                if (line.isNotBlank())
+                    list.add(fileScanner.nextLine())
+            }
+            fileScanner.close()
+            list.trimToSize()
+        } catch (e: FileNotFoundException) {
+            val file = File(filePath)
+            val pw = PrintWriter(file)
+            pw.println()
             pw.close()
         } catch (e: Exception) {
             Logger.log(e)
