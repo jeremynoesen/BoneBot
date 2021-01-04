@@ -1,5 +1,6 @@
 package jeremynoesen.bonebot.config
 
+import jeremynoesen.bonebot.util.Logger
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.PrintWriter
@@ -50,7 +51,7 @@ object Config {
     /**
      * load config values, write default config if missing
      */
-    fun load() {
+    fun loadData() {
         try {
             val fileScanner = Scanner(File("resources/config.txt"))
             while (fileScanner.hasNextLine()) {
@@ -92,6 +93,8 @@ object Config {
             pw.println("command-prefix: $commandPrefix")
             pw.println("botToken: TOKEN_HERE")
             pw.close()
+        } catch (e: Exception) {
+            Logger.log(e)
         }
     }
 }

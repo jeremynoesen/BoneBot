@@ -34,6 +34,8 @@ object Loader {
             val pw = PrintWriter(file)
             pw.println()
             pw.close()
+        } catch (e: Exception) {
+            Logger.log(e)
         }
     }
 }

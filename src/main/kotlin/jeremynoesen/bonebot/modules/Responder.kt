@@ -1,6 +1,7 @@
 package jeremynoesen.bonebot.modules
 
 import jeremynoesen.bonebot.config.Config
+import jeremynoesen.bonebot.util.Logger
 import net.dv8tion.jda.api.entities.Message
 import java.util.*
 
@@ -27,20 +28,24 @@ object Responder {
      * @param message message to check and respond to
      */
     fun respond(message: Message) {
-        val msg = message.contentRaw.toLowerCase()
-        for (phrase in responses) {
-            val triggerAndPhrases = phrase.split(" // ").toTypedArray()
-            val triggers = triggerAndPhrases[0].split(" / ").toTypedArray()
-            var count = 0
-            for (trigger in triggers) {
-                if (msg.contains(trigger.toLowerCase())) count++
+        try {
+            val msg = message.contentRaw.toLowerCase()
+            for (phrase in responses) {
+                val triggerAndPhrases = phrase.split(" // ").toTypedArray()
+                val triggers = triggerAndPhrases[0].split(" / ").toTypedArray()
+                var count = 0
+                for (trigger in triggers) {
+                    if (msg.contains(trigger.toLowerCase())) count++
+                }
+                if (count == triggers.size && (System.currentTimeMillis() - prevTime) >= Config.responseCooldown * 1000) {
+                    prevTime = System.currentTimeMillis()
+                    for (i in 1 until triggerAndPhrases.size) message.channel.sendMessage(
+                        triggerAndPhrases[1].replace("\$USER$", message.author.asMention)
+                    ).queue()
+                }
             }
-            if (count == triggers.size && (System.currentTimeMillis() - prevTime) >= Config.responseCooldown * 1000) {
-                prevTime = System.currentTimeMillis()
-                for (i in 1 until triggerAndPhrases.size) message.channel.sendMessage(
-                    triggerAndPhrases[1].replace("\$USER$", message.author.asMention)
-                ).queue()
-            }
+        } catch (e: Exception) {
+            Logger.log(e)
         }
     }
 }
