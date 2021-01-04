@@ -32,8 +32,10 @@ object Status {
                     Logger.log(e)
                 }
                 try {
-                    val random = Random()
-                    jda.presence.activity = Activity.playing(statuses[random.nextInt(statuses.size)])
+                    if(statuses.isNotEmpty()) {
+                        val random = Random()
+                        jda.presence.activity = Activity.playing(statuses[random.nextInt(statuses.size)])
+                    }
                 } catch (e: Exception) {
                     Logger.log(e)
                 }
