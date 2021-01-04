@@ -45,7 +45,7 @@ gradle build
 cp botdir/BoneBot/build/libs/BoneBot.jar botdir
 rm -rf botdir/BoneBot
 cd botdir
-java -jar botdir/BoneBot.jar
+nohup java -jar botdir/BoneBot.jar
 ```
 
 ## Configuration
