@@ -1,9 +1,7 @@
 package jeremynoesen.bonebot
 
-import jeremynoesen.bonebot.Config
 import jeremynoesen.bonebot.modules.*
 import net.dv8tion.jda.api.JDABuilder
-import java.io.File
 import javax.imageio.ImageIO
 import javax.security.auth.login.LoginException
 
@@ -13,6 +11,7 @@ import javax.security.auth.login.LoginException
  * @author Jeremy Noesen
  */
 object BoneBot {
+
     /**
      * create the bot and run it
      *

@@ -1,6 +1,5 @@
 package jeremynoesen.bonebot.modules
 
-import jeremynoesen.bonebot.Config
 import jeremynoesen.bonebot.Logger
 import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.entities.Activity
@@ -13,10 +12,16 @@ import java.util.*
  * @author Jeremy Noesen
  */
 object Status {
+
     /**
      * list of now playing statuses loaded from the statuses file
      */
     val statuses = ArrayList<String>()
+
+    /**
+     * cooldown for status updater, in seconds
+     */
+    var cooldown = 60
 
     /**
      * set the status for the bot. this only needs to be called once
@@ -27,7 +32,7 @@ object Status {
         Thread {
             while (true) {
                 try {
-                    Thread.sleep(Config.statusCooldown * 1000L)
+                    Thread.sleep(cooldown * 1000L)
                 } catch (e: InterruptedException) {
                     Logger.log(e)
                 }

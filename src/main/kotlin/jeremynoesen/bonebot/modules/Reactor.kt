@@ -1,6 +1,5 @@
 package jeremynoesen.bonebot.modules
 
-import jeremynoesen.bonebot.Config
 import jeremynoesen.bonebot.Logger
 import net.dv8tion.jda.api.entities.Message
 import java.util.*
@@ -16,6 +15,11 @@ object Reactor {
      * list of phrases loaded from the responses file
      */
     val reactions = ArrayList<String>()
+
+    /**
+     * cooldown for reactor, in seconds
+     */
+    var cooldown = 60
 
     /**
      * last time the reactor reacted to a message in milliseconds
@@ -37,7 +41,7 @@ object Reactor {
                 for (trigger in triggers) {
                     if (msg.contains(trigger.toLowerCase())) count++
                 }
-                if (count == triggers.size && (System.currentTimeMillis() - prevTime) >= Config.reactCooldown * 1000) {
+                if (count == triggers.size && (System.currentTimeMillis() - prevTime) >= cooldown * 1000) {
                     prevTime = System.currentTimeMillis()
                     for (i in 1 until triggerAndEmotes.size) message.addReaction(triggerAndEmotes[i]).queue()
                 }

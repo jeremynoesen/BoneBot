@@ -1,6 +1,5 @@
 package jeremynoesen.bonebot
 
-import jeremynoesen.bonebot.Logger
 import jeremynoesen.bonebot.modules.*
 import java.io.File
 import java.io.FileNotFoundException
@@ -15,39 +14,9 @@ import java.util.*
 object Config {
 
     /**
-     * cooldown for responder, in seconds
-     */
-    var responseCooldown = 180
-
-    /**
-     * cooldown for reactor, in seconds
-     */
-    var reactCooldown = 60
-
-    /**
-     * cooldown for meme generator, in seconds
-     */
-    var memeCooldown = 5
-
-    /**
-     * cooldown for status updater, in seconds
-     */
-    var statusCooldown = 60
-
-    /**
-     * cooldown for commands, in seconds
-     */
-    var commandCooldown = 5
-
-    /**
-     * command prefix
-     */
-    var commandPrefix = "bb"
-
-    /**
      * bot token
      */
-    var botToken = ""
+    var botToken = "TOKEN"
 
     /**
      * load config values, write default config if missing
@@ -62,22 +31,22 @@ object Config {
                 val lineScanner = Scanner(fileScanner.nextLine())
                 when (lineScanner.next()) {
                     "response-cooldown:" -> {
-                        responseCooldown = lineScanner.nextInt()
+                        Responder.cooldown = lineScanner.nextInt()
                     }
                     "react-cooldown:" -> {
-                        reactCooldown = lineScanner.nextInt()
+                        Reactor.cooldown = lineScanner.nextInt()
                     }
                     "meme-cooldown:" -> {
-                        memeCooldown = lineScanner.nextInt()
+                        Meme.cooldown = lineScanner.nextInt()
                     }
                     "status-cooldown:" -> {
-                        statusCooldown = lineScanner.nextInt()
+                        Status.cooldown = lineScanner.nextInt()
                     }
                     "command-cooldown:" -> {
-                        commandCooldown = lineScanner.nextInt()
+                        Command.cooldown = lineScanner.nextInt()
                     }
                     "command-prefix:" -> {
-                        commandPrefix = lineScanner.next()
+                        Command.commandPrefix = lineScanner.next()
                     }
                     "bot-token:" -> {
                         botToken = lineScanner.next()
@@ -90,13 +59,13 @@ object Config {
         } catch (e: FileNotFoundException) {
             val file = File("resources/config.txt")
             val pw = PrintWriter(file)
-            pw.println("response-cooldown: $reactCooldown")
-            pw.println("react-cooldown: $reactCooldown")
-            pw.println("meme-cooldown: $memeCooldown")
-            pw.println("status-cooldown: $statusCooldown")
-            pw.println("command-cooldown: $commandCooldown")
-            pw.println("command-prefix: $commandPrefix")
-            pw.println("botToken: TOKEN_HERE")
+            pw.println("response-cooldown: ${Responder.cooldown}")
+            pw.println("react-cooldown: ${Reactor.cooldown}")
+            pw.println("meme-cooldown: ${Meme.cooldown}")
+            pw.println("status-cooldown: ${Status.cooldown}")
+            pw.println("command-cooldown: ${Command.cooldown}")
+            pw.println("command-prefix: ${Command.commandPrefix}")
+            pw.println("botToken: $botToken")
             pw.close()
         } catch (e: Exception) {
             Logger.log(e)

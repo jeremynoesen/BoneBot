@@ -1,6 +1,5 @@
 package jeremynoesen.bonebot.modules
 
-import jeremynoesen.bonebot.Config
 import jeremynoesen.bonebot.Logger
 import net.dv8tion.jda.api.entities.Message
 import org.apache.commons.text.WordUtils
@@ -49,7 +48,7 @@ private constructor(
      * generate and send a meme
      */
     private fun generate() {
-        if ((System.currentTimeMillis() - prevTime) >= Config.memeCooldown * 1000) {
+        if ((System.currentTimeMillis() - prevTime) >= cooldown * 1000) {
             try {
                 command.channel.sendTyping().queue()
                 readTextAndImage()
@@ -84,7 +83,7 @@ private constructor(
      */
     @Throws(IOException::class)
     private fun readTextAndImage() {
-        var input = command.contentRaw.replaceFirst(Config.commandPrefix + "meme", "").trim { it <= ' ' }
+        var input = command.contentRaw.replaceFirst(Command.commandPrefix + "meme", "").trim { it <= ' ' }
         if (command.attachments.size > 0 && command.attachments[0].isImage) {
             image = ImageIO.read(URL(command.attachments[0].url))
         } else if (command.mentionedUsers.size > 0) {
@@ -186,6 +185,11 @@ private constructor(
          * number of memes created. helpful to separate meme files to prevent overwriting a meme being processed
          */
         private var memeCount = 0
+
+        /**
+         * cooldown for meme generator, in seconds
+         */
+        var cooldown = 5
 
         /**
          * last time the meme generator was used in milliseconds
