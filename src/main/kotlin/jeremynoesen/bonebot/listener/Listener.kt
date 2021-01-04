@@ -41,12 +41,11 @@ class Listener : ListenerAdapter() {
                 }
                 e.message.contentRaw.startsWith(Config.commandPrefix + "help") -> {
                     var commandList = ""
-                    var i = 0;
-                    for (command in Command.commands) {
+                    for ((i, command) in Command.commands.withIndex()) {
                         commandList += "`" + Config.commandPrefix + command.split(" // ")[0] + "`"
                         if (i != Command.commands.size - 1) commandList += ", "
-                        i++
                     }
+                    if (commandList.isBlank()) commandList = "No commands defined"
                     val embedBuilder = EmbedBuilder()
                     val name = e.jda.selfUser.name
                     embedBuilder.setAuthor("$name Help", null, e.jda.selfUser.avatarUrl)
