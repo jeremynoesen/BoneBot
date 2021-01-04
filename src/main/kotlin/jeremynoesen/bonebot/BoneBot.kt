@@ -6,6 +6,7 @@ import jeremynoesen.bonebot.listener.Listener
 import jeremynoesen.bonebot.modules.*
 import net.dv8tion.jda.api.JDABuilder
 import java.awt.Toolkit
+import java.io.File
 import javax.imageio.ImageIO
 import javax.security.auth.login.LoginException
 
@@ -27,7 +28,9 @@ object BoneBot {
         System.setProperty("apple.awt.UIElement", "true")
         Toolkit.getDefaultToolkit()
         ImageIO.setUseCache(false)
-        Config.load()
+        File("resources").mkdir()
+        File("resources/images").mkdir()
+        Config.loadData()
         Loader.loadData("resources/commands.txt", Command.commands)
         Loader.loadData("resources/responses.txt", Responder.responses)
         Loader.loadData("resources/texts.txt", Meme.texts)
@@ -35,8 +38,5 @@ object BoneBot {
         Loader.loadData("resources/reactions.txt", Reactor.reactions)
         val jda = JDABuilder.createLight(Config.botToken).addEventListeners(Listener()).build()
         Status.setStatus(jda)
-
-//        Halloween halloween = new Halloween(jda);
-//        jda.addEventListener(halloween);
     }
 }
