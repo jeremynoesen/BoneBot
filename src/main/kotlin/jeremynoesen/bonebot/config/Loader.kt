@@ -1,5 +1,6 @@
 package jeremynoesen.bonebot.config
 
+import jeremynoesen.bonebot.util.Logger
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.PrintWriter
@@ -21,7 +22,11 @@ object Loader {
         try {
             val fileScanner = Scanner(File(filePath))
             list.clear()
-            while (fileScanner.hasNextLine()) list.add(fileScanner.nextLine())
+            while (fileScanner.hasNextLine()) {
+                val line = fileScanner.nextLine()
+                if (line.isNotBlank())
+                    list.add(fileScanner.nextLine())
+            }
             fileScanner.close()
             list.trimToSize()
         } catch (e: FileNotFoundException) {
