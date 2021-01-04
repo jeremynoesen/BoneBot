@@ -43,8 +43,8 @@ class Listener : ListenerAdapter() {
                     }
                     e.message.contentRaw.startsWith(Command.commandPrefix + "help") -> {
                         var commandList = ""
-                        for ((i, command) in Command.commands.withIndex()) {
-                            commandList += "`" + Command.commandPrefix + command.split(" // ")[0] + "`"
+                        for ((i, command) in Command.commands.keys.withIndex()) {
+                            commandList += "`$command`"
                             if (i != Command.commands.size - 1) commandList += ", "
                         }
                         if (commandList.isBlank()) commandList = "*No commands defined*"
@@ -63,8 +63,8 @@ class Listener : ListenerAdapter() {
                         e.channel.sendMessage(embedBuilder.build()).queue()
                     }
                     else -> {
-                        Responder.respond(e.message)
                         Command.perform(e.message)
+                        Responder.respond(e.message)
                         Reactor.react(e.message)
                     }
                 }

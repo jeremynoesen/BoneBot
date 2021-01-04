@@ -2,7 +2,11 @@ package jeremynoesen.bonebot.modules
 
 import jeremynoesen.bonebot.Logger
 import net.dv8tion.jda.api.entities.Message
+import java.io.File
+import java.io.FileNotFoundException
+import java.io.PrintWriter
 import java.util.*
+import kotlin.collections.HashMap
 
 /**
  * command handler with simple message responses
@@ -14,7 +18,7 @@ object Command {
     /**
      * list of commands loaded from the command file
      */
-    val commands = ArrayList<String>()
+    val commands = HashMap<String, String>()
 
     /**
      * command prefix
@@ -32,23 +36,44 @@ object Command {
     private var prevTime = 0L
 
     /**
-     * respond to a message if a command
+     * load all commands from file into the hashmap
+     */
+    fun loadCommands() {
+        try {
+            val fileScanner = Scanner(File("resources/commands.txt"))
+            while (fileScanner.hasNextLine()) {
+                val line = fileScanner.nextLine()
+                if (line.isNotBlank()) {
+                    val parts = line.split(" // ")
+                    commands[commandPrefix + parts[0]] = parts[1]
+                }
+            }
+            fileScanner.close()
+        } catch (e: FileNotFoundException) {
+            val file = File("resources/commands.txt")
+            val pw = PrintWriter(file)
+            pw.println()
+            pw.close()
+        } catch (e: Exception) {
+            Logger.log(e)
+        }
+    }
+
+    /**
+     * respond to a message if it is a command
      *
      * @param message message to check and respond to
      */
     fun perform(message: Message) {
         try {
-            var msg = message.contentRaw.toLowerCase()
+            val msg = message.contentRaw.toLowerCase()
             if (msg.startsWith(commandPrefix)) {
-                msg = msg.replaceFirst(commandPrefix, "")
-                for (command in commands) {
-                    val commandAndMessage = command.split(" // ").toTypedArray()
-                    if (msg.startsWith(commandAndMessage[0])) {
+                for (command in commands.keys) {
+                    if (msg.startsWith(command)) {
                         if ((System.currentTimeMillis() - prevTime) >= cooldown * 1000) {
                             prevTime = System.currentTimeMillis()
-                            for (i in 1 until commandAndMessage.size) message.channel.sendMessage(
-                                commandAndMessage[1].replace("\$USER$", message.author.asMention)
-                            ).queue()
+                            message.channel.sendMessage(
+                                commands[command]!!.replace("\$USER$", message.author.asMention)).queue()
                         } else {
                             message.delete().queue()
                         }

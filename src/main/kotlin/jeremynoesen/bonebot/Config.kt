@@ -72,7 +72,6 @@ object Config {
         }
 
         try {
-            loadData("resources/commands.txt", Command.commands)
             loadData("resources/responses.txt", Responder.responses)
             loadData("resources/texts.txt", Meme.texts)
             loadData("resources/statuses.txt", Status.statuses)
@@ -95,7 +94,7 @@ object Config {
             while (fileScanner.hasNextLine()) {
                 val line = fileScanner.nextLine()
                 if (line.isNotBlank())
-                    list.add(fileScanner.nextLine())
+                    list.add(line)
             }
             fileScanner.close()
             list.trimToSize()
