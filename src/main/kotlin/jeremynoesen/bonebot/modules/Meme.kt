@@ -123,8 +123,7 @@ private constructor(
         meme = BufferedImage(width, height, BufferedImage.TYPE_INT_RGB)
         val graphics = meme!!.graphics
         val g2d = graphics as Graphics2D
-        val fontFile = File("/System/Library/Fonts/Supplemental/Impact.ttf")
-        val font = Font.createFont(Font.TRUETYPE_FONT, fontFile).deriveFont(96f)
+        val font = Font.createFont(Font.TRUETYPE_FONT, javaClass.getResourceAsStream("/Impact.ttf")).deriveFont(96f)
         graphics.setFont(font)
         val metrics = graphics.getFontMetrics(font)
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON)
