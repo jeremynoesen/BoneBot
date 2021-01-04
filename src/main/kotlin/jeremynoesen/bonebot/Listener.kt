@@ -1,6 +1,5 @@
 package jeremynoesen.bonebot
 
-import jeremynoesen.bonebot.Config
 import jeremynoesen.bonebot.modules.Command
 import jeremynoesen.bonebot.modules.Meme
 import jeremynoesen.bonebot.modules.Reactor
@@ -17,6 +16,7 @@ import java.lang.Exception
  * @author Jeremy Noesen
  */
 class Listener : ListenerAdapter() {
+
     /**
      * respond to users when they say certain key words
      *
@@ -26,11 +26,11 @@ class Listener : ListenerAdapter() {
         try {
             if (!e.author.isBot) {
                 when {
-                    e.message.contentRaw.startsWith(Config.commandPrefix + "meme") -> {
+                    e.message.contentRaw.startsWith(Command.commandPrefix + "meme") -> {
                         Meme.generate(e.message)
                         Runtime.getRuntime().gc()
                     }
-                    e.message.contentRaw.startsWith(Config.commandPrefix + "restart") -> {
+                    e.message.contentRaw.startsWith(Command.commandPrefix + "restart") -> {
                         if (e.author.idLong == 393939920177070100L || e.member!!.isOwner) {
                             e.channel.sendMessage("Restarting...").queue()
                             e.channel.sendTyping().queue()
@@ -41,10 +41,10 @@ class Listener : ListenerAdapter() {
                             e.message.delete().queue()
                         }
                     }
-                    e.message.contentRaw.startsWith(Config.commandPrefix + "help") -> {
+                    e.message.contentRaw.startsWith(Command.commandPrefix + "help") -> {
                         var commandList = ""
                         for ((i, command) in Command.commands.withIndex()) {
-                            commandList += "`" + Config.commandPrefix + command.split(" // ")[0] + "`"
+                            commandList += "`" + Command.commandPrefix + command.split(" // ")[0] + "`"
                             if (i != Command.commands.size - 1) commandList += ", "
                         }
                         if (commandList.isBlank()) commandList = "No commands defined"
@@ -54,9 +54,9 @@ class Listener : ListenerAdapter() {
                         embedBuilder.setColor(Color(0, 151, 255))
                         embedBuilder.setDescription(
                             "**Default Commands:**\n" +
-                                    "• `" + Config.commandPrefix + "meme <optional text> <optional image or mention>`: Generate" +
+                                    "• `" + Command.commandPrefix + "meme <optional text> <optional image or mention>`: Generate" +
                                     " a meme with input or random text, input or random image, or user avatar.\n" +
-                                    "• `" + Config.commandPrefix + "restart`: Restart the bot if set up properly, otherwise shut down.\n\n" +
+                                    "• `" + Command.commandPrefix + "restart`: Restart the bot if set up properly, otherwise shut down.\n\n" +
                                     "**Custom Commands:**\n" + commandList + "\n\n[GitHub](https://github.com/Jeremaster101/BoneBot)"
                         )
                         e.channel.sendMessage(embedBuilder.build()).queue()

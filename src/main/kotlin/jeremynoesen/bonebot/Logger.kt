@@ -12,6 +12,7 @@ import java.time.format.DateTimeFormatter
  * @author Jeremy Noesen
  */
 object Logger {
+
     /**
      * write exception to a log file with time stamp
      *
