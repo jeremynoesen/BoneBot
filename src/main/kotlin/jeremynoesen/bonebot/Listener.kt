@@ -31,7 +31,7 @@ class Listener : ListenerAdapter() {
                         Runtime.getRuntime().gc()
                     }
                     e.message.contentRaw.startsWith(Command.commandPrefix + "restart") -> {
-                        if (e.author.idLong == 393939920177070100L || e.member!!.isOwner) {
+                        if (e.member!!.isOwner) {
                             e.channel.sendMessage("Restarting...").queue()
                             e.channel.sendTyping().queue()
                             e.jda.shutdown()
@@ -47,17 +47,18 @@ class Listener : ListenerAdapter() {
                             commandList += "`" + Command.commandPrefix + command.split(" // ")[0] + "`"
                             if (i != Command.commands.size - 1) commandList += ", "
                         }
-                        if (commandList.isBlank()) commandList = "No commands defined"
+                        if (commandList.isBlank()) commandList = "*No commands defined*"
                         val embedBuilder = EmbedBuilder()
                         val name = e.jda.selfUser.name
                         embedBuilder.setAuthor("$name Help", null, e.jda.selfUser.avatarUrl)
                         embedBuilder.setColor(Color(0, 151, 255))
                         embedBuilder.setDescription(
-                            "**Default Commands:**\n" +
-                                    "• `" + Command.commandPrefix + "meme <optional text> <optional image or mention>`: Generate" +
-                                    " a meme with input or random text, input or random image, or user avatar.\n" +
-                                    "• `" + Command.commandPrefix + "restart`: Restart the bot if set up properly, otherwise shut down.\n\n" +
-                                    "**Custom Commands:**\n" + commandList + "\n\n[GitHub](https://github.com/Jeremaster101/BoneBot)"
+                            "**Default Commands**\n" +
+                                    "• `" + Command.commandPrefix + "meme <text> <image or user>`: Generate" +
+                                    " a meme using text and image or user avatar. If configured, you" +
+                                    " can skip either to randomly pick them.\n" +
+                                    "• `" + Command.commandPrefix + "restart`: Restart the bot if configured, otherwise shut down.\n\n" +
+                                    "**Custom Commands**\n" + commandList + "\n\n[GitHub](https://github.com/jeremynoesen/BoneBot)"
                         )
                         e.channel.sendMessage(embedBuilder.build()).queue()
                     }
