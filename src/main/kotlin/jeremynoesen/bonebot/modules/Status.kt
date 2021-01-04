@@ -1,8 +1,10 @@
 package jeremynoesen.bonebot.modules
 
 import jeremynoesen.bonebot.config.Config
+import jeremynoesen.bonebot.util.Logger
 import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.entities.Activity
+import java.lang.Exception
 import java.util.*
 
 /**
@@ -26,10 +28,15 @@ object Status {
             while (true) {
                 try {
                     Thread.sleep(Config.statusCooldown * 1000L)
-                } catch (ignored: InterruptedException) {
+                } catch (e: InterruptedException) {
+                    Logger.log(e)
                 }
-                val random = Random()
-                jda.presence.activity = Activity.playing(statuses[random.nextInt(statuses.size)])
+                try {
+                    val random = Random()
+                    jda.presence.activity = Activity.playing(statuses[random.nextInt(statuses.size)])
+                } catch (e: Exception) {
+                    Logger.log(e)
+                }
             }
         }.start()
     }

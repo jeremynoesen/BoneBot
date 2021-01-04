@@ -171,7 +171,7 @@ private constructor(
      */
     @Throws(IOException::class)
     private fun convertToFile(): File {
-        val file = File("temp/meme$memeCount.jpg")
+        val file = File("meme$memeCount.jpg")
         ImageIO.write(meme, "jpg", file)
         memeCount++
         return file
