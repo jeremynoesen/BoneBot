@@ -1,6 +1,6 @@
 package jeremynoesen.bonebot
 
-import jeremynoesen.bonebot.modules.*
+import jeremynoesen.bonebot.modules.Status
 import net.dv8tion.jda.api.JDABuilder
 import javax.imageio.ImageIO
 
@@ -19,11 +19,9 @@ object BoneBot {
     @JvmStatic
     fun main(args: Array<String>) {
         try {
+            //todo fix icon
             ImageIO.setUseCache(false)
             Config.loadData()
-            Command.loadCommands()
-            Reactor.loadReactions()
-            Responder.loadResponses()
             val jda = JDABuilder.createLight(Config.botToken).addEventListeners(Listener()).build()
             Status.setStatus(jda)
         } catch (e: Exception) {

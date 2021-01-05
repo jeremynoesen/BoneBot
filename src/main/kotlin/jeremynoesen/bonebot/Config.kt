@@ -74,6 +74,9 @@ object Config {
         try {
             loadData("resources/texts.txt", Meme.texts)
             loadData("resources/statuses.txt", Status.statuses)
+            loadData("resources/commands.txt", Command.commands)
+            loadData("resources/responses.txt", Responder.responses)
+            loadData("resources/reactions.txt", Reactor.reactions)
         } catch (e: Exception) {
             Logger.log(e)
         }
@@ -96,6 +99,33 @@ object Config {
             }
             fileScanner.close()
             list.trimToSize()
+        } catch (e: FileNotFoundException) {
+            val file = File(filePath)
+            val pw = PrintWriter(file)
+            pw.println()
+            pw.close()
+        } catch (e: Exception) {
+            Logger.log(e)
+        }
+    }
+
+    /**
+     * load all data from file to a hashmap, where a string points to another
+     *
+     * @param filePath path to file holding the data
+     * @param map     hashmap to load data into
+     */
+    private fun loadData(filePath: String, map: HashMap<String, String>) {
+        try {
+            val fileScanner = Scanner(File(filePath))
+            while (fileScanner.hasNextLine()) {
+                val line = fileScanner.nextLine()
+                if (line.isNotBlank()) {
+                    val parts = line.split(" // ")
+                    map[parts[0].toLowerCase()] = parts[1]
+                }
+            }
+            fileScanner.close()
         } catch (e: FileNotFoundException) {
             val file = File(filePath)
             val pw = PrintWriter(file)

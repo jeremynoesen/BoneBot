@@ -3,7 +3,6 @@ package jeremynoesen.bonebot.modules
 import jeremynoesen.bonebot.Logger
 import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.entities.Activity
-import java.lang.Exception
 import java.util.*
 
 /**
@@ -31,7 +30,7 @@ object Status {
     fun setStatus(jda: JDA) {
         Thread {
             try {
-                if(statuses.isNotEmpty()) {
+                if (statuses.isNotEmpty()) {
                     val random = Random()
                     jda.presence.activity = Activity.playing(statuses[random.nextInt(statuses.size)])
                 }
