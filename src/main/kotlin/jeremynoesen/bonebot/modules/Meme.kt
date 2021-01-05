@@ -107,7 +107,7 @@ private constructor(
             text = input
         } else if (texts.isNotEmpty()) {
             val r = Random()
-            texts[r.nextInt(texts.size)]
+            text = texts[r.nextInt(texts.size)]
         }
     }
 
