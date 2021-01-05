@@ -30,18 +30,18 @@ object Status {
      */
     fun setStatus(jda: JDA) {
         Thread {
+            try {
+                if(statuses.isNotEmpty()) {
+                    val random = Random()
+                    jda.presence.activity = Activity.playing(statuses[random.nextInt(statuses.size)])
+                }
+            } catch (e: Exception) {
+                Logger.log(e)
+            }
             while (true) {
                 try {
                     Thread.sleep(cooldown * 1000L)
                 } catch (e: InterruptedException) {
-                    Logger.log(e)
-                }
-                try {
-                    if(statuses.isNotEmpty()) {
-                        val random = Random()
-                        jda.presence.activity = Activity.playing(statuses[random.nextInt(statuses.size)])
-                    }
-                } catch (e: Exception) {
                     Logger.log(e)
                 }
             }
