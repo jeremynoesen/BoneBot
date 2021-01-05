@@ -1,7 +1,6 @@
 package jeremynoesen.bonebot.modules
 
-import jeremynoesen.bonebot.config.Config
-import jeremynoesen.bonebot.util.Logger
+import jeremynoesen.bonebot.Logger
 import net.dv8tion.jda.api.entities.Message
 import org.apache.commons.text.WordUtils
 import java.awt.*
@@ -24,12 +23,8 @@ class Meme
  *
  * @param command command containing meme arguments
  */
-private constructor(
-    /**
-     * command message
-     */
-    private val command: Message
-) {
+constructor(private val command: Message) {
+
     /**
      * meme text
      */
@@ -48,33 +43,21 @@ private constructor(
     /**
      * generate and send a meme
      */
-    private fun generate() {
-        if ((System.currentTimeMillis() - prevTime) >= Config.memeCooldown * 1000) {
+    fun generate() {
+        if ((System.currentTimeMillis() - prevTime) >= cooldown * 1000) {
             try {
                 command.channel.sendTyping().queue()
                 readTextAndImage()
-                processImage()
-                val file = convertToFile()
-                command.channel.sendFile(file).queue()
-                image!!.flush()
-                meme!!.flush()
-                image = null
-                meme = null
-                text = null
-                file.delete()
-                prevTime = System.currentTimeMillis()
-                System.gc()
-            } catch (exception: IOException) {
-                command.channel.sendMessage(
-                    "Error generating meme! " +
-                            command.jda.getUserByTag("Jeremaster101#0494")!!.asMention
-                ).queue()
-                Logger.log(exception)
-            } catch (exception: FontFormatException) {
-                command.channel.sendMessage(
-                    "Error generating meme! " +
-                            command.jda.getUserByTag("Jeremaster101#0494")!!.asMention
-                ).queue()
+                if (image != null && text != null) {
+                    processImage()
+                    val file = convertToFile()
+                    command.channel.sendFile(file).queue()
+                    file.delete()
+                    prevTime = System.currentTimeMillis()
+                } else {
+                    command.channel.sendMessage("Please provide the missing text or image!").queue()
+                }
+            } catch (exception: Exception) {
                 Logger.log(exception)
             }
         } else {
@@ -90,7 +73,7 @@ private constructor(
      */
     @Throws(IOException::class)
     private fun readTextAndImage() {
-        var input = command.contentRaw.replaceFirst(Config.commandPrefix + "meme", "").trim { it <= ' ' }
+        var input = command.contentRaw.replaceFirst(Command.commandPrefix + "meme", "").trim { it <= ' ' }
         if (command.attachments.size > 0 && command.attachments[0].isImage) {
             image = ImageIO.read(URL(command.attachments[0].url))
         } else if (command.mentionedUsers.size > 0) {
@@ -100,18 +83,21 @@ private constructor(
                 .replace("  ", " ").trim { it <= ' ' }
         } else {
             val r = Random()
-            val dir = File("images")
-            var rand = r.nextInt(dir.listFiles()!!.size)
-            while (dir.listFiles()!![rand].isHidden) {
-                rand = r.nextInt(dir.listFiles()!!.size)
+            val dir = File("resources/images")
+            if (dir.listFiles()!!.isNotEmpty()) {
+                var rand = r.nextInt(dir.listFiles()!!.size)
+                while (dir.listFiles()!![rand].isHidden) {
+                    rand = r.nextInt(dir.listFiles()!!.size)
+                }
+                image = ImageIO.read(dir.listFiles()!![rand])
             }
-            image = ImageIO.read(dir.listFiles()!![rand])
         }
-        text = if (input.isNotEmpty() || input != "") {
-            input
-        } else {
+
+        if (input.isNotEmpty()) {
+            text = input
+        } else if (texts.isNotEmpty()) {
             val r = Random()
-            texts[r.nextInt(texts.size)]
+            text = texts[r.nextInt(texts.size)]
         }
     }
 
@@ -121,13 +107,12 @@ private constructor(
     @Throws(IOException::class, FontFormatException::class)
     private fun processImage() {
         val ratio = image!!.height / image!!.width.toDouble()
-        val width = 1024
+        val width = 512
         val height = (width * ratio).toInt()
         meme = BufferedImage(width, height, BufferedImage.TYPE_INT_RGB)
         val graphics = meme!!.graphics
         val g2d = graphics as Graphics2D
-        val fontFile = File("/System/Library/Fonts/Supplemental/Impact.ttf")
-        val font = Font.createFont(Font.TRUETYPE_FONT, fontFile).deriveFont(96f)
+        val font = Font.createFont(Font.TRUETYPE_FONT, javaClass.getResourceAsStream("/Impact.ttf")).deriveFont(48f)
         graphics.setFont(font)
         val metrics = graphics.getFontMetrics(font)
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON)
@@ -150,7 +135,7 @@ private constructor(
                 (meme!!.getHeight(null) - (lines.size - i - 0.75) * graphics.getFont().size).toInt()
             )
             val shape = TextLayout(line, font, g2d.fontRenderContext).getOutline(null)
-            g2d.stroke = BasicStroke(3f)
+            g2d.stroke = BasicStroke(1.5f)
             g2d.translate(
                 ((meme!!.getWidth(null) - metrics.stringWidth(line)) / 2.0).toInt(),
                 (meme!!.getHeight(null) - (lines.size - i - 0.75) * graphics.getFont().size).toInt()
@@ -174,7 +159,7 @@ private constructor(
      */
     @Throws(IOException::class)
     private fun convertToFile(): File {
-        val file = File("temp/meme$memeCount.jpg")
+        val file = File("meme$memeCount.jpg")
         ImageIO.write(meme, "jpg", file)
         memeCount++
         return file
@@ -192,18 +177,13 @@ private constructor(
         private var memeCount = 0
 
         /**
+         * cooldown for meme generator, in seconds
+         */
+        var cooldown = 5
+
+        /**
          * last time the meme generator was used in milliseconds
          */
         private var prevTime = 0L
-
-        /**
-         * generate and send a meme
-         *
-         * @param command command entered by user
-         */
-        fun generate(command: Message) {
-            val m = Meme(command)
-            m.generate()
-        }
     }
 }

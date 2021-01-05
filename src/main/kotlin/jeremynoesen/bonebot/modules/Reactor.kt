@@ -1,8 +1,7 @@
 package jeremynoesen.bonebot.modules
 
-import jeremynoesen.bonebot.config.Config
+import jeremynoesen.bonebot.Logger
 import net.dv8tion.jda.api.entities.Message
-import java.util.*
 
 /**
  * responder to words and phrases in a message
@@ -14,7 +13,12 @@ object Reactor {
     /**
      * list of phrases loaded from the responses file
      */
-    val reactions = ArrayList<String>()
+    val reactions = HashMap<String, String>()
+
+    /**
+     * cooldown for reactor, in seconds
+     */
+    var cooldown = 60
 
     /**
      * last time the reactor reacted to a message in milliseconds
@@ -27,18 +31,17 @@ object Reactor {
      * @param message message to check and react to
      */
     fun react(message: Message) {
-        val msg = message.contentRaw.toLowerCase()
-        for (phrase in reactions) {
-            val triggerAndEmotes = phrase.split(" // ").toTypedArray()
-            val triggers = triggerAndEmotes[0].split(" / ").toTypedArray()
-            var count = 0
-            for (trigger in triggers) {
-                if (msg.contains(trigger.toLowerCase())) count++
+        try {
+            val msg = message.contentRaw.toLowerCase()
+            for (trigger in reactions.keys) {
+                if (msg.contains(trigger) && (System.currentTimeMillis() - prevTime) >= cooldown * 1000) {
+                    prevTime = System.currentTimeMillis()
+                    message.addReaction(reactions[trigger]!!).queue()
+                    break
+                }
             }
-            if (count == triggers.size && (System.currentTimeMillis() - prevTime) >= Config.reactCooldown * 1000) {
-                prevTime = System.currentTimeMillis()
-                for (i in 1 until triggerAndEmotes.size) message.addReaction(triggerAndEmotes[i]).queue()
-            }
+        } catch (e: Exception) {
+            Logger.log(e)
         }
     }
 }

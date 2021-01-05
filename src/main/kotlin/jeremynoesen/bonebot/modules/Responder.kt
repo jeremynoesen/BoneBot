@@ -1,6 +1,6 @@
 package jeremynoesen.bonebot.modules
 
-import jeremynoesen.bonebot.config.Config
+import jeremynoesen.bonebot.Logger
 import net.dv8tion.jda.api.entities.Message
 import java.util.*
 
@@ -14,7 +14,12 @@ object Responder {
     /**
      * list of phrases loaded from the responses file
      */
-    val responses = ArrayList<String>()
+    val responses = HashMap<String, String>()
+
+    /**
+     * cooldown for responder, in seconds
+     */
+    var cooldown = 180
 
     /**
      * last time the responder sent a message in milliseconds
@@ -27,20 +32,18 @@ object Responder {
      * @param message message to check and respond to
      */
     fun respond(message: Message) {
-        val msg = message.contentRaw.toLowerCase()
-        for (phrase in responses) {
-            val triggerAndPhrases = phrase.split(" // ").toTypedArray()
-            val triggers = triggerAndPhrases[0].split(" / ").toTypedArray()
-            var count = 0
-            for (trigger in triggers) {
-                if (msg.contains(trigger.toLowerCase())) count++
+        try {
+            val msg = message.contentRaw.toLowerCase()
+            for (trigger in responses.keys) {
+                if (msg.contains(trigger) && (System.currentTimeMillis() - prevTime) >= cooldown * 1000) {
+                    prevTime = System.currentTimeMillis()
+                    message.channel.sendMessage(responses[trigger]!!.replace("\$USER$", message.author.asMention))
+                        .queue()
+                    break
+                }
             }
-            if (count == triggers.size && (System.currentTimeMillis() - prevTime) >= Config.responseCooldown * 1000) {
-                prevTime = System.currentTimeMillis()
-                for (i in 1 until triggerAndPhrases.size) message.channel.sendMessage(
-                    triggerAndPhrases[1].replace("\$USER$", message.author.asMention)
-                ).queue()
-            }
+        } catch (e: Exception) {
+            Logger.log(e)
         }
     }
 }

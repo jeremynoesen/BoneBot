@@ -1,8 +1,8 @@
-package jeremynoesen.bonebot.util
+package jeremynoesen.bonebot
 
 import java.io.File
 import java.io.FileNotFoundException
-import java.io.PrintWriter
+import java.io.FileWriter
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -12,6 +12,7 @@ import java.time.format.DateTimeFormatter
  * @author Jeremy Noesen
  */
 object Logger {
+
     /**
      * write exception to a log file with time stamp
      *
@@ -21,16 +22,16 @@ object Logger {
         val log = File("log.txt")
         try {
             exception.printStackTrace()
-            val pw = PrintWriter(log)
+            val fw = FileWriter(log, true)
             val dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")
             val now = LocalDateTime.now()
-            pw.println(now.format(dtf))
-            pw.println(exception.message)
-            for (ste in exception.stackTrace) {
-                pw.println(ste.toString())
-            }
-            pw.println()
-            pw.close()
+            fw.write(now.format(dtf) + "\n")
+            fw.write(exception.message + "\n")
+            for (ste in exception.stackTrace)
+                for (line in ste.toString().split("\n"))
+                    fw.write("$line\n")
+            fw.write("\n")
+            fw.close()
         } catch (fileNotFoundException: FileNotFoundException) {
             fileNotFoundException.printStackTrace()
         }
