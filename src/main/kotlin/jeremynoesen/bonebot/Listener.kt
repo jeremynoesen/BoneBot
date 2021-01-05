@@ -8,7 +8,6 @@ import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import net.dv8tion.jda.api.hooks.ListenerAdapter
 import java.awt.Color
-import java.lang.Exception
 
 /**
  * all listeners for the bot
@@ -27,8 +26,7 @@ class Listener : ListenerAdapter() {
             if (!e.author.isBot) {
                 when {
                     e.message.contentRaw.startsWith(Command.commandPrefix + "meme") -> {
-                        Meme.generate(e.message)
-                        Runtime.getRuntime().gc()
+                        Meme(e.message).generate()
                     }
                     e.message.contentRaw.startsWith(Command.commandPrefix + "restart") -> {
                         if (e.member!!.isOwner) {

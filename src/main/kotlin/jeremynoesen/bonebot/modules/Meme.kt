@@ -23,12 +23,8 @@ class Meme
  *
  * @param command command containing meme arguments
  */
-private constructor(
-    /**
-     * command message
-     */
-    private val command: Message
-) {
+constructor(private val command: Message) {
+
     /**
      * meme text
      */
@@ -47,7 +43,7 @@ private constructor(
     /**
      * generate and send a meme
      */
-    private fun generate() {
+    fun generate() {
         if ((System.currentTimeMillis() - prevTime) >= cooldown * 1000) {
             try {
                 command.channel.sendTyping().queue()
@@ -56,14 +52,8 @@ private constructor(
                     processImage()
                     val file = convertToFile()
                     command.channel.sendFile(file).queue()
-                    image!!.flush()
-                    meme!!.flush()
-                    image = null
-                    meme = null
-                    text = null
                     file.delete()
                     prevTime = System.currentTimeMillis()
-                    System.gc()
                 } else {
                     command.channel.sendMessage("Please provide the missing text or image!").queue()
                 }
@@ -117,12 +107,12 @@ private constructor(
     @Throws(IOException::class, FontFormatException::class)
     private fun processImage() {
         val ratio = image!!.height / image!!.width.toDouble()
-        val width = 1024
+        val width = 512
         val height = (width * ratio).toInt()
         meme = BufferedImage(width, height, BufferedImage.TYPE_INT_RGB)
         val graphics = meme!!.graphics
         val g2d = graphics as Graphics2D
-        val font = Font.createFont(Font.TRUETYPE_FONT, javaClass.getResourceAsStream("/Impact.ttf")).deriveFont(96f)
+        val font = Font.createFont(Font.TRUETYPE_FONT, javaClass.getResourceAsStream("/Impact.ttf")).deriveFont(48f)
         graphics.setFont(font)
         val metrics = graphics.getFontMetrics(font)
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON)
@@ -145,7 +135,7 @@ private constructor(
                 (meme!!.getHeight(null) - (lines.size - i - 0.75) * graphics.getFont().size).toInt()
             )
             val shape = TextLayout(line, font, g2d.fontRenderContext).getOutline(null)
-            g2d.stroke = BasicStroke(3f)
+            g2d.stroke = BasicStroke(1.5f)
             g2d.translate(
                 ((meme!!.getWidth(null) - metrics.stringWidth(line)) / 2.0).toInt(),
                 (meme!!.getHeight(null) - (lines.size - i - 0.75) * graphics.getFont().size).toInt()
@@ -195,15 +185,5 @@ private constructor(
          * last time the meme generator was used in milliseconds
          */
         private var prevTime = 0L
-
-        /**
-         * generate and send a meme
-         *
-         * @param command command entered by user
-         */
-        fun generate(command: Message) {
-            val m = Meme(command)
-            m.generate()
-        }
     }
 }
