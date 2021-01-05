@@ -2,11 +2,6 @@ package jeremynoesen.bonebot.modules
 
 import jeremynoesen.bonebot.Logger
 import net.dv8tion.jda.api.entities.Message
-import java.io.File
-import java.io.FileNotFoundException
-import java.io.PrintWriter
-import java.util.*
-import kotlin.collections.HashMap
 
 /**
  * command handler with simple message responses
@@ -34,30 +29,6 @@ object Command {
      * last time the command handler sent a message in milliseconds
      */
     private var prevTime = 0L
-
-    /**
-     * load all commands from file into the hashmap
-     */
-    fun loadCommands() {
-        try {
-            val fileScanner = Scanner(File("resources/commands.txt"))
-            while (fileScanner.hasNextLine()) {
-                val line = fileScanner.nextLine()
-                if (line.isNotBlank()) {
-                    val parts = line.split(" // ")
-                    commands[commandPrefix + parts[0].toLowerCase()] = parts[1]
-                }
-            }
-            fileScanner.close()
-        } catch (e: FileNotFoundException) {
-            val file = File("resources/commands.txt")
-            val pw = PrintWriter(file)
-            pw.println()
-            pw.close()
-        } catch (e: Exception) {
-            Logger.log(e)
-        }
-    }
 
     /**
      * respond to a message if it is a command
