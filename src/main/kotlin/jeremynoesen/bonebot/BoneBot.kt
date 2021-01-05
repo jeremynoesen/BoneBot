@@ -2,6 +2,7 @@ package jeremynoesen.bonebot
 
 import jeremynoesen.bonebot.modules.Status
 import net.dv8tion.jda.api.JDABuilder
+import java.awt.Toolkit
 import javax.imageio.ImageIO
 
 /**
@@ -19,7 +20,8 @@ object BoneBot {
     @JvmStatic
     fun main(args: Array<String>) {
         try {
-            //todo fix icon
+            System.setProperty("apple.awt.UIElement", "true") //hide dock icon on macOS
+            Toolkit.getDefaultToolkit()
             ImageIO.setUseCache(false)
             Config.loadData()
             val jda = JDABuilder.createLight(Config.botToken).addEventListeners(Listener()).build()
