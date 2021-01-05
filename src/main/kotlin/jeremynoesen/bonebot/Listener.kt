@@ -44,7 +44,7 @@ class Listener : ListenerAdapter() {
                     e.message.contentRaw.startsWith(Command.commandPrefix + "help") -> {
                         var commandList = ""
                         for ((i, command) in Command.commands.keys.withIndex()) {
-                            commandList += "`$command`"
+                            commandList += "`${Command.commandPrefix}$command`"
                             if (i != Command.commands.size - 1) commandList += ", "
                         }
                         if (commandList.isBlank()) commandList = "*No commands defined*"
