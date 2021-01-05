@@ -22,6 +22,7 @@ object BoneBot {
             ImageIO.setUseCache(false)
             Config.loadData()
             Command.loadCommands()
+            Reactor.loadReactions()
             val jda = JDABuilder.createLight(Config.botToken).addEventListeners(Listener()).build()
             Status.setStatus(jda)
         } catch (e: Exception) {
