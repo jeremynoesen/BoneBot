@@ -45,7 +45,7 @@ object Command {
                 val line = fileScanner.nextLine()
                 if (line.isNotBlank()) {
                     val parts = line.split(" // ")
-                    commands[commandPrefix + parts[0]] = parts[1]
+                    commands[commandPrefix + parts[0].toLowerCase()] = parts[1]
                 }
             }
             fileScanner.close()
@@ -69,12 +69,19 @@ object Command {
             val msg = message.contentRaw.toLowerCase()
             if (msg.startsWith(commandPrefix)) {
                 for (command in commands.keys) {
-                    if (msg.startsWith(command) && (System.currentTimeMillis() - prevTime) >= cooldown * 1000) {
-                        prevTime = System.currentTimeMillis()
-                        message.channel.sendMessage(commands[command]!!.replace("\$USER$", message.author.asMention))
-                            .queue()
-                    } else {
-                        message.delete().queue()
+                    if (msg.startsWith(command)) {
+                        if ((System.currentTimeMillis() - prevTime) >= cooldown * 1000) {
+                            prevTime = System.currentTimeMillis()
+                            message.channel.sendMessage(
+                                commands[command]!!.replace(
+                                    "\$USER$",
+                                    message.author.asMention
+                                )
+                            ).queue()
+                        } else {
+                            message.delete().queue()
+                        }
+                        break
                     }
                 }
             }

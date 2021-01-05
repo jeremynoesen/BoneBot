@@ -40,7 +40,7 @@ object Reactor {
                 val line = fileScanner.nextLine()
                 if (line.isNotBlank()) {
                     val parts = line.split(" // ")
-                    reactions[parts[0]] = parts[1]
+                    reactions[parts[0].toLowerCase()] = parts[1]
                 }
             }
             fileScanner.close()
@@ -63,9 +63,10 @@ object Reactor {
         try {
             val msg = message.contentRaw.toLowerCase()
             for (trigger in reactions.keys) {
-                if (msg.contains(trigger.toLowerCase()) && (System.currentTimeMillis() - prevTime) >= cooldown * 1000) {
+                if (msg.contains(trigger) && (System.currentTimeMillis() - prevTime) >= cooldown * 1000) {
                     prevTime = System.currentTimeMillis()
                     message.addReaction(reactions[trigger]!!).queue()
+                    break
                 }
             }
         } catch (e: Exception) {
