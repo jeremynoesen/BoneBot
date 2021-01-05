@@ -75,7 +75,6 @@ object Config {
             loadData("resources/responses.txt", Responder.responses)
             loadData("resources/texts.txt", Meme.texts)
             loadData("resources/statuses.txt", Status.statuses)
-            loadData("resources/reactions.txt", Reactor.reactions)
         } catch (e: Exception) {
             Logger.log(e)
         }
