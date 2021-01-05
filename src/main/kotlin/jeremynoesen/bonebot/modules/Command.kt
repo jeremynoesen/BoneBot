@@ -40,7 +40,7 @@ object Command {
             val msg = message.contentRaw.toLowerCase()
             if (msg.startsWith(commandPrefix)) {
                 for (command in commands.keys) {
-                    if (msg.startsWith(command)) {
+                    if (msg.startsWith("$commandPrefix$command")) {
                         if ((System.currentTimeMillis() - prevTime) >= cooldown * 1000) {
                             prevTime = System.currentTimeMillis()
                             message.channel.sendMessage(
