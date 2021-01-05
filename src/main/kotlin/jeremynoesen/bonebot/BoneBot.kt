@@ -23,6 +23,7 @@ object BoneBot {
             Config.loadData()
             Command.loadCommands()
             Reactor.loadReactions()
+            Responder.loadResponses()
             val jda = JDABuilder.createLight(Config.botToken).addEventListeners(Listener()).build()
             Status.setStatus(jda)
         } catch (e: Exception) {

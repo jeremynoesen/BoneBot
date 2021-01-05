@@ -72,7 +72,6 @@ object Config {
         }
 
         try {
-            loadData("resources/responses.txt", Responder.responses)
             loadData("resources/texts.txt", Meme.texts)
             loadData("resources/statuses.txt", Status.statuses)
         } catch (e: Exception) {
