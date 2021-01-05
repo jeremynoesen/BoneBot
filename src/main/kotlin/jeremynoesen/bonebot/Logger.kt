@@ -27,10 +27,10 @@ object Logger {
             val now = LocalDateTime.now()
             fw.write(now.format(dtf) + "\n")
             fw.write(exception.message + "\n")
-            for (ste in exception.stackTrace) {
-                fw.write(ste.toString())
-            }
-            fw.write("\n\n")
+            for (ste in exception.stackTrace)
+                for (line in ste.toString().split("\n"))
+                    fw.write("$line\n")
+            fw.write("\n")
             fw.close()
         } catch (fileNotFoundException: FileNotFoundException) {
             fileNotFoundException.printStackTrace()
