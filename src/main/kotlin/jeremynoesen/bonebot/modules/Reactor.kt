@@ -34,7 +34,7 @@ object Reactor {
         try {
             val msg = message.contentRaw.toLowerCase()
             for (trigger in reactions.keys) {
-                if (msg.contains(trigger) && (System.currentTimeMillis() - prevTime) >= cooldown * 1000) {
+                if (msg.contains(Regex(trigger)) && (System.currentTimeMillis() - prevTime) >= cooldown * 1000) {
                     prevTime = System.currentTimeMillis()
                     message.addReaction(reactions[trigger]!!).queue()
                     break
