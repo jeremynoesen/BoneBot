@@ -35,7 +35,7 @@ object Responder {
         try {
             val msg = message.contentRaw.toLowerCase()
             for (trigger in responses.keys) {
-                if (msg.contains(trigger) && (System.currentTimeMillis() - prevTime) >= cooldown * 1000) {
+                if (msg.contains(Regex(trigger)) && (System.currentTimeMillis() - prevTime) >= cooldown * 1000) {
                     prevTime = System.currentTimeMillis()
                     message.channel.sendMessage(responses[trigger]!!.replace("\$USER$", message.author.asMention))
                         .queue()
