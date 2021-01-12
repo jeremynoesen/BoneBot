@@ -21,7 +21,7 @@ BoneBot can react with emotes to messages similarly to responding. These are set
 BoneBot allows for custom commands to be made to provide simple message responses. The format is `command // response`. You do not need to include the command prefix. The response can use the `SUSER$` placeholder as well. The prefix can be customized in `config.txt`. Changing it from "bb" to something else also affects the restart, help, and meme commands. Unlike the responder, commands require the command prefix, and also show up in the help command. This is great for quick access to links and quick information.
 
 ### Status
-BoneBot can have various now playing statuses shown in Discord. You can put custom statuses in `statuses.txt`. Each new line designates a different status message.
+BoneBot can have various now playing statuses shown in Discord. You can put custom statuses in `statuses.txt`. Each new line designates a different status message. These will be selected at random based on the delay set in the main config.
 
 ### Other
 The command `bbrestart` is used to restart the bot. If not set up with a launch daemon, the bot will just shut down. Only the server owner can run this command. You can type `bbhelp` to view all commands, including a list of custom added commands.
