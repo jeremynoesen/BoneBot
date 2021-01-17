@@ -61,7 +61,8 @@ constructor(private val command: Message) {
                 Logger.log(exception)
             }
         } else {
-            command.delete().queue()
+            val remaining = ((cooldown * 1000) - (System.currentTimeMillis() - prevTime)) / 1000
+            command.channel.sendMessage("Another meme can be generated in **$remaining** seconds.").queue()
         }
     }
 

@@ -53,7 +53,7 @@ object Command {
                             Thread.sleep(1000)
                             System.exit(0)
                         } else {
-                            message.delete().queue()
+                            message.channel.sendMessage("You must be the **server owner** to restart the bot.").queue()
                         }
                     }
                     msg.startsWith(commandPrefix + "help") -> {
@@ -89,7 +89,9 @@ object Command {
                                         )
                                     ).queue()
                                 } else {
-                                    message.delete().queue()
+                                    val remaining = ((cooldown * 1000) - (System.currentTimeMillis() - prevTime)) / 1000
+                                    message.channel.sendMessage("Custom commands can be used again in **$remaining** seconds.")
+                                        .queue()
                                 }
                                 break
                             }
