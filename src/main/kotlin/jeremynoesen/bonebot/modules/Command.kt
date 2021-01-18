@@ -15,7 +15,7 @@ object Command {
     /**
      * list of commands loaded from the command file
      */
-    val commands = HashMap<String, String>()
+    val commands = HashMap<String, Pair<String, String>>()
 
     /**
      * command prefix
@@ -58,9 +58,8 @@ object Command {
                     }
                     msg.startsWith(commandPrefix + "help") -> {
                         var commandList = ""
-                        for ((i, command) in commands.keys.withIndex()) {
-                            commandList += "`$commandPrefix$command`"
-                            if (i != commands.size - 1) commandList += ", "
+                        for (command in commands.keys) {
+                            commandList += "• `$commandPrefix$command`: ${commands[command]!!.first}\n"
                         }
                         if (commandList.isBlank()) commandList = "*No commands defined*"
                         val embedBuilder = EmbedBuilder()
@@ -72,8 +71,11 @@ object Command {
                                     "• `" + commandPrefix + "meme <text> <image or user>`: Generate" +
                                     " a meme using text and image or user avatar. If configured, you" +
                                     " can skip either to randomly pick them.\n" +
+                                    "• `" + commandPrefix + "help`: Show this help message again.\n" +
                                     "• `" + commandPrefix + "restart`: Restart the bot if configured, otherwise shut down.\n\n" +
-                                    "**Custom Commands**\n" + commandList + "\n\n[GitHub](https://github.com/jeremynoesen/BoneBot)"
+                                    "**Custom Commands**\n" +
+                                    commandList +
+                                    "\n[GitHub](https://github.com/jeremynoesen/BoneBot)"
                         )
                         message.channel.sendMessage(embedBuilder.build()).queue()
                     }
@@ -83,7 +85,7 @@ object Command {
                                 if ((System.currentTimeMillis() - prevTime) >= cooldown * 1000) {
                                     prevTime = System.currentTimeMillis()
                                     message.channel.sendMessage(
-                                        commands[command]!!.replace(
+                                        commands[command]!!.second.replace(
                                             "\$USER$",
                                             message.author.asMention
                                         )
