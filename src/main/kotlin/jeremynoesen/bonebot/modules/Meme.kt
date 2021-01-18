@@ -1,6 +1,7 @@
 package jeremynoesen.bonebot.modules
 
 import jeremynoesen.bonebot.Logger
+import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.entities.Message
 import org.apache.commons.text.WordUtils
 import java.awt.*
@@ -51,8 +52,12 @@ constructor(private val command: Message) {
                 if (image != null && text != null) {
                     processImage()
                     val file = convertToFile()
-                    command.channel.sendFile(file).queue()
-                    file.delete()
+                    val embedBuilder = EmbedBuilder()
+                    embedBuilder.setAuthor(command.author.name + " Generated a meme!", null, command.author.avatarUrl)
+                    embedBuilder.setColor(Color(0, 151, 255))
+                    embedBuilder.setImage("attachment://meme.jpg")
+                    command.channel.sendMessage(embedBuilder.build()).addFile(file, "meme.jpg").queue()
+                    file.delete() //todo fix file not deleting
                     prevTime = System.currentTimeMillis()
                 } else {
                     command.channel.sendMessage("Please provide the missing text or image!").queue()
@@ -76,7 +81,7 @@ constructor(private val command: Message) {
     private fun readTextAndImage() {
         var input = command.contentRaw.replaceFirst(Command.commandPrefix + "meme", "").trim { it <= ' ' }
         if (command.attachments.size > 0 && command.attachments[0].isImage) {
-            image = ImageIO.read(URL(command.attachments[0].url))
+            image = ImageIO.read(URL(command.attachments[0].url)) //todo fix urls not reading
         } else if (command.mentionedUsers.size > 0) {
             image = ImageIO.read(URL(command.mentionedUsers[0].effectiveAvatarUrl))
             for (i in command.mentionedUsers.indices) input = input.replace(command.mentionedUsers[i].asMention, "")
