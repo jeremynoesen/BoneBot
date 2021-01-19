@@ -18,13 +18,10 @@ BoneBot can respond to messages based on phrases set in `responses.txt`. The for
 BoneBot can react with emotes to messages similarly to responding. These are set up in `reactions.txt` and have a format of `trigger // emote`. The trigger can use regex here as well. You can either put a standard emoji, or you can put the raw Discord emoji code for custom emotes. You can get this in Discord by typing \ and then :emote: and it will give you the emote as its code inside of `< >`. This is useful to make BoneBot interact with messages while not being an interruption.
 
 ### Commands
-BoneBot allows for custom commands to be made to provide simple message responses. The format is `command // description // response`. You do not need to include the command prefix. The response can use the `SUSER$` placeholder as well. The prefix can be customized in `config.txt`. Changing it from "bb" to something else also affects the restart, help, and meme commands. Unlike the responder, commands require the command prefix, and also show up in the help command. The description is used for the help command. This is great for quick access to links and information.
+BoneBot allows for custom commands to be made to provide simple message responses. The format is `command // description // response`. You do not need to include the command prefix. The response can use the `SUSER$` placeholder as well. The prefix can be customized in `config.txt`. Changing it from "bb" to something else also affects the restart, help, and meme commands. Unlike the responder, commands require the command prefix, and also show up in the help command `bbhelp`. The description is used for the help command. This is great for quick access to links and information.
 
 ### Status
 BoneBot can have various now playing statuses shown in Discord. You can put custom statuses in `statuses.txt`. Each new line designates a different status message. These will be selected at random based on the delay set in the main config.
-
-### Other
-The command `bbrestart` is used to restart the bot. If not set up with a launch daemon, the bot will just shut down. Only the server owner can run this command. You can type `bbhelp` to view all commands, including a list of custom added commands.
 
 ## Building
 To build, clone or download this repository. With Gradle installed, run `gradle build` in the directory of the project. After that, a file called `BoneBot.jar` should have been created. You can also grab `BoneBot.jar` from the latest release.

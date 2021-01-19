@@ -45,17 +45,6 @@ object Command {
                     msg.startsWith(commandPrefix + "meme") -> {
                         Meme(message).generate()
                     }
-                    msg.startsWith(commandPrefix + "restart") -> {
-                        if (message.member!!.isOwner) {
-                            message.channel.sendMessage("Restarting...").queue()
-                            message.channel.sendTyping().queue()
-                            message.jda.shutdown()
-                            Thread.sleep(1000)
-                            System.exit(0)
-                        } else {
-                            message.channel.sendMessage("You must be the **server owner** to restart the bot.").queue()
-                        }
-                    }
                     msg.startsWith(commandPrefix + "help") -> {
                         var commandList = ""
                         for (command in commands.keys) {
@@ -71,8 +60,7 @@ object Command {
                                     "• `" + commandPrefix + "meme <text> <image or user>`: Generate" +
                                     " a meme using text and image or user avatar. If configured, you" +
                                     " can skip either to randomly pick them.\n" +
-                                    "• `" + commandPrefix + "help`: Show this help message again.\n" +
-                                    "• `" + commandPrefix + "restart`: Restart the bot if configured, otherwise shut down.\n\n" +
+                                    "• `" + commandPrefix + "help`: Show this help message.\n\n" +
                                     "**Custom Commands**\n" +
                                     commandList +
                                     "\n[GitHub](https://github.com/jeremynoesen/BoneBot)"
