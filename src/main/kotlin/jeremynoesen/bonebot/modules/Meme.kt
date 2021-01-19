@@ -57,7 +57,6 @@ constructor(private val command: Message) {
                     embedBuilder.setColor(Color(0, 151, 255))
                     embedBuilder.setImage("attachment://meme.jpg")
                     command.channel.sendMessage(embedBuilder.build()).addFile(file, "meme.jpg").queue()
-                    file.delete() //todo fix file not deleting
                     prevTime = System.currentTimeMillis()
                 } else {
                     command.channel.sendMessage("Please provide the missing text or image!").queue()
@@ -165,7 +164,8 @@ constructor(private val command: Message) {
      */
     @Throws(IOException::class)
     private fun convertToFile(): File {
-        val file = File("meme$memeCount.jpg")
+        File("temp").mkdir()
+        val file = File("temp/meme$memeCount.jpg")
         ImageIO.write(meme, "jpg", file)
         memeCount++
         return file
