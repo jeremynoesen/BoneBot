@@ -1,6 +1,8 @@
 package jeremynoesen.bonebot
 
 import jeremynoesen.bonebot.modules.*
+import java.awt.Color
+import java.awt.image.ColorConvertOp
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.PrintWriter
@@ -17,6 +19,11 @@ object Config {
      * bot token
      */
     var botToken = "TOKEN"
+
+    /**
+     * color used for embeds
+     */
+    var embedColor = Color(0, 151, 255)
 
     /**
      * load config values, write default config if missing
@@ -48,6 +55,9 @@ object Config {
                     "command-prefix:" -> {
                         Command.commandPrefix = lineScanner.next()
                     }
+                    "embed-color:" -> {
+                        embedColor = Color.decode(lineScanner.next())
+                    }
                     "bot-token:" -> {
                         botToken = lineScanner.next()
                     }
@@ -65,6 +75,7 @@ object Config {
             pw.println("status-cooldown: ${Status.cooldown}")
             pw.println("command-cooldown: ${Command.cooldown}")
             pw.println("command-prefix: ${Command.commandPrefix}")
+            pw.println("embed-color: #0097FF")
             pw.println("botToken: $botToken")
             pw.close()
         } catch (e: Exception) {

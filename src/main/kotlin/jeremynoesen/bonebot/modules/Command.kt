@@ -1,5 +1,6 @@
 package jeremynoesen.bonebot.modules
 
+import jeremynoesen.bonebot.Config
 import jeremynoesen.bonebot.Logger
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.entities.Message
@@ -54,7 +55,7 @@ object Command {
                         val embedBuilder = EmbedBuilder()
                         val name = message.jda.selfUser.name
                         embedBuilder.setAuthor("$name Help", null, message.jda.selfUser.avatarUrl)
-                        embedBuilder.setColor(Color(0, 151, 255))
+                        embedBuilder.setColor(Config.embedColor)
                         embedBuilder.setDescription(
                             "**Default Commands**\n" +
                                     "• `" + commandPrefix + "meme <text> <image or user>`: Generate" +
