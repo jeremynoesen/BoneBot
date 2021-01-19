@@ -12,6 +12,8 @@ import java.io.IOException
 import java.net.URL
 import java.util.*
 import javax.imageio.ImageIO
+import java.net.URLConnection
+
 
 /**
  * meme generator
@@ -53,7 +55,7 @@ constructor(private val command: Message) {
                     processImage()
                     val file = convertToFile()
                     val embedBuilder = EmbedBuilder()
-                    embedBuilder.setAuthor(command.author.name + " Generated a meme!", null, command.author.avatarUrl)
+                    embedBuilder.setAuthor(command.author.name + " generated a meme:", null, command.author.avatarUrl)
                     embedBuilder.setColor(Color(0, 151, 255))
                     embedBuilder.setImage("attachment://meme.jpg")
                     command.channel.sendMessage(embedBuilder.build()).addFile(file, "meme.jpg").queue()
@@ -80,9 +82,13 @@ constructor(private val command: Message) {
     private fun readTextAndImage() {
         var input = command.contentRaw.replaceFirst(Command.commandPrefix + "meme", "").trim { it <= ' ' }
         if (command.attachments.size > 0 && command.attachments[0].isImage) {
-            image = ImageIO.read(URL(command.attachments[0].url)) //todo fix urls not reading
+            val conn: URLConnection = URL(command.attachments[0].url).openConnection()
+            conn.setRequestProperty("User-Agent", "Wget/1.13.4 (linux-gnu)")
+            conn.getInputStream().use { stream -> image = ImageIO.read(stream) }
         } else if (command.mentionedUsers.size > 0) {
-            image = ImageIO.read(URL(command.mentionedUsers[0].effectiveAvatarUrl))
+            val conn: URLConnection = URL(command.mentionedUsers[0].effectiveAvatarUrl).openConnection()
+            conn.setRequestProperty("User-Agent", "Wget/1.13.4 (linux-gnu)")
+            conn.getInputStream().use { stream -> image = ImageIO.read(stream) }
             for (i in command.mentionedUsers.indices) input = input.replace(command.mentionedUsers[i].asMention, "")
                 .replace("<@!" + command.mentionedUsers[i].idLong + ">", "")
                 .replace("  ", " ").trim { it <= ' ' }
