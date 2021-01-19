@@ -1,5 +1,6 @@
 package jeremynoesen.bonebot.modules
 
+import jeremynoesen.bonebot.Config
 import jeremynoesen.bonebot.Logger
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.entities.Message
@@ -56,7 +57,7 @@ constructor(private val command: Message) {
                     val file = convertToFile()
                     val embedBuilder = EmbedBuilder()
                     embedBuilder.setAuthor(command.author.name + " generated a meme:", null, command.author.avatarUrl)
-                    embedBuilder.setColor(Color(0, 151, 255))
+                    embedBuilder.setColor(Config.embedColor)
                     embedBuilder.setImage("attachment://meme.jpg")
                     command.channel.sendMessage(embedBuilder.build()).addFile(file, "meme.jpg").queue()
                     prevTime = System.currentTimeMillis()

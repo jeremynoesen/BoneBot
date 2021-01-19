@@ -37,7 +37,7 @@ java -jar botdir/BoneBot.jar
 ```
 
 ## Configuration
-Configuration for meme images and texts, responder messages, reactor triggers, and status messages are all highlighted under **Usage**. There is a general config that handles all cool downs, the bot token, and the command prefix. These values are in seconds, and are the default values. After changing any of these values, save the file and restart the bot.
+Configuration for meme images and texts, responder messages, reactor triggers, and status messages are all highlighted under **Usage**. There is a general config that handles all cool downs, the bot token, embed colors, and the command prefix. These values are in seconds, and are the default values. After changing any of these values, save the file and restart the bot.
 ```
 response-cooldown: 180
 react-cooldown: 60
@@ -45,5 +45,6 @@ meme-cooldown: 5
 status-cooldown: 60
 command-cooldown: 5
 command-prefix: bb
+embed-color: #0097FF
 bot-token: TOKEN_HERE
 ```
