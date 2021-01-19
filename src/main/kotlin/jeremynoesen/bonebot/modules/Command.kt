@@ -37,14 +37,16 @@ object Command {
      * respond to a message if it is a command
      *
      * @param message message to check and respond to
+     * @return true if command was performed
      */
-    fun perform(message: Message) {
+    fun perform(message: Message): Boolean {
         try {
             val msg = message.contentRaw.toLowerCase()
             if (msg.startsWith(commandPrefix)) {
                 when {
                     msg.startsWith(commandPrefix + "meme") -> {
                         Meme(message).generate()
+                        return true
                     }
                     msg.startsWith(commandPrefix + "help") -> {
                         var commandList = ""
@@ -67,6 +69,7 @@ object Command {
                                     "\n[GitHub](https://github.com/jeremynoesen/BoneBot)"
                         )
                         message.channel.sendMessage(embedBuilder.build()).queue()
+                        return true
                     }
                     else -> {
                         for (command in commands.keys) {
@@ -79,10 +82,12 @@ object Command {
                                             message.author.asMention
                                         )
                                     ).queue()
+                                    return true
                                 } else {
                                     val remaining = ((cooldown * 1000) - (System.currentTimeMillis() - prevTime)) / 1000
                                     message.channel.sendMessage("Custom commands can be used again in **$remaining** seconds.")
                                         .queue()
+                                    return true
                                 }
                                 break
                             }
@@ -93,5 +98,6 @@ object Command {
         } catch (e: Exception) {
             Logger.log(e)
         }
+        return false
     }
 }
