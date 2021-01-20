@@ -23,7 +23,7 @@ object Config {
     /**
      * color used for embeds
      */
-    var embedColor = Color(0, 151, 255)
+    var embedColor = Color(253, 6, 5)
 
     /**
      * load config values, write default config if missing
@@ -75,7 +75,7 @@ object Config {
             pw.println("status-cooldown: ${Status.cooldown}")
             pw.println("command-cooldown: ${Command.cooldown}")
             pw.println("command-prefix: ${Command.commandPrefix}")
-            pw.println("embed-color: #0097FF")
+            pw.println("embed-color: #fd0605")
             pw.println("botToken: TOKEN")
             pw.close()
         } catch (e: Exception) {

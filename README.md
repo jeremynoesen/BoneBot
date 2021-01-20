@@ -45,6 +45,6 @@ meme-cooldown: 5
 status-cooldown: 60
 command-cooldown: 5
 command-prefix: bb
-embed-color: #0097FF
+embed-color: #fd0605
 bot-token: TOKEN_HERE
 ```
