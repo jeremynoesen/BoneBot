@@ -94,14 +94,27 @@ constructor(private val command: Message) {
                 .replace("<@!" + command.mentionedUsers[i].idLong + ">", "")
                 .replace("  ", " ").trim { it <= ' ' }
         } else {
-            val r = Random()
-            val dir = File("resources/images")
-            if (dir.listFiles()!!.isNotEmpty()) {
-                var rand = r.nextInt(dir.listFiles()!!.size)
-                while (dir.listFiles()!![rand].isHidden) {
-                    rand = r.nextInt(dir.listFiles()!!.size)
+
+            for (word in input.split(" ")) {
+                try {
+                    val conn: URLConnection = URL(word).openConnection()
+                    conn.setRequestProperty("User-Agent", "Wget/1.13.4 (linux-gnu)")
+                    conn.getInputStream().use { stream -> image = ImageIO.read(stream) }
+                    input = input.replace(word, "").replace("  ", " ").trim { it <= ' ' }
+                } catch (e: java.lang.Exception) {
                 }
-                image = ImageIO.read(dir.listFiles()!![rand])
+            }
+
+            if (image == null) {
+                val r = Random()
+                val dir = File("resources/images")
+                if (dir.listFiles()!!.isNotEmpty()) {
+                    var rand = r.nextInt(dir.listFiles()!!.size)
+                    while (dir.listFiles()!![rand].isHidden) {
+                        rand = r.nextInt(dir.listFiles()!!.size)
+                    }
+                    image = ImageIO.read(dir.listFiles()!![rand])
+                }
             }
         }
 
