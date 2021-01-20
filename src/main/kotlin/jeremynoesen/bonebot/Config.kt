@@ -1,6 +1,8 @@
 package jeremynoesen.bonebot
 
 import jeremynoesen.bonebot.modules.*
+import java.awt.Color
+import java.awt.image.ColorConvertOp
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.PrintWriter
@@ -17,6 +19,11 @@ object Config {
      * bot token
      */
     var botToken = "TOKEN"
+
+    /**
+     * color used for embeds
+     */
+    var embedColor = Color(253, 6, 5)
 
     /**
      * load config values, write default config if missing
@@ -48,6 +55,9 @@ object Config {
                     "command-prefix:" -> {
                         Command.commandPrefix = lineScanner.next()
                     }
+                    "embed-color:" -> {
+                        embedColor = Color.decode(lineScanner.next())
+                    }
                     "bot-token:" -> {
                         botToken = lineScanner.next()
                     }
@@ -65,7 +75,8 @@ object Config {
             pw.println("status-cooldown: ${Status.cooldown}")
             pw.println("command-cooldown: ${Command.cooldown}")
             pw.println("command-prefix: ${Command.commandPrefix}")
-            pw.println("botToken: $botToken")
+            pw.println("embed-color: #fd0605")
+            pw.println("botToken: TOKEN")
             pw.close()
         } catch (e: Exception) {
             Logger.log(e)
@@ -123,6 +134,34 @@ object Config {
                 if (line.isNotBlank()) {
                     val parts = line.split(" // ")
                     map[parts[0].toLowerCase()] = parts[1]
+                }
+            }
+            fileScanner.close()
+        } catch (e: FileNotFoundException) {
+            val file = File(filePath)
+            val pw = PrintWriter(file)
+            pw.println()
+            pw.close()
+        } catch (e: Exception) {
+            Logger.log(e)
+        }
+    }
+
+    /**
+     * load all data from file to a hashmap, where a string points to a pair of strings
+     *
+     * @param filePath path to file holding the data
+     * @param map     hashmap to load data into
+     */
+    @JvmName("loadData1")
+    private fun loadData(filePath: String, map: HashMap<String, Pair<String, String>>) {
+        try {
+            val fileScanner = Scanner(File(filePath))
+            while (fileScanner.hasNextLine()) {
+                val line = fileScanner.nextLine()
+                if (line.isNotBlank()) {
+                    val parts = line.split(" // ")
+                    map[parts[0].toLowerCase()] = Pair(parts[1], parts[2])
                 }
             }
             fileScanner.close()
