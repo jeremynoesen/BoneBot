@@ -76,7 +76,7 @@ object Config {
             pw.println("command-cooldown: ${Command.cooldown}")
             pw.println("command-prefix: ${Command.commandPrefix}")
             pw.println("embed-color: #0097FF")
-            pw.println("botToken: $botToken")
+            pw.println("botToken: TOKEN")
             pw.close()
         } catch (e: Exception) {
             Logger.log(e)

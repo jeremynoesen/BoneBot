@@ -89,7 +89,6 @@ object Command {
                                         .queue()
                                     return true
                                 }
-                                break
                             }
                         }
                     }
