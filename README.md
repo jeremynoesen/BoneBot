@@ -15,16 +15,13 @@ The command `bbmeme <text> <image or user>` generates a meme. If an image or tex
 BoneBot can respond to messages based on phrases set in `responses.txt`. The format is `trigger // response`, and the trigger can use regex. When the bot sees a message with the trigger phrase, the response will be sent as a message from the bot. You can use `SUSER$` in the response code to mention the user who invoked the response. This is useful to make the bot feel like it is part of your conversations.
 
 ### Reactor
-BoneBot can react with emotes to messages similarly to responding. These are set up in `reactions.txt` and have a format of `trigger // emote`. The trigger can use regex here as well. You can either put a standard emoji, or you can put the raw Discord emoji code for custom emotes. You can get this in Discord by typing \ and then :emote: and it will give you the emote as its code inside of `< >`. This is useful to make BoneBot interact with messages while not being an interruption.
+BoneBot can react with emotes to messages similarly to responding. These are set up in `reactions.txt` and have a format of `trigger // emote`. The trigger can use regex here as well. You can either put a standard emoji in unicode format, like `U+1F980`, or you can put the raw Discord emoji code for custom emotes. You can get this in Discord by typing \ and then `:emote:` and it will give you the emote as its code inside of `< >`. This is useful to make BoneBot interact with messages while not being an interruption.
 
 ### Commands
-BoneBot allows for custom commands to be made to provide simple message responses. The format is `command // response`. You do not need to include the command prefix. The response can use the `SUSER$` placeholder as well. The prefix can be customized in `config.txt`. Changing it from "bb" to something else also affects the restart, help, and meme commands. Unlike the responder, commands require the command prefix, and also show up in the help command. This is great for quick access to links and quick information.
+BoneBot allows for custom commands to be made to provide simple message responses. The format is `command // description // response`. You do not need to include the command prefix. The response can use the `SUSER$` placeholder as well. The prefix can be customized in `config.txt`. Changing it from "bb" to something else also affects the restart, help, and meme commands. Unlike the responder, commands require the command prefix, and also show up in the help command `bbhelp`. The description is used for the help command. This is great for quick access to links and information.
 
 ### Status
 BoneBot can have various now playing statuses shown in Discord. You can put custom statuses in `statuses.txt`. Each new line designates a different status message. These will be selected at random based on the delay set in the main config.
-
-### Other
-The command `bbrestart` is used to restart the bot. If not set up with a launch daemon, the bot will just shut down. Only the server owner can run this command. You can type `bbhelp` to view all commands, including a list of custom added commands.
 
 ## Building
 To build, clone or download this repository. With Gradle installed, run `gradle build` in the directory of the project. After that, a file called `BoneBot.jar` should have been created. You can also grab `BoneBot.jar` from the latest release.
@@ -40,7 +37,7 @@ java -jar botdir/BoneBot.jar
 ```
 
 ## Configuration
-Configuration for meme images and texts, responder messages, reactor triggers, and status messages are all highlighted under **Usage**. There is a general config that handles all cool downs, the bot token, and the command prefix. These values are in seconds, and are the default values. After changing any of these values, save the file and restart the bot.
+Configuration for meme images and texts, responder messages, reactor triggers, and status messages are all highlighted under **Usage**. There is a general config that handles all cool downs, the bot token, embed colors, and the command prefix. These values are in seconds, and are the default values. After changing any of these values, save the file and restart the bot.
 ```
 response-cooldown: 180
 react-cooldown: 60
@@ -48,5 +45,6 @@ meme-cooldown: 5
 status-cooldown: 60
 command-cooldown: 5
 command-prefix: bb
+embed-color: #fd0605
 bot-token: TOKEN_HERE
 ```

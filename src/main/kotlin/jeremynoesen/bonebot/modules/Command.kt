@@ -1,5 +1,6 @@
 package jeremynoesen.bonebot.modules
 
+import jeremynoesen.bonebot.Config
 import jeremynoesen.bonebot.Logger
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.entities.Message
@@ -15,7 +16,7 @@ object Command {
     /**
      * list of commands loaded from the command file
      */
-    val commands = HashMap<String, String>()
+    val commands = HashMap<String, Pair<String, String>>()
 
     /**
      * command prefix
@@ -36,46 +37,39 @@ object Command {
      * respond to a message if it is a command
      *
      * @param message message to check and respond to
+     * @return true if command was performed
      */
-    fun perform(message: Message) {
+    fun perform(message: Message): Boolean {
         try {
             val msg = message.contentRaw.toLowerCase()
             if (msg.startsWith(commandPrefix)) {
                 when {
                     msg.startsWith(commandPrefix + "meme") -> {
                         Meme(message).generate()
-                    }
-                    msg.startsWith(commandPrefix + "restart") -> {
-                        if (message.member!!.isOwner) {
-                            message.channel.sendMessage("Restarting...").queue()
-                            message.channel.sendTyping().queue()
-                            message.jda.shutdown()
-                            Thread.sleep(1000)
-                            System.exit(0)
-                        } else {
-                            message.channel.sendMessage("You must be the **server owner** to restart the bot.").queue()
-                        }
+                        return true
                     }
                     msg.startsWith(commandPrefix + "help") -> {
                         var commandList = ""
-                        for ((i, command) in commands.keys.withIndex()) {
-                            commandList += "`$commandPrefix$command`"
-                            if (i != commands.size - 1) commandList += ", "
+                        for (command in commands.keys) {
+                            commandList += "• `$commandPrefix$command`: ${commands[command]!!.first}\n"
                         }
                         if (commandList.isBlank()) commandList = "*No commands defined*"
                         val embedBuilder = EmbedBuilder()
                         val name = message.jda.selfUser.name
                         embedBuilder.setAuthor("$name Help", null, message.jda.selfUser.avatarUrl)
-                        embedBuilder.setColor(Color(0, 151, 255))
+                        embedBuilder.setColor(Config.embedColor)
                         embedBuilder.setDescription(
                             "**Default Commands**\n" +
                                     "• `" + commandPrefix + "meme <text> <image or user>`: Generate" +
                                     " a meme using text and image or user avatar. If configured, you" +
                                     " can skip either to randomly pick them.\n" +
-                                    "• `" + commandPrefix + "restart`: Restart the bot if configured, otherwise shut down.\n\n" +
-                                    "**Custom Commands**\n" + commandList + "\n\n[GitHub](https://github.com/jeremynoesen/BoneBot)"
+                                    "• `" + commandPrefix + "help`: Show this help message.\n\n" +
+                                    "**Custom Commands**\n" +
+                                    commandList +
+                                    "\n[GitHub](https://github.com/jeremynoesen/BoneBot)"
                         )
                         message.channel.sendMessage(embedBuilder.build()).queue()
+                        return true
                     }
                     else -> {
                         for (command in commands.keys) {
@@ -83,17 +77,18 @@ object Command {
                                 if ((System.currentTimeMillis() - prevTime) >= cooldown * 1000) {
                                     prevTime = System.currentTimeMillis()
                                     message.channel.sendMessage(
-                                        commands[command]!!.replace(
+                                        commands[command]!!.second.replace(
                                             "\$USER$",
                                             message.author.asMention
                                         )
                                     ).queue()
+                                    return true
                                 } else {
                                     val remaining = ((cooldown * 1000) - (System.currentTimeMillis() - prevTime)) / 1000
                                     message.channel.sendMessage("Custom commands can be used again in **$remaining** seconds.")
                                         .queue()
+                                    return true
                                 }
-                                break
                             }
                         }
                     }
@@ -102,5 +97,6 @@ object Command {
         } catch (e: Exception) {
             Logger.log(e)
         }
+        return false
     }
 }

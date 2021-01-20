@@ -1,6 +1,8 @@
 package jeremynoesen.bonebot.modules
 
+import jeremynoesen.bonebot.Config
 import jeremynoesen.bonebot.Logger
+import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.entities.Message
 import org.apache.commons.text.WordUtils
 import java.awt.*
@@ -11,6 +13,8 @@ import java.io.IOException
 import java.net.URL
 import java.util.*
 import javax.imageio.ImageIO
+import java.net.URLConnection
+
 
 /**
  * meme generator
@@ -51,8 +55,11 @@ constructor(private val command: Message) {
                 if (image != null && text != null) {
                     processImage()
                     val file = convertToFile()
-                    command.channel.sendFile(file).queue()
-                    file.delete()
+                    val embedBuilder = EmbedBuilder()
+                    embedBuilder.setAuthor(command.author.name + " generated a meme:", null, command.author.avatarUrl)
+                    embedBuilder.setColor(Config.embedColor)
+                    embedBuilder.setImage("attachment://meme.jpg")
+                    command.channel.sendMessage(embedBuilder.build()).addFile(file, "meme.jpg").queue()
                     prevTime = System.currentTimeMillis()
                 } else {
                     command.channel.sendMessage("Please provide the missing text or image!").queue()
@@ -76,9 +83,13 @@ constructor(private val command: Message) {
     private fun readTextAndImage() {
         var input = command.contentRaw.replaceFirst(Command.commandPrefix + "meme", "").trim { it <= ' ' }
         if (command.attachments.size > 0 && command.attachments[0].isImage) {
-            image = ImageIO.read(URL(command.attachments[0].url))
+            val conn: URLConnection = URL(command.attachments[0].url).openConnection()
+            conn.setRequestProperty("User-Agent", "Wget/1.13.4 (linux-gnu)")
+            conn.getInputStream().use { stream -> image = ImageIO.read(stream) }
         } else if (command.mentionedUsers.size > 0) {
-            image = ImageIO.read(URL(command.mentionedUsers[0].effectiveAvatarUrl))
+            val conn: URLConnection = URL(command.mentionedUsers[0].effectiveAvatarUrl).openConnection()
+            conn.setRequestProperty("User-Agent", "Wget/1.13.4 (linux-gnu)")
+            conn.getInputStream().use { stream -> image = ImageIO.read(stream) }
             for (i in command.mentionedUsers.indices) input = input.replace(command.mentionedUsers[i].asMention, "")
                 .replace("<@!" + command.mentionedUsers[i].idLong + ">", "")
                 .replace("  ", " ").trim { it <= ' ' }
@@ -160,7 +171,8 @@ constructor(private val command: Message) {
      */
     @Throws(IOException::class)
     private fun convertToFile(): File {
-        val file = File("meme$memeCount.jpg")
+        File("temp").mkdir()
+        val file = File("temp/meme$memeCount.jpg")
         ImageIO.write(meme, "jpg", file)
         memeCount++
         return file
