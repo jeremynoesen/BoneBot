@@ -74,6 +74,17 @@ constructor(private val command: Message) {
     }
 
     /**
+     * read an image from a url
+     *
+     * @param url string url
+     */
+    private fun getImageFromURL(url: String): BufferedImage {
+        val conn: URLConnection = URL(url).openConnection()
+        conn.setRequestProperty("User-Agent", "Wget/1.13.4 (linux-gnu)")
+        conn.getInputStream().use { stream -> return ImageIO.read(stream) }
+    }
+
+    /**
      * read an image from a discord message, user mention, or a random to use to generate a meme, as well as grab the
      * text from the message or use a random to make a meme
      *
@@ -83,13 +94,9 @@ constructor(private val command: Message) {
     private fun readTextAndImage() {
         var input = command.contentRaw.replaceFirst(Command.commandPrefix + "meme", "").trim { it <= ' ' }
         if (command.attachments.size > 0 && command.attachments[0].isImage) {
-            val conn: URLConnection = URL(command.attachments[0].url).openConnection()
-            conn.setRequestProperty("User-Agent", "Wget/1.13.4 (linux-gnu)")
-            conn.getInputStream().use { stream -> image = ImageIO.read(stream) }
+            image = getImageFromURL(command.attachments[0].url)
         } else if (command.mentionedUsers.size > 0) {
-            val conn: URLConnection = URL(command.mentionedUsers[0].effectiveAvatarUrl).openConnection()
-            conn.setRequestProperty("User-Agent", "Wget/1.13.4 (linux-gnu)")
-            conn.getInputStream().use { stream -> image = ImageIO.read(stream) }
+            image = getImageFromURL(command.mentionedUsers[0].effectiveAvatarUrl)
             for (i in command.mentionedUsers.indices) input = input.replace(command.mentionedUsers[i].asMention, "")
                 .replace("<@!" + command.mentionedUsers[i].idLong + ">", "")
                 .replace("  ", " ").trim { it <= ' ' }
@@ -97,10 +104,9 @@ constructor(private val command: Message) {
 
             for (word in input.split(" ")) {
                 try {
-                    val conn: URLConnection = URL(word).openConnection()
-                    conn.setRequestProperty("User-Agent", "Wget/1.13.4 (linux-gnu)")
-                    conn.getInputStream().use { stream -> image = ImageIO.read(stream) }
+                    image = getImageFromURL(word)
                     input = input.replace(word, "").replace("  ", " ").trim { it <= ' ' }
+                    break
                 } catch (e: java.lang.Exception) {
                 }
             }
