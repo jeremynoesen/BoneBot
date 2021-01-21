@@ -60,12 +60,9 @@ object Command {
                         embedBuilder.setColor(Config.embedColor)
                         embedBuilder.setDescription(
                             "**Default Commands**\n" +
-                                    "• `" + commandPrefix + "meme <text> <image or user>`: Generate" +
-                                    " a meme using text and image or user avatar. If configured, you" +
-                                    " can skip either to randomly pick them.\n" +
+                                    "• `" + commandPrefix + "meme <text> <image>`: Generate a meme.\n" +
                                     "• `" + commandPrefix + "help`: Show this help message.\n\n" +
-                                    "**Custom Commands**\n" +
-                                    commandList +
+                                    "**Custom Commands**\n" + commandList +
                                     "\n[GitHub](https://github.com/jeremynoesen/BoneBot)"
                         )
                         message.channel.sendMessage(embedBuilder.build()).queue()
