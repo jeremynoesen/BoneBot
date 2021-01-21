@@ -9,7 +9,7 @@ BoneBot was originally written as a meme-generating Discord bot for the ISUCF'V'
 ## Usage
 
 ### Meme Generator
-The command `bbmeme <text> <image or user>` generates a meme. If an image or text is provided, the generator will use these, otherwise, random images and text lines will be used if configured. If a user is pinged, their avatar will be used as the image. These text lines will be in `texts.txt` and the images will be placed in a folder called `images` in the resources directory. The images should ideally be JPEG or PNG format. The texts file will designate a new line as a separator for different texts.
+The command `bbmeme <text> <image>` generates a meme. If an image or text is provided, the generator will use these, otherwise, random images and text lines will be used if configured. If a user is pinged, their avatar will be used as the image. You can also provide an image link. These text lines will be in `texts.txt` and the images will be placed in a folder called `images` in the resources directory. The images should ideally be JPEG or PNG format. The texts file will designate a new line as a separator for different texts.
 
 ### Responder
 BoneBot can respond to messages based on phrases set in `responses.txt`. The format is `trigger // response`, and the trigger can use regex. When the bot sees a message with the trigger phrase, the response will be sent as a message from the bot. You can use `SUSER$` in the response code to mention the user who invoked the response. This is useful to make the bot feel like it is part of your conversations.
