@@ -49,24 +49,32 @@ object Command {
                         return true
                     }
                     msg.startsWith(commandPrefix + "help") -> {
-                        var commandList = ""
-                        for (command in commands.keys) {
-                            commandList += "• `$commandPrefix$command`: ${commands[command]!!.first}\n"
+                        if ((System.currentTimeMillis() - prevTime) >= cooldown * 1000) {
+                            prevTime = System.currentTimeMillis()
+                            var commandList = ""
+                            for (command in commands.keys) {
+                                commandList += "• `$commandPrefix$command`: ${commands[command]!!.first}\n"
+                            }
+                            if (commandList.isBlank()) commandList = "*No commands defined*"
+                            val embedBuilder = EmbedBuilder()
+                            val name = message.jda.selfUser.name
+                            embedBuilder.setAuthor("$name Help", null, message.jda.selfUser.avatarUrl)
+                            embedBuilder.setColor(Config.embedColor)
+                            embedBuilder.setDescription(
+                                "**Default Commands**\n" +
+                                        "• `" + commandPrefix + "meme <text> <image>`: Generate a meme.\n" +
+                                        "• `" + commandPrefix + "help`: Show this help message.\n\n" +
+                                        "**Custom Commands**\n" + commandList +
+                                        "\n[GitHub](https://github.com/jeremynoesen/BoneBot)"
+                            )
+                            message.channel.sendMessage(embedBuilder.build()).queue()
+                            return true
+                        } else {
+                            val remaining = ((cooldown * 1000) - (System.currentTimeMillis() - prevTime)) / 1000
+                            message.channel.sendMessage("Commands can be used again in **$remaining** seconds.")
+                                .queue()
+                            return true
                         }
-                        if (commandList.isBlank()) commandList = "*No commands defined*"
-                        val embedBuilder = EmbedBuilder()
-                        val name = message.jda.selfUser.name
-                        embedBuilder.setAuthor("$name Help", null, message.jda.selfUser.avatarUrl)
-                        embedBuilder.setColor(Config.embedColor)
-                        embedBuilder.setDescription(
-                            "**Default Commands**\n" +
-                                    "• `" + commandPrefix + "meme <text> <image>`: Generate a meme.\n" +
-                                    "• `" + commandPrefix + "help`: Show this help message.\n\n" +
-                                    "**Custom Commands**\n" + commandList +
-                                    "\n[GitHub](https://github.com/jeremynoesen/BoneBot)"
-                        )
-                        message.channel.sendMessage(embedBuilder.build()).queue()
-                        return true
                     }
                     else -> {
                         for (command in commands.keys) {
@@ -82,7 +90,7 @@ object Command {
                                     return true
                                 } else {
                                     val remaining = ((cooldown * 1000) - (System.currentTimeMillis() - prevTime)) / 1000
-                                    message.channel.sendMessage("Custom commands can be used again in **$remaining** seconds.")
+                                    message.channel.sendMessage("Commands can be used again in **$remaining** seconds.")
                                         .queue()
                                     return true
                                 }
