@@ -61,10 +61,9 @@ object Command {
                             embedBuilder.setAuthor("$name Help", null, message.jda.selfUser.avatarUrl)
                             embedBuilder.setColor(Config.embedColor)
                             embedBuilder.setDescription(
-                                "**Default Commands**\n" +
+                                "• `" + commandPrefix + "help`: Show this help message.\n" +
                                         "• `" + commandPrefix + "meme <text> <image>`: Generate a meme.\n" +
-                                        "• `" + commandPrefix + "help`: Show this help message.\n\n" +
-                                        "**Custom Commands**\n" + commandList +
+                                        commandList +
                                         "\n[GitHub](https://github.com/jeremynoesen/BoneBot)"
                             )
                             message.channel.sendMessage(embedBuilder.build()).queue()
