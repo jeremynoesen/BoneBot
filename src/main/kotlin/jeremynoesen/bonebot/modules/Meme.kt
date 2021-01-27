@@ -214,6 +214,11 @@ constructor(private val command: Message) {
         var cooldown = 5
 
         /**
+         * whether this module is enabled or not
+         */
+        var enabled = true
+
+        /**
          * last time the meme generator was used in milliseconds
          */
         private var prevTime = 0L

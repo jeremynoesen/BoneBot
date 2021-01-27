@@ -2,7 +2,6 @@ package jeremynoesen.bonebot
 
 import jeremynoesen.bonebot.modules.*
 import java.awt.Color
-import java.awt.image.ColorConvertOp
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.PrintWriter
@@ -37,17 +36,32 @@ object Config {
             while (fileScanner.hasNextLine()) {
                 val lineScanner = Scanner(fileScanner.nextLine())
                 when (lineScanner.next()) {
-                    "response-cooldown:" -> {
+                    "responder-enabled:" -> {
+                        Responder.enabled = lineScanner.nextBoolean()
+                    }
+                    "reactor-enabled:" -> {
+                        Reactor.enabled = lineScanner.nextBoolean()
+                    }
+                    "meme-generator-enabled:" -> {
+                        Meme.enabled = lineScanner.nextBoolean()
+                    }
+                    "statuses-enabled:" -> {
+                        Status.enabled = lineScanner.nextBoolean()
+                    }
+                    "commands-enabled:" -> {
+                        Command.enabled = lineScanner.nextBoolean()
+                    }
+                    "responder-cooldown:" -> {
                         Responder.cooldown = lineScanner.nextInt()
                     }
-                    "react-cooldown:" -> {
+                    "reactor-cooldown:" -> {
                         Reactor.cooldown = lineScanner.nextInt()
                     }
-                    "meme-cooldown:" -> {
+                    "meme-generator-cooldown:" -> {
                         Meme.cooldown = lineScanner.nextInt()
                     }
-                    "status-cooldown:" -> {
-                        Status.cooldown = lineScanner.nextInt()
+                    "status-delay:" -> {
+                        Status.delay = lineScanner.nextInt()
                     }
                     "command-cooldown:" -> {
                         Command.cooldown = lineScanner.nextInt()
@@ -69,14 +83,19 @@ object Config {
         } catch (e: FileNotFoundException) {
             val file = File("resources/config.txt")
             val pw = PrintWriter(file)
-            pw.println("response-cooldown: ${Responder.cooldown}")
-            pw.println("react-cooldown: ${Reactor.cooldown}")
-            pw.println("meme-cooldown: ${Meme.cooldown}")
-            pw.println("status-cooldown: ${Status.cooldown}")
+            pw.println("responder-enabled: ${Responder.enabled}")
+            pw.println("reactor-enabled: ${Reactor.enabled}")
+            pw.println("meme-generator-enabled: ${Meme.enabled}")
+            pw.println("statuses-enabled: ${Status.enabled}")
+            pw.println("commands-enabled: ${Command.enabled}")
+            pw.println("responder-cooldown: ${Responder.cooldown}")
+            pw.println("reactor-cooldown: ${Reactor.cooldown}")
+            pw.println("meme-generator-cooldown: ${Meme.cooldown}")
+            pw.println("status-delay: ${Status.delay}")
             pw.println("command-cooldown: ${Command.cooldown}")
             pw.println("command-prefix: ${Command.commandPrefix}")
             pw.println("embed-color: #fd0605")
-            pw.println("botToken: TOKEN")
+            pw.println("bot-token: TOKEN")
             pw.close()
         } catch (e: Exception) {
             Logger.log(e)

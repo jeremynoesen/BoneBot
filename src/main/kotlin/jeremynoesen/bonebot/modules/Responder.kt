@@ -22,6 +22,11 @@ object Responder {
     var cooldown = 180
 
     /**
+     * whether this module is enabled or not
+     */
+    var enabled = true
+
+    /**
      * last time the responder sent a message in milliseconds
      */
     private var prevTime = 0L
