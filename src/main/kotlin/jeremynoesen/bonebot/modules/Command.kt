@@ -58,12 +58,10 @@ object Command {
                     msg.startsWith(commandPrefix + "help") -> {
                         if ((System.currentTimeMillis() - prevTime) >= cooldown * 1000) {
                             prevTime = System.currentTimeMillis()
-                            var commandList = "• `$commandPrefix" + "help`: Show this help message.\n"
+                            var commandList = "• `$commandPrefix" + "help`: Show the help message.\n"
                             if (Meme.enabled) commandList += "• `$commandPrefix" + "meme <text> <image>`: Generate a meme.\n"
-                            for (command in commands.keys) {
+                            for (command in commands.keys)
                                 commandList += "• `$commandPrefix$command`: ${commands[command]!!.first}\n"
-                            }
-                            if (commandList.isBlank()) commandList = "*No commands defined*"
                             val embedBuilder = EmbedBuilder()
                             val name = message.jda.selfUser.name
                             embedBuilder.setAuthor("$name Help", null, message.jda.selfUser.avatarUrl)
