@@ -72,6 +72,9 @@ object Config {
                     "embed-color:" -> {
                         embedColor = Color.decode(lineScanner.next())
                     }
+                    "typing-speed:" -> {
+                        Responder.typingSpeed = lineScanner.nextLong()
+                    }
                     "bot-token:" -> {
                         botToken = lineScanner.next()
                     }
@@ -95,6 +98,7 @@ object Config {
             pw.println("command-cooldown: ${Command.cooldown}")
             pw.println("command-prefix: ${Command.commandPrefix}")
             pw.println("embed-color: #fd0605")
+            pw.println("typing-speed: ${Responder.typingSpeed}")
             pw.println("bot-token: TOKEN")
             pw.close()
         } catch (e: Exception) {

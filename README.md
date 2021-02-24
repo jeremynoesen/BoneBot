@@ -12,7 +12,7 @@ BoneBot was originally written as a meme-generating Discord bot for the ISUCF'V'
 The command `bbmeme <text> <image>` generates a meme. If an image or text is provided, the generator will use these, otherwise, random images and text lines will be used if configured. If a user is pinged, their avatar will be used as the image. You can also provide an image link. These text lines will be in `texts.txt` and the images will be placed in a folder called `images` in the resources directory. The images should ideally be JPEG or PNG format. The texts file will designate a new line as a separator for different texts.
 
 ### Responder
-BoneBot can respond to messages based on phrases set in `responses.txt`. The format is `trigger // response`, and the trigger can use regex. When the bot sees a message with the trigger phrase, the response will be sent as a message from the bot. You can use `SUSER$` in the response code to mention the user who invoked the response. This is useful to make the bot feel like it is part of your conversations.
+BoneBot can respond to messages based on phrases set in `responses.txt`. The format is `trigger // response`, and the trigger can use regex. When the bot sees a message with the trigger phrase, the response will be sent as a message from the bot. You can use `SUSER$` in the response code to mention the user who invoked the response. In the main config, there is an option to set the typing speed per letter, so you can make the bot respond instantly, or make it appear to be typing. This is useful to make the bot feel like it is part of your conversations.
 
 ### Reactor
 BoneBot can react with emotes to messages similarly to responding. These are set up in `reactions.txt` and have a format of `trigger // emote`. The trigger can use regex here as well. You can either put a standard emoji in unicode format, like `U+1F980`, or you can put the raw Discord emoji code for custom emotes. You can get this in Discord by typing \ and then `:emote:` and it will give you the emote as its code inside of `< >`. This is useful to make BoneBot interact with messages while not being an interruption.
@@ -39,12 +39,18 @@ java -jar botdir/BoneBot.jar
 ## Configuration
 Configuration for meme images and texts, responder messages, reactor triggers, and status messages are all highlighted under **Usage**. There is a general config that handles all cool downs, the bot token, embed colors, and the command prefix. These values are in seconds, and are the default values. After changing any of these values, save the file and restart the bot. Do note that in all configurations, the command prefix and any trigger phrases ignore case.
 ```
-response-cooldown: 180
-react-cooldown: 60
-meme-cooldown: 5
-status-cooldown: 60
+responder-enabled: true
+reactor-enabled: true
+meme-generator-enabled: true
+statuses-enabled: true
+commands-enabled: true
+responder-cooldown: 180
+reactor-cooldown: 60
+meme-generator-cooldown: 5
+status-delay: 60
 command-cooldown: 5
 command-prefix: bb
 embed-color: #fd0605
-bot-token: TOKEN_HERE
+typing-speed: 100
+bot-token: TOKEN
 ```
