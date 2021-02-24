@@ -67,7 +67,7 @@ object Config {
                         Command.cooldown = lineScanner.nextInt()
                     }
                     "command-prefix:" -> {
-                        Command.commandPrefix = lineScanner.next()
+                        Command.commandPrefix = lineScanner.next().toLowerCase()
                     }
                     "embed-color:" -> {
                         embedColor = Color.decode(lineScanner.next())

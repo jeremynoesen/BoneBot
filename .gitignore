@@ -21,3 +21,4 @@ out/
 *.iml
 /.gradle/
 /build/
+/resources/
