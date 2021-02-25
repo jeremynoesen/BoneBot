@@ -102,7 +102,7 @@ constructor(private val command: Message) {
                 .replace("  ", " ").trim { it <= ' ' }
         } else {
 
-            for (word in input.split(" ")) {
+            for (word in input.split(" ", "\n")) {
                 try {
                     image = getImageFromURL(word)
                     input = input.replace(word, "").replace("  ", " ").trim { it <= ' ' }
