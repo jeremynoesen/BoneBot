@@ -92,7 +92,7 @@ constructor(private val command: Message) {
      */
     @Throws(IOException::class)
     private fun readTextAndImage() {
-        var input = command.contentRaw.toLowerCase().replaceFirst(Command.commandPrefix + "meme", "").trim { it <= ' ' }
+        var input = command.contentRaw.substring(Command.commandPrefix.length + 4, command.contentRaw.length).trim { it <= ' ' }
         if (command.attachments.size > 0 && command.attachments[0].isImage) {
             image = getImageFromURL(command.attachments[0].url)
         } else if (command.mentionedUsers.size > 0) {
