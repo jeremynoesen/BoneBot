@@ -96,7 +96,7 @@ constructor(private val command: Message) {
         if (command.attachments.size > 0 && command.attachments[0].isImage) {
             image = getImageFromURL(command.attachments[0].url)
         } else if (command.mentionedUsers.size > 0) {
-            image = getImageFromURL(command.mentionedUsers[0].effectiveAvatarUrl)
+            image = getImageFromURL(command.mentionedUsers[0].effectiveAvatarUrl + "?size=1024")
             for (i in command.mentionedUsers.indices) input = input.replace(command.mentionedUsers[i].asMention, "")
                 .replace("<@!" + command.mentionedUsers[i].idLong + ">", "")
                 .replace("  ", " ").trim { it <= ' ' }
