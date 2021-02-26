@@ -56,4 +56,4 @@ bot-token: TOKEN
 ```
 
 ## BoneBot Public
-Want to use the basic features of BoneBot without having to worry about customization or setting up your own instance? There is a public instance of BoneBot available [here](https://discord.com/oauth2/authorize?client_id=814937380917739551&scope=bot), and at the link in the repo description. This instance can use the meme generator and has some simple configuration that is not modifiable by others. If you wish to suggest changes to the configuration, see the discussions tab.
+Want to use the basic features of BoneBot without having to worry about customization or setting up your own instance? There is a public instance of BoneBot available at the link in the repo description. This instance can use the meme generator and has some simple configuration that is not modifiable by others. If you wish to suggest changes to the configuration, see the discussions tab.
