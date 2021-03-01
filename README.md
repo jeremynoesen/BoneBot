@@ -1,4 +1,8 @@
+<div align="center">
+
 ![Banner](Banner.png)
+
+</div>
 
 ## About
 BoneBot is a self-hosted, modular Discord bot that can respond and react to messages, add text-based commands, and generate memes on demand to add more life to a Discord server.
