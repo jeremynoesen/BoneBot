@@ -18,9 +18,14 @@ object Status {
     val statuses = ArrayList<String>()
 
     /**
-     * cooldown for status updater, in seconds
+     * delay for status updater, in seconds
      */
-    var cooldown = 60
+    var delay = 60
+
+    /**
+     * whether this module is enabled or not
+     */
+    var enabled = true
 
     /**
      * set the status for the bot. this only needs to be called once
@@ -39,7 +44,7 @@ object Status {
                     Logger.log(e)
                 }
                 try {
-                    Thread.sleep(cooldown * 1000L)
+                    Thread.sleep(delay * 1000L)
                 } catch (e: InterruptedException) {
                     Logger.log(e)
                 }

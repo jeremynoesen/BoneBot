@@ -4,7 +4,6 @@ import jeremynoesen.bonebot.Config
 import jeremynoesen.bonebot.Logger
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.entities.Message
-import java.awt.Color
 
 /**
  * command handler with simple message responses
@@ -29,6 +28,11 @@ object Command {
     var cooldown = 5
 
     /**
+     * whether this module is enabled or not
+     */
+    var enabled = true
+
+    /**
      * last time the command handler sent a message in milliseconds
      */
     private var prevTime = 0L
@@ -45,28 +49,32 @@ object Command {
             if (msg.startsWith(commandPrefix)) {
                 when {
                     msg.startsWith(commandPrefix + "meme") -> {
-                        Meme(message).generate()
-                        return true
+                        if (Meme.enabled) {
+                            Meme(message).generate()
+                            return true
+                        }
+                        return false
                     }
                     msg.startsWith(commandPrefix + "help") -> {
-                        var commandList = ""
-                        for (command in commands.keys) {
-                            commandList += "• `$commandPrefix$command`: ${commands[command]!!.first}\n"
+                        if ((System.currentTimeMillis() - prevTime) >= cooldown * 1000) {
+                            prevTime = System.currentTimeMillis()
+                            var commandList = "• `$commandPrefix" + "help`: Show the help message.\n"
+                            if (Meme.enabled) commandList += "• `$commandPrefix" + "meme <text> <image>`: Generate a meme.\n"
+                            for (command in commands.keys)
+                                commandList += "• `$commandPrefix$command`: ${commands[command]!!.first}\n"
+                            val embedBuilder = EmbedBuilder()
+                            val name = message.jda.selfUser.name
+                            embedBuilder.setAuthor("$name Help", null, message.jda.selfUser.avatarUrl)
+                            embedBuilder.setColor(Config.embedColor)
+                            embedBuilder.setDescription("$commandList\n[GitHub](https://github.com/jeremynoesen/BoneBot)")
+                            message.channel.sendMessage(embedBuilder.build()).queue()
+                            return true
+                        } else {
+                            val remaining = ((cooldown * 1000) - (System.currentTimeMillis() - prevTime)) / 1000
+                            message.channel.sendMessage("Commands can be used again in **$remaining** seconds.")
+                                .queue()
+                            return true
                         }
-                        if (commandList.isBlank()) commandList = "*No commands defined*"
-                        val embedBuilder = EmbedBuilder()
-                        val name = message.jda.selfUser.name
-                        embedBuilder.setAuthor("$name Help", null, message.jda.selfUser.avatarUrl)
-                        embedBuilder.setColor(Config.embedColor)
-                        embedBuilder.setDescription(
-                            "**Default Commands**\n" +
-                                    "• `" + commandPrefix + "meme <text> <image>`: Generate a meme.\n" +
-                                    "• `" + commandPrefix + "help`: Show this help message.\n\n" +
-                                    "**Custom Commands**\n" + commandList +
-                                    "\n[GitHub](https://github.com/jeremynoesen/BoneBot)"
-                        )
-                        message.channel.sendMessage(embedBuilder.build()).queue()
-                        return true
                     }
                     else -> {
                         for (command in commands.keys) {
@@ -82,7 +90,7 @@ object Command {
                                     return true
                                 } else {
                                     val remaining = ((cooldown * 1000) - (System.currentTimeMillis() - prevTime)) / 1000
-                                    message.channel.sendMessage("Custom commands can be used again in **$remaining** seconds.")
+                                    message.channel.sendMessage("Commands can be used again in **$remaining** seconds.")
                                         .queue()
                                     return true
                                 }

@@ -27,10 +27,11 @@ object BoneBot {
             ImageIO.setUseCache(false)
             Config.loadData()
             val jda = JDABuilder.createLight(Config.botToken).addEventListeners(Listener()).build()
-            Status.setStatus(jda)
+            if (Status.enabled) Status.setStatus(jda)
             try {
                 File("temp").deleteRecursively()
-            } catch (ignored: FileNotFoundException) {}
+            } catch (ignored: FileNotFoundException) {
+            }
         } catch (e: Exception) {
             Logger.log(e)
         }

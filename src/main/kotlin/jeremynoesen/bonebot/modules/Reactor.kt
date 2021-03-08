@@ -21,6 +21,11 @@ object Reactor {
     var cooldown = 60
 
     /**
+     * whether this module is enabled or not
+     */
+    var enabled = true
+
+    /**
      * last time the reactor reacted to a message in milliseconds
      */
     private var prevTime = 0L

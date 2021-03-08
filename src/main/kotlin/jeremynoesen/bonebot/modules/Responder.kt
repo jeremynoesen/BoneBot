@@ -3,6 +3,7 @@ package jeremynoesen.bonebot.modules
 import jeremynoesen.bonebot.Logger
 import net.dv8tion.jda.api.entities.Message
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 /**
  * responder to words and phrases in a message
@@ -22,6 +23,16 @@ object Responder {
     var cooldown = 180
 
     /**
+     * whether this module is enabled or not
+     */
+    var enabled = true
+
+    /**
+     * speed at which the bot types each letter
+     */
+    var typingSpeed = 100L
+
+    /**
      * last time the responder sent a message in milliseconds
      */
     private var prevTime = 0L
@@ -37,8 +48,9 @@ object Responder {
             for (trigger in responses.keys) {
                 if (msg.contains(Regex(trigger)) && (System.currentTimeMillis() - prevTime) >= cooldown * 1000) {
                     prevTime = System.currentTimeMillis()
-                    message.channel.sendMessage(responses[trigger]!!.replace("\$USER$", message.author.asMention))
-                        .queue()
+                    if (typingSpeed > 0) message.channel.sendTyping().queue()
+                    val toSend = responses[trigger]!!.replace("\$USER$", message.author.asMention)
+                    message.channel.sendMessage(toSend).queueAfter(toSend.length * typingSpeed, TimeUnit.MILLISECONDS)
                     break
                 }
             }
