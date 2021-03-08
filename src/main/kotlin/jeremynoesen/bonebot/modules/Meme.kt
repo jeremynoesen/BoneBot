@@ -92,17 +92,17 @@ constructor(private val command: Message) {
      */
     @Throws(IOException::class)
     private fun readTextAndImage() {
-        var input = command.contentRaw.replaceFirst(Command.commandPrefix + "meme", "").trim { it <= ' ' }
+        var input = command.contentRaw.substring(Command.commandPrefix.length + 4, command.contentRaw.length).trim { it <= ' ' }
         if (command.attachments.size > 0 && command.attachments[0].isImage) {
             image = getImageFromURL(command.attachments[0].url)
         } else if (command.mentionedUsers.size > 0) {
-            image = getImageFromURL(command.mentionedUsers[0].effectiveAvatarUrl)
+            image = getImageFromURL(command.mentionedUsers[0].effectiveAvatarUrl + "?size=1024")
             for (i in command.mentionedUsers.indices) input = input.replace(command.mentionedUsers[i].asMention, "")
                 .replace("<@!" + command.mentionedUsers[i].idLong + ">", "")
                 .replace("  ", " ").trim { it <= ' ' }
         } else {
 
-            for (word in input.split(" ")) {
+            for (word in input.split(" ", "\n")) {
                 try {
                     image = getImageFromURL(word)
                     input = input.replace(word, "").replace("  ", " ").trim { it <= ' ' }
@@ -212,6 +212,11 @@ constructor(private val command: Message) {
          * cooldown for meme generator, in seconds
          */
         var cooldown = 5
+
+        /**
+         * whether this module is enabled or not
+         */
+        var enabled = true
 
         /**
          * last time the meme generator was used in milliseconds

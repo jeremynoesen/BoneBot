@@ -21,9 +21,9 @@ class Listener : ListenerAdapter() {
     override fun onMessageReceived(e: MessageReceivedEvent) {
         try {
             if (!e.author.isBot) {
-                if (!Command.perform(e.message)) {
-                    Responder.respond(e.message)
-                    Reactor.react(e.message)
+                if (!Command.enabled || !Command.perform(e.message)) {
+                    if (Responder.enabled) Responder.respond(e.message)
+                    if (Reactor.enabled) Reactor.react(e.message)
                 }
             }
         } catch (e: Exception) {
