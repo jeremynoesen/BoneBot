@@ -1,4 +1,6 @@
-<div align="center" ><img src="Banner.png" alt="Banner" title="Banner" /></div>
+<img src="Logo.png" alt="Logo" title = "Logo" align="right" width="200" height="200" />
+
+# BoneBot
 
 ## About
 BoneBot is a self-hosted, modular Discord bot that can respond and react to messages, add text-based commands, and generate memes on demand to add more life to a Discord server.
