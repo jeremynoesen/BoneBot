@@ -1,8 +1,4 @@
-<div align="center">
-
-![Banner](Banner.png)
-
-</div>
+<div align="center" ><img src="Banner.png" alt="Banner" title="Banner" /></div>
 
 ## About
 BoneBot is a self-hosted, modular Discord bot that can respond and react to messages, add text-based commands, and generate memes on demand to add more life to a Discord server.
@@ -42,7 +38,7 @@ java -jar botdir/BoneBot.jar
 
 ## Configuration
 Configuration for meme images and texts, responder messages, reactor triggers, and status messages are all highlighted under **Usage**. There is a general config that handles all cool downs, module enabling, the bot token, embed colors, typing speed, and the command prefix. Cool down values are in seconds, while the typing speed is in milliseconds. After changing any of these values, save the file and restart the bot. Do note that in all configurations, the command prefix and any trigger phrases ignore case.
-```
+```yaml
 responder-enabled: true
 reactor-enabled: true
 meme-generator-enabled: true
