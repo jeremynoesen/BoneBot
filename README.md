@@ -29,17 +29,17 @@ BoneBot can have various now playing statuses shown in Discord. You can put cust
 To build, clone or download this repository. With Gradle installed, run `gradle build` in the directory of the project. After that, a file called `BoneBot.jar` should have been created. You can also grab `BoneBot.jar` from the latest release.
 
 ## Installation
-Create a new folder where you would like the bot to be installed. Next, place `BoneBot.jar` in this directory. Next, you are going to want to head over to the Discord Developer Portal and create an application. After doing so, add a bot to the application in the bot tab. You can customize everything here as you please, as it is your own instance of the bot.
+Create a new folder where you would like the bot to be installed. Then, place `BoneBot.jar` in this directory. Next, you are going to want to head over to the [Discord Developer Portal](https://discord.com/developers/applications) and create an application. After doing so, add a bot to the application in the bot tab. You can customize everything here as you please, as it is your own instance of the bot. Copy the bot token from this page, as you will need it later.
 
 ## Running
-This is a script that can be used to run the bot. Replace `botdir` with the directory you placed the bot in. Running this will generate all necessary text files and directories. You will need to restart the bot after updating any text files, but do not need to when adding images.
+To run the bot, you can use the script below. Replace `botdir` with the directory you placed the bot in. Running this for the first time will generate all necessary configuration files and directories, but will not properly start the bot. You will need to set `bot-token` in `config.txt` to the token you copied earlier for the bot to start properly after running for the first time.
 ```
 cd botdir
 java -jar botdir/BoneBot.jar
 ```
 
 ## Configuration
-Configuration for meme images and texts, responder messages, reactor triggers, and status messages are all highlighted under **Usage**. There is a general config that handles all cool downs, module enabling, the bot token, embed colors, typing speed, and the command prefix. Cool down values are in seconds, while the typing speed is in milliseconds. After changing any of these values, save the file and restart the bot. Do note that in all configurations, the command prefix and any trigger phrases ignore case.
+Configuration for meme images and texts, responder messages, reactor triggers, and status messages are all highlighted under **Usage**. There is a general config that handles all cool downs, module enables, the bot token, embed colors, typing speed, and the command prefix. Cool down values are in seconds, while the typing speed is in milliseconds. After changing any of these values, save the file and restart the bot. Do note that in all configurations, the command prefix and any trigger phrases ignore case.
 ```yaml
 responder-enabled: true
 reactor-enabled: true
