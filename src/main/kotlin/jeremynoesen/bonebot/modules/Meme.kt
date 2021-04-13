@@ -138,12 +138,12 @@ constructor(private val command: Message) {
     @Throws(IOException::class, FontFormatException::class)
     private fun processImage() {
         val ratio = image!!.height / image!!.width.toDouble()
-        val width = 512
+        val width = 1024
         val height = (width * ratio).toInt()
         meme = BufferedImage(width, height, BufferedImage.TYPE_INT_RGB)
         val graphics = meme!!.graphics
         val g2d = graphics as Graphics2D
-        val font = Font.createFont(Font.TRUETYPE_FONT, javaClass.getResourceAsStream("/Impact.ttf")).deriveFont(48f)
+        val font = Font.createFont(Font.TRUETYPE_FONT, javaClass.getResourceAsStream("/Impact.ttf")).deriveFont(96f)
         graphics.setFont(font)
         val metrics = graphics.getFontMetrics(font)
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON)
@@ -166,7 +166,7 @@ constructor(private val command: Message) {
                 (meme!!.getHeight(null) - (lines.size - i - 0.75) * graphics.getFont().size).toInt()
             )
             val shape = TextLayout(line, font, g2d.fontRenderContext).getOutline(null)
-            g2d.stroke = BasicStroke(1.5f)
+            g2d.stroke = BasicStroke(3f)
             g2d.translate(
                 ((meme!!.getWidth(null) - metrics.stringWidth(line)) / 2.0).toInt(),
                 (meme!!.getHeight(null) - (lines.size - i - 0.75) * graphics.getFont().size).toInt()
