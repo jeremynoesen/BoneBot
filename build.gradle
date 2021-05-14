@@ -11,12 +11,10 @@ compileJava.options.encoding = 'UTF-8'
 
 repositories {
     mavenCentral()
-    jcenter()
     mavenLocal()
 }
 
 dependencies {
-    implementation 'com.github.jengelman.gradle.plugins:shadow:2.0.1'
     implementation 'net.dv8tion:JDA:4.2.0_168'
     implementation 'org.apache.commons:commons-text:1.6'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
@@ -30,11 +28,13 @@ shadowJar {
     mergeServiceFiles()
     archiveFileName = 'BoneBot.jar'
 }
+
 compileKotlin {
     kotlinOptions {
         jvmTarget = "1.8"
     }
 }
+
 compileTestKotlin {
     kotlinOptions {
         jvmTarget = "1.8"
