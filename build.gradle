@@ -16,7 +16,6 @@ repositories {
 
 dependencies {
     implementation 'net.dv8tion:JDA:4.2.0_168'
-    implementation 'org.apache.commons:commons-text:1.6'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
 }
 
