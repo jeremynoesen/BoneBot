@@ -1,6 +1,6 @@
-package jeremynoesen.bonebot.modules
+package xyz.jeremynoesen.bonebot.modules
 
-import jeremynoesen.bonebot.Logger
+import xyz.jeremynoesen.bonebot.Logger
 import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.entities.Activity
 import java.util.*

@@ -1,8 +1,8 @@
-package jeremynoesen.bonebot
+package xyz.jeremynoesen.bonebot
 
-import jeremynoesen.bonebot.modules.Command
-import jeremynoesen.bonebot.modules.Reactor
-import jeremynoesen.bonebot.modules.Responder
+import xyz.jeremynoesen.bonebot.modules.Command
+import xyz.jeremynoesen.bonebot.modules.Reactor
+import xyz.jeremynoesen.bonebot.modules.Responder
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import net.dv8tion.jda.api.hooks.ListenerAdapter
 

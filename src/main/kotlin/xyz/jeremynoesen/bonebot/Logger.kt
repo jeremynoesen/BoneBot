@@ -1,4 +1,4 @@
-package jeremynoesen.bonebot
+package xyz.jeremynoesen.bonebot
 
 import java.io.File
 import java.io.FileNotFoundException

@@ -1,6 +1,6 @@
-package jeremynoesen.bonebot
+package xyz.jeremynoesen.bonebot
 
-import jeremynoesen.bonebot.modules.Status
+import xyz.jeremynoesen.bonebot.modules.Status
 import net.dv8tion.jda.api.JDABuilder
 import java.awt.Toolkit
 import java.io.File

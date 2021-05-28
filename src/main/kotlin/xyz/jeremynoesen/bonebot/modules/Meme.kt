@@ -1,7 +1,7 @@
-package jeremynoesen.bonebot.modules
+package xyz.jeremynoesen.bonebot.modules
 
-import jeremynoesen.bonebot.Config
-import jeremynoesen.bonebot.Logger
+import xyz.jeremynoesen.bonebot.Config
+import xyz.jeremynoesen.bonebot.Logger
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.entities.Message
 import org.apache.commons.text.WordUtils
