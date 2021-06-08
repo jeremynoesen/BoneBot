@@ -26,7 +26,7 @@ BoneBot allows for custom commands to be made to provide simple message response
 BoneBot can have various now playing statuses shown in Discord. You can put custom statuses in `statuses.txt`. Each new line designates a different status message. These will be selected at random based on the delay set in the main config.
 
 ## Building
-To build, clone or download this repository. With Gradle installed, run `gradle build` in the directory of the project. After that, a file called `BoneBot.jar` should have been created. You can also grab `BoneBot.jar` from the latest release.
+To build, clone or download this repository. Run `./gradlew build` in the directory of the project. After that, a file called `BoneBot.jar` should have been created. You can also grab `BoneBot.jar` from the latest release.
 
 ## Installation
 Create a new folder where you would like the bot to be installed. Then, place `BoneBot.jar` in this directory. Next, you are going to want to head over to the [Discord Developer Portal](https://discord.com/developers/applications) and create an application. After doing so, add a bot to the application in the bot tab. You can customize everything here as you please, as it is your own instance of the bot. Copy the bot token from this page, as you will need it later.
