@@ -12,11 +12,16 @@ compileJava.options.encoding = 'UTF-8'
 repositories {
     mavenCentral()
     mavenLocal()
+    maven {
+        name 'm2-dv8tion'
+        url 'https://m2.dv8tion.net/releases'
+    }
 }
 
 dependencies {
-    implementation 'net.dv8tion:JDA:4.2.0_168'
+    implementation 'net.dv8tion:JDA:4.2.1_253'
     implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
+    implementation 'org.apache.commons:commons-text:1.9'
 }
 
 application {

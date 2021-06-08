@@ -1,6 +1,5 @@
 package xyz.jeremynoesen.bonebot
 
-import jeremynoesen.bonebot.modules.*
 import xyz.jeremynoesen.bonebot.modules.*
 import java.awt.Color
 import java.io.File
