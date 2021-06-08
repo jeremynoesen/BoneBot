@@ -5,7 +5,7 @@ plugins {
     id 'org.jetbrains.kotlin.jvm' version '1.4.20'
 }
 
-group 'jeremynoesen.bonebot'
+group 'xyz.jeremynoesen.bonebot'
 version '1.2.0'
 compileJava.options.encoding = 'UTF-8'
 
@@ -16,11 +16,11 @@ repositories {
 
 dependencies {
     implementation 'net.dv8tion:JDA:4.2.0_168'
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
 }
 
 application {
-    mainClassName = 'jeremynoesen.bonebot.BoneBot'
+    mainClassName = 'xyz.jeremynoesen.bonebot.BoneBot'
 }
 
 shadowJar {
