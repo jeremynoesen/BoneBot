@@ -175,19 +175,19 @@ constructor(private val command: Message) {
             graphics.drawString(
                 line,
                 ((meme!!.getWidth(null) - metrics.stringWidth(line)) / 2.0).toInt(),
-                ((topText.size - i) * graphics.getFont().size)
+                ((i + 1.05) * graphics.getFont().size).toInt()
             )
             val shape = TextLayout(line, font, g2d.fontRenderContext).getOutline(null)
-            g2d.stroke = BasicStroke(2f)
+            g2d.stroke = BasicStroke(3f)
             g2d.translate(
                 ((meme!!.getWidth(null) - metrics.stringWidth(line)) / 2.0).toInt(),
-                ((topText.size - i) * graphics.getFont().size)
+                ((i + 1.05) * graphics.getFont().size).toInt()
             )
             graphics.setColor(Color.BLACK)
             g2d.draw(shape)
             g2d.translate(
                 (-((meme!!.getWidth(null) - metrics.stringWidth(line)) / 2.0)).toInt(),
-                (-((topText.size - i) * graphics.getFont().size))
+                (-((i + 1.05) * graphics.getFont().size)).toInt()
             )
         }
 
@@ -201,7 +201,7 @@ constructor(private val command: Message) {
                 (meme!!.getHeight(null) - (bottomText.size - i - 0.75) * graphics.getFont().size).toInt()
             )
             val shape = TextLayout(line, font, g2d.fontRenderContext).getOutline(null)
-            g2d.stroke = BasicStroke(2f)
+            g2d.stroke = BasicStroke(3f)
             g2d.translate(
                 ((meme!!.getWidth(null) - metrics.stringWidth(line)) / 2.0).toInt(),
                 (meme!!.getHeight(null) - (bottomText.size - i - 0.75) * graphics.getFont().size).toInt()
