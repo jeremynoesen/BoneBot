@@ -104,13 +104,13 @@ constructor(private val command: Message) {
             image = getImageFromURL(command.mentionedUsers[0].effectiveAvatarUrl + "?size=1024")
             for (i in command.mentionedUsers.indices) input = input.replace(command.mentionedUsers[i].asMention, "")
                 .replace("<@!" + command.mentionedUsers[i].idLong + ">", "")
-                .replace("  ", " ").trim { it <= ' ' }
+                .replace("  ", " ")
         } else {
 
             for (word in input.split(" ", "\n", " // ")) {
                 try {
                     image = getImageFromURL(word)
-                    input = input.replace(word, "").replace("  ", " ").trim { it <= ' ' }
+                    input = input.replace(word, "").replace("  ", " ")
                     break
                 } catch (e: java.lang.Exception) {
                 }
