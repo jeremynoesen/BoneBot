@@ -146,10 +146,8 @@ constructor(private val command: Message) {
         val g2d = graphics as Graphics2D
         val font =
             Font.createFont(Font.TRUETYPE_FONT, javaClass.getResourceAsStream("/Impact.ttf")).deriveFont((height + width) / 20.0f)
-        graphics.setFont(font)
+        g2d.font = font
         val metrics = graphics.getFontMetrics(font)
-        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON)
-        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR)
         g2d.drawImage(image, 0, 0, width, height, null)
 
         val sections = text!!.split("\n", "\\n").toTypedArray()
