@@ -97,7 +97,7 @@ constructor(private val command: Message) {
                 image = getImageFromURL(command.referencedMessage!!.attachments[0].url)
 
         var input =
-            command.contentRaw.substring(Command.commandPrefix.length + 4, command.contentRaw.length).trim { it <= ' ' }
+            command.contentRaw.substring(Command.commandPrefix.length + 4, command.contentRaw.length)
         if (command.attachments.size > 0 && command.attachments[0].isImage) {
             image = getImageFromURL(command.attachments[0].url)
         } else if (command.mentionedUsers.size > 0) {
@@ -107,7 +107,7 @@ constructor(private val command: Message) {
                 .replace("  ", " ").trim { it <= ' ' }
         } else {
 
-            for (word in input.split(" ", "\n")) {
+            for (word in input.split(" ", "\n", "\\n")) {
                 try {
                     image = getImageFromURL(word)
                     input = input.replace(word, "").replace("  ", " ").trim { it <= ' ' }
