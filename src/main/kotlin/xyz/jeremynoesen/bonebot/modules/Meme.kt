@@ -58,8 +58,8 @@ constructor(private val command: Message) {
                     val embedBuilder = EmbedBuilder()
                     embedBuilder.setAuthor(command.author.name + " generated a meme:", null, command.author.avatarUrl)
                     embedBuilder.setColor(Config.embedColor)
-                    embedBuilder.setImage("attachment://meme.jpg")
-                    command.channel.sendMessage(embedBuilder.build()).addFile(file, "meme.jpg").queue()
+                    embedBuilder.setImage("attachment://meme.png")
+                    command.channel.sendMessage(embedBuilder.build()).addFile(file, "meme.png").queue()
                     prevTime = System.currentTimeMillis()
                 } else {
                     command.channel.sendMessage("Please provide the missing text or image!").queue()
