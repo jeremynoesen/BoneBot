@@ -141,7 +141,7 @@ constructor(private val command: Message) {
         val ratio = image!!.height / image!!.width.toDouble()
         val width = 1024
         val height = (width * ratio).toInt()
-        meme = BufferedImage(width, height, BufferedImage.TYPE_INT_RGB)
+        meme = BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB)
         val graphics = meme!!.graphics
         val g2d = graphics as Graphics2D
         val font =
