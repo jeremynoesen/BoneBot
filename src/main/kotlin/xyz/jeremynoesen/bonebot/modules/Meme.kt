@@ -92,7 +92,12 @@ constructor(private val command: Message) {
      */
     @Throws(IOException::class)
     private fun readTextAndImage() {
-        var input = command.contentRaw.substring(Command.commandPrefix.length + 4, command.contentRaw.length).trim { it <= ' ' }
+        if (command.referencedMessage != null)
+            if (command.referencedMessage!!.attachments.size > 0 && command.referencedMessage!!.attachments[0].isImage)
+                image = getImageFromURL(command.referencedMessage!!.attachments[0].url)
+
+        var input =
+            command.contentRaw.substring(Command.commandPrefix.length + 4, command.contentRaw.length)
         if (command.attachments.size > 0 && command.attachments[0].isImage) {
             image = getImageFromURL(command.attachments[0].url)
         } else if (command.mentionedUsers.size > 0) {
@@ -102,7 +107,7 @@ constructor(private val command: Message) {
                 .replace("  ", " ").trim { it <= ' ' }
         } else {
 
-            for (word in input.split(" ", "\n")) {
+            for (word in input.split(" ", "\n", " // ")) {
                 try {
                     image = getImageFromURL(word)
                     input = input.replace(word, "").replace("  ", " ").trim { it <= ' ' }
@@ -140,44 +145,78 @@ constructor(private val command: Message) {
         val ratio = image!!.height / image!!.width.toDouble()
         val width = 1024
         val height = (width * ratio).toInt()
-        meme = BufferedImage(width, height, BufferedImage.TYPE_INT_RGB)
+        meme = BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB)
         val graphics = meme!!.graphics
         val g2d = graphics as Graphics2D
-        val font = Font.createFont(Font.TRUETYPE_FONT, javaClass.getResourceAsStream("/Impact.ttf")).deriveFont(96f)
-        graphics.setFont(font)
+        val font =
+            Font.createFont(Font.TRUETYPE_FONT, javaClass.getResourceAsStream("/Impact.ttf"))
+                .deriveFont((height + width) / 20.0f)
+        g2d.font = font
         val metrics = graphics.getFontMetrics(font)
-        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON)
-        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR)
-        graphics.drawImage(image, 0, 0, width, height, null)
-        val lines = ArrayList<String>()
-        val sections = text!!.split("\n").toTypedArray()
-        for (section in sections) lines.addAll(
+        g2d.drawImage(image, 0, 0, width, height, null)
+
+        val sections = text!!.split("\n", " // ").toTypedArray()
+        val topText = ArrayList<String>()
+        val bottomText = ArrayList<String>()
+        topText.addAll(
             listOf(
-                *WordUtils.wrap(section, 18, "\n", true).split("\n").toTypedArray()
+                *WordUtils.wrap(sections[0], 18, "\n\n", true).split("\n\n").toTypedArray()
             )
         )
-        for (i in lines.indices) {
-            val line = lines[i].trim { it <= ' ' }.toUpperCase()
+        if (sections.size > 1) {
+            bottomText.addAll(
+                listOf(
+                    *WordUtils.wrap(sections[1], 18, "\n\n", true).split("\n\n").toTypedArray()
+                )
+            )
+        }
+
+        for (i in topText.indices) {
+            val line = topText[i].trim { it <= ' ' }.toUpperCase()
             if (line.isEmpty()) continue
-            graphics.setColor(Color.WHITE)
-            graphics.drawString(
+            g2d.color = Color.WHITE
+            g2d.drawString(
                 line,
                 ((meme!!.getWidth(null) - metrics.stringWidth(line)) / 2.0).toInt(),
-                (meme!!.getHeight(null) - (lines.size - i - 0.75) * graphics.getFont().size).toInt()
+                ((i + 1.05) * g2d.font.size).toInt()
             )
             val shape = TextLayout(line, font, g2d.fontRenderContext).getOutline(null)
             g2d.stroke = BasicStroke(3f)
             g2d.translate(
                 ((meme!!.getWidth(null) - metrics.stringWidth(line)) / 2.0).toInt(),
-                (meme!!.getHeight(null) - (lines.size - i - 0.75) * graphics.getFont().size).toInt()
+                ((i + 1.05) * g2d.font.size).toInt()
             )
-            graphics.setColor(Color.BLACK)
+            g2d.color = Color.BLACK
             g2d.draw(shape)
             g2d.translate(
                 (-((meme!!.getWidth(null) - metrics.stringWidth(line)) / 2.0)).toInt(),
-                (-(meme!!.getHeight(null) - (lines.size - i - 0.75) * graphics.getFont().size)).toInt()
+                (-((i + 1.05) * g2d.font.size)).toInt()
             )
         }
+
+        for (i in bottomText.indices) {
+            val line = bottomText[i].trim { it <= ' ' }.toUpperCase()
+            if (line.isEmpty()) continue
+            g2d.color = Color.WHITE
+            g2d.drawString(
+                line,
+                ((meme!!.getWidth(null) - metrics.stringWidth(line)) / 2.0).toInt(),
+                (meme!!.getHeight(null) - (bottomText.size - i - 0.75) * g2d.font.size).toInt()
+            )
+            val shape = TextLayout(line, font, g2d.fontRenderContext).getOutline(null)
+            g2d.stroke = BasicStroke(3f)
+            g2d.translate(
+                ((meme!!.getWidth(null) - metrics.stringWidth(line)) / 2.0).toInt(),
+                (meme!!.getHeight(null) - (bottomText.size - i - 0.75) * g2d.font.size).toInt()
+            )
+            g2d.color = Color.BLACK
+            g2d.draw(shape)
+            g2d.translate(
+                (-((meme!!.getWidth(null) - metrics.stringWidth(line)) / 2.0)).toInt(),
+                (-(meme!!.getHeight(null) - (bottomText.size - i - 0.75) * g2d.font.size)).toInt()
+            )
+        }
+
         graphics.dispose()
         g2d.dispose()
     }
@@ -191,8 +230,8 @@ constructor(private val command: Message) {
     @Throws(IOException::class)
     private fun convertToFile(): File {
         File("temp").mkdir()
-        val file = File("temp/meme$memeCount.jpg")
-        ImageIO.write(meme, "jpg", file)
+        val file = File("temp/meme$memeCount.png")
+        ImageIO.write(meme, "png", file)
         memeCount++
         return file
     }
