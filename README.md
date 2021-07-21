@@ -44,7 +44,7 @@ Below are a few images showing what BoneBot can do. Simple actions, such as reac
 ### Meme Generator
 
 <div align="center"><img src="img/memeinput.png" alt="Meme example command" title="Meme example command" /></div>
-<div align="center"><img src="img/memeoutput.png" alt="Meme example output" title="Meme example output" /></div>
+<div align="center"><img src="img/memeoutput.png" alt="Meme example output" title="Meme example output" width="512" height="512"/></div>
 
 ### Help Command (with one custom command added)
 
