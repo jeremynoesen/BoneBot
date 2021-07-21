@@ -92,6 +92,10 @@ constructor(private val command: Message) {
      */
     @Throws(IOException::class)
     private fun readTextAndImage() {
+        if (command.referencedMessage != null)
+            if (command.referencedMessage!!.attachments.size > 0 && command.referencedMessage!!.attachments[0].isImage)
+                image = getImageFromURL(command.referencedMessage!!.attachments[0].url)
+
         var input =
             command.contentRaw.substring(Command.commandPrefix.length + 4, command.contentRaw.length).trim { it <= ' ' }
         if (command.attachments.size > 0 && command.attachments[0].isImage) {
@@ -145,7 +149,8 @@ constructor(private val command: Message) {
         val graphics = meme!!.graphics
         val g2d = graphics as Graphics2D
         val font =
-            Font.createFont(Font.TRUETYPE_FONT, javaClass.getResourceAsStream("/Impact.ttf")).deriveFont((height + width) / 20.0f)
+            Font.createFont(Font.TRUETYPE_FONT, javaClass.getResourceAsStream("/Impact.ttf"))
+                .deriveFont((height + width) / 20.0f)
         g2d.font = font
         val metrics = graphics.getFontMetrics(font)
         g2d.drawImage(image, 0, 0, width, height, null)

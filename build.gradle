@@ -19,7 +19,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'net.dv8tion:JDA:4.2.1_253'
+    implementation 'net.dv8tion:JDA:4.3.0_277'
     implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
     implementation 'org.apache.commons:commons-text:1.9'
 }
