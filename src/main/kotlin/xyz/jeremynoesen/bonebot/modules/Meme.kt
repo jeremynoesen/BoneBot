@@ -107,7 +107,7 @@ constructor(private val command: Message) {
                 .replace("  ", " ").trim { it <= ' ' }
         } else {
 
-            for (word in input.split(" ", "\n", "\\n")) {
+            for (word in input.split(" ", "\n", " // ")) {
                 try {
                     image = getImageFromURL(word)
                     input = input.replace(word, "").replace("  ", " ").trim { it <= ' ' }
@@ -155,7 +155,7 @@ constructor(private val command: Message) {
         val metrics = graphics.getFontMetrics(font)
         g2d.drawImage(image, 0, 0, width, height, null)
 
-        val sections = text!!.split("\n", "\\n").toTypedArray()
+        val sections = text!!.split("\n", " // ").toTypedArray()
         val topText = ArrayList<String>()
         val bottomText = ArrayList<String>()
         topText.addAll(
