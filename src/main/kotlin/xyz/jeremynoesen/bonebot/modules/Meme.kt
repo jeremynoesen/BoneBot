@@ -150,7 +150,7 @@ constructor(private val command: Message) {
         val metrics = graphics.getFontMetrics(font)
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON)
         g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR)
-        graphics.drawImage(image, 0, 0, width, height, null)
+        g2d.drawImage(image, 0, 0, width, height, null)
 
         val sections = text!!.split("\n", "\\n").toTypedArray()
         val topText = ArrayList<String>()
@@ -171,46 +171,46 @@ constructor(private val command: Message) {
         for (i in topText.indices) {
             val line = topText[i].trim { it <= ' ' }.toUpperCase()
             if (line.isEmpty()) continue
-            graphics.setColor(Color.WHITE)
-            graphics.drawString(
+            g2d.color = Color.WHITE
+            g2d.drawString(
                 line,
                 ((meme!!.getWidth(null) - metrics.stringWidth(line)) / 2.0).toInt(),
-                ((i + 1.05) * graphics.getFont().size).toInt()
+                ((i + 1.05) * g2d.font.size).toInt()
             )
             val shape = TextLayout(line, font, g2d.fontRenderContext).getOutline(null)
             g2d.stroke = BasicStroke(3f)
             g2d.translate(
                 ((meme!!.getWidth(null) - metrics.stringWidth(line)) / 2.0).toInt(),
-                ((i + 1.05) * graphics.getFont().size).toInt()
+                ((i + 1.05) * g2d.font.size).toInt()
             )
-            graphics.setColor(Color.BLACK)
+            g2d.color = Color.BLACK
             g2d.draw(shape)
             g2d.translate(
                 (-((meme!!.getWidth(null) - metrics.stringWidth(line)) / 2.0)).toInt(),
-                (-((i + 1.05) * graphics.getFont().size)).toInt()
+                (-((i + 1.05) * g2d.font.size)).toInt()
             )
         }
 
         for (i in bottomText.indices) {
             val line = bottomText[i].trim { it <= ' ' }.toUpperCase()
             if (line.isEmpty()) continue
-            graphics.setColor(Color.WHITE)
-            graphics.drawString(
+            g2d.color = Color.WHITE
+            g2d.drawString(
                 line,
                 ((meme!!.getWidth(null) - metrics.stringWidth(line)) / 2.0).toInt(),
-                (meme!!.getHeight(null) - (bottomText.size - i - 0.75) * graphics.getFont().size).toInt()
+                (meme!!.getHeight(null) - (bottomText.size - i - 0.75) * g2d.font.size).toInt()
             )
             val shape = TextLayout(line, font, g2d.fontRenderContext).getOutline(null)
             g2d.stroke = BasicStroke(3f)
             g2d.translate(
                 ((meme!!.getWidth(null) - metrics.stringWidth(line)) / 2.0).toInt(),
-                (meme!!.getHeight(null) - (bottomText.size - i - 0.75) * graphics.getFont().size).toInt()
+                (meme!!.getHeight(null) - (bottomText.size - i - 0.75) * g2d.font.size).toInt()
             )
-            graphics.setColor(Color.BLACK)
+            g2d.color = Color.BLACK
             g2d.draw(shape)
             g2d.translate(
                 (-((meme!!.getWidth(null) - metrics.stringWidth(line)) / 2.0)).toInt(),
-                (-(meme!!.getHeight(null) - (bottomText.size - i - 0.75) * graphics.getFont().size)).toInt()
+                (-(meme!!.getHeight(null) - (bottomText.size - i - 0.75) * g2d.font.size)).toInt()
             )
         }
 
@@ -227,8 +227,8 @@ constructor(private val command: Message) {
     @Throws(IOException::class)
     private fun convertToFile(): File {
         File("temp").mkdir()
-        val file = File("temp/meme$memeCount.jpg")
-        ImageIO.write(meme, "jpg", file)
+        val file = File("temp/meme$memeCount.png")
+        ImageIO.write(meme, "png", file)
         memeCount++
         return file
     }
