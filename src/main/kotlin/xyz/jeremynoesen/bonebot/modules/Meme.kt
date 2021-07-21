@@ -92,7 +92,8 @@ constructor(private val command: Message) {
      */
     @Throws(IOException::class)
     private fun readTextAndImage() {
-        var input = command.contentRaw.substring(Command.commandPrefix.length + 4, command.contentRaw.length).trim { it <= ' ' }
+        var input =
+            command.contentRaw.substring(Command.commandPrefix.length + 4, command.contentRaw.length).trim { it <= ' ' }
         if (command.attachments.size > 0 && command.attachments[0].isImage) {
             image = getImageFromURL(command.attachments[0].url)
         } else if (command.mentionedUsers.size > 0) {
@@ -150,35 +151,69 @@ constructor(private val command: Message) {
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON)
         g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR)
         graphics.drawImage(image, 0, 0, width, height, null)
-        val lines = ArrayList<String>()
-        val sections = text!!.split("\n").toTypedArray()
-        for (section in sections) lines.addAll(
+
+        val sections = text!!.split("\n", "\\n").toTypedArray()
+        val topText = ArrayList<String>()
+        val bottomText = ArrayList<String>()
+        topText.addAll(
             listOf(
-                *WordUtils.wrap(section, 18, "\n", true).split("\n").toTypedArray()
+                *WordUtils.wrap(sections[0], 18, "\n\n", true).split("\n\n").toTypedArray()
             )
         )
-        for (i in lines.indices) {
-            val line = lines[i].trim { it <= ' ' }.toUpperCase()
+        if (sections.size > 1) {
+            bottomText.addAll(
+                listOf(
+                    *WordUtils.wrap(sections[1], 18, "\n\n", true).split("\n\n").toTypedArray()
+                )
+            )
+        }
+
+        for (i in topText.indices) {
+            val line = topText[i].trim { it <= ' ' }.toUpperCase()
             if (line.isEmpty()) continue
             graphics.setColor(Color.WHITE)
             graphics.drawString(
                 line,
                 ((meme!!.getWidth(null) - metrics.stringWidth(line)) / 2.0).toInt(),
-                (meme!!.getHeight(null) - (lines.size - i - 0.75) * graphics.getFont().size).toInt()
+                ((topText.size - i) * graphics.getFont().size)
             )
             val shape = TextLayout(line, font, g2d.fontRenderContext).getOutline(null)
-            g2d.stroke = BasicStroke(3f)
+            g2d.stroke = BasicStroke(2f)
             g2d.translate(
                 ((meme!!.getWidth(null) - metrics.stringWidth(line)) / 2.0).toInt(),
-                (meme!!.getHeight(null) - (lines.size - i - 0.75) * graphics.getFont().size).toInt()
+                ((topText.size - i) * graphics.getFont().size)
             )
             graphics.setColor(Color.BLACK)
             g2d.draw(shape)
             g2d.translate(
                 (-((meme!!.getWidth(null) - metrics.stringWidth(line)) / 2.0)).toInt(),
-                (-(meme!!.getHeight(null) - (lines.size - i - 0.75) * graphics.getFont().size)).toInt()
+                (-((topText.size - i) * graphics.getFont().size))
             )
         }
+
+        for (i in bottomText.indices) {
+            val line = bottomText[i].trim { it <= ' ' }.toUpperCase()
+            if (line.isEmpty()) continue
+            graphics.setColor(Color.WHITE)
+            graphics.drawString(
+                line,
+                ((meme!!.getWidth(null) - metrics.stringWidth(line)) / 2.0).toInt(),
+                (meme!!.getHeight(null) - (bottomText.size - i - 0.75) * graphics.getFont().size).toInt()
+            )
+            val shape = TextLayout(line, font, g2d.fontRenderContext).getOutline(null)
+            g2d.stroke = BasicStroke(2f)
+            g2d.translate(
+                ((meme!!.getWidth(null) - metrics.stringWidth(line)) / 2.0).toInt(),
+                (meme!!.getHeight(null) - (bottomText.size - i - 0.75) * graphics.getFont().size).toInt()
+            )
+            graphics.setColor(Color.BLACK)
+            g2d.draw(shape)
+            g2d.translate(
+                (-((meme!!.getWidth(null) - metrics.stringWidth(line)) / 2.0)).toInt(),
+                (-(meme!!.getHeight(null) - (bottomText.size - i - 0.75) * graphics.getFont().size)).toInt()
+            )
+        }
+
         graphics.dispose()
         g2d.dispose()
     }
