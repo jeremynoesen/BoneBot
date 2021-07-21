@@ -38,6 +38,18 @@ cd botdir
 java -jar botdir/BoneBot.jar
 ```
 
+## Demonstration
+Below are a few images showing what BoneBot can do. Simple actions, such as reactions, text responses, and status messages, are not shown due to those being basic Discord functions.
+
+### Meme Generator
+
+<div align="center"><img src="img/memeinput.png" alt="Meme example command" title="Meme example command" /></div>
+<div align="center"><img src="img/memeoutput.png" alt="Meme example output" title="Meme example output" /></div>
+
+### Help Command (with one custom command added)
+
+<div align="center"><img src="img/help.png" alt="Help example" title="Help example" /></div>
+
 ## Configuration
 Configuration for meme images and texts, responder messages, reactor triggers, and status messages are all highlighted under **Usage**. There is a general config that handles all cool downs, module enables, the bot token, embed colors, typing speed, and the command prefix. Cool down values are in seconds, while the typing speed is in milliseconds. After changing any of these values, save the file and restart the bot. Do note that in all configurations, the command prefix and any trigger phrases ignore case.
 ```yaml
