@@ -175,15 +175,14 @@ constructor(private val command: Message) {
         val topText = ArrayList<String>()
         val bottomText = ArrayList<String>()
 
-        val topWrapLength = floor(sections[0].length / (metrics.stringWidth(sections[0]) / width.toFloat())).toInt() - 4
+        val topWrapLength = floor(sections[0].length / (metrics.stringWidth(sections[0]) / (width.toFloat() - 160))).toInt()
         topText.addAll(
             listOf(
                 *WordUtils.wrap(sections[0], topWrapLength, "\n\n", true).split("\n\n").toTypedArray()
             )
         )
         if (sections.size > 1) {
-            val bottomWrapLength =
-                floor(sections[1].length / (metrics.stringWidth(sections[1]) / width.toFloat())).toInt() - 4
+            val bottomWrapLength = floor(sections[1].length / (metrics.stringWidth(sections[1]) / (width.toFloat() - 160))).toInt()
             bottomText.addAll(
                 listOf(
                     *WordUtils.wrap(sections[1], bottomWrapLength, "\n\n", true).split("\n\n").toTypedArray()
