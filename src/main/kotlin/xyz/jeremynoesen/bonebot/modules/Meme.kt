@@ -1,19 +1,20 @@
 package xyz.jeremynoesen.bonebot.modules
 
-import xyz.jeremynoesen.bonebot.Config
-import xyz.jeremynoesen.bonebot.Logger
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.entities.Message
 import org.apache.commons.text.WordUtils
+import xyz.jeremynoesen.bonebot.Config
+import xyz.jeremynoesen.bonebot.Logger
 import java.awt.*
 import java.awt.font.TextLayout
 import java.awt.image.BufferedImage
 import java.io.File
 import java.io.IOException
 import java.net.URL
+import java.net.URLConnection
 import java.util.*
 import javax.imageio.ImageIO
-import java.net.URLConnection
+import kotlin.math.floor
 
 
 /**
@@ -158,15 +159,18 @@ constructor(private val command: Message) {
         val sections = text!!.split("\n", " // ").toTypedArray()
         val topText = ArrayList<String>()
         val bottomText = ArrayList<String>()
+
+        val topWrapLength = floor(sections[0].length / (metrics.stringWidth(sections[0]) / width.toFloat())).toInt() - 4
         topText.addAll(
             listOf(
-                *WordUtils.wrap(sections[0], 18, "\n\n", true).split("\n\n").toTypedArray()
+                *WordUtils.wrap(sections[0], topWrapLength, "\n\n", true).split("\n\n").toTypedArray()
             )
         )
         if (sections.size > 1) {
+            val bottomWrapLength = floor(sections[1].length / (metrics.stringWidth(sections[1]) / width.toFloat())).toInt() - 4
             bottomText.addAll(
                 listOf(
-                    *WordUtils.wrap(sections[1], 18, "\n\n", true).split("\n\n").toTypedArray()
+                    *WordUtils.wrap(sections[1], bottomWrapLength, "\n\n", true).split("\n\n").toTypedArray()
                 )
             )
         }
@@ -178,19 +182,19 @@ constructor(private val command: Message) {
             g2d.drawString(
                 line,
                 ((meme!!.getWidth(null) - metrics.stringWidth(line)) / 2.0).toInt(),
-                ((i + 1.05) * g2d.font.size).toInt()
+                ((i + 0.9) * g2d.font.size).toInt()
             )
             val shape = TextLayout(line, font, g2d.fontRenderContext).getOutline(null)
             g2d.stroke = BasicStroke(3f)
             g2d.translate(
                 ((meme!!.getWidth(null) - metrics.stringWidth(line)) / 2.0).toInt(),
-                ((i + 1.05) * g2d.font.size).toInt()
+                ((i + 0.9) * g2d.font.size).toInt()
             )
             g2d.color = Color.BLACK
             g2d.draw(shape)
             g2d.translate(
                 (-((meme!!.getWidth(null) - metrics.stringWidth(line)) / 2.0)).toInt(),
-                (-((i + 1.05) * g2d.font.size)).toInt()
+                (-((i + 0.9) * g2d.font.size)).toInt()
             )
         }
 
@@ -201,19 +205,19 @@ constructor(private val command: Message) {
             g2d.drawString(
                 line,
                 ((meme!!.getWidth(null) - metrics.stringWidth(line)) / 2.0).toInt(),
-                (meme!!.getHeight(null) - (bottomText.size - i - 0.75) * g2d.font.size).toInt()
+                (meme!!.getHeight(null) - (bottomText.size - i - 0.9) * g2d.font.size).toInt()
             )
             val shape = TextLayout(line, font, g2d.fontRenderContext).getOutline(null)
             g2d.stroke = BasicStroke(3f)
             g2d.translate(
                 ((meme!!.getWidth(null) - metrics.stringWidth(line)) / 2.0).toInt(),
-                (meme!!.getHeight(null) - (bottomText.size - i - 0.75) * g2d.font.size).toInt()
+                (meme!!.getHeight(null) - (bottomText.size - i - 0.9) * g2d.font.size).toInt()
             )
             g2d.color = Color.BLACK
             g2d.draw(shape)
             g2d.translate(
                 (-((meme!!.getWidth(null) - metrics.stringWidth(line)) / 2.0)).toInt(),
-                (-(meme!!.getHeight(null) - (bottomText.size - i - 0.75) * g2d.font.size)).toInt()
+                (-(meme!!.getHeight(null) - (bottomText.size - i - 0.9) * g2d.font.size)).toInt()
             )
         }
 
