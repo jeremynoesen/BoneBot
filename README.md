@@ -35,7 +35,7 @@ Create a new folder where you would like the bot to be installed. Then, place `B
 To run the bot, you can use the script below. Replace `botdir` with the directory you placed the bot in. Running this for the first time will generate all necessary configuration files and directories, but will not properly start the bot. You will need to set `bot-token` in `config.txt` to the token you copied earlier for the bot to start properly after running for the first time.
 ```
 cd botdir
-java -jar botdir/BoneBot.jar
+java -jar BoneBot.jar
 ```
 
 ## Demonstration
