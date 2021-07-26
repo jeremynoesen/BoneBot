@@ -129,7 +129,7 @@ constructor(private val command: Message) {
             }
         }
 
-        if (input.isNotEmpty()) {
+        if (input.trim().isNotEmpty()) {
             text = input
         } else if (texts.isNotEmpty()) {
             val r = Random()
