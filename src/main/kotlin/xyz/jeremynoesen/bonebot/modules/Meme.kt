@@ -94,57 +94,77 @@ constructor(private val command: Message) {
     @Throws(IOException::class)
     private fun readTextAndImage() {
         var input = command.contentRaw.substring(Command.commandPrefix.length + 4, command.contentRaw.length)
+        var altInput = ""
 
         if (command.referencedMessage != null) {
+            altInput = command.referencedMessage!!.contentRaw
             if (command.referencedMessage!!.attachments.size > 0 && command.referencedMessage!!.attachments[0].isImage) {
                 image = getImageFromURL(command.referencedMessage!!.attachments[0].url)
             } else if (command.referencedMessage!!.embeds.size > 0 && command.referencedMessage!!.embeds[0].image != null) {
                 image = getImageFromURL(command.referencedMessage!!.embeds[0].image!!.url!!)
+            } else if (command.referencedMessage!!.mentionedUsers.size > 0) {
+                image = getImageFromURL(command.referencedMessage!!.mentionedUsers[0].effectiveAvatarUrl + "?size=1024")
+                for (i in command.referencedMessage!!.mentionedUsers.indices)
+                    altInput = altInput.replace(command.referencedMessage!!.mentionedUsers[i].asMention, "")
+                    .replace("<@!" + command.referencedMessage!!.mentionedUsers[i].idLong + ">", "")
+                    .replace("  ", " ")
             } else {
                 for (word in command.referencedMessage!!.contentRaw.split(" ", "\n", " // ")) {
                     try {
                         image = getImageFromURL(word)
+                        altInput = altInput.replace(word, "").replace("  ", " ")
                         break
                     } catch (e: java.lang.Exception) {
                     }
                 }
             }
+            if (image != null) altInput = ""
+        }
+
+        if (command.attachments.size > 0 && command.attachments[0].isImage) {
+            image = getImageFromURL(command.attachments[0].url)
+        } else if (command.embeds.size > 0 && command.embeds[0].image != null) {
+            image = getImageFromURL(command.embeds[0].image!!.url!!)
+            for (word in input.split(" ", "\n", " // ")) {
+                if (word.startsWith("http://") || word.startsWith("https://")) {
+                    input = input.replace(word, "").replace("  ", " ")
+                }
+            }
+        } else if (command.mentionedUsers.size > 0 && altInput.isEmpty()) {
+            image = getImageFromURL(command.mentionedUsers[0].effectiveAvatarUrl + "?size=1024")
+            for (i in command.mentionedUsers.indices) input =
+                input.replace(command.mentionedUsers[i].asMention, "")
+                .replace("<@!" + command.mentionedUsers[i].idLong + ">", "")
+                .replace("  ", " ")
         } else {
 
-            if (command.attachments.size > 0 && command.attachments[0].isImage) {
-                image = getImageFromURL(command.attachments[0].url)
-            } else if (command.mentionedUsers.size > 0) {
-                image = getImageFromURL(command.mentionedUsers[0].effectiveAvatarUrl + "?size=1024")
-                for (i in command.mentionedUsers.indices) input = input.replace(command.mentionedUsers[i].asMention, "")
-                    .replace("<@!" + command.mentionedUsers[i].idLong + ">", "")
-                    .replace("  ", " ")
-            } else {
-
-                for (word in input.split(" ", "\n", " // ")) {
-                    try {
-                        image = getImageFromURL(word)
-                        input = input.replace(word, "").replace("  ", " ")
-                        break
-                    } catch (e: java.lang.Exception) {
-                    }
+            for (word in input.split(" ", "\n", " // ")) {
+                try {
+                    image = getImageFromURL(word)
+                    input = input.replace(word, "").replace("  ", " ")
+                    break
+                } catch (e: java.lang.Exception) {
                 }
+            }
 
-                if (image == null) {
-                    val r = Random()
-                    val dir = File("resources/images")
-                    if (dir.listFiles()!!.isNotEmpty()) {
-                        var rand = r.nextInt(dir.listFiles()!!.size)
-                        while (dir.listFiles()!![rand].isHidden) {
-                            rand = r.nextInt(dir.listFiles()!!.size)
-                        }
-                        image = ImageIO.read(dir.listFiles()!![rand])
+            if (image == null) {
+                val r = Random()
+                val dir = File("resources/images")
+                if (dir.listFiles()!!.isNotEmpty()) {
+                    var rand = r.nextInt(dir.listFiles()!!.size)
+                    while (dir.listFiles()!![rand].isHidden) {
+                        rand = r.nextInt(dir.listFiles()!!.size)
                     }
+                    image = ImageIO.read(dir.listFiles()!![rand])
                 }
             }
         }
 
+
         if (input.trim().isNotEmpty()) {
             text = input
+        } else if (altInput.trim().isNotEmpty()) {
+            text = altInput
         } else if (texts.isNotEmpty()) {
             val r = Random()
             text = texts[r.nextInt(texts.size)]
@@ -175,14 +195,16 @@ constructor(private val command: Message) {
         val topText = ArrayList<String>()
         val bottomText = ArrayList<String>()
 
-        val topWrapLength = floor(sections[0].length / (metrics.stringWidth(sections[0]) / (width.toFloat() - 160))).toInt()
+        val topWrapLength =
+            floor(sections[0].length / (metrics.stringWidth(sections[0]) / (width.toFloat() - 160))).toInt()
         topText.addAll(
             listOf(
                 *WordUtils.wrap(sections[0], topWrapLength, "\n\n", true).split("\n\n").toTypedArray()
             )
         )
         if (sections.size > 1) {
-            val bottomWrapLength = floor(sections[1].length / (metrics.stringWidth(sections[1]) / (width.toFloat() - 160))).toInt()
+            val bottomWrapLength =
+                floor(sections[1].length / (metrics.stringWidth(sections[1]) / (width.toFloat() - 160))).toInt()
             bottomText.addAll(
                 listOf(
                     *WordUtils.wrap(sections[1], bottomWrapLength, "\n\n", true).split("\n\n").toTypedArray()
