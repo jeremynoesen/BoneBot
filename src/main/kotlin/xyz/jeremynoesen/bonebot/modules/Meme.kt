@@ -95,22 +95,26 @@ constructor(private val command: Message) {
     private fun readTextAndImage() {
         var input = command.contentRaw.substring(Command.commandPrefix.length + 4, command.contentRaw.length)
         var altInput = ""
+        val reply = command.referencedMessage!!
 
         if (command.referencedMessage != null) {
-            altInput = command.referencedMessage!!.contentRaw
-            if (command.referencedMessage!!.attachments.size > 0 && command.referencedMessage!!.attachments[0].isImage) {
-                image = getImageFromURL(command.referencedMessage!!.attachments[0].url)
-            } else if (command.referencedMessage!!.embeds.size > 0 && command.referencedMessage!!.embeds[0].image != null) {
-                image = getImageFromURL(command.referencedMessage!!.embeds[0].image!!.url!!)
-            } else if (command.referencedMessage!!.mentionedUsers.size > 0) {
-                image = getImageFromURL(command.referencedMessage!!
-                    .mentionedUsers[command.referencedMessage!!.mentionedUsers.size - 1].effectiveAvatarUrl + "?size=1024")
-                for (i in command.referencedMessage!!.mentionedUsers.indices)
-                    altInput = altInput.replace(command.referencedMessage!!.mentionedUsers[i].asMention, "")
-                    .replace("<@!" + command.referencedMessage!!.mentionedUsers[i].idLong + ">", "")
-                    .replace("  ", " ")
+            altInput = reply.contentRaw
+
+            if (reply.attachments.size > 0 && reply.attachments[0].isImage) {
+                image = getImageFromURL(reply.attachments[0].url)
+
+            } else if (reply.embeds.size > 0 && reply.embeds[0].image != null) {
+                image = getImageFromURL(reply.embeds[0].image!!.url!!)
+
+            } else if (reply.mentionedUsers.size > 0) {
+                image = getImageFromURL(reply.mentionedUsers[reply.mentionedUsers.size - 1].effectiveAvatarUrl + "?size=1024")
+                for (i in reply.mentionedUsers.indices)
+                    altInput = altInput.replace(reply.mentionedUsers[i].asMention, "")
+                        .replace("<@!" + reply.mentionedUsers[i].idLong + ">", "")
+                        .replace("  ", " ")
+
             } else {
-                for (word in command.referencedMessage!!.contentRaw.split(" ", "\n", " // ")) {
+                for (word in reply.contentRaw.split(" ", "\n", " // ")) {
                     try {
                         image = getImageFromURL(word)
                         altInput = altInput.replace(word, "").replace("  ", " ")
@@ -124,6 +128,7 @@ constructor(private val command: Message) {
 
         if (command.attachments.size > 0 && command.attachments[0].isImage) {
             image = getImageFromURL(command.attachments[0].url)
+
         } else if (command.embeds.size > 0 && command.embeds[0].image != null) {
             image = getImageFromURL(command.embeds[0].image!!.url!!)
             for (word in input.split(" ", "\n", " // ")) {
@@ -131,13 +136,17 @@ constructor(private val command: Message) {
                     input = input.replace(word, "").replace("  ", " ")
                 }
             }
+
         } else if (command.mentionedUsers.size > 0) {
-            image = getImageFromURL(command.mentionedUsers[command.mentionedUsers.size - 1]
-                .effectiveAvatarUrl + "?size=1024")
+            image = getImageFromURL(
+                command.mentionedUsers[command.mentionedUsers.size - 1]
+                    .effectiveAvatarUrl + "?size=1024"
+            )
             for (i in command.mentionedUsers.indices) input =
                 input.replace(command.mentionedUsers[i].asMention, "")
-                .replace("<@!" + command.mentionedUsers[i].idLong + ">", "")
-                .replace("  ", " ")
+                    .replace("<@!" + command.mentionedUsers[i].idLong + ">", "")
+                    .replace("  ", " ")
+
         } else {
 
             for (word in input.split(" ", "\n", " // ")) {
