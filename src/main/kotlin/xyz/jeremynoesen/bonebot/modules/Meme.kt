@@ -103,7 +103,8 @@ constructor(private val command: Message) {
             } else if (command.referencedMessage!!.embeds.size > 0 && command.referencedMessage!!.embeds[0].image != null) {
                 image = getImageFromURL(command.referencedMessage!!.embeds[0].image!!.url!!)
             } else if (command.referencedMessage!!.mentionedUsers.size > 0) {
-                image = getImageFromURL(command.referencedMessage!!.mentionedUsers[0].effectiveAvatarUrl + "?size=1024")
+                image = getImageFromURL(command.referencedMessage!!
+                    .mentionedUsers[command.referencedMessage!!.mentionedUsers.size - 1].effectiveAvatarUrl + "?size=1024")
                 for (i in command.referencedMessage!!.mentionedUsers.indices)
                     altInput = altInput.replace(command.referencedMessage!!.mentionedUsers[i].asMention, "")
                     .replace("<@!" + command.referencedMessage!!.mentionedUsers[i].idLong + ">", "")
@@ -130,8 +131,9 @@ constructor(private val command: Message) {
                     input = input.replace(word, "").replace("  ", " ")
                 }
             }
-        } else if (command.mentionedUsers.size > 0 && altInput.isEmpty()) {
-            image = getImageFromURL(command.mentionedUsers[0].effectiveAvatarUrl + "?size=1024")
+        } else if (command.mentionedUsers.size > 0) {
+            image = getImageFromURL(command.mentionedUsers[command.mentionedUsers.size - 1]
+                .effectiveAvatarUrl + "?size=1024")
             for (i in command.mentionedUsers.indices) input =
                 input.replace(command.mentionedUsers[i].asMention, "")
                 .replace("<@!" + command.mentionedUsers[i].idLong + ">", "")
