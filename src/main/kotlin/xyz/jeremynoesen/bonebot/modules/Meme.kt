@@ -95,9 +95,9 @@ constructor(private val command: Message) {
     private fun readTextAndImage() {
         var input = command.contentRaw.substring(Command.commandPrefix.length + 4, command.contentRaw.length)
         var altInput = ""
-        val reply = command.referencedMessage!!
 
         if (command.referencedMessage != null) {
+            val reply = command.referencedMessage!!
             altInput = reply.contentRaw
 
             if (reply.attachments.size > 0 && reply.attachments[0].isImage) {
