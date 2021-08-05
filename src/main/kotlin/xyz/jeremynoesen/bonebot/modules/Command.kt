@@ -15,7 +15,7 @@ object Command {
     /**
      * list of commands loaded from the command file
      */
-    val commands = HashMap<String, Pair<String, String>>()
+    val commands = LinkedHashMap<String, Pair<String, String>>()
 
     /**
      * command prefix

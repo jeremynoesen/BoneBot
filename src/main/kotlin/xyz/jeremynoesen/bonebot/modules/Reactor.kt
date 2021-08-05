@@ -13,7 +13,7 @@ object Reactor {
     /**
      * list of phrases loaded from the responses file
      */
-    val reactions = HashMap<String, String>()
+    val reactions = LinkedHashMap<String, String>()
 
     /**
      * cooldown for reactor, in seconds
