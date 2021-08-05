@@ -110,6 +110,7 @@ java -jar BoneBot.jar
 You can change the colors of embeds for the meme generator and help message by setting `embed-color` in the main configuration to a hex code.
 
 ### Default Main Configuration
+Located at `resources/config.txt`
 ```yaml
 responder-enabled: true
 reactor-enabled: true
