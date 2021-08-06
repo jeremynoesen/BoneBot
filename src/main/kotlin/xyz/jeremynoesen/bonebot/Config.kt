@@ -149,7 +149,7 @@ object Config {
      * @param filePath path to file holding the data
      * @param map     hashmap to load data into
      */
-    private fun loadData(filePath: String, map: HashMap<String, String>) {
+    private fun loadData(filePath: String, map: LinkedHashMap<String, String>) {
         try {
             val fileScanner = Scanner(File(filePath))
             while (fileScanner.hasNextLine()) {
@@ -177,7 +177,7 @@ object Config {
      * @param map     hashmap to load data into
      */
     @JvmName("loadData1")
-    private fun loadData(filePath: String, map: HashMap<String, Pair<String, String>>) {
+    private fun loadData(filePath: String, map: LinkedHashMap<String, Pair<String, String>>) {
         try {
             val fileScanner = Scanner(File(filePath))
             while (fileScanner.hasNextLine()) {

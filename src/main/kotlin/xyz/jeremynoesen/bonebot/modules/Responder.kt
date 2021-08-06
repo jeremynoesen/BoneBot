@@ -15,7 +15,7 @@ object Responder {
     /**
      * list of phrases loaded from the responses file
      */
-    val responses = HashMap<String, String>()
+    val responses = LinkedHashMap<String, String>()
 
     /**
      * cooldown for responder, in seconds
