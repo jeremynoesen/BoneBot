@@ -103,32 +103,21 @@ constructor(private val command: Message) {
 
         } else if (command.embeds.size > 0 && command.embeds[0].image != null) {
             image = getImageFromURL(command.embeds[0].image!!.url!!)
-            for (word in input.split(" ", "\n", " // ")) {
-                if (word.startsWith("http://") || word.startsWith("https://")) {
-                    input = input.replace(word, "").replace("  ", " ")
-                }
-            }
 
         } else if (command.contentRaw.contains("http://") || command.contentRaw.contains("https://")) {
             for (word in input.split(" ", "\n", " // ")) {
                 try {
                     image = getImageFromURL(word)
-                    input = input.replace(word, "").replace("  ", " ")
                     break
                 } catch (e: java.lang.Exception) {
                 }
             }
 
         } else if (command.mentionedUsers.size > 0 && (command.referencedMessage == null ||
-                    command.referencedMessage!!.author != command.mentionedUsers[command.mentionedUsers.size - 1])) {
-            image = getImageFromURL(
-                command.mentionedUsers[command.mentionedUsers.size - 1]
-                    .effectiveAvatarUrl + "?size=1024"
-            )
-            for (i in command.mentionedUsers.indices) input =
-                input.replace(command.mentionedUsers[i].asMention, "")
-                    .replace("<@!" + command.mentionedUsers[i].idLong + ">", "")
-                    .replace("  ", " ")
+                    command.referencedMessage!!.author != command.mentionedUsers[command.mentionedUsers.size - 1])
+        ) {
+            image =
+                getImageFromURL(command.mentionedUsers[command.mentionedUsers.size - 1].effectiveAvatarUrl + "?size=1024")
 
         } else if (command.referencedMessage != null) {
             val reply = command.referencedMessage!!
@@ -143,24 +132,32 @@ constructor(private val command: Message) {
                 for (word in reply.contentRaw.split(" ", "\n", " // ")) {
                     try {
                         image = getImageFromURL(word)
-                        altInput = altInput.replace(word, "").replace("  ", " ")
                         break
                     } catch (e: java.lang.Exception) {
                     }
                 }
 
             } else if (reply.mentionedUsers.size > 0 && (reply.referencedMessage == null ||
-                        reply.referencedMessage!!.author != reply.mentionedUsers[reply.mentionedUsers.size - 1])) {
+                        reply.referencedMessage!!.author != reply.mentionedUsers[reply.mentionedUsers.size - 1])
+            ) {
                 image =
                     getImageFromURL(reply.mentionedUsers[reply.mentionedUsers.size - 1].effectiveAvatarUrl + "?size=1024")
+            }
+
+            if (image != null) {
+                altInput = ""
+            } else {
+                for (word in altInput.split(" ", "\n", " // ")) {
+                    if (word.startsWith("http://") || word.startsWith("https://")) {
+                        altInput = altInput.replace(word, "").replace("  ", " ")
+                    }
+                }
+
                 for (i in reply.mentionedUsers.indices)
                     altInput = altInput.replace(reply.mentionedUsers[i].asMention, "")
                         .replace("<@!" + reply.mentionedUsers[i].idLong + ">", "")
                         .replace("  ", " ")
-
             }
-
-            if (image != null) altInput = ""
         }
 
         if (image == null) {
@@ -175,6 +172,16 @@ constructor(private val command: Message) {
             }
         }
 
+        for (word in input.split(" ", "\n", " // ")) {
+            if (word.startsWith("http://") || word.startsWith("https://")) {
+                input = input.replace(word, "").replace("  ", " ")
+            }
+        }
+
+        for (i in command.mentionedUsers.indices) input =
+            input.replace(command.mentionedUsers[i].asMention, "")
+                .replace("<@!" + command.mentionedUsers[i].idLong + ">", "")
+                .replace("  ", " ")
 
         if (input.trim().isNotEmpty()) {
             text = input
@@ -232,8 +239,7 @@ constructor(private val command: Message) {
             if (line.isEmpty()) continue
             g2d.color = Color.WHITE
             g2d.drawString(
-                line,
-                ((meme!!.getWidth(null) - metrics.stringWidth(line)) / 2.0).toInt(),
+                line, ((meme!!.getWidth(null) - metrics.stringWidth(line)) / 2.0).toInt(),
                 ((i + 0.9) * g2d.font.size).toInt()
             )
             val shape = TextLayout(line, font, g2d.fontRenderContext).getOutline(null)
@@ -255,8 +261,7 @@ constructor(private val command: Message) {
             if (line.isEmpty()) continue
             g2d.color = Color.WHITE
             g2d.drawString(
-                line,
-                ((meme!!.getWidth(null) - metrics.stringWidth(line)) / 2.0).toInt(),
+                line, ((meme!!.getWidth(null) - metrics.stringWidth(line)) / 2.0).toInt(),
                 (meme!!.getHeight(null) - (bottomText.size - i - 0.9) * g2d.font.size).toInt()
             )
             val shape = TextLayout(line, font, g2d.fontRenderContext).getOutline(null)
