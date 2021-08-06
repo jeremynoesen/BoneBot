@@ -96,35 +96,7 @@ constructor(private val command: Message) {
         var input = command.contentRaw.substring(Command.commandPrefix.length + 4, command.contentRaw.length)
         var altInput = ""
 
-        if (command.referencedMessage != null) {
-            val reply = command.referencedMessage!!
-            altInput = reply.contentRaw
-
-            if (reply.attachments.size > 0 && reply.attachments[0].isImage) {
-                image = getImageFromURL(reply.attachments[0].url)
-
-            } else if (reply.embeds.size > 0 && reply.embeds[0].image != null) {
-                image = getImageFromURL(reply.embeds[0].image!!.url!!)
-
-            } else if (reply.mentionedUsers.size > 0) {
-                image = getImageFromURL(reply.mentionedUsers[reply.mentionedUsers.size - 1].effectiveAvatarUrl + "?size=1024")
-                for (i in reply.mentionedUsers.indices)
-                    altInput = altInput.replace(reply.mentionedUsers[i].asMention, "")
-                        .replace("<@!" + reply.mentionedUsers[i].idLong + ">", "")
-                        .replace("  ", " ")
-
-            } else {
-                for (word in reply.contentRaw.split(" ", "\n", " // ")) {
-                    try {
-                        image = getImageFromURL(word)
-                        altInput = altInput.replace(word, "").replace("  ", " ")
-                        break
-                    } catch (e: java.lang.Exception) {
-                    }
-                }
-            }
-            if (image != null) altInput = ""
-        }
+        if (command.referencedMessage != null) altInput = command.referencedMessage!!.contentRaw
 
         if (command.attachments.size > 0 && command.attachments[0].isImage) {
             image = getImageFromURL(command.attachments[0].url)
@@ -137,18 +109,7 @@ constructor(private val command: Message) {
                 }
             }
 
-        } else if (command.mentionedUsers.size > 0) {
-            image = getImageFromURL(
-                command.mentionedUsers[command.mentionedUsers.size - 1]
-                    .effectiveAvatarUrl + "?size=1024"
-            )
-            for (i in command.mentionedUsers.indices) input =
-                input.replace(command.mentionedUsers[i].asMention, "")
-                    .replace("<@!" + command.mentionedUsers[i].idLong + ">", "")
-                    .replace("  ", " ")
-
-        } else {
-
+        } else if (command.contentRaw.contains("http://") || command.contentRaw.contains("https://")) {
             for (word in input.split(" ", "\n", " // ")) {
                 try {
                     image = getImageFromURL(word)
@@ -158,23 +119,66 @@ constructor(private val command: Message) {
                 }
             }
 
-            if (image == null) {
-                val r = Random()
-                val dir = File("resources/images")
-                if (dir.listFiles()!!.isNotEmpty()) {
-                    var rand = r.nextInt(dir.listFiles()!!.size)
-                    while (dir.listFiles()!![rand].isHidden) {
-                        rand = r.nextInt(dir.listFiles()!!.size)
+        } else if (command.mentionedUsers.size > 0 && (command.referencedMessage == null ||
+                    command.referencedMessage!!.author != command.mentionedUsers[command.mentionedUsers.size - 1])) {
+            image = getImageFromURL(
+                command.mentionedUsers[command.mentionedUsers.size - 1]
+                    .effectiveAvatarUrl + "?size=1024"
+            )
+            for (i in command.mentionedUsers.indices) input =
+                input.replace(command.mentionedUsers[i].asMention, "")
+                    .replace("<@!" + command.mentionedUsers[i].idLong + ">", "")
+                    .replace("  ", " ")
+
+        } else if (command.referencedMessage != null) {
+            val reply = command.referencedMessage!!
+
+            if (reply.attachments.size > 0 && reply.attachments[0].isImage) {
+                image = getImageFromURL(reply.attachments[0].url)
+
+            } else if (reply.embeds.size > 0 && reply.embeds[0].image != null) {
+                image = getImageFromURL(reply.embeds[0].image!!.url!!)
+
+            } else if (reply.contentRaw.contains("http://") || reply.contentRaw.contains("https://")) {
+                for (word in reply.contentRaw.split(" ", "\n", " // ")) {
+                    try {
+                        image = getImageFromURL(word)
+                        altInput = altInput.replace(word, "").replace("  ", " ")
+                        break
+                    } catch (e: java.lang.Exception) {
                     }
-                    image = ImageIO.read(dir.listFiles()!![rand])
                 }
+
+            } else if (reply.mentionedUsers.size > 0 && (reply.referencedMessage == null ||
+                        reply.referencedMessage!!.author != reply.mentionedUsers[reply.mentionedUsers.size - 1])) {
+                image =
+                    getImageFromURL(reply.mentionedUsers[reply.mentionedUsers.size - 1].effectiveAvatarUrl + "?size=1024")
+                for (i in reply.mentionedUsers.indices)
+                    altInput = altInput.replace(reply.mentionedUsers[i].asMention, "")
+                        .replace("<@!" + reply.mentionedUsers[i].idLong + ">", "")
+                        .replace("  ", " ")
+
+            }
+
+            if (image != null) altInput = ""
+        }
+
+        if (image == null) {
+            val r = Random()
+            val dir = File("resources/images")
+            if (dir.listFiles()!!.isNotEmpty()) {
+                var rand = r.nextInt(dir.listFiles()!!.size)
+                while (dir.listFiles()!![rand].isHidden) {
+                    rand = r.nextInt(dir.listFiles()!!.size)
+                }
+                image = ImageIO.read(dir.listFiles()!![rand])
             }
         }
 
 
         if (input.trim().isNotEmpty()) {
             text = input
-        } else if (altInput.trim().isNotEmpty()) {
+        } else if (altInput.trim().isNotEmpty() && command.referencedMessage != null) {
             text = altInput
         } else if (texts.isNotEmpty()) {
             val r = Random()
