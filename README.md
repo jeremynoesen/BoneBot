@@ -18,12 +18,14 @@ The meme generator will generate a meme with top and bottom text in Impact font.
 - Image (PNG, JPG)
 - Image link (PNG, JPG)
 - User ping (Grabs their avatar)
-- Image from an embed
+- Image from an embed (PNG, JPG)
 - Any of the above from a reply  
+  - Note: main message input will override reply input
 - Random image (If properly configured)
 ##### Text input
 - Text in your message
 - Text in a reply (If no image is in the reply)
+  - Note: main message input will override reply input
 - Random text (If properly configured)
 
 ### Responder
@@ -33,10 +35,10 @@ The responder will respond to a message with another when a trigger phrase is sa
 The reactor will react to a message with an emote when a trigger phrase is said.
 
 ### Commands
-BoneBot allows for custom commands to be made to provide simple message responses. 
+BoneBot allows for custom commands to be made to provide simple message responses. Their usage is pretty simple - a command called `test` would be used by typing `bbtest`.
 
 ### Statuses
-BoneBot can have various randomized statuses shown in Discord.
+BoneBot can have various randomized statuses shown in Discord that change over time.
 
 ## Building
 1. Clone or download this repository.
@@ -110,6 +112,7 @@ java -jar BoneBot.jar
 You can change the colors of embeds for the meme generator and help message by setting `embed-color` in the main configuration to a hex code.
 
 ### Default Main Configuration
+Located at `resources/config.txt`
 ```yaml
 responder-enabled: true
 reactor-enabled: true
