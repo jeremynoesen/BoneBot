@@ -20,10 +20,12 @@ The meme generator will generate a meme with top and bottom text in Impact font.
 - User ping (Grabs their avatar)
 - Image from an embed
 - Any of the above from a reply  
+  - Note: main message input will override reply input
 - Random image (If properly configured)
 ##### Text input
 - Text in your message
 - Text in a reply (If no image is in the reply)
+  - Note: main message input will override reply input
 - Random text (If properly configured)
 
 ### Responder
