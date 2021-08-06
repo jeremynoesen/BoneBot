@@ -18,7 +18,7 @@ The meme generator will generate a meme with top and bottom text in Impact font.
 - Image (PNG, JPG)
 - Image link (PNG, JPG)
 - User ping (Grabs their avatar)
-- Image from an embed
+- Image from an embed (PNG, JPG)
 - Any of the above from a reply  
   - Note: main message input will override reply input
 - Random image (If properly configured)
