@@ -93,10 +93,10 @@ constructor(private val command: Message) {
      */
     @Throws(IOException::class)
     private fun readTextAndImage() {
-        var input = command.contentRaw.substring(Command.commandPrefix.length + 4, command.contentRaw.length)
+        var input = command.contentDisplay.substring(Command.commandPrefix.length + 4, command.contentDisplay.length)
         var altInput = ""
 
-        if (command.referencedMessage != null) altInput = command.referencedMessage!!.contentRaw
+        if (command.referencedMessage != null) altInput = command.referencedMessage!!.contentDisplay
 
         if (command.attachments.size > 0 && command.attachments[0].isImage) {
             image = getImageFromURL(command.attachments[0].url)
@@ -154,8 +154,7 @@ constructor(private val command: Message) {
                 }
 
                 for (i in reply.mentionedUsers.indices)
-                    altInput = altInput.replace(reply.mentionedUsers[i].asMention, "")
-                        .replace("<@!" + reply.mentionedUsers[i].idLong + ">", "")
+                    altInput = altInput.replace("@${reply.mentionedUsers[i].name}", "")
                         .replace("  ", " ")
             }
         }
@@ -179,8 +178,7 @@ constructor(private val command: Message) {
         }
 
         for (i in command.mentionedUsers.indices) input =
-            input.replace(command.mentionedUsers[i].asMention, "")
-                .replace("<@!" + command.mentionedUsers[i].idLong + ">", "")
+            input.replace("@${command.mentionedUsers[i].name}", "")
                 .replace("  ", " ")
 
         if (input.trim().isNotEmpty()) {
