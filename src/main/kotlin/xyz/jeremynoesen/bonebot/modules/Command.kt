@@ -47,17 +47,14 @@ object Command {
         try {
             val msg = message.contentRaw.toLowerCase()
             if (msg.startsWith(commandPrefix)) {
-                when {
-                    msg.startsWith(commandPrefix + "meme") -> {
-                        if (Meme.enabled) {
+                if ((System.currentTimeMillis() - prevTime) >= cooldown * 1000) {
+                    prevTime = System.currentTimeMillis()
+                    when {
+                        msg.startsWith(commandPrefix + "meme") && Meme.enabled -> {
                             Meme(message).generate()
                             return true
                         }
-                        return false
-                    }
-                    msg == commandPrefix + "help" -> {
-                        if ((System.currentTimeMillis() - prevTime) >= cooldown * 1000) {
-                            prevTime = System.currentTimeMillis()
+                        msg == commandPrefix + "help" -> {
                             var commandList = "• `$commandPrefix" + "help`: Show the help message.\n"
                             if (Meme.enabled) commandList += "• `$commandPrefix" + "meme <text> <image>`: Generate a meme.\n"
                             for (command in commands.keys)
@@ -69,37 +66,28 @@ object Command {
                             embedBuilder.setDescription("$commandList\n[GitHub](https://github.com/jeremynoesen/BoneBot)")
                             message.channel.sendMessage(embedBuilder.build()).queue()
                             return true
-                        } else {
-                            val remaining = ((cooldown * 1000) - (System.currentTimeMillis() - prevTime)) / 1000
-                            message.channel.sendMessage("Commands can be used again in **$remaining** seconds.")
-                                .queue()
-                            return true
                         }
-                    }
-                    else -> {
-                        for (command in commands.keys) {
-                            if (msg == "$commandPrefix$command") {
-                                if ((System.currentTimeMillis() - prevTime) >= cooldown * 1000) {
-                                    prevTime = System.currentTimeMillis()
-
-                                    var toSend = commands[command]!!.second.replace("\$USER$", message.author.asMention)
+                        else -> {
+                            for (command in commands.keys) {
+                                if (msg == "$commandPrefix$command") {
+                                    var toSend =
+                                        commands[command]!!.second.replace("\$USER$", message.author.asMention)
                                     if (toSend.contains("\$REPLY$")) {
                                         toSend = toSend.replace("\$REPLY$", "").replace("  ", " ")
                                         message.channel.sendMessage(toSend).reference(message).queue()
                                     } else {
                                         message.channel.sendMessage(toSend).queue()
                                     }
-
-                                    return true
-                                } else {
-                                    val remaining = ((cooldown * 1000) - (System.currentTimeMillis() - prevTime)) / 1000
-                                    message.channel.sendMessage("Commands can be used again in **$remaining** seconds.")
-                                        .queue()
                                     return true
                                 }
                             }
                         }
                     }
+                } else {
+                    val remaining = ((cooldown * 1000) - (System.currentTimeMillis() - prevTime)) / 1000
+                    message.channel.sendMessage("Commands can be used again in **$remaining** seconds.")
+                        .queue()
+                    return true
                 }
             }
         } catch (e: Exception) {
