@@ -58,7 +58,6 @@ object Responder {
                         message.channel.sendMessage(toSend)
                             .queueAfter(toSend.length * typingSpeed, TimeUnit.MILLISECONDS)
                     }
-                    break
                 }
             }
         } catch (e: Exception) {
