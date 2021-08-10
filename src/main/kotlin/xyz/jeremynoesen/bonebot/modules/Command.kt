@@ -55,7 +55,7 @@ object Command {
                         }
                         return false
                     }
-                    msg.startsWith(commandPrefix + "help") -> {
+                    msg == commandPrefix + "help" -> {
                         if ((System.currentTimeMillis() - prevTime) >= cooldown * 1000) {
                             prevTime = System.currentTimeMillis()
                             var commandList = "• `$commandPrefix" + "help`: Show the help message.\n"
@@ -78,7 +78,7 @@ object Command {
                     }
                     else -> {
                         for (command in commands.keys) {
-                            if (msg.startsWith("$commandPrefix$command")) {
+                            if (msg == "$commandPrefix$command") {
                                 if ((System.currentTimeMillis() - prevTime) >= cooldown * 1000) {
                                     prevTime = System.currentTimeMillis()
 
