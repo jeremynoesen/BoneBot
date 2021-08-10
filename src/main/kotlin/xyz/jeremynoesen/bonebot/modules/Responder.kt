@@ -49,8 +49,15 @@ object Responder {
                 if (msg.contains(Regex(trigger)) && (System.currentTimeMillis() - prevTime) >= cooldown * 1000) {
                     prevTime = System.currentTimeMillis()
                     if (typingSpeed > 0) message.channel.sendTyping().queue()
-                    val toSend = responses[trigger]!!.replace("\$USER$", message.author.asMention)
-                    message.channel.sendMessage(toSend).queueAfter(toSend.length * typingSpeed, TimeUnit.MILLISECONDS)
+                    var toSend = responses[trigger]!!.replace("\$USER$", message.author.asMention)
+                    if (toSend.contains("\$REPLY$")) {
+                        toSend = toSend.replace("\$REPLY$", "").replace("  ", " ")
+                        message.channel.sendMessage(toSend).reference(message)
+                            .queueAfter(toSend.length * typingSpeed, TimeUnit.MILLISECONDS)
+                    } else {
+                        message.channel.sendMessage(toSend)
+                            .queueAfter(toSend.length * typingSpeed, TimeUnit.MILLISECONDS)
+                    }
                     break
                 }
             }
