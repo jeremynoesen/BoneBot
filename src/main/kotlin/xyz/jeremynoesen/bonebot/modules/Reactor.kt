@@ -42,7 +42,6 @@ object Reactor {
                 if (msg.contains(Regex(trigger)) && (System.currentTimeMillis() - prevTime) >= cooldown * 1000) {
                     prevTime = System.currentTimeMillis()
                     message.addReaction(reactions[trigger]!!).queue()
-                    break
                 }
             }
         } catch (e: Exception) {
