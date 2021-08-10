@@ -81,6 +81,8 @@ object Command {
                                     return true
                                 }
                             }
+                            message.channel.sendMessage("Unknown command!").queue()
+                            return true
                         }
                     }
                 } else {
