@@ -81,12 +81,15 @@ object Command {
                             if (msg.startsWith("$commandPrefix$command")) {
                                 if ((System.currentTimeMillis() - prevTime) >= cooldown * 1000) {
                                     prevTime = System.currentTimeMillis()
-                                    message.channel.sendMessage(
-                                        commands[command]!!.second.replace(
-                                            "\$USER$",
-                                            message.author.asMention
-                                        )
-                                    ).queue()
+
+                                    var toSend = commands[command]!!.second.replace("\$USER$", message.author.asMention)
+                                    if (toSend.contains("\$REPLY$")) {
+                                        toSend = toSend.replace("\$REPLY$", "").replace("  ", " ")
+                                        message.channel.sendMessage(toSend).reference(message).queue()
+                                    } else {
+                                        message.channel.sendMessage(toSend).queue()
+                                    }
+
                                     return true
                                 } else {
                                     val remaining = ((cooldown * 1000) - (System.currentTimeMillis() - prevTime)) / 1000
