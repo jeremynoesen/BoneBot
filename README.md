@@ -130,6 +130,16 @@ typing-speed: 100
 bot-token: TOKEN
 ```
 
+### Permissions
+The following Discord permissions are required for BoneBot to work:
+- View Channels
+- Send Messages
+- Embed Links
+- Attach Files
+- Add Reactions
+- Use External Emoji
+- Read Message History
+
 ## Demonstration
 Below are a few images showing what BoneBot can do. Simple actions, such as reactions, text responses, and status messages, are not shown due to those being basic Discord functions.
 
