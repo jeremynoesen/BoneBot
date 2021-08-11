@@ -51,6 +51,9 @@ object Config {
                     "commands-enabled:" -> {
                         Command.enabled = lineScanner.nextBoolean()
                     }
+                    "quotes-enabled:" -> {
+                        Quote.enabled = lineScanner.nextBoolean()
+                    }
                     "responder-cooldown:" -> {
                         Responder.cooldown = lineScanner.nextInt()
                     }
@@ -59,6 +62,9 @@ object Config {
                     }
                     "meme-generator-cooldown:" -> {
                         Meme.cooldown = lineScanner.nextInt()
+                    }
+                    "quote-cooldown:" -> {
+                        Quote.cooldown = lineScanner.nextInt()
                     }
                     "status-delay:" -> {
                         Status.delay = lineScanner.nextInt()
@@ -91,12 +97,14 @@ object Config {
             pw.println("meme-generator-enabled: ${Meme.enabled}")
             pw.println("statuses-enabled: ${Status.enabled}")
             pw.println("commands-enabled: ${Command.enabled}")
+            pw.println("quotes-enabled: ${Quote.enabled}")
             pw.println("responder-cooldown: ${Responder.cooldown}")
             pw.println("reactor-cooldown: ${Reactor.cooldown}")
             pw.println("meme-generator-cooldown: ${Meme.cooldown}")
             pw.println("status-delay: ${Status.delay}")
             pw.println("command-cooldown: ${Command.cooldown}")
             pw.println("command-prefix: ${Command.commandPrefix}")
+            pw.println("quote-cooldown: ${Quote.cooldown}")
             pw.println("embed-color: #fd0605")
             pw.println("typing-speed: ${Responder.typingSpeed}")
             pw.println("bot-token: TOKEN")
@@ -111,6 +119,7 @@ object Config {
             loadData("resources/commands.txt", Command.commands)
             loadData("resources/responses.txt", Responder.responses)
             loadData("resources/reactions.txt", Reactor.reactions)
+            loadData("resources/quotes.txt", Quote.quotes)
         } catch (e: Exception) {
             Logger.log(e)
         }

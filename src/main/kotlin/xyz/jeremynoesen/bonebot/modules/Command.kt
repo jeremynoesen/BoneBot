@@ -54,9 +54,14 @@ object Command {
                             Meme(message).generate()
                             return true
                         }
+                        msg.equals(commandPrefix + "quote") && Quote.enabled -> {
+                            Quote.sendQuote(message)
+                            return true;
+                        }
                         msg == commandPrefix + "help" -> {
                             var commandList = "• `$commandPrefix" + "help`: Show the help message.\n"
                             if (Meme.enabled) commandList += "• `$commandPrefix" + "meme <text> <image>`: Generate a meme.\n"
+                            if (Quote.enabled) commandList += "• `$commandPrefix" + "quote`: Show a random quote..\n"
                             for (command in commands.keys)
                                 commandList += "• `$commandPrefix$command`: ${commands[command]!!.first}\n"
                             val embedBuilder = EmbedBuilder()
