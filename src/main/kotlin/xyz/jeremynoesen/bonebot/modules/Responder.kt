@@ -44,7 +44,7 @@ object Responder {
      */
     fun respond(message: Message) {
         try {
-            val msg = message.contentRaw.toLowerCase()
+            val msg = message.contentRaw.lowercase()
             for (trigger in responses.keys) {
                 if (msg.contains(Regex(trigger)) && (System.currentTimeMillis() - prevTime) >= cooldown * 1000) {
                     prevTime = System.currentTimeMillis()
