@@ -72,6 +72,7 @@ object Command {
                                 if (msg == "$commandPrefix$command") {
                                     var toSend =
                                         commands[command]!!.second.replace("\$USER$", message.author.asMention)
+                                            .replace("\\n", "\n")
                                     if (toSend.contains("\$REPLY$")) {
                                         toSend = toSend.replace("\$REPLY$", "").replace("  ", " ")
                                         message.channel.sendMessage(toSend).reference(message).queue()
