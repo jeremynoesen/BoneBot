@@ -70,12 +70,12 @@ java -jar BoneBot.jar
 **After changing any of text configurations, save the file and restart the bot.**
 
 ### Meme Generator
-- Images for the randomizer are to be placed in the `resources/images` folder. They must be PNG or JPG format.
-- Texts for the randomizer are to be placed in `resources/texts.txt`.
+- Images for the randomizer are to be placed in the `resources/memeimages` folder. They must be PNG or JPG format.
+- Texts for the randomizer are to be placed in `resources/memetexts.txt`.
   - Each separate line denotes a separate text.
   - The format is `<top text> // <bottom text>`.
-- To set a cool down for the generator, set `meme-generator-cooldown` in the main configuration to any number. Time is in seconds.
-- To enable or disable the generator, set `meme-generator-enabled` in the main configuration to `true` or `false`.
+- To set a cool down for the generator, set `meme-cooldown` in the main configuration to any number. Time is in seconds.
+- To enable or disable the generator, set `memes-enabled` in the main configuration to `true` or `false`.
 
 ### Responder
 - Responses will be put into `resources/responses.txt`.
