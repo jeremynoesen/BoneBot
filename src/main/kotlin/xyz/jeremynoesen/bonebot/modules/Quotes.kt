@@ -9,7 +9,7 @@ import java.util.*
  *
  * @author Jeremy Noesen
  */
-object Quote {
+object Quotes {
 
     /**
      * list of quotes loaded from the quotes file
@@ -32,7 +32,7 @@ object Quote {
     private var prevTime = 0L
 
     /**
-     * respond to a message if a trigger phrase is said
+     * send a random quote from the quotes file
      *
      * @param message message initiating action
      */

@@ -10,7 +10,7 @@ import java.util.*
  *
  * @author Jeremy Noesen
  */
-object Status {
+object Statuses {
 
     /**
      * list of now playing statuses loaded from the statuses file

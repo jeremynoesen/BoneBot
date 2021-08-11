@@ -22,7 +22,7 @@ import kotlin.math.floor
  *
  * @author Jeremy Noesen
  */
-class Meme
+class Memes
 /**
  * constructs a new meme generator class with the original message for get command arguments from
  *
@@ -93,7 +93,7 @@ constructor(private val command: Message) {
      */
     @Throws(IOException::class)
     private fun readTextAndImage() {
-        var input = command.contentDisplay.substring(Command.commandPrefix.length + 4, command.contentDisplay.length)
+        var input = command.contentDisplay.substring(Commands.commandPrefix.length + 4, command.contentDisplay.length)
         var altInput = ""
 
         if (command.referencedMessage != null) altInput = command.referencedMessage!!.contentDisplay
