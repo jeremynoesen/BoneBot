@@ -35,6 +35,11 @@ The quote module will send a random quote from a file.
 #### Command
 `bbquote`
 
+### Files
+The file module will send a random file from the folder. This can be an image, video, text file, audio file, etc.
+#### Command
+`bbfile`
+
 ### Responder
 The responder will respond to a message with another when a trigger phrase is said.
 
@@ -87,6 +92,11 @@ java -jar BoneBot.jar
 - Each line designates a new entry.
 - To set a cool down for quotes, set `quote-cooldown` in the main configuration to any number. Time is in seconds.
 - To enable or disable quotes, set `quotes-enabled` in the main configuration to `true` or `false`.
+
+### Files
+- Files will be put into `resources/files`.
+- To set a cool down for files, set `file-cooldown` in the main configuration to any number. Time is in seconds.
+- To enable or disable files, set `files-enabled` in the main configuration to `true` or `false`.
 
 ### Responder
 - Responses will be put into `resources/responses.txt`.
@@ -147,6 +157,8 @@ command-cooldown: 5
 command-prefix: bb
 quotes-enabled: true
 quote-cooldown: 5
+files-enabled: true
+file-cooldown: 5
 embed-color: #fd0605
 typing-speed: 100
 bot-token: TOKEN
