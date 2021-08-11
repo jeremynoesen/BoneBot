@@ -54,26 +54,26 @@ object Commands {
                             Memes(message).generate()
                             return true
                         }
-                        msg.equals(commandPrefix + "quote") && Quotes.enabled -> {
+                        msg == commandPrefix + "quote" && Quotes.enabled -> {
                             Quotes.sendQuote(message)
-                            return true;
+                            return true
                         }
-                        msg.equals(commandPrefix + "file") && Files.enabled -> {
+                        msg == commandPrefix + "file" && Files.enabled -> {
                             Files.sendImage(message)
-                            return true;
+                            return true
                         }
                         msg == commandPrefix + "help" -> {
-                            var commandList = "• `$commandPrefix" + "help`: Show the help message.\n"
-                            if (Memes.enabled) commandList += "• `$commandPrefix" + "meme <text> <img>`: Generate a meme.\n"
-                            if (Quotes.enabled) commandList += "• `$commandPrefix" + "quote`: Show a random quote.\n"
-                            if (Files.enabled) commandList += "• `$commandPrefix" + "file`: Show a random file.\n"
+                            var commandList = "• **`$commandPrefix" + "help`**: Show this help message.\n"
+                            if (Memes.enabled) commandList += "• **`$commandPrefix" + "meme <txt> <img>`**: Generate a meme.\n"
+                            if (Quotes.enabled) commandList += "• **`$commandPrefix" + "quote`**: Show a random quote.\n"
+                            if (Files.enabled) commandList += "• **`$commandPrefix" + "file`**: Send a random file.\n"
                             for (command in commands.keys)
-                                commandList += "• `$commandPrefix$command`: ${commands[command]!!.first}\n"
+                                commandList += "• **`$commandPrefix$command`**: ${commands[command]!!.first}\n"
                             val embedBuilder = EmbedBuilder()
                             val name = message.jda.selfUser.name
                             embedBuilder.setAuthor("$name Help", null, message.jda.selfUser.avatarUrl)
                             embedBuilder.setColor(Config.embedColor)
-                            embedBuilder.setDescription("$commandList\n[GitHub](https://github.com/jeremynoesen/BoneBot)")
+                            embedBuilder.setDescription("$commandList\n[**Source Code**](https://github.com/jeremynoesen/BoneBot)")
                             message.channel.sendMessage(embedBuilder.build()).queue()
                             return true
                         }
@@ -92,7 +92,7 @@ object Commands {
                                     return true
                                 }
                             }
-                            message.channel.sendMessage("Unknown command!").queue()
+                            message.channel.sendMessage("**Unknown command!**").queue()
                             return true
                         }
                     }

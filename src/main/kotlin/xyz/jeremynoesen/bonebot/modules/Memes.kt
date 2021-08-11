@@ -63,7 +63,7 @@ constructor(private val command: Message) {
                     command.channel.sendMessage(embedBuilder.build()).addFile(file, "meme.png").queue()
                     prevTime = System.currentTimeMillis()
                 } else {
-                    command.channel.sendMessage("Please provide the missing text or image!").queue()
+                    command.channel.sendMessage("Please provide the missing **text** and/or **image**!").queue()
                 }
             } catch (exception: Exception) {
                 Logger.log(exception, command.channel)
@@ -232,7 +232,7 @@ constructor(private val command: Message) {
         }
 
         for (i in topText.indices) {
-            val line = topText[i].trim { it <= ' ' }.toUpperCase()
+            val line = topText[i].trim { it <= ' ' }.uppercase()
             if (line.isEmpty()) continue
             g2d.color = Color.WHITE
             g2d.drawString(
@@ -254,7 +254,7 @@ constructor(private val command: Message) {
         }
 
         for (i in bottomText.indices) {
-            val line = bottomText[i].trim { it <= ' ' }.toUpperCase()
+            val line = bottomText[i].trim { it <= ' ' }.uppercase()
             if (line.isEmpty()) continue
             g2d.color = Color.WHITE
             g2d.drawString(

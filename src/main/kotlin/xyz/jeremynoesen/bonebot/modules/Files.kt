@@ -45,7 +45,7 @@ object Files {
                     }
                     message.channel.sendFile(dir.listFiles()!![rand]).queue()
                 } else {
-                    message.channel.sendMessage("There are no files to show.").queue()
+                    message.channel.sendMessage("There are no files to send!").queue()
                 }
             } else {
                 val remaining = ((cooldown * 1000) - (System.currentTimeMillis() - prevTime)) / 1000
