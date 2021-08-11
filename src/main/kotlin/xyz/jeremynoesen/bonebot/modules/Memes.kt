@@ -22,7 +22,7 @@ import kotlin.math.floor
  *
  * @author Jeremy Noesen
  */
-class Meme
+class Memes
 /**
  * constructs a new meme generator class with the original message for get command arguments from
  *
@@ -63,7 +63,7 @@ constructor(private val command: Message) {
                     command.channel.sendMessage(embedBuilder.build()).addFile(file, "meme.png").queue()
                     prevTime = System.currentTimeMillis()
                 } else {
-                    command.channel.sendMessage("Please provide the missing text or image!").queue()
+                    command.channel.sendMessage("Please provide the missing **text** and/or **image**!").queue()
                 }
             } catch (exception: Exception) {
                 Logger.log(exception, command.channel)
@@ -75,7 +75,7 @@ constructor(private val command: Message) {
     }
 
     /**
-     * read an image from a url
+     * read an image from url
      *
      * @param url string url
      */
@@ -93,7 +93,7 @@ constructor(private val command: Message) {
      */
     @Throws(IOException::class)
     private fun readTextAndImage() {
-        var input = command.contentDisplay.substring(Command.commandPrefix.length + 4, command.contentDisplay.length)
+        var input = command.contentDisplay.substring(Commands.commandPrefix.length + 4, command.contentDisplay.length)
         var altInput = ""
 
         if (command.referencedMessage != null) altInput = command.referencedMessage!!.contentDisplay
@@ -161,7 +161,7 @@ constructor(private val command: Message) {
 
         if (image == null) {
             val r = Random()
-            val dir = File("resources/images")
+            val dir = File("resources/memeimages")
             if (dir.listFiles()!!.isNotEmpty()) {
                 var rand = r.nextInt(dir.listFiles()!!.size)
                 while (dir.listFiles()!![rand].isHidden) {
@@ -186,8 +186,7 @@ constructor(private val command: Message) {
         } else if (altInput.trim().isNotEmpty() && command.referencedMessage != null) {
             text = altInput
         } else if (texts.isNotEmpty()) {
-            val r = Random()
-            text = texts[r.nextInt(texts.size)]
+            text = texts[Random().nextInt(texts.size)]
         }
     }
 
@@ -233,7 +232,7 @@ constructor(private val command: Message) {
         }
 
         for (i in topText.indices) {
-            val line = topText[i].trim { it <= ' ' }.toUpperCase()
+            val line = topText[i].trim { it <= ' ' }.uppercase()
             if (line.isEmpty()) continue
             g2d.color = Color.WHITE
             g2d.drawString(
@@ -255,7 +254,7 @@ constructor(private val command: Message) {
         }
 
         for (i in bottomText.indices) {
-            val line = bottomText[i].trim { it <= ' ' }.toUpperCase()
+            val line = bottomText[i].trim { it <= ' ' }.uppercase()
             if (line.isEmpty()) continue
             g2d.color = Color.WHITE
             g2d.drawString(

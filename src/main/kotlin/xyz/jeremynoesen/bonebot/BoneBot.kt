@@ -1,6 +1,6 @@
 package xyz.jeremynoesen.bonebot
 
-import xyz.jeremynoesen.bonebot.modules.Status
+import xyz.jeremynoesen.bonebot.modules.Statuses
 import net.dv8tion.jda.api.JDABuilder
 import java.awt.Toolkit
 import java.io.File
@@ -27,7 +27,7 @@ object BoneBot {
             ImageIO.setUseCache(false)
             Config.loadData()
             val jda = JDABuilder.createLight(Config.botToken).addEventListeners(Listener()).build()
-            if (Status.enabled) Status.setStatus(jda)
+            if (Statuses.enabled) Statuses.setStatus(jda)
             try {
                 File("temp").deleteRecursively()
             } catch (ignored: FileNotFoundException) {

@@ -45,6 +45,6 @@ object Logger {
      */
     fun log(exception: Exception, messageChannel: MessageChannel) {
         log(exception)
-        messageChannel.sendMessage("An error occurred. Please check the log file!").queue()
+        messageChannel.sendMessage("**An error occurred!** Please check the log file!").queue()
     }
 }
