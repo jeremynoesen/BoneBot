@@ -26,8 +26,8 @@ class Listener : ListenerAdapter() {
                     if (Reactor.enabled) Reactor.react(e.message)
                 }
             }
-        } catch (e: Exception) {
-            Logger.log(e)
+        } catch (ex: Exception) {
+            Logger.log(ex, e.channel)
         }
     }
 }

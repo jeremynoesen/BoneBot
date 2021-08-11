@@ -66,7 +66,7 @@ constructor(private val command: Message) {
                     command.channel.sendMessage("Please provide the missing text or image!").queue()
                 }
             } catch (exception: Exception) {
-                Logger.log(exception)
+                Logger.log(exception, command.channel)
             }
         } else {
             val remaining = ((cooldown * 1000) - (System.currentTimeMillis() - prevTime)) / 1000
