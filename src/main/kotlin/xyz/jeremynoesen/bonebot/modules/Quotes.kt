@@ -43,7 +43,7 @@ object Quotes {
                 if (quotes.size > 0) {
                     message.channel.sendMessage(quotes[Random().nextInt(quotes.size)].replace("\\n", "\n")).queue()
                 } else {
-                    message.channel.sendMessage("There are no quotes to show.").queue()
+                    message.channel.sendMessage("There are no quotes to show!").queue()
                 }
             } else {
                 val remaining = ((cooldown * 1000) - (System.currentTimeMillis() - prevTime)) / 1000
