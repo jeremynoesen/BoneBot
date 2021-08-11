@@ -40,7 +40,11 @@ object Quotes {
         try {
             if ((System.currentTimeMillis() - prevTime) >= cooldown * 1000) {
                 prevTime = System.currentTimeMillis()
-                message.channel.sendMessage(quotes[Random().nextInt(quotes.size)].replace("\\n", "\n")).queue()
+                if (quotes.size > 0) {
+                    message.channel.sendMessage(quotes[Random().nextInt(quotes.size)].replace("\\n", "\n")).queue()
+                } else {
+                    message.channel.sendMessage("There are no quotes to show.").queue()
+                }
             } else {
                 val remaining = ((cooldown * 1000) - (System.currentTimeMillis() - prevTime)) / 1000
                 message.channel.sendMessage("Another quote can be sent in **$remaining** seconds.").queue()
