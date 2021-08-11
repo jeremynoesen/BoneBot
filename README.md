@@ -81,6 +81,7 @@ java -jar BoneBot.jar
 - The format is `trigger // response`.
 - Case is ignored in the trigger.
 - The trigger can include Regex.
+- The response can include `\n` as a line separator.
 - You can also include `$USER$` in the response to ping the user who invoked a response, or `$REPLY$` to reply to them.
 - The response sends with a delay based on message length multiplied by `typing-speed` in the main configuration in milliseconds.
 - To set a cool down for the responder, set `responder-cooldown` in the main configuration to any number. Time is in seconds.
@@ -101,6 +102,7 @@ java -jar BoneBot.jar
 - Each line designates a new entry.
 - The format is `command // description // response`.
 - Do not put the prefix in the command.
+- The response can include `\n` as a line separator.
 - You can include `$USER$` in the response to ping the user who used the command, or `$REPLY$` to reply to them.
 - To change the command prefix, set `command-prefix` in the main configuration to a custom prefix. Case is ignored.
 - To set a cool down for commands, set `commands-cooldown` in the main configuration to any number. Time is in seconds.

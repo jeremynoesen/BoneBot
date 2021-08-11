@@ -50,6 +50,7 @@ object Responder {
                     prevTime = System.currentTimeMillis()
                     if (typingSpeed > 0) message.channel.sendTyping().queue()
                     var toSend = responses[trigger]!!.replace("\$USER$", message.author.asMention)
+                        .replace("\\n", "\n")
                     if (toSend.contains("\$REPLY$")) {
                         toSend = toSend.replace("\$REPLY$", "").replace("  ", " ")
                         message.channel.sendMessage(toSend).reference(message)
