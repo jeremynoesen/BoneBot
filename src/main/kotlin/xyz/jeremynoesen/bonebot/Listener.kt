@@ -4,6 +4,7 @@ import xyz.jeremynoesen.bonebot.modules.Command
 import xyz.jeremynoesen.bonebot.modules.Reactor
 import xyz.jeremynoesen.bonebot.modules.Responder
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
+import net.dv8tion.jda.api.events.message.MessageUpdateEvent
 import net.dv8tion.jda.api.hooks.ListenerAdapter
 
 /**
@@ -14,7 +15,7 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter
 class Listener : ListenerAdapter() {
 
     /**
-     * respond and/or react to users when they say certain key words
+     * respond and/or react to users when they say certain keywords or type commands
      *
      * @param e message received event
      */
@@ -26,6 +27,19 @@ class Listener : ListenerAdapter() {
                     if (Reactor.enabled) Reactor.react(e.message)
                 }
             }
+        } catch (ex: Exception) {
+            Logger.log(ex, e.channel)
+        }
+    }
+
+    /**
+     * listen for message edits for fixing command typos
+     *
+     * @param e message update event
+     */
+    override fun onMessageUpdate(e: MessageUpdateEvent) {
+        try {
+            if (!e.author.isBot && Command.enabled) Command.perform(e.message)
         } catch (ex: Exception) {
             Logger.log(ex, e.channel)
         }
