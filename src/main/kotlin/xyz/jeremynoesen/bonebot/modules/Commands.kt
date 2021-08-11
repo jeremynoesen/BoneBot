@@ -10,7 +10,7 @@ import net.dv8tion.jda.api.entities.Message
  *
  * @author Jeremy Noesen
  */
-object Command {
+object Commands {
 
     /**
      * list of commands loaded from the command file
@@ -50,18 +50,23 @@ object Command {
                 if ((System.currentTimeMillis() - prevTime) >= cooldown * 1000) {
                     prevTime = System.currentTimeMillis()
                     when {
-                        msg.startsWith(commandPrefix + "meme") && Meme.enabled -> {
-                            Meme(message).generate()
+                        msg.startsWith(commandPrefix + "meme") && Memes.enabled -> {
+                            Memes(message).generate()
                             return true
                         }
-                        msg.equals(commandPrefix + "quote") && Quote.enabled -> {
-                            Quote.sendQuote(message)
+                        msg.equals(commandPrefix + "quote") && Quotes.enabled -> {
+                            Quotes.sendQuote(message)
+                            return true;
+                        }
+                        msg.equals(commandPrefix + "file") && Files.enabled -> {
+                            Files.sendImage(message)
                             return true;
                         }
                         msg == commandPrefix + "help" -> {
                             var commandList = "• `$commandPrefix" + "help`: Show the help message.\n"
-                            if (Meme.enabled) commandList += "• `$commandPrefix" + "meme <text> <image>`: Generate a meme.\n"
-                            if (Quote.enabled) commandList += "• `$commandPrefix" + "quote`: Show a random quote..\n"
+                            if (Memes.enabled) commandList += "• `$commandPrefix" + "meme <text> <img>`: Generate a meme.\n"
+                            if (Quotes.enabled) commandList += "• `$commandPrefix" + "quote`: Show a random quote.\n"
+                            if (Files.enabled) commandList += "• `$commandPrefix" + "file`: Show a random file.\n"
                             for (command in commands.keys)
                                 commandList += "• `$commandPrefix$command`: ${commands[command]!!.first}\n"
                             val embedBuilder = EmbedBuilder()
