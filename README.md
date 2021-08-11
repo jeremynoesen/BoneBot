@@ -111,6 +111,7 @@ java -jar BoneBot.jar
 ### Statuses
 - Statuses will be put into `resources/statuses.txt`.
 - Each line designates a new entry.
+- Each line must start with `playing`, `watching`, or `listening to`.
 - The main config has option `status-delay` to set how long each status shows in seconds.
 
 ### Miscellaneous

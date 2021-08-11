@@ -67,7 +67,7 @@ object Config {
                         Command.cooldown = lineScanner.nextInt()
                     }
                     "command-prefix:" -> {
-                        Command.commandPrefix = lineScanner.next().toLowerCase()
+                        Command.commandPrefix = lineScanner.next().lowercase()
                     }
                     "embed-color:" -> {
                         embedColor = Color.decode(lineScanner.next())
@@ -156,7 +156,7 @@ object Config {
                 val line = fileScanner.nextLine()
                 if (line.isNotBlank()) {
                     val parts = line.split(" // ")
-                    map[parts[0].toLowerCase()] = parts[1]
+                    map[parts[0].lowercase()] = parts[1]
                 }
             }
             fileScanner.close()
@@ -184,7 +184,7 @@ object Config {
                 val line = fileScanner.nextLine()
                 if (line.isNotBlank()) {
                     val parts = line.split(" // ")
-                    map[parts[0].toLowerCase()] = Pair(parts[1], parts[2])
+                    map[parts[0].lowercase()] = Pair(parts[1], parts[2])
                 }
             }
             fileScanner.close()

@@ -37,7 +37,7 @@ object Reactor {
      */
     fun react(message: Message) {
         try {
-            val msg = message.contentRaw.toLowerCase()
+            val msg = message.contentRaw.lowercase()
             for (trigger in reactions.keys) {
                 if (msg.contains(Regex(trigger)) && (System.currentTimeMillis() - prevTime) >= cooldown * 1000) {
                     prevTime = System.currentTimeMillis()

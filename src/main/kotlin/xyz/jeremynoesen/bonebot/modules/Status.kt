@@ -37,8 +37,21 @@ object Status {
             while (true) {
                 try {
                     if (statuses.isNotEmpty()) {
-                        val random = Random()
-                        jda.presence.activity = Activity.playing(statuses[random.nextInt(statuses.size)])
+                        var status = statuses[Random().nextInt(statuses.size)]
+                        when {
+                            status.lowercase().startsWith("playing") -> {
+                                status = status.substring(7, status.length).trim()
+                                jda.presence.activity = Activity.playing(status)
+                            }
+                            status.lowercase().startsWith("watching") -> {
+                                status = status.substring(8, status.length).trim()
+                                jda.presence.activity = Activity.watching(status)
+                            }
+                            status.lowercase().startsWith("listening to") -> {
+                                status = status.substring(12, status.length).trim()
+                                jda.presence.activity = Activity.listening(status)
+                            }
+                        }
                     }
                 } catch (e: Exception) {
                     Logger.log(e)

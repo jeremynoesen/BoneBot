@@ -45,7 +45,7 @@ object Command {
      */
     fun perform(message: Message): Boolean {
         try {
-            val msg = message.contentRaw.toLowerCase()
+            val msg = message.contentRaw.lowercase()
             if (msg.startsWith(commandPrefix)) {
                 if ((System.currentTimeMillis() - prevTime) >= cooldown * 1000) {
                     prevTime = System.currentTimeMillis()
