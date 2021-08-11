@@ -45,7 +45,7 @@ object Reactor {
                 }
             }
         } catch (e: Exception) {
-            Logger.log(e)
+            Logger.log(e, message.channel)
         }
     }
 }

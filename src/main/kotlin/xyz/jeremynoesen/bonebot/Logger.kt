@@ -1,5 +1,6 @@
 package xyz.jeremynoesen.bonebot
 
+import net.dv8tion.jda.api.entities.MessageChannel
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileWriter
@@ -35,5 +36,15 @@ object Logger {
         } catch (fileNotFoundException: FileNotFoundException) {
             fileNotFoundException.printStackTrace()
         }
+    }
+
+    /**
+     * write exception to a log file with time stamp, and send a message to a channel that an error occurred
+     *
+     * @param exception exception to log
+     */
+    fun log(exception: Exception, messageChannel: MessageChannel) {
+        log(exception)
+        messageChannel.sendMessage("An error occurred. Please check the log file!").queue()
     }
 }

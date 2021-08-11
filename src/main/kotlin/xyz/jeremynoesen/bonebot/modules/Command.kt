@@ -93,7 +93,7 @@ object Command {
                 }
             }
         } catch (e: Exception) {
-            Logger.log(e)
+            Logger.log(e, message.channel)
         }
         return false
     }
