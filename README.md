@@ -30,6 +30,11 @@ The meme generator will generate a meme with top and bottom text in Impact font.
 
 If you make a mistake in typing the command, or wish to generate another meme with similar inputs, you can edit the message to fix it without needing to send another message.
 
+### Quotes
+The quote module will send a random quote from a file.
+#### Command
+`bbquote`
+
 ### Responder
 The responder will respond to a message with another when a trigger phrase is said.
 
@@ -76,6 +81,12 @@ java -jar BoneBot.jar
   - The format is `<top text> // <bottom text>`.
 - To set a cool down for the generator, set `meme-cooldown` in the main configuration to any number. Time is in seconds.
 - To enable or disable the generator, set `memes-enabled` in the main configuration to `true` or `false`.
+
+### Quotes
+- Quotes will be put into `resources/quotes.txt`.
+- Each line designates a new entry.
+- To set a cool down for quotes, set `quote-cooldown` in the main configuration to any number. Time is in seconds.
+- To enable or disable quotes, set `quotes-enabled` in the main configuration to `true` or `false`.
 
 ### Responder
 - Responses will be put into `resources/responses.txt`.
@@ -124,16 +135,18 @@ You can change the colors of embeds for the meme generator and help message by s
 Located at `resources/config.txt`
 ```yaml
 responder-enabled: true
-reactor-enabled: true
-meme-generator-enabled: true
-statuses-enabled: true
-commands-enabled: true
 responder-cooldown: 180
+reactor-enabled: true
 reactor-cooldown: 60
-meme-generator-cooldown: 5
+memes-enabled: true
+meme-cooldown: 5
+statuses-enabled: true
 status-delay: 60
+commands-enabled: true
 command-cooldown: 5
 command-prefix: bb
+quotes-enabled: true
+quote-cooldown: 5
 embed-color: #fd0605
 typing-speed: 100
 bot-token: TOKEN
@@ -162,6 +175,3 @@ The following is an example command sent to the bot to generate a meme with top 
 The following image is an example of the help command with one custom command added.
 
 <div align="center"><img src="img/help.png" alt="Help example" title="Help example" /></div>
-
-## Notice
-This project is no longer in development.
