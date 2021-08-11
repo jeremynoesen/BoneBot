@@ -186,8 +186,7 @@ constructor(private val command: Message) {
         } else if (altInput.trim().isNotEmpty() && command.referencedMessage != null) {
             text = altInput
         } else if (texts.isNotEmpty()) {
-            val r = Random()
-            text = texts[r.nextInt(texts.size)]
+            text = texts[Random().nextInt(texts.size)]
         }
     }
 
