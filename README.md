@@ -113,6 +113,7 @@ java -jar BoneBot.jar
 - Each line designates a new entry.
 - Each line must start with `playing`, `watching`, or `listening to`.
 - The main config has option `status-delay` to set how long each status shows in seconds.
+- To enable or disable statuses, set `statuses-enabled` in the main configuration to `true` or `false`.
 
 ### Miscellaneous
 You can change the colors of embeds for the meme generator and help message by setting `embed-color` in the main configuration to a hex code.
