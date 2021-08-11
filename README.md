@@ -156,7 +156,7 @@ Below are a few images showing what BoneBot can do. Simple actions, such as reac
 The following is an example command sent to the bot to generate a meme with top and bottom text, as well as a user's avatar as the image input. The next image is the output of this command.
 
 <div align="center"><img src="img/memeinput.png" alt="Meme example command" title="Meme example command" /></div>
-<div align="center"><img src="img/memeoutput.png" alt="Meme example output" title="Meme example output" width="512" height="512"/></div>
+<div align="center"><img src="img/memeoutput.png" alt="Meme example output" title="Meme example output" width="512" /></div>
 
 ### Help Command
 The following image is an example of the help command with one custom command added.
