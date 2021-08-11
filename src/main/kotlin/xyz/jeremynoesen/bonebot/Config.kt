@@ -30,6 +30,7 @@ object Config {
     fun loadData() {
         try {
             File("resources").mkdir()
+            File("resources/memeimages").mkdir()
             File("resources/images").mkdir()
 
             val fileScanner = Scanner(File("resources/config.txt"))
@@ -42,7 +43,7 @@ object Config {
                     "reactor-enabled:" -> {
                         Reactor.enabled = lineScanner.nextBoolean()
                     }
-                    "meme-generator-enabled:" -> {
+                    "memes-enabled:" -> {
                         Meme.enabled = lineScanner.nextBoolean()
                     }
                     "statuses-enabled:" -> {
@@ -60,7 +61,7 @@ object Config {
                     "reactor-cooldown:" -> {
                         Reactor.cooldown = lineScanner.nextInt()
                     }
-                    "meme-generator-cooldown:" -> {
+                    "meme-cooldown:" -> {
                         Meme.cooldown = lineScanner.nextInt()
                     }
                     "quote-cooldown:" -> {
@@ -93,17 +94,17 @@ object Config {
             val file = File("resources/config.txt")
             val pw = PrintWriter(file)
             pw.println("responder-enabled: ${Responder.enabled}")
-            pw.println("reactor-enabled: ${Reactor.enabled}")
-            pw.println("meme-generator-enabled: ${Meme.enabled}")
-            pw.println("statuses-enabled: ${Status.enabled}")
-            pw.println("commands-enabled: ${Command.enabled}")
-            pw.println("quotes-enabled: ${Quote.enabled}")
             pw.println("responder-cooldown: ${Responder.cooldown}")
+            pw.println("reactor-enabled: ${Reactor.enabled}")
             pw.println("reactor-cooldown: ${Reactor.cooldown}")
-            pw.println("meme-generator-cooldown: ${Meme.cooldown}")
+            pw.println("memes-enabled: ${Meme.enabled}")
+            pw.println("meme-cooldown: ${Meme.cooldown}")
+            pw.println("statuses-enabled: ${Status.enabled}")
             pw.println("status-delay: ${Status.delay}")
+            pw.println("commands-enabled: ${Command.enabled}")
             pw.println("command-cooldown: ${Command.cooldown}")
             pw.println("command-prefix: ${Command.commandPrefix}")
+            pw.println("quotes-enabled: ${Quote.enabled}")
             pw.println("quote-cooldown: ${Quote.cooldown}")
             pw.println("embed-color: #fd0605")
             pw.println("typing-speed: ${Responder.typingSpeed}")
@@ -114,7 +115,7 @@ object Config {
         }
 
         try {
-            loadData("resources/texts.txt", Meme.texts)
+            loadData("resources/memetexts.txt", Meme.texts)
             loadData("resources/statuses.txt", Status.statuses)
             loadData("resources/commands.txt", Command.commands)
             loadData("resources/responses.txt", Responder.responses)

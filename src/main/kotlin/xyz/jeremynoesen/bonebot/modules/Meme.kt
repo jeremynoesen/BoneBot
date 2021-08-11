@@ -75,7 +75,7 @@ constructor(private val command: Message) {
     }
 
     /**
-     * read an image from a url
+     * read an image from url
      *
      * @param url string url
      */
@@ -161,7 +161,7 @@ constructor(private val command: Message) {
 
         if (image == null) {
             val r = Random()
-            val dir = File("resources/images")
+            val dir = File("resources/memeimages")
             if (dir.listFiles()!!.isNotEmpty()) {
                 var rand = r.nextInt(dir.listFiles()!!.size)
                 while (dir.listFiles()!![rand].isHidden) {
