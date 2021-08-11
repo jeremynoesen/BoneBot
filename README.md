@@ -40,6 +40,9 @@ BoneBot allows for custom commands to be made to provide simple message response
 ### Statuses
 BoneBot can have various randomized statuses shown in Discord that change over time.
 
+## Requirements
+Any version of Windows, macOS, or Linux that can run Java 8 or later.
+
 ## Building
 1. Clone or download this repository.
 2. Run `./gradlew build` in the directory of the project.
