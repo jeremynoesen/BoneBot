@@ -28,6 +28,8 @@ The meme generator will generate a meme with top and bottom text in Impact font.
   - Note: main message input will override reply input
 - Random text (If properly configured)
 
+If you make a mistake in typing the command, or wish to generate another meme with similar inputs, you can edit the message to fix it without needing to send another message.
+
 ### Responder
 The responder will respond to a message with another when a trigger phrase is said.
 
@@ -35,7 +37,7 @@ The responder will respond to a message with another when a trigger phrase is sa
 The reactor will react to a message with an emote when a trigger phrase is said.
 
 ### Commands
-BoneBot allows for custom commands to be made to provide simple message responses. Their usage is pretty simple - a command called `test` would be used by typing `bbtest`.
+BoneBot allows for custom commands to be made to provide simple message responses. Their usage is pretty simple - a command called `test` would be used by typing `bbtest`. If you make a mistake in typing a command, you can edit the message to fix it without needing to send another message.
 
 ### Statuses
 BoneBot can have various randomized statuses shown in Discord that change over time.
