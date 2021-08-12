@@ -82,6 +82,9 @@ object Config {
                     "command-prefix:" -> {
                         Commands.commandPrefix = lineScanner.next().lowercase()
                     }
+                    "meme-size:" -> {
+                        Memes.size = lineScanner.nextInt()
+                    }
                     "embed-color:" -> {
                         embedColor = Color.decode(lineScanner.next())
                     }
@@ -105,6 +108,7 @@ object Config {
             pw.println("reactor-cooldown: ${Reactor.cooldown}")
             pw.println("memes-enabled: ${Memes.enabled}")
             pw.println("meme-cooldown: ${Memes.cooldown}")
+            pw.println("meme-size: ${Memes.size}")
             pw.println("statuses-enabled: ${Statuses.enabled}")
             pw.println("status-delay: ${Statuses.delay}")
             pw.println("commands-enabled: ${Commands.enabled}")
