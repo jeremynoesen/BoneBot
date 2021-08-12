@@ -21,7 +21,7 @@ class Listener : ListenerAdapter() {
      */
     override fun onMessageReceived(e: MessageReceivedEvent) {
         try {
-            if (!e.author.isBot || Config.listenToBots) {
+            if (!e.author.isBot || (Config.listenToBots && e.author != e.jda.selfUser)) {
                 if (!Commands.enabled || !Commands.perform(e.message)) {
                     if (Responder.enabled) Responder.respond(e.message)
                     if (Reactor.enabled) Reactor.react(e.message)
@@ -39,7 +39,8 @@ class Listener : ListenerAdapter() {
      */
     override fun onMessageUpdate(e: MessageUpdateEvent) {
         try {
-            if ((!e.author.isBot || Config.listenToBots) && Commands.enabled) Commands.perform(e.message)
+            if ((!e.author.isBot || (Config.listenToBots && e.author != e.jda.selfUser))
+                && Commands.enabled) Commands.perform(e.message)
         } catch (ex: Exception) {
             Logger.log(ex, e.channel)
         }
