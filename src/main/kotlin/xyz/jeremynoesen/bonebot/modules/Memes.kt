@@ -240,44 +240,44 @@ constructor(private val command: Message) {
         for (i in topText.indices) {
             val line = topText[i].trim { it <= ' ' }.uppercase()
             if (line.isEmpty()) continue
-            g2d.color = Color.WHITE
-            g2d.drawString(
-                line, ((meme!!.getWidth(null) - metrics.stringWidth(line)) / 2.0).toInt(),
-                ((i + 1) * g2d.font.size).toInt()
-            )
             val shape = TextLayout(line, font, g2d.fontRenderContext).getOutline(null)
-            g2d.stroke = BasicStroke((height + width) / 500f)
+            g2d.stroke = BasicStroke((height + width) / 200f)
             g2d.translate(
-                ((meme!!.getWidth(null) - metrics.stringWidth(line)) / 2.0).toInt(),
-                ((i + 1) * g2d.font.size).toInt()
+                    ((meme!!.getWidth(null) - metrics.stringWidth(line)) / 2.0).toInt(),
+                    ((i + 1) * g2d.font.size).toInt()
             )
             g2d.color = Color.BLACK
             g2d.draw(shape)
             g2d.translate(
-                (-((meme!!.getWidth(null) - metrics.stringWidth(line)) / 2.0)).toInt(),
-                (-((i + 1) * g2d.font.size)).toInt()
+                    (-((meme!!.getWidth(null) - metrics.stringWidth(line)) / 2.0)).toInt(),
+                    (-((i + 1) * g2d.font.size)).toInt()
+            )
+            g2d.color = Color.WHITE
+            g2d.drawString(
+                line, ((meme!!.getWidth(null) - metrics.stringWidth(line)) / 2.0).toInt(),
+                ((i + 1) * g2d.font.size).toInt()
             )
         }
 
         for (i in bottomText.indices) {
             val line = bottomText[i].trim { it <= ' ' }.uppercase()
             if (line.isEmpty()) continue
-            g2d.color = Color.WHITE
-            g2d.drawString(
-                line, ((meme!!.getWidth(null) - metrics.stringWidth(line)) / 2.0).toInt(),
-                (meme!!.getHeight(null) - (bottomText.size - i - 0.8) * g2d.font.size).toInt()
-            )
             val shape = TextLayout(line, font, g2d.fontRenderContext).getOutline(null)
-            g2d.stroke = BasicStroke((height + width) / 500f)
+            g2d.stroke = BasicStroke((height + width) / 200f)
             g2d.translate(
-                ((meme!!.getWidth(null) - metrics.stringWidth(line)) / 2.0).toInt(),
-                (meme!!.getHeight(null) - (bottomText.size - i - 0.8) * g2d.font.size).toInt()
+                    ((meme!!.getWidth(null) - metrics.stringWidth(line)) / 2.0).toInt(),
+                    (meme!!.getHeight(null) - (bottomText.size - i - 0.8) * g2d.font.size).toInt()
             )
             g2d.color = Color.BLACK
             g2d.draw(shape)
             g2d.translate(
-                (-((meme!!.getWidth(null) - metrics.stringWidth(line)) / 2.0)).toInt(),
-                (-(meme!!.getHeight(null) - (bottomText.size - i - 0.8) * g2d.font.size)).toInt()
+                    (-((meme!!.getWidth(null) - metrics.stringWidth(line)) / 2.0)).toInt(),
+                    (-(meme!!.getHeight(null) - (bottomText.size - i - 0.8) * g2d.font.size)).toInt()
+            )
+            g2d.color = Color.WHITE
+            g2d.drawString(
+                line, ((meme!!.getWidth(null) - metrics.stringWidth(line)) / 2.0).toInt(),
+                (meme!!.getHeight(null) - (bottomText.size - i - 0.8) * g2d.font.size).toInt()
             )
         }
 
