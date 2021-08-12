@@ -237,19 +237,19 @@ constructor(private val command: Message) {
             g2d.color = Color.WHITE
             g2d.drawString(
                 line, ((meme!!.getWidth(null) - metrics.stringWidth(line)) / 2.0).toInt(),
-                ((i + 0.9) * g2d.font.size).toInt()
+                ((i + 1) * g2d.font.size).toInt()
             )
             val shape = TextLayout(line, font, g2d.fontRenderContext).getOutline(null)
             g2d.stroke = BasicStroke((height + width) / 500f)
             g2d.translate(
                 ((meme!!.getWidth(null) - metrics.stringWidth(line)) / 2.0).toInt(),
-                ((i + 0.9) * g2d.font.size).toInt()
+                ((i + 1) * g2d.font.size).toInt()
             )
             g2d.color = Color.BLACK
             g2d.draw(shape)
             g2d.translate(
                 (-((meme!!.getWidth(null) - metrics.stringWidth(line)) / 2.0)).toInt(),
-                (-((i + 0.9) * g2d.font.size)).toInt()
+                (-((i + 1) * g2d.font.size)).toInt()
             )
         }
 
@@ -259,19 +259,19 @@ constructor(private val command: Message) {
             g2d.color = Color.WHITE
             g2d.drawString(
                 line, ((meme!!.getWidth(null) - metrics.stringWidth(line)) / 2.0).toInt(),
-                (meme!!.getHeight(null) - (bottomText.size - i - 0.9) * g2d.font.size).toInt()
+                (meme!!.getHeight(null) - (bottomText.size - i - 0.8) * g2d.font.size).toInt()
             )
             val shape = TextLayout(line, font, g2d.fontRenderContext).getOutline(null)
             g2d.stroke = BasicStroke((height + width) / 500f)
             g2d.translate(
                 ((meme!!.getWidth(null) - metrics.stringWidth(line)) / 2.0).toInt(),
-                (meme!!.getHeight(null) - (bottomText.size - i - 0.9) * g2d.font.size).toInt()
+                (meme!!.getHeight(null) - (bottomText.size - i - 0.8) * g2d.font.size).toInt()
             )
             g2d.color = Color.BLACK
             g2d.draw(shape)
             g2d.translate(
                 (-((meme!!.getWidth(null) - metrics.stringWidth(line)) / 2.0)).toInt(),
-                (-(meme!!.getHeight(null) - (bottomText.size - i - 0.9) * g2d.font.size)).toInt()
+                (-(meme!!.getHeight(null) - (bottomText.size - i - 0.8) * g2d.font.size)).toInt()
             )
         }
 
