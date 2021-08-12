@@ -25,6 +25,11 @@ object Config {
     var embedColor = Color(253, 6, 5)
 
     /**
+     * whether BoneBot can listen to other bots for input
+     */
+    var listenToBots = false
+
+    /**
      * load config values, write default config if missing
      */
     fun loadData() {
@@ -40,47 +45,53 @@ object Config {
                     "responder-enabled:" -> {
                         Responder.enabled = lineScanner.nextBoolean()
                     }
-                    "reactor-enabled:" -> {
-                        Reactor.enabled = lineScanner.nextBoolean()
-                    }
-                    "memes-enabled:" -> {
-                        Memes.enabled = lineScanner.nextBoolean()
-                    }
-                    "statuses-enabled:" -> {
-                        Statuses.enabled = lineScanner.nextBoolean()
-                    }
-                    "commands-enabled:" -> {
-                        Commands.enabled = lineScanner.nextBoolean()
-                    }
-                    "quotes-enabled:" -> {
-                        Quotes.enabled = lineScanner.nextBoolean()
-                    }
-                    "files-enabled:" -> {
-                        Files.enabled = lineScanner.nextBoolean()
-                    }
                     "responder-cooldown:" -> {
                         Responder.cooldown = lineScanner.nextInt()
+                    }
+                    "reactor-enabled:" -> {
+                        Reactor.enabled = lineScanner.nextBoolean()
                     }
                     "reactor-cooldown:" -> {
                         Reactor.cooldown = lineScanner.nextInt()
                     }
+                    "memes-enabled:" -> {
+                        Memes.enabled = lineScanner.nextBoolean()
+                    }
                     "meme-cooldown:" -> {
                         Memes.cooldown = lineScanner.nextInt()
                     }
-                    "quote-cooldown:" -> {
-                        Quotes.cooldown = lineScanner.nextInt()
+                    "meme-size:" -> {
+                        Memes.size = lineScanner.nextInt()
                     }
-                    "file-cooldown:" -> {
-                        Files.cooldown = lineScanner.nextInt()
+                    "statuses-enabled:" -> {
+                        Statuses.enabled = lineScanner.nextBoolean()
                     }
                     "status-delay:" -> {
                         Statuses.delay = lineScanner.nextInt()
+                    }
+                    "commands-enabled:" -> {
+                        Commands.enabled = lineScanner.nextBoolean()
                     }
                     "command-cooldown:" -> {
                         Commands.cooldown = lineScanner.nextInt()
                     }
                     "command-prefix:" -> {
                         Commands.commandPrefix = lineScanner.next().lowercase()
+                    }
+                    "quotes-enabled:" -> {
+                        Quotes.enabled = lineScanner.nextBoolean()
+                    }
+                    "quote-cooldown:" -> {
+                        Quotes.cooldown = lineScanner.nextInt()
+                    }
+                    "files-enabled:" -> {
+                        Files.enabled = lineScanner.nextBoolean()
+                    }
+                    "file-cooldown:" -> {
+                        Files.cooldown = lineScanner.nextInt()
+                    }
+                    "listen-to-bots:" -> {
+                        listenToBots = lineScanner.nextBoolean()
                     }
                     "embed-color:" -> {
                         embedColor = Color.decode(lineScanner.next())
@@ -105,6 +116,7 @@ object Config {
             pw.println("reactor-cooldown: ${Reactor.cooldown}")
             pw.println("memes-enabled: ${Memes.enabled}")
             pw.println("meme-cooldown: ${Memes.cooldown}")
+            pw.println("meme-size: ${Memes.size}")
             pw.println("statuses-enabled: ${Statuses.enabled}")
             pw.println("status-delay: ${Statuses.delay}")
             pw.println("commands-enabled: ${Commands.enabled}")
@@ -114,6 +126,7 @@ object Config {
             pw.println("quote-cooldown: ${Quotes.cooldown}")
             pw.println("files-enabled: ${Files.enabled}")
             pw.println("file-cooldown: ${Files.cooldown}")
+            pw.println("listen-to-bots: $listenToBots")
             pw.println("embed-color: #fd0605")
             pw.println("typing-speed: ${Responder.typingSpeed}")
             pw.println("bot-token: TOKEN")
