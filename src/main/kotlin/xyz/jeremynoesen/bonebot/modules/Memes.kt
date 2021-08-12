@@ -201,17 +201,15 @@ constructor(private val command: Message) {
      */
     @Throws(IOException::class, FontFormatException::class)
     private fun processImage() {
-        val ratio = image!!.height / image!!.width.toDouble()
-        val width = size
-        val height = (width * ratio).toInt()
+        val width = if (size == 0) image!!.width else size
+        val height = if (size == 0) image!!.height else (width * (image!!.height / image!!.width.toDouble())).toInt()
         meme = BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB)
-        val graphics = meme!!.graphics
-        val g2d = graphics as Graphics2D
+        val g2d = meme!!.graphics as Graphics2D
         val font =
             Font.createFont(Font.TRUETYPE_FONT, javaClass.getResourceAsStream("/Impact.ttf"))
                 .deriveFont((height + width) / 20.0f)
         g2d.font = font
-        val metrics = graphics.getFontMetrics(font)
+        val metrics = g2d.getFontMetrics(font)
         g2d.drawImage(image, 0, 0, width, height, null)
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON)
         g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR)
@@ -221,7 +219,7 @@ constructor(private val command: Message) {
         val bottomText = ArrayList<String>()
 
         val topWrapLength =
-            floor(sections[0].length / (metrics.stringWidth(sections[0]) / (width.toFloat() - 160))).toInt()
+            floor(sections[0].length / (metrics.stringWidth(sections[0]) / (width.toFloat() - (width / 6.4)))).toInt()
         topText.addAll(
             listOf(
                 *WordUtils.wrap(sections[0], topWrapLength, "\n\n", true).split("\n\n").toTypedArray()
@@ -229,7 +227,7 @@ constructor(private val command: Message) {
         )
         if (sections.size > 1) {
             val bottomWrapLength =
-                floor(sections[1].length / (metrics.stringWidth(sections[1]) / (width.toFloat() - 160))).toInt()
+                floor(sections[1].length / (metrics.stringWidth(sections[1]) / (width.toFloat() - (width / 6.4)))).toInt()
             bottomText.addAll(
                 listOf(
                     *WordUtils.wrap(sections[1], bottomWrapLength, "\n\n", true).split("\n\n").toTypedArray()
@@ -244,18 +242,18 @@ constructor(private val command: Message) {
             g2d.stroke = BasicStroke((height + width) / 200f)
             g2d.translate(
                     ((meme!!.getWidth(null) - metrics.stringWidth(line)) / 2.0).toInt(),
-                    ((i + 1) * g2d.font.size).toInt()
+                    ((i + 1) * g2d.font.size)
             )
             g2d.color = Color.BLACK
             g2d.draw(shape)
             g2d.translate(
                     (-((meme!!.getWidth(null) - metrics.stringWidth(line)) / 2.0)).toInt(),
-                    (-((i + 1) * g2d.font.size)).toInt()
+                    (-((i + 1) * g2d.font.size))
             )
             g2d.color = Color.WHITE
             g2d.drawString(
                 line, ((meme!!.getWidth(null) - metrics.stringWidth(line)) / 2.0).toInt(),
-                ((i + 1) * g2d.font.size).toInt()
+                ((i + 1) * g2d.font.size)
             )
         }
 
@@ -281,7 +279,6 @@ constructor(private val command: Message) {
             )
         }
 
-        graphics.dispose()
         g2d.dispose()
     }
 
