@@ -240,7 +240,7 @@ constructor(private val command: Message) {
                 ((i + 0.9) * g2d.font.size).toInt()
             )
             val shape = TextLayout(line, font, g2d.fontRenderContext).getOutline(null)
-            g2d.stroke = BasicStroke(3f)
+            g2d.stroke = BasicStroke((height + width) / 500f)
             g2d.translate(
                 ((meme!!.getWidth(null) - metrics.stringWidth(line)) / 2.0).toInt(),
                 ((i + 0.9) * g2d.font.size).toInt()
@@ -262,7 +262,7 @@ constructor(private val command: Message) {
                 (meme!!.getHeight(null) - (bottomText.size - i - 0.9) * g2d.font.size).toInt()
             )
             val shape = TextLayout(line, font, g2d.fontRenderContext).getOutline(null)
-            g2d.stroke = BasicStroke(3f)
+            g2d.stroke = BasicStroke((height + width) / 500f)
             g2d.translate(
                 ((meme!!.getWidth(null) - metrics.stringWidth(line)) / 2.0).toInt(),
                 (meme!!.getHeight(null) - (bottomText.size - i - 0.9) * g2d.font.size).toInt()
