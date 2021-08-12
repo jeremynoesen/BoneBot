@@ -164,8 +164,14 @@ constructor(private val command: Message) {
             val dir = File("resources/memeimages")
             if (dir.listFiles()!!.isNotEmpty()) {
                 var rand = r.nextInt(dir.listFiles()!!.size)
-                while (dir.listFiles()!![rand].isHidden) {
+                val prev = HashSet<Int>()
+                while (dir.listFiles()!![rand].isHidden || dir.listFiles()!![rand].isDirectory) {
                     rand = r.nextInt(dir.listFiles()!!.size)
+                    if (prev.contains(rand)) continue
+                    prev.add(rand)
+                    if (prev.size == dir.listFiles()!!.size) {
+                        return
+                    }
                 }
                 image = ImageIO.read(dir.listFiles()!![rand])
             }

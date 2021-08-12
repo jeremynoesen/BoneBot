@@ -4,6 +4,7 @@ import xyz.jeremynoesen.bonebot.Logger
 import net.dv8tion.jda.api.entities.Message
 import java.io.File
 import java.util.*
+import kotlin.collections.HashSet
 
 /**
  * file module to send files from a directory
@@ -40,8 +41,15 @@ object Files {
                 val dir = File("resources/files")
                 if (dir.listFiles()!!.isNotEmpty()) {
                     var rand = r.nextInt(dir.listFiles()!!.size)
-                    while (dir.listFiles()!![rand].isHidden) {
+                    val prev = HashSet<Int>()
+                    while (dir.listFiles()!![rand].isHidden || dir.listFiles()!![rand].isDirectory) {
                         rand = r.nextInt(dir.listFiles()!!.size)
+                        if (prev.contains(rand)) continue
+                        prev.add(rand)
+                        if (prev.size == dir.listFiles()!!.size) {
+                            message.channel.sendMessage("There are no files to send!").queue()
+                            return
+                        }
                     }
                     message.channel.sendFile(dir.listFiles()!![rand]).queue()
                 } else {
