@@ -140,7 +140,8 @@ java -jar BoneBot.jar
 - To enable or disable statuses, set `statuses-enabled` in the main configuration to `true` or `false`.
 
 ### Miscellaneous
-You can change the colors of embeds for the meme generator and help message by setting `embed-color` in the main configuration to a hex code.
+- You can change the colors of embeds for the meme generator and help message by setting `embed-color` in the main configuration to a hex code.
+- You can allow BoneBot to listen to input from other bots by setting `listen-to-bots` to `true`. It defaults to `false`.
 
 ### Default Main Configuration
 Located at `resources/config.txt`
@@ -161,6 +162,7 @@ quotes-enabled: true
 quote-cooldown: 5
 files-enabled: true
 file-cooldown: 5
+listen-to-bots: false
 embed-color: #fd0605
 typing-speed: 100
 bot-token: TOKEN
