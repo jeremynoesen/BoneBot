@@ -187,7 +187,7 @@ object Config {
                 val line = fileScanner.nextLine()
                 if (line.isNotBlank()) {
                     val parts = line.split(" // ")
-                    map[parts[0].lowercase()] = parts[1]
+                    map[parts[0]] = parts[1]
                 }
             }
             fileScanner.close()
@@ -215,7 +215,7 @@ object Config {
                 val line = fileScanner.nextLine()
                 if (line.isNotBlank()) {
                     val parts = line.split(" // ")
-                    map[parts[0].lowercase()] = Pair(parts[1], parts[2])
+                    map[parts[0]] = Pair(parts[1], parts[2])
                 }
             }
             fileScanner.close()
