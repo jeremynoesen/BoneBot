@@ -37,9 +37,10 @@ object Reactor {
      */
     fun react(message: Message) {
         try {
-            val msg = message.contentRaw.lowercase()
+            val msg = message.contentRaw
             for (trigger in reactions.keys) {
-                if (msg.contains(Regex(trigger)) && (System.currentTimeMillis() - prevTime) >= cooldown * 1000) {
+                if ((msg.contains(Regex(trigger)) || msg.lowercase().contains(trigger.lowercase()))
+                        && (System.currentTimeMillis() - prevTime) >= cooldown * 1000) {
                     prevTime = System.currentTimeMillis()
                     message.addReaction(reactions[trigger]!!).queue()
                 }
