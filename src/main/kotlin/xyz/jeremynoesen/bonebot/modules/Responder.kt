@@ -44,9 +44,10 @@ object Responder {
      */
     fun respond(message: Message) {
         try {
-            val msg = message.contentRaw.lowercase()
+            val msg = message.contentRaw
             for (trigger in responses.keys) {
-                if (msg.contains(Regex(trigger)) && (System.currentTimeMillis() - prevTime) >= cooldown * 1000) {
+                if ((msg.contains(Regex(trigger)) || msg.lowercase().contains(trigger.lowercase()))
+                        && (System.currentTimeMillis() - prevTime) >= cooldown * 1000) {
                     prevTime = System.currentTimeMillis()
                     if (typingSpeed > 0) message.channel.sendTyping().queue()
                     var toSend = responses[trigger]!!.replace("\$USER$", message.author.asMention)

@@ -79,7 +79,7 @@ object Commands {
                         }
                         else -> {
                             for (command in commands.keys) {
-                                if (msg == "$commandPrefix$command") {
+                                if (msg == "$commandPrefix${command.lowercase()}") {
                                     var toSend =
                                         commands[command]!!.second.replace("\$USER$", message.author.asMention)
                                             .replace("\\n", "\n")

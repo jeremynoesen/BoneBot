@@ -84,7 +84,7 @@ java -jar BoneBot.jar
 - Texts for the randomizer are to be placed in `resources/memetexts.txt`.
   - Each separate line denotes a separate text.
   - The format is `<top text> // <bottom text>`.
-- To set the size of generates memes, set `meme-size` in the main configuration to any number. This sets the image width to this number, and varies the height based on this width.
+- To set the size of generates memes, set `meme-size` in the main configuration to any number. This sets the image width to this number, and varies the height based on this width. Set it to `0` to use the image's original dimensions with no scaling.
 - To set a cool down for the generator, set `meme-cooldown` in the main configuration to any number. Time is in seconds.
 - To enable or disable the generator, set `memes-enabled` in the main configuration to `true` or `false`.
 
@@ -104,7 +104,7 @@ java -jar BoneBot.jar
 - Each line designates a new entry.
 - The format is `trigger // response`.
 - Case is ignored in the trigger.
-- The trigger can include Regex.
+- The trigger can include Regex. Case is not ignored if you use Regex.
 - The response can include `\n` as a line separator.
 - You can also include `$USER$` in the response to ping the user who invoked a response, or `$REPLY$` to reply to them.
 - The response sends with a delay based on message length multiplied by `typing-speed` in the main configuration in milliseconds.
@@ -116,7 +116,7 @@ java -jar BoneBot.jar
 - Each line designates a new entry.
 - The format is `trigger // emote`.
 - Case is ignored in the trigger.
-- The trigger can include Regex.
+- The trigger can include Regex. Case is not ignored if you use Regex.
 - For the emote, you can put either a unicode emoji, `U+1F980`, or a raw discord emote, `:bonebot:819645061200347177`.
 - To set a cool down for the reactor, set `reactor-cooldown` in the main configuration to any number. Time is in seconds.
 - To enable or disable the reactor, set `reactor-enabled` in the main configuration to `true` or `false`.
