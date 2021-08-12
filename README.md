@@ -84,7 +84,7 @@ java -jar BoneBot.jar
 - Texts for the randomizer are to be placed in `resources/memetexts.txt`.
   - Each separate line denotes a separate text.
   - The format is `<top text> // <bottom text>`.
-- To set the size of generates memes, set `meme-size` in the main configuration to any number. This sets the image width to this number, and varies the height based on this width.
+- To set the size of generates memes, set `meme-size` in the main configuration to any number. This sets the image width to this number, and varies the height based on this width. Set it to `0` to use the image's original dimensions with no scaling.
 - To set a cool down for the generator, set `meme-cooldown` in the main configuration to any number. Time is in seconds.
 - To enable or disable the generator, set `memes-enabled` in the main configuration to `true` or `false`.
 
