@@ -245,7 +245,13 @@ constructor(private val command: Message) {
             g2d.stroke = BasicStroke(outlineThickness)
             val x = ((width - metrics.stringWidth(line)) / 2f).toInt()
             val y = (i + 1) * g2d.font.size
+            val rect = shape.bounds
+            rect.width += outlineThickness.toInt() + 1
+            rect.height += outlineThickness.toInt()
+            rect.x -= ((outlineThickness + 1) / 2.0).toInt()
+            rect.y -= (outlineThickness / 2.0).toInt()
             g2d.translate(x, y)
+            g2d.clip = rect
             g2d.color = Color.BLACK
             g2d.draw(shape)
             g2d.color = Color.WHITE
@@ -260,7 +266,13 @@ constructor(private val command: Message) {
             g2d.stroke = BasicStroke(outlineThickness)
             val x = ((width - metrics.stringWidth(line)) / 2f).toInt()
             val y = (height - (bottomText.size - i - 0.8) * g2d.font.size).toInt()
+            val rect = shape.bounds
+            rect.width += outlineThickness.toInt() + 1
+            rect.height += outlineThickness.toInt()
+            rect.x -= ((outlineThickness + 1) / 2.0).toInt()
+            rect.y -= (outlineThickness / 2.0).toInt()
             g2d.translate(x, y)
+            g2d.clip = rect
             g2d.color = Color.BLACK
             g2d.draw(shape)
             g2d.color = Color.WHITE
