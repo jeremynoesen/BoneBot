@@ -14,6 +14,7 @@ import java.net.URL
 import java.net.URLConnection
 import java.util.*
 import javax.imageio.ImageIO
+import kotlin.math.ceil
 import kotlin.math.floor
 
 
@@ -235,48 +236,36 @@ constructor(private val command: Message) {
             )
         }
 
+        val outlineThickness = ceil((height + width) / 450f)
+
         for (i in topText.indices) {
             val line = topText[i].trim { it <= ' ' }.uppercase()
-            if (line.isEmpty()) continue
+            if (line.isEmpty()) break
             val shape = TextLayout(line, font, g2d.fontRenderContext).getOutline(null)
-            g2d.stroke = BasicStroke((height + width) / 200f)
-            g2d.translate(
-                    ((meme!!.getWidth(null) - metrics.stringWidth(line)) / 2.0).toInt(),
-                    ((i + 1) * g2d.font.size)
-            )
+            g2d.stroke = BasicStroke(outlineThickness)
+            val x = ((width - metrics.stringWidth(line)) / 2f).toInt()
+            val y = (i + 1) * g2d.font.size
+            g2d.translate(x, y)
             g2d.color = Color.BLACK
             g2d.draw(shape)
-            g2d.translate(
-                    (-((meme!!.getWidth(null) - metrics.stringWidth(line)) / 2.0)).toInt(),
-                    (-((i + 1) * g2d.font.size))
-            )
             g2d.color = Color.WHITE
-            g2d.drawString(
-                line, ((meme!!.getWidth(null) - metrics.stringWidth(line)) / 2.0).toInt(),
-                ((i + 1) * g2d.font.size)
-            )
+            g2d.fill(shape)
+            g2d.translate(-x, -y)
         }
 
         for (i in bottomText.indices) {
             val line = bottomText[i].trim { it <= ' ' }.uppercase()
-            if (line.isEmpty()) continue
+            if (line.isEmpty()) break
             val shape = TextLayout(line, font, g2d.fontRenderContext).getOutline(null)
-            g2d.stroke = BasicStroke((height + width) / 200f)
-            g2d.translate(
-                    ((meme!!.getWidth(null) - metrics.stringWidth(line)) / 2.0).toInt(),
-                    (meme!!.getHeight(null) - (bottomText.size - i - 0.8) * g2d.font.size).toInt()
-            )
+            g2d.stroke = BasicStroke(outlineThickness)
+            val x = ((width - metrics.stringWidth(line)) / 2f).toInt()
+            val y = (height - (bottomText.size - i - 0.8) * g2d.font.size).toInt()
+            g2d.translate(x, y)
             g2d.color = Color.BLACK
             g2d.draw(shape)
-            g2d.translate(
-                    (-((meme!!.getWidth(null) - metrics.stringWidth(line)) / 2.0)).toInt(),
-                    (-(meme!!.getHeight(null) - (bottomText.size - i - 0.8) * g2d.font.size)).toInt()
-            )
             g2d.color = Color.WHITE
-            g2d.drawString(
-                line, ((meme!!.getWidth(null) - metrics.stringWidth(line)) / 2.0).toInt(),
-                (meme!!.getHeight(null) - (bottomText.size - i - 0.8) * g2d.font.size).toInt()
-            )
+            g2d.fill(shape)
+            g2d.translate(-x, -y)
         }
 
         g2d.dispose()
