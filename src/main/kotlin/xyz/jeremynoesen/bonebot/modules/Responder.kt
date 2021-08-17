@@ -61,7 +61,7 @@ object Responder {
                     if (toSend.contains("\$FILE$")) {
                         val path = toSend.split("\$FILE$")[1].trim()
                         toSend = toSend.replace("\$FILE$", "").replace(path, "")
-                            .replace("  ", " ").trim()
+                            .replace("   ", " ").replace("  ", " ").trim()
                         try {
                             file = File(path)
                             if (file.isDirectory || file.isHidden) {
@@ -72,7 +72,8 @@ object Responder {
                     }
 
                     if (toSend.contains("\$REPLY$")) {
-                        toSend = toSend.replace("\$REPLY$", "").replace("  ", " ")
+                        toSend = toSend.replace("\$REPLY$", "").replace("   ", " ")
+                            .replace("  ", " ")
                         if (toSend.isNotEmpty()) message.channel.sendMessage(toSend).reference(message)
                             .queue()
                         if (file != null) message.channel.sendFile(file).reference(message).queue()

@@ -90,7 +90,7 @@ object Commands {
                                         val cmd = toSend.split("\$CMD$")[1].trim()
                                         Runtime.getRuntime().exec(cmd)
                                         toSend = toSend.replace("\$CMD$", "").replace(cmd, "")
-                                            .replace("  ", " ").trim()
+                                            .replace("   ", " ").replace("  ", " ").trim()
                                     }
 
                                     var file: File? = null
@@ -98,7 +98,7 @@ object Commands {
                                     if (toSend.contains("\$FILE$")) {
                                         val path = toSend.split("\$FILE$")[1].trim()
                                         toSend = toSend.replace("\$FILE$", "").replace(path, "")
-                                            .replace("  ", " ").trim()
+                                            .replace("   ", " ").replace("  ", " ").trim()
                                         try {
                                             file = File(path)
                                             if (file.isDirectory || file.isHidden) {
@@ -109,7 +109,8 @@ object Commands {
                                     }
 
                                     if (toSend.contains("\$REPLY$")) {
-                                        toSend = toSend.replace("\$REPLY$", "").replace("  ", " ")
+                                        toSend = toSend.replace("\$REPLY$", "")
+                                            .replace("   ", " ").replace("  ", " ")
                                         if (toSend.isNotEmpty()) message.channel.sendMessage(toSend).reference(message)
                                             .queue()
                                         if (file != null) message.channel.sendFile(file).reference(message).queue()
