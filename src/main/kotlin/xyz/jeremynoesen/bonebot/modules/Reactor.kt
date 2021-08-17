@@ -1,6 +1,5 @@
 package xyz.jeremynoesen.bonebot.modules
 
-import xyz.jeremynoesen.bonebot.Logger
 import net.dv8tion.jda.api.entities.Message
 
 /**
@@ -46,7 +45,7 @@ object Reactor {
                 }
             }
         } catch (e: Exception) {
-            Logger.log(e, message.channel)
+            message.channel.sendMessage("**An error occurred!** Please check the log file!").queue()
         }
     }
 }
