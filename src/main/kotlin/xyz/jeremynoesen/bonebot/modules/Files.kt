@@ -38,7 +38,7 @@ object Files {
             if ((System.currentTimeMillis() - prevTime) >= cooldown * 1000) {
                 prevTime = System.currentTimeMillis()
 
-                if (message.contentRaw.trim() == Commands.commandPrefix + "file") {
+                if (message.contentRaw.trim().lowercase() == Commands.commandPrefix + "file") {
                     val r = Random()
                     val dir = File("resources/files")
                     if (dir.listFiles()!!.isNotEmpty()) {
@@ -60,8 +60,9 @@ object Files {
                 } else {
                     try {
                         val file = File("resources/files/" +
-                                message.contentRaw.replace(Commands.commandPrefix + "file", "")
-                                    .replace("..", "").trim()
+                                message.contentRaw.substring(Commands.commandPrefix.length + 4)
+                                    .replace("..", "").replace("   ", " ")
+                                    .replace("  ", " ").trim()
                         )
                         if (file.isDirectory || file.isHidden) {
                             message.channel.sendMessage("**Unknown file!**").queue()
