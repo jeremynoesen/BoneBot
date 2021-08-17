@@ -91,15 +91,22 @@ object Commands {
 
                                     if (toSend.contains("\$CMD$")) {
                                         val cmd = toSend.split("\$CMD$")[1].trim()
-                                        val proc = Runtime.getRuntime().exec(cmd)
-                                        val stdInput = BufferedReader(InputStreamReader(proc.inputStream))
+
+                                        val procBuilder: ProcessBuilder?
+                                        if (System.getProperty("os.name").contains("windows", true)) {
+                                            procBuilder = ProcessBuilder("cmd.exe", "/c", cmd)
+                                        } else {
+                                            procBuilder = ProcessBuilder("/bin/sh", "-c", cmd)
+                                        }
+                                        val stream = procBuilder.start().inputStream
+                                        val stdInput = BufferedReader(InputStreamReader(stream))
+
                                         var output = ""
                                         for (line in stdInput.readLines()) output += "$line\n"
                                         output = output.substring(0, output.length - 1)
                                         toSend = toSend.replace("\$CMD$", "")
                                             .replace("\$CMDOUT$", output).replace(cmd, "")
                                             .replace("   ", " ").replace("  ", " ").trim()
-                                        proc.destroy()
                                     }
 
                                     var file: File? = null
