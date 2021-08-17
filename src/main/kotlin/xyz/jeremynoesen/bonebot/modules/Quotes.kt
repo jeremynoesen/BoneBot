@@ -1,6 +1,5 @@
 package xyz.jeremynoesen.bonebot.modules
 
-import xyz.jeremynoesen.bonebot.Logger
 import net.dv8tion.jda.api.entities.Message
 import java.util.*
 
@@ -50,7 +49,7 @@ object Quotes {
                 message.channel.sendMessage("Another quote can be sent in **$remaining** seconds.").queue()
             }
         } catch (e: Exception) {
-            Logger.log(e, message.channel)
+            message.channel.sendMessage("**An error occurred!** Please check the log file!").queue()
         }
     }
 }

@@ -131,20 +131,14 @@ object Config {
             pw.println("typing-speed: ${Responder.typingSpeed}")
             pw.println("bot-token: TOKEN")
             pw.close()
-        } catch (e: Exception) {
-            Logger.log(e)
         }
 
-        try {
-            loadData("resources/memetexts.txt", Memes.texts)
-            loadData("resources/statuses.txt", Statuses.statuses)
-            loadData("resources/commands.txt", Commands.commands)
-            loadData("resources/responses.txt", Responder.responses)
-            loadData("resources/reactions.txt", Reactor.reactions)
-            loadData("resources/quotes.txt", Quotes.quotes)
-        } catch (e: Exception) {
-            Logger.log(e)
-        }
+        loadData("resources/memetexts.txt", Memes.texts)
+        loadData("resources/statuses.txt", Statuses.statuses)
+        loadData("resources/commands.txt", Commands.commands)
+        loadData("resources/responses.txt", Responder.responses)
+        loadData("resources/reactions.txt", Reactor.reactions)
+        loadData("resources/quotes.txt", Quotes.quotes)
     }
 
     /**
@@ -169,8 +163,6 @@ object Config {
             val pw = PrintWriter(file)
             pw.println()
             pw.close()
-        } catch (e: Exception) {
-            Logger.log(e)
         }
     }
 
@@ -196,8 +188,6 @@ object Config {
             val pw = PrintWriter(file)
             pw.println()
             pw.close()
-        } catch (e: Exception) {
-            Logger.log(e)
         }
     }
 
@@ -224,8 +214,6 @@ object Config {
             val pw = PrintWriter(file)
             pw.println()
             pw.close()
-        } catch (e: Exception) {
-            Logger.log(e)
         }
     }
 }
