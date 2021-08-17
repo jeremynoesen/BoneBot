@@ -158,9 +158,7 @@ constructor(private val command: Message) {
                     altInput = altInput.replace("@${reply.mentionedUsers[i].name}", "")
                         .replace("  ", " ")
             }
-        }
-
-        if (image == null) {
+        } else {
             val r = Random()
             val dir = File("resources/memeimages")
             if (dir.listFiles()!!.isNotEmpty()) {
