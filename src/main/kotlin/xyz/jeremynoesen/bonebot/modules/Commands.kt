@@ -4,7 +4,9 @@ import xyz.jeremynoesen.bonebot.Config
 import xyz.jeremynoesen.bonebot.Logger
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.entities.Message
+import java.io.BufferedReader
 import java.io.File
+import java.io.InputStreamReader
 
 /**
  * command handler with simple message responses
@@ -88,8 +90,12 @@ object Commands {
 
                                     if (toSend.contains("\$CMD$")) {
                                         val cmd = toSend.split("\$CMD$")[1].trim()
-                                        Runtime.getRuntime().exec(cmd)
-                                        toSend = toSend.replace("\$CMD$", "").replace(cmd, "")
+                                        val proc = Runtime.getRuntime().exec(cmd)
+                                        val stdInput = BufferedReader(InputStreamReader(proc.inputStream))
+                                        var output = ""
+                                        for (line in stdInput.readLines()) output += "$line\n"
+                                        toSend = toSend.replace("\$CMD$", "")
+                                            .replace("\$CMDOUT$", output).replace(cmd, "")
                                             .replace("   ", " ").replace("  ", " ").trim()
                                     }
 
