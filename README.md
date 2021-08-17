@@ -140,6 +140,8 @@ java -jar BoneBot.jar
 - You can run a shell command by adding `$CMD$ command here $CMD$`.
   - You can only run one command.
   - Need to run multiple commands? Make a shell script and run the script with a command!
+  - Add `$CMDOUT$` to your response to also include the output of this command in the response.
+  - If the above would return a file path, you can surround it with `$FILE$` to send that file, outlined below
 - You can send a file by adding `$FILE$ path/to/file $FILE$`.
   - You can only send one file.
   - The path is relative to the location of `BoneBot.jar`. use `../` to go back a directory.
