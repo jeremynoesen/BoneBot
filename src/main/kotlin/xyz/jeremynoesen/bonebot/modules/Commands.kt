@@ -108,6 +108,13 @@ object Commands {
                                             .replace("  ", " ").trim().replace("\$CMDOUT\$", output)
                                     }
 
+                                    if (toSend.contains("\$REACT\$")) {
+                                        val emote = toSend.split("\$REACT\$")[1].trim()
+                                        toSend = toSend.replace("\$REACT\$", "").replace(emote, "")
+                                            .replace("   ", " ").replace("  ", " ").trim()
+                                        message.addReaction(emote).queue()
+                                    }
+
                                     var file: File? = null
 
                                     if (toSend.contains("\$FILE\$")) {
