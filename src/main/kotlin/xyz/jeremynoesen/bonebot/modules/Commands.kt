@@ -58,15 +58,21 @@ object Commands {
                             Quotes.sendQuote(message)
                             return true
                         }
-                        msg == commandPrefix + "file" && Files.enabled -> {
-                            Files.sendImage(message)
+                        msg.startsWith(commandPrefix + "file") && Files.enabled -> {
+                            Files.sendFile(message)
                             return true
                         }
                         msg == commandPrefix + "help" -> {
                             var commandList = "• **`$commandPrefix" + "help`**: Show this help message.\n"
-                            if (Memes.enabled) commandList += "• **`$commandPrefix" + "meme <txt> <img>`**: Generate a meme.\n"
+                            if (Memes.enabled) {
+                                commandList += "• **`$commandPrefix" + "meme`**: Generate a random meme.\n"
+                                commandList += "• **`$commandPrefix" + "meme <txt> <img>`**: Generate a custom meme.\n"
+                            }
+                            if (Files.enabled) {
+                                commandList += "• **`$commandPrefix" + "file`**: Send a random file.\n"
+                                commandList += "• **`$commandPrefix" + "file <path>`**: Send a specific file.\n"
+                            }
                             if (Quotes.enabled) commandList += "• **`$commandPrefix" + "quote`**: Show a random quote.\n"
-                            if (Files.enabled) commandList += "• **`$commandPrefix" + "file`**: Send a random file.\n"
                             for (command in commands.keys)
                                 commandList += "• **`$commandPrefix$command`**: ${commands[command]!!.first}\n"
                             val embedBuilder = EmbedBuilder()

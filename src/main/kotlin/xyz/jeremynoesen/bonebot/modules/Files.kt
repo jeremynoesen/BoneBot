@@ -33,27 +33,44 @@ object Files {
      *
      * @param message message initiating action
      */
-    fun sendImage(message: Message) {
+    fun sendFile(message: Message) {
         try {
             if ((System.currentTimeMillis() - prevTime) >= cooldown * 1000) {
                 prevTime = System.currentTimeMillis()
-                val r = Random()
-                val dir = File("resources/files")
-                if (dir.listFiles()!!.isNotEmpty()) {
-                    var rand = r.nextInt(dir.listFiles()!!.size)
-                    val prev = HashSet<Int>()
-                    while (dir.listFiles()!![rand].isHidden || dir.listFiles()!![rand].isDirectory) {
-                        rand = r.nextInt(dir.listFiles()!!.size)
-                        if (prev.contains(rand)) continue
-                        prev.add(rand)
-                        if (prev.size == dir.listFiles()!!.size) {
-                            message.channel.sendMessage("There are no files to send!").queue()
-                            return
+
+                if (message.contentRaw.trim() == Commands.commandPrefix + "file") {
+                    val r = Random()
+                    val dir = File("resources/files")
+                    if (dir.listFiles()!!.isNotEmpty()) {
+                        var rand = r.nextInt(dir.listFiles()!!.size)
+                        val prev = HashSet<Int>()
+                        while (dir.listFiles()!![rand].isHidden || dir.listFiles()!![rand].isDirectory) {
+                            rand = r.nextInt(dir.listFiles()!!.size)
+                            if (prev.contains(rand)) continue
+                            prev.add(rand)
+                            if (prev.size == dir.listFiles()!!.size) {
+                                message.channel.sendMessage("There are **no files** to send!").queue()
+                                return
+                            }
                         }
+                        message.channel.sendFile(dir.listFiles()!![rand]).queue()
+                    } else {
+                        message.channel.sendMessage("There are **no files** to send!").queue()
                     }
-                    message.channel.sendFile(dir.listFiles()!![rand]).queue()
                 } else {
-                    message.channel.sendMessage("There are no files to send!").queue()
+                    try {
+                        val file = File("resources/files/" +
+                                message.contentRaw.replace(Commands.commandPrefix + "file", "")
+                                    .replace("..", "").trim()
+                        )
+                        if (file.isDirectory || file.isHidden) {
+                            message.channel.sendMessage("**Unknown file!**").queue()
+                        } else {
+                            message.channel.sendFile(file).queue()
+                        }
+                    } catch (e: Exception) {
+                        message.channel.sendMessage("**Unknown file!**").queue()
+                    }
                 }
             } else {
                 val remaining = ((cooldown * 1000) - (System.currentTimeMillis() - prevTime)) / 1000
