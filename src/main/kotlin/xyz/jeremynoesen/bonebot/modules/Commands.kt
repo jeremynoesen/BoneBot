@@ -4,6 +4,9 @@ import xyz.jeremynoesen.bonebot.Config
 import xyz.jeremynoesen.bonebot.Logger
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.entities.Message
+import java.io.BufferedReader
+import java.io.File
+import java.io.InputStreamReader
 
 /**
  * command handler with simple message responses
@@ -58,15 +61,15 @@ object Commands {
                             Quotes.sendQuote(message)
                             return true
                         }
-                        msg == commandPrefix + "file" && Files.enabled -> {
-                            Files.sendImage(message)
+                        msg.startsWith(commandPrefix + "file") && Files.enabled -> {
+                            Files.sendFile(message)
                             return true
                         }
                         msg == commandPrefix + "help" -> {
-                            var commandList = "• **`$commandPrefix" + "help`**: Show this help message.\n"
-                            if (Memes.enabled) commandList += "• **`$commandPrefix" + "meme <txt> <img>`**: Generate a meme.\n"
-                            if (Quotes.enabled) commandList += "• **`$commandPrefix" + "quote`**: Show a random quote.\n"
+                            var commandList = "• **`$commandPrefix" + "help`**: Show this message.\n"
+                            if (Memes.enabled) commandList += "• **`$commandPrefix" + "meme`**: Generate a meme.\n"
                             if (Files.enabled) commandList += "• **`$commandPrefix" + "file`**: Send a random file.\n"
+                            if (Quotes.enabled) commandList += "• **`$commandPrefix" + "quote`**: Show a random quote.\n"
                             for (command in commands.keys)
                                 commandList += "• **`$commandPrefix$command`**: ${commands[command]!!.first}\n"
                             val embedBuilder = EmbedBuilder()
@@ -80,15 +83,48 @@ object Commands {
                         else -> {
                             for (command in commands.keys) {
                                 if (msg == "$commandPrefix${command.lowercase()}") {
+
                                     var toSend =
                                         commands[command]!!.second.replace("\$USER$", message.author.asMention)
                                             .replace("\\n", "\n")
-                                    if (toSend.contains("\$REPLY$")) {
-                                        toSend = toSend.replace("\$REPLY$", "").replace("  ", " ")
-                                        message.channel.sendMessage(toSend).reference(message).queue()
-                                    } else {
-                                        message.channel.sendMessage(toSend).queue()
+
+                                    if (toSend.contains("\$CMD$")) {
+                                        val cmd = toSend.split("\$CMD$")[1].trim()
+                                        val proc = Runtime.getRuntime().exec(cmd)
+                                        val stdInput = BufferedReader(InputStreamReader(proc.inputStream))
+                                        var output = ""
+                                        for (line in stdInput.readLines()) output += "$line\n"
+                                        toSend = toSend.replace("\$CMD$", "")
+                                            .replace("\$CMDOUT$", output).replace(cmd, "")
+                                            .replace("   ", " ").replace("  ", " ").trim()
                                     }
+
+                                    var file: File? = null
+
+                                    if (toSend.contains("\$FILE$")) {
+                                        val path = toSend.split("\$FILE$")[1].trim()
+                                        toSend = toSend.replace("\$FILE$", "").replace(path, "")
+                                            .replace("   ", " ").replace("  ", " ").trim()
+                                        try {
+                                            file = File(path)
+                                            if (file.isDirectory || file.isHidden) {
+                                                file = null
+                                            }
+                                        } catch (e: Exception) {
+                                        }
+                                    }
+
+                                    if (toSend.contains("\$REPLY$")) {
+                                        toSend = toSend.replace("\$REPLY$", "")
+                                            .replace("   ", " ").replace("  ", " ")
+                                        if (toSend.isNotEmpty()) message.channel.sendMessage(toSend).reference(message)
+                                            .queue()
+                                        if (file != null) message.channel.sendFile(file).reference(message).queue()
+                                    } else {
+                                        if (toSend.isNotEmpty()) message.channel.sendMessage(toSend).queue()
+                                        if (file != null) message.channel.sendFile(file).queue()
+                                    }
+
                                     return true
                                 }
                             }
