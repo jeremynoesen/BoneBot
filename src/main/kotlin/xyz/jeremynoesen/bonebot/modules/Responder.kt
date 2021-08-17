@@ -53,14 +53,14 @@ object Responder {
 
                     if (typingSpeed > 0) message.channel.sendTyping().queue()
 
-                    var toSend = responses[trigger]!!.replace("\$USER$", message.author.asMention)
+                    var toSend = responses[trigger]!!.replace("\$USER\$", message.author.asMention)
                         .replace("\\n", "\n")
 
                     var file: File? = null
 
-                    if (toSend.contains("\$FILE$")) {
-                        val path = toSend.split("\$FILE$")[1].trim()
-                        toSend = toSend.replace("\$FILE$", "").replace(path, "")
+                    if (toSend.contains("\$FILE\$")) {
+                        val path = toSend.split("\$FILE\$")[1].trim()
+                        toSend = toSend.replace("\$FILE\$", "").replace(path, "")
                             .replace("   ", " ").replace("  ", " ").trim()
                         try {
                             file = File(path)
@@ -71,8 +71,8 @@ object Responder {
                         }
                     }
 
-                    if (toSend.contains("\$REPLY$")) {
-                        toSend = toSend.replace("\$REPLY$", "").replace("   ", " ")
+                    if (toSend.contains("\$REPLY\$")) {
+                        toSend = toSend.replace("\$REPLY\$", "").replace("   ", " ")
                             .replace("  ", " ")
                         if (toSend.isNotEmpty()) message.channel.sendMessage(toSend).reference(message)
                             .queue()

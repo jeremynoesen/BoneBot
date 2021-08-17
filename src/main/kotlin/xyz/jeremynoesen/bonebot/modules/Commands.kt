@@ -86,11 +86,11 @@ object Commands {
                                 if (msg == "$commandPrefix${command.lowercase()}") {
 
                                     var toSend =
-                                        commands[command]!!.second.replace("\$USER$", message.author.asMention)
+                                        commands[command]!!.second.replace("\$USER\$", message.author.asMention)
                                             .replace("\\n", "\n")
 
-                                    if (toSend.contains("\$CMD$")) {
-                                        val cmd = toSend.split("\$CMD$")[1].trim()
+                                    if (toSend.contains("\$CMD\$")) {
+                                        val cmd = toSend.split("\$CMD\$")[1].trim()
 
                                         val procBuilder: ProcessBuilder?
                                         if (System.getProperty("os.name").contains("windows", true)) {
@@ -104,16 +104,16 @@ object Commands {
                                         var output = ""
                                         for (line in stdInput.readLines()) output += "$line\n"
                                         output = output.substring(0, output.length - 1)
-                                        toSend = toSend.replace("\$CMD$", "")
-                                            .replace("\$CMDOUT$", output).replace(cmd, "")
-                                            .replace("   ", " ").replace("  ", " ").trim()
+                                        toSend = toSend.replace("\$CMD\$", "")
+                                            .replace(cmd, "").replace("   ", " ")
+                                            .replace("  ", " ").trim().replace("\$CMDOUT\$", output)
                                     }
 
                                     var file: File? = null
 
-                                    if (toSend.contains("\$FILE$")) {
-                                        val path = toSend.split("\$FILE$")[1].trim()
-                                        toSend = toSend.replace("\$FILE$", "").replace(path, "")
+                                    if (toSend.contains("\$FILE\$")) {
+                                        val path = toSend.split("\$FILE\$")[1].trim()
+                                        toSend = toSend.replace("\$FILE\$", "").replace(path, "")
                                             .replace("   ", " ").replace("  ", " ").trim()
                                         try {
                                             file = File(path)
@@ -124,8 +124,8 @@ object Commands {
                                         }
                                     }
 
-                                    if (toSend.contains("\$REPLY$")) {
-                                        toSend = toSend.replace("\$REPLY$", "")
+                                    if (toSend.contains("\$REPLY\$")) {
+                                        toSend = toSend.replace("\$REPLY\$", "")
                                             .replace("   ", " ").replace("  ", " ")
                                         if (toSend.isNotEmpty()) message.channel.sendMessage(toSend).reference(message)
                                             .queue()
