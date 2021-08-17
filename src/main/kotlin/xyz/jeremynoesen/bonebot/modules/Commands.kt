@@ -80,15 +80,27 @@ object Commands {
                         else -> {
                             for (command in commands.keys) {
                                 if (msg == "$commandPrefix${command.lowercase()}") {
+
                                     var toSend =
                                         commands[command]!!.second.replace("\$USER$", message.author.asMention)
                                             .replace("\\n", "\n")
-                                    if (toSend.contains("\$REPLY$")) {
-                                        toSend = toSend.replace("\$REPLY$", "").replace("  ", " ")
-                                        message.channel.sendMessage(toSend).reference(message).queue()
-                                    } else {
-                                        message.channel.sendMessage(toSend).queue()
+
+                                    if (toSend.contains("\$CMD$")) {
+                                        val cmd = toSend.split("\$CMD$")[1]
+                                        Runtime.getRuntime().exec(cmd)
+                                        toSend = toSend.replace("\$CMD$", "").replace(cmd, "")
+                                            .replace("  ", " ")
                                     }
+
+                                    if (toSend.isNotEmpty()) {
+                                        if (toSend.contains("\$REPLY$")) {
+                                            toSend = toSend.replace("\$REPLY$", "").replace("  ", " ")
+                                            message.channel.sendMessage(toSend).reference(message).queue()
+                                        } else {
+                                            message.channel.sendMessage(toSend).queue()
+                                        }
+                                    }
+
                                     return true
                                 }
                             }
