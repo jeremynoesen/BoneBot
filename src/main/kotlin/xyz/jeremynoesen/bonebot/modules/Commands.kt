@@ -102,7 +102,7 @@ object Commands {
 
                                         var output = ""
                                         for (line in stdInput.readLines()) output += "$line\n"
-                                        output = output.substring(0, output.length - 1)
+                                        output = output.removeSuffix("\n")
                                         toSend = toSend.replace("\$CMD\$", "")
                                             .replace(cmd, "").replace("   ", " ")
                                             .replace("  ", " ").trim().replace("\$CMDOUT\$", output)
