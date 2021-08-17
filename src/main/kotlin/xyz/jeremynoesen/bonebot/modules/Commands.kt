@@ -6,6 +6,7 @@ import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.entities.Message
 import java.io.BufferedReader
 import java.io.File
+import java.io.IOException
 import java.io.InputStreamReader
 
 /**
@@ -94,9 +95,11 @@ object Commands {
                                         val stdInput = BufferedReader(InputStreamReader(proc.inputStream))
                                         var output = ""
                                         for (line in stdInput.readLines()) output += "$line\n"
+                                        output = output.substring(0, output.length - 1)
                                         toSend = toSend.replace("\$CMD$", "")
                                             .replace("\$CMDOUT$", output).replace(cmd, "")
                                             .replace("   ", " ").replace("  ", " ").trim()
+                                        proc.destroy()
                                     }
 
                                     var file: File? = null
