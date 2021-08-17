@@ -3,7 +3,7 @@
 # BoneBot
 
 ## About
-BoneBot is a self-hosted, modular Discord bot that can respond and react to messages, add text-based commands, and generate memes on demand to add more life to a Discord server.
+BoneBot is a self-hosted, modular Discord bot that can respond and react to messages, add custom commands, send random files and quotes, and generate memes on demand to add more life to a Discord server.
 
 ## Purpose
 BoneBot was originally written as a meme-generating Discord bot for the ISUCF'V'MB Trombone and Bass Trombone Discord server. The bot also has functionality to respond and react to messages and commands. This is utilized as a way to add helpful commands to the server to show links for online folders and band information.
