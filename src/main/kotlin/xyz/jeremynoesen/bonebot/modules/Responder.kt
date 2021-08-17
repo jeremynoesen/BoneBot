@@ -4,7 +4,6 @@ import xyz.jeremynoesen.bonebot.Logger
 import net.dv8tion.jda.api.entities.Message
 import java.io.File
 import java.util.*
-import java.util.concurrent.TimeUnit
 
 /**
  * responder to words and phrases in a message
