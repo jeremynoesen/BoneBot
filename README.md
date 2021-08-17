@@ -145,6 +145,7 @@ java -jar BoneBot.jar
 - You can send a file by adding `$FILE$ path/to/file $FILE$`.
   - You can only send one file.
   - The path is relative to the location of `BoneBot.jar`. use `../` to go back a directory.
+- You can add a reaction to the command trigger message by adding `$REACT$ emote $REACT$`. Format for emotes is similar to the reactor.
 - To change the command prefix, set `command-prefix` in the main configuration to a custom prefix. Case is ignored.
 - To set a cool down for commands, set `commands-cooldown` in the main configuration to any number. Time is in seconds.
 - To enable or disable commands, set `commands-enabled` in the main configuration to `true` or `false`.

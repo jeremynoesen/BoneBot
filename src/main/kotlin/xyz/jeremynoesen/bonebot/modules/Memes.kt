@@ -4,7 +4,6 @@ import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.entities.Message
 import org.apache.commons.text.WordUtils
 import xyz.jeremynoesen.bonebot.Config
-import xyz.jeremynoesen.bonebot.Logger
 import java.awt.*
 import java.awt.font.TextLayout
 import java.awt.image.BufferedImage
@@ -67,7 +66,7 @@ constructor(private val command: Message) {
                     command.channel.sendMessage("Please provide the missing **text** and/or **image**!").queue()
                 }
             } catch (exception: Exception) {
-                Logger.log(exception, command.channel)
+                command.channel.sendMessage("**An error occurred!** Please check the log file!").queue()
             }
         } else {
             val remaining = ((cooldown * 1000) - (System.currentTimeMillis() - prevTime)) / 1000

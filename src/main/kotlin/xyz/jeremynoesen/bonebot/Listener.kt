@@ -28,7 +28,7 @@ class Listener : ListenerAdapter() {
                 }
             }
         } catch (ex: Exception) {
-            Logger.log(ex, e.channel)
+            e.channel.sendMessage("**An error occurred!** Please check the log file!").queue()
         }
     }
 
@@ -42,7 +42,7 @@ class Listener : ListenerAdapter() {
             if ((!e.author.isBot || (Config.listenToBots && e.author != e.jda.selfUser))
                 && Commands.enabled) Commands.perform(e.message)
         } catch (ex: Exception) {
-            Logger.log(ex, e.channel)
+            e.channel.sendMessage("**An error occurred!** Please check the log file!").queue()
         }
     }
 }

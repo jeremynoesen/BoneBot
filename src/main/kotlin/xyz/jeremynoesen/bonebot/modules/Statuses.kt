@@ -1,6 +1,5 @@
 package xyz.jeremynoesen.bonebot.modules
 
-import xyz.jeremynoesen.bonebot.Logger
 import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.entities.Activity
 import java.util.*
@@ -35,31 +34,26 @@ object Statuses {
     fun setStatus(jda: JDA) {
         Thread {
             while (true) {
-                try {
-                    if (statuses.isNotEmpty()) {
-                        var status = statuses[Random().nextInt(statuses.size)]
-                        when {
-                            status.lowercase().startsWith("playing") -> {
-                                status = status.substring(7, status.length).trim()
-                                jda.presence.activity = Activity.playing(status)
-                            }
-                            status.lowercase().startsWith("watching") -> {
-                                status = status.substring(8, status.length).trim()
-                                jda.presence.activity = Activity.watching(status)
-                            }
-                            status.lowercase().startsWith("listening to") -> {
-                                status = status.substring(12, status.length).trim()
-                                jda.presence.activity = Activity.listening(status)
-                            }
+                if (statuses.isNotEmpty()) {
+                    var status = statuses[Random().nextInt(statuses.size)]
+                    when {
+                        status.lowercase().startsWith("playing") -> {
+                            status = status.substring(7, status.length).trim()
+                            jda.presence.activity = Activity.playing(status)
+                        }
+                        status.lowercase().startsWith("watching") -> {
+                            status = status.substring(8, status.length).trim()
+                            jda.presence.activity = Activity.watching(status)
+                        }
+                        status.lowercase().startsWith("listening to") -> {
+                            status = status.substring(12, status.length).trim()
+                            jda.presence.activity = Activity.listening(status)
                         }
                     }
-                } catch (e: Exception) {
-                    Logger.log(e)
                 }
                 try {
                     Thread.sleep(delay * 1000L)
                 } catch (e: InterruptedException) {
-                    Logger.log(e)
                 }
             }
         }.start()

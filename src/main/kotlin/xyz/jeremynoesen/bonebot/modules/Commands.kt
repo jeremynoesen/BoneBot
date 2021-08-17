@@ -1,7 +1,6 @@
 package xyz.jeremynoesen.bonebot.modules
 
 import xyz.jeremynoesen.bonebot.Config
-import xyz.jeremynoesen.bonebot.Logger
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.entities.Message
 import java.io.BufferedReader
@@ -108,6 +107,13 @@ object Commands {
                                             .replace("  ", " ").trim().replace("\$CMDOUT\$", output)
                                     }
 
+                                    if (toSend.contains("\$REACT\$")) {
+                                        val emote = toSend.split("\$REACT\$")[1].trim()
+                                        toSend = toSend.replace("\$REACT\$", "").replace(emote, "")
+                                            .replace("   ", " ").replace("  ", " ").trim()
+                                        message.addReaction(emote).queue()
+                                    }
+
                                     var file: File? = null
 
                                     if (toSend.contains("\$FILE\$")) {
@@ -149,7 +155,7 @@ object Commands {
                 }
             }
         } catch (e: Exception) {
-            Logger.log(e, message.channel)
+            message.channel.sendMessage("**An error occurred!** Please check the log file!").queue()
         }
         return false
     }
