@@ -13,7 +13,8 @@ BoneBot was originally written as a meme-generating Discord bot for the ISUCF'V'
 ### Meme Generator
 The meme generator will generate a meme with top and bottom text in Impact font.
 ##### Command
-`bbmeme <image> <top text> // <bottom text>` (Can also press shift+enter instead of ` // `)
+- `bbmeme`
+- `bbmeme <image> <top text> // <bottom text>` (Can also press shift+enter instead of ` // `)
 ##### Image input
 - Image (PNG, JPG)
 - Image link (PNG, JPG)
@@ -21,24 +22,29 @@ The meme generator will generate a meme with top and bottom text in Impact font.
 - Image from an embed (PNG, JPG)
 - Any of the above from a reply  
   - Note: main message input will override reply input
-- Random image (If properly configured)
+- Random image (If properly configured and no image is provided)
 ##### Text input
 - Text in your message
 - Text in a reply (If no image is in the reply)
   - Note: main message input will override reply input
-- Random text (If properly configured)
+- Random text (If properly configured and no text is provided)
 
 If you make a mistake in typing the command, or wish to generate another meme with similar inputs, you can edit the message to fix it without needing to send another message.
+
+### Files
+The file module will send a random file from `resources/files`. This can be an image, video, text file, audio file, etc. A specific file can also be sent from the `resources/files` folder
+#### Command
+- `bbfile`  
+- `bbfile <path>`
+##### File input
+- Only works for files in `resources/files`
+- must not start with a `/`
+- If not specified, a random file will be sent.
 
 ### Quotes
 The quote module will send a random quote from a file.
 #### Command
 `bbquote`
-
-### Files
-The file module will send a random file from the folder. This can be an image, video, text file, audio file, etc.
-#### Command
-`bbfile`
 
 ### Responder
 The responder will respond to a message with another when a trigger phrase is said.
