@@ -150,13 +150,14 @@ constructor(private val command: Message) {
             } else {
                 for (word in altInput.split(" ", "\n", " // ")) {
                     if (word.startsWith("http://") || word.startsWith("https://")) {
-                        altInput = altInput.replace(word, "").replace("  ", " ")
+                        altInput = altInput.replace(word, "").replace("   ", " ")
+                            .replace("  ", " ")
                     }
                 }
 
                 for (i in reply.mentionedUsers.indices)
                     altInput = altInput.replace("@${reply.mentionedUsers[i].name}", "")
-                        .replace("  ", " ")
+                        .replace("   ", " ").replace("  ", " ")
             }
         } else {
             val r = Random()
@@ -178,13 +179,14 @@ constructor(private val command: Message) {
 
         for (word in input.split(" ", "\n", " // ")) {
             if (word.startsWith("http://") || word.startsWith("https://")) {
-                input = input.replace(word, "").replace("  ", " ")
+                input = input.replace(word, "").replace("   ", " ")
+                    .replace("  ", " ")
             }
         }
 
         for (i in command.mentionedUsers.indices) input =
             input.replace("@${command.mentionedUsers[i].name}", "")
-                .replace("  ", " ")
+                .replace("   ", " ").replace("  ", " ")
 
         if (input.trim().isNotEmpty()) {
             text = input
