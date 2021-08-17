@@ -53,7 +53,7 @@ The responder will respond to a message with another when a trigger phrase is sa
 The reactor will react to a message with an emote when a trigger phrase is said.
 
 ### Commands
-BoneBot allows for custom commands to be made to provide simple message responses and run shell commands. Their usage is pretty simple - a command called `test` would be used by typing `bbtest`. If you make a mistake in typing a command, you can edit the message to fix it without needing to send another message.
+BoneBot allows for custom commands to be made to provide text and image responses and run shell commands. Their usage is pretty simple - a command called `test` would be used by typing `bbtest`. If you make a mistake in typing a command, you can edit the message to fix it without needing to send another message.
 
 ### Statuses
 BoneBot can have various randomized statuses shown in Discord that change over time.
@@ -113,6 +113,9 @@ java -jar BoneBot.jar
 - The trigger can include Regex. Case is not ignored if you use Regex.
 - The response can include `\n` as a line separator.
 - You can also include `$USER$` in the response to ping the user who invoked a response, or `$REPLY$` to reply to them.
+- You can send a file by adding `$FILE$ path/to/file $FILE$`.
+  - You can only send one file.
+  - The path is relative to the location of `BoneBot.jar`. use `../` to go back a directory.
 - The response sends with a delay based on message length multiplied by `typing-speed` in the main configuration in milliseconds.
 - To set a cool down for the responder, set `responder-cooldown` in the main configuration to any number. Time is in seconds.
 - To enable or disable the responder, set `responder-enabled` in the main configuration to `true` or `false`.
@@ -134,8 +137,12 @@ java -jar BoneBot.jar
 - Do not put the prefix in the command.
 - The response can include `\n` as a line separator.
 - You can include `$USER$` in the response to ping the user who used the command, or `$REPLY$` to reply to them.
-- You can make a command run a shell command by adding `$CMD$ command here $CMD$`.
+- You can run a shell command by adding `$CMD$ command here $CMD$`.
+  - You can only run one command.
   - Need to run multiple commands? Make a shell script and run the script with a command!
+- You can send a file by adding `$FILE$ path/to/file $FILE$`.
+  - You can only send one file.
+  - The path is relative to the location of `BoneBot.jar`. use `../` to go back a directory.
 - To change the command prefix, set `command-prefix` in the main configuration to a custom prefix. Case is ignored.
 - To set a cool down for commands, set `commands-cooldown` in the main configuration to any number. Time is in seconds.
 - To enable or disable commands, set `commands-enabled` in the main configuration to `true` or `false`.

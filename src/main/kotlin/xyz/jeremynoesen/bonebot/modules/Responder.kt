@@ -2,6 +2,7 @@ package xyz.jeremynoesen.bonebot.modules
 
 import xyz.jeremynoesen.bonebot.Logger
 import net.dv8tion.jda.api.entities.Message
+import java.io.File
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -49,16 +50,35 @@ object Responder {
                 if ((msg.contains(Regex(trigger)) || msg.lowercase().contains(trigger.lowercase()))
                         && (System.currentTimeMillis() - prevTime) >= cooldown * 1000) {
                     prevTime = System.currentTimeMillis()
+
                     if (typingSpeed > 0) message.channel.sendTyping().queue()
+
                     var toSend = responses[trigger]!!.replace("\$USER$", message.author.asMention)
                         .replace("\\n", "\n")
+
+                    var file: File? = null
+
+                    if (toSend.contains("\$FILE$")) {
+                        val path = toSend.split("\$FILE$")[1].trim()
+                        toSend = toSend.replace("\$FILE$", "").replace(path, "")
+                            .replace("  ", " ").trim()
+                        try {
+                            file = File(path)
+                            if (file.isDirectory || file.isHidden) {
+                                file = null
+                            }
+                        } catch (e: Exception) {
+                        }
+                    }
+
                     if (toSend.contains("\$REPLY$")) {
                         toSend = toSend.replace("\$REPLY$", "").replace("  ", " ")
-                        message.channel.sendMessage(toSend).reference(message)
-                            .queueAfter(toSend.length * typingSpeed, TimeUnit.MILLISECONDS)
+                        if (toSend.isNotEmpty()) message.channel.sendMessage(toSend).reference(message)
+                            .queue()
+                        if (file != null) message.channel.sendFile(file).reference(message).queue()
                     } else {
-                        message.channel.sendMessage(toSend)
-                            .queueAfter(toSend.length * typingSpeed, TimeUnit.MILLISECONDS)
+                        if (toSend.isNotEmpty()) message.channel.sendMessage(toSend).queue()
+                        if (file != null) message.channel.sendFile(file).queue()
                     }
                 }
             }

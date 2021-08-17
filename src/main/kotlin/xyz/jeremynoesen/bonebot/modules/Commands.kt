@@ -4,6 +4,7 @@ import xyz.jeremynoesen.bonebot.Config
 import xyz.jeremynoesen.bonebot.Logger
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.entities.Message
+import java.io.File
 
 /**
  * command handler with simple message responses
@@ -86,19 +87,35 @@ object Commands {
                                             .replace("\\n", "\n")
 
                                     if (toSend.contains("\$CMD$")) {
-                                        val cmd = toSend.split("\$CMD$")[1]
+                                        val cmd = toSend.split("\$CMD$")[1].trim()
                                         Runtime.getRuntime().exec(cmd)
                                         toSend = toSend.replace("\$CMD$", "").replace(cmd, "")
-                                            .replace("  ", " ")
+                                            .replace("  ", " ").trim()
                                     }
 
-                                    if (toSend.isNotEmpty()) {
-                                        if (toSend.contains("\$REPLY$")) {
-                                            toSend = toSend.replace("\$REPLY$", "").replace("  ", " ")
-                                            message.channel.sendMessage(toSend).reference(message).queue()
-                                        } else {
-                                            message.channel.sendMessage(toSend).queue()
+                                    var file: File? = null
+
+                                    if (toSend.contains("\$FILE$")) {
+                                        val path = toSend.split("\$FILE$")[1].trim()
+                                        toSend = toSend.replace("\$FILE$", "").replace(path, "")
+                                            .replace("  ", " ").trim()
+                                        try {
+                                            file = File(path)
+                                            if (file.isDirectory || file.isHidden) {
+                                                file = null
+                                            }
+                                        } catch (e: Exception) {
                                         }
+                                    }
+
+                                    if (toSend.contains("\$REPLY$")) {
+                                        toSend = toSend.replace("\$REPLY$", "").replace("  ", " ")
+                                        if (toSend.isNotEmpty()) message.channel.sendMessage(toSend).reference(message)
+                                            .queue()
+                                        if (file != null) message.channel.sendFile(file).reference(message).queue()
+                                    } else {
+                                        if (toSend.isNotEmpty()) message.channel.sendMessage(toSend).queue()
+                                        if (file != null) message.channel.sendFile(file).queue()
                                     }
 
                                     return true
