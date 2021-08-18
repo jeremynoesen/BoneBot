@@ -97,14 +97,18 @@ object Commands {
                                             procBuilder = ProcessBuilder("/bin/sh", "-c", cmd)
                                         }
                                         val stream = procBuilder.start().inputStream
-                                        val stdInput = BufferedReader(InputStreamReader(stream))
 
-                                        var output = ""
-                                        for (line in stdInput.readLines()) output += "$line\n"
-                                        output = output.removeSuffix("\n")
                                         toSend = toSend.replace("\$CMD\$", "")
                                             .replace(cmd, "").replace("   ", " ")
-                                            .replace("  ", " ").trim().replace("\$CMDOUT\$", output)
+                                            .replace("  ", " ").trim()
+
+                                        if (toSend.contains("\$CMDOUT\$")) {
+                                            val stdInput = BufferedReader(InputStreamReader(stream))
+                                            var output = ""
+                                            for (line in stdInput.readLines()) output += "$line\n"
+                                            output = output.removeSuffix("\n")
+                                            toSend = toSend.replace("\$CMDOUT\$", output)
+                                        }
                                     }
 
                                     if (toSend.contains("\$REACT\$")) {
