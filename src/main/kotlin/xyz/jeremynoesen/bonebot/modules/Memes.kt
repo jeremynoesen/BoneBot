@@ -113,8 +113,8 @@ constructor(private val command: Message) {
                 }
             }
 
-        } else if (command.mentionedUsers.size > 0 && (command.referencedMessage == null ||
-                    command.referencedMessage!!.author != command.mentionedUsers[command.mentionedUsers.size - 1])
+        } else if (command.mentionedUsers.size > 0 &&
+            input.split(command.mentionedUsers[command.mentionedUsers.size - 1].name).size > 1
         ) {
             image =
                 getImageFromURL(command.mentionedUsers[command.mentionedUsers.size - 1].effectiveAvatarUrl + "?size=4096")
@@ -137,8 +137,8 @@ constructor(private val command: Message) {
                     }
                 }
 
-            } else if (reply.mentionedUsers.size > 0 && (reply.referencedMessage == null ||
-                        reply.referencedMessage!!.author != reply.mentionedUsers[reply.mentionedUsers.size - 1])
+            } else if (reply.mentionedUsers.size > 0 &&
+                altInput.split(reply.mentionedUsers[reply.mentionedUsers.size - 1].name).size > 1
             ) {
                 image =
                     getImageFromURL(reply.mentionedUsers[reply.mentionedUsers.size - 1].effectiveAvatarUrl + "?size=4096")
