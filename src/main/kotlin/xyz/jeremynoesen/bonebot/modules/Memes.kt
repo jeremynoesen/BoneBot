@@ -321,7 +321,7 @@ constructor(private val command: Message) {
         /**
          * width of generated memes
          */
-        var size = 1024
+        var size = 1200
 
         /**
          * last time the meme generator was used in milliseconds
