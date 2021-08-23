@@ -95,14 +95,17 @@ constructor(private val command: Message) {
     private fun readTextAndImage() {
         var input = command.contentDisplay.substring(Commands.commandPrefix.length + 4, command.contentDisplay.length)
         var altInput = ""
+        var imageInput = false
 
         if (command.referencedMessage != null) altInput = command.referencedMessage!!.contentDisplay
 
         if (command.attachments.size > 0 && command.attachments[0].isImage) {
             image = getImageFromURL(command.attachments[0].url)
+            imageInput = true
 
         } else if (command.embeds.size > 0 && command.embeds[0].image != null) {
             image = getImageFromURL(command.embeds[0].image!!.url!!)
+            imageInput = true
 
         } else if (command.contentRaw.contains("http://") || command.contentRaw.contains("https://")) {
             for (word in input.split(" ", "\n", " // ")) {
@@ -112,21 +115,25 @@ constructor(private val command: Message) {
                 } catch (e: java.lang.Exception) {
                 }
             }
+            imageInput = true
 
         } else if (command.mentionedUsers.size > 0 &&
             input.split(command.mentionedUsers[command.mentionedUsers.size - 1].name).size > 1
         ) {
             image =
                 getImageFromURL(command.mentionedUsers[command.mentionedUsers.size - 1].effectiveAvatarUrl + "?size=4096")
+            imageInput = true
 
         } else if (command.referencedMessage != null) {
             val reply = command.referencedMessage!!
 
             if (reply.attachments.size > 0 && reply.attachments[0].isImage) {
                 image = getImageFromURL(reply.attachments[0].url)
+                imageInput = true
 
             } else if (reply.embeds.size > 0 && reply.embeds[0].image != null) {
                 image = getImageFromURL(reply.embeds[0].image!!.url!!)
+                imageInput = true
 
             } else if (reply.contentRaw.contains("http://") || reply.contentRaw.contains("https://")) {
                 for (word in reply.contentRaw.split(" ", "\n", " // ")) {
@@ -136,12 +143,14 @@ constructor(private val command: Message) {
                     } catch (e: java.lang.Exception) {
                     }
                 }
+                imageInput = true
 
             } else if (reply.mentionedUsers.size > 0 &&
                 altInput.split(reply.mentionedUsers[reply.mentionedUsers.size - 1].name).size > 1
             ) {
                 image =
                     getImageFromURL(reply.mentionedUsers[reply.mentionedUsers.size - 1].effectiveAvatarUrl + "?size=4096")
+                imageInput = true
             }
 
             if (image != null) {
@@ -158,7 +167,9 @@ constructor(private val command: Message) {
                     altInput = altInput.replace("@${reply.mentionedUsers[i].name}", "")
                         .replace("   ", " ").replace("  ", " ")
             }
-        } else {
+        }
+
+        if (!imageInput) {
             val r = Random()
             val dir = File("resources/memeimages")
             if (dir.listFiles()!!.isNotEmpty()) {
