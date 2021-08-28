@@ -52,7 +52,6 @@ constructor(private val command: Message) {
     fun generate() {
         if ((System.currentTimeMillis() - prevTime) >= cooldown * 1000) {
             try {
-                command.channel.sendTyping().queue()
                 readTextAndImage()
                 if (image != null && text != null) {
                     processImage()

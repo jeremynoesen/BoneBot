@@ -49,6 +49,7 @@ object Commands {
         try {
             val msg = message.contentRaw.lowercase()
             if (msg.startsWith(commandPrefix)) {
+                message.channel.sendTyping().queue()
                 if ((System.currentTimeMillis() - prevTime) >= cooldown * 1000) {
                     prevTime = System.currentTimeMillis()
                     when {
