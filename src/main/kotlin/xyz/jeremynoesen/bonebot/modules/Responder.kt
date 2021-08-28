@@ -5,7 +5,7 @@ import java.io.File
 import java.util.*
 
 /**
- * responder to words and phrases in a message
+ * responder to respond to words and phrases in a message
  *
  * @author Jeremy Noesen
  */

@@ -91,18 +91,18 @@ java -jar BoneBot.jar
   - Each separate line denotes a separate text.
   - The format is `<top text> // <bottom text>`.
 - To set the size of generates memes, set `meme-size` in the main configuration to any number. This sets the image width to this number, and varies the height based on this width. Set it to `0` to use the image's original dimensions with no scaling.
-- To set a cool down for the generator, set `meme-cooldown` in the main configuration to any number. Time is in seconds.
+- To set a cool down for the generator, set `meme-cooldown` in the main configuration to any whole number in seconds.
 - To enable or disable the generator, set `memes-enabled` in the main configuration to `true` or `false`.
 
 ### Quotes
 - Quotes will be put into `resources/quotes.txt`.
 - Each line designates a new entry.
-- To set a cool down for quotes, set `quote-cooldown` in the main configuration to any number. Time is in seconds.
+- To set a cool down for quotes, set `quote-cooldown` in the main configuration to any while number in seconds.
 - To enable or disable quotes, set `quotes-enabled` in the main configuration to `true` or `false`.
 
 ### Files
 - Files will be put into `resources/files`.
-- To set a cool down for files, set `file-cooldown` in the main configuration to any number. Time is in seconds.
+- To set a cool down for files, set `file-cooldown` in the main configuration to any whole number in seconds.
 - To enable or disable files, set `files-enabled` in the main configuration to `true` or `false`.
 
 ### Responder
@@ -116,8 +116,8 @@ java -jar BoneBot.jar
 - You can send a file by adding `$FILE$ path/to/file $FILE$`.
   - You can only send one file.
   - The path is relative to the location of `BoneBot.jar`. use `../` to go back a directory.
-- The response sends with a delay based on message length multiplied by `typing-speed` in the main configuration in milliseconds.
-- To set a cool down for the responder, set `responder-cooldown` in the main configuration to any number. Time is in seconds.
+- The response sends with a delay based on message length multiplied by `typing-speed` in the main configuration in milliseconds. This number must be a whole number.
+- To set a cool down for the responder, set `responder-cooldown` in the main configuration to whole any number in seconds.
 - To enable or disable the responder, set `responder-enabled` in the main configuration to `true` or `false`.
 
 ### Reactor
@@ -127,7 +127,8 @@ java -jar BoneBot.jar
 - Case is ignored in the trigger.
 - The trigger can include Regex. Case is not ignored if you use Regex.
 - For the emote, you can put either a unicode emoji, `U+1F980`, or a raw discord emote, `:bonebot:819645061200347177`.
-- To set a cool down for the reactor, set `reactor-cooldown` in the main configuration to any number. Time is in seconds.
+- To set a delay between when the message is sent and when the bot reacts, set `reactor-delay` in the main configuration to any whole number in milliseconds.
+- To set a cool down for the reactor, set `reactor-cooldown` in the main configuration to any whole number in seconds.
 - To enable or disable the reactor, set `reactor-enabled` in the main configuration to `true` or `false`.
 
 ### Commands
@@ -147,14 +148,14 @@ java -jar BoneBot.jar
   - The path is relative to the location of `BoneBot.jar`. use `../` to go back a directory.
 - You can add a reaction to the command trigger message by adding `$REACT$ emote $REACT$`. Format for emotes is similar to the reactor.
 - To change the command prefix, set `command-prefix` in the main configuration to a custom prefix. Case is ignored.
-- To set a cool down for commands, set `commands-cooldown` in the main configuration to any number. Time is in seconds.
+- To set a cool down for commands, set `commands-cooldown` in the main configuration to any whole number in seconds.
 - To enable or disable commands, set `commands-enabled` in the main configuration to `true` or `false`.
 
 ### Statuses
 - Statuses will be put into `resources/statuses.txt`.
 - Each line designates a new entry.
 - Each line must start with `playing`, `watching`, or `listening to`.
-- The main config has option `status-delay` to set how long each status shows in seconds.
+- The main config has option `status-delay` to set how long each status shows in seconds as a whole number.
 - To enable or disable statuses, set `statuses-enabled` in the main configuration to `true` or `false`.
 
 ### Miscellaneous
@@ -166,8 +167,10 @@ Located at `resources/config.txt`
 ```yaml
 responder-enabled: true
 responder-cooldown: 180
+typing-speed: 100
 reactor-enabled: true
 reactor-cooldown: 60
+reactor-delay: 1000
 memes-enabled: true
 meme-cooldown: 5
 meme-size: 1024
@@ -182,7 +185,6 @@ files-enabled: true
 file-cooldown: 5
 listen-to-bots: false
 embed-color: #fd0605
-typing-speed: 100
 bot-token: TOKEN
 ```
 
