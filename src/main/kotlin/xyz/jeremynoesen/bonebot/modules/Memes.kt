@@ -1,5 +1,6 @@
 package xyz.jeremynoesen.bonebot.modules
 
+import net.coobird.thumbnailator.Thumbnails
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.entities.Message
 import org.apache.commons.text.WordUtils
@@ -82,7 +83,7 @@ constructor(private val command: Message) {
     private fun getImageFromURL(url: String): BufferedImage {
         val conn: URLConnection = URL(url).openConnection()
         conn.setRequestProperty("User-Agent", "Wget/1.13.4 (linux-gnu)")
-        conn.getInputStream().use { stream -> return ImageIO.read(stream) }
+        conn.getInputStream().use { stream -> return Thumbnails.of(stream).scale(1.0).asBufferedImage()}
     }
 
     /**
@@ -183,7 +184,7 @@ constructor(private val command: Message) {
                         return
                     }
                 }
-                image = ImageIO.read(dir.listFiles()!![rand])
+                image = Thumbnails.of(dir.listFiles()!![rand].inputStream()).scale(1.0).asBufferedImage()
             }
         }
 
