@@ -171,6 +171,8 @@ java -jar BoneBot.jar
 ### Miscellaneous
 - You can change the colors of embeds for the meme generator and help message by setting `embed-color` in the main configuration to a hex code.
 - You can allow BoneBot to listen to input from other bots by setting `listen-to-bots` to `true`. It defaults to `false`.
+- All files in `temp` will be deleted every time the bot program is closed.
+- You can make other files and directories in the bot folder as needed for your own organization of files the bot may use, but not for the files the bot requires
 
 ### Default Main Configuration
 Located at `resources/config.txt`
@@ -208,6 +210,7 @@ The following Discord permissions are required for BoneBot to work:
 - Add Reactions
 - Use External Emoji
 - Read Message History
+- Server Members Intent
 
 ## Demonstration
 Below are a few images showing what BoneBot can do. Simple actions, such as reactions, text responses, and status messages, are not shown due to those being basic Discord functions.
