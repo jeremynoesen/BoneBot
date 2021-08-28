@@ -10,6 +10,7 @@ import java.util.*
  */
 object Messages {
     var helpTitle = "\$BOT\$ Help"
+    var helpAbout = "\$BOT\$ aims to add more life to a server by responding and reacting to messages. It also adds commands, which are listed below."
     var helpFormat = "• **`\$CMD\$`**: \$DESC\$"
     var helpDescription = "Show this message."
     var memeDescription = "Generate a meme."
@@ -39,6 +40,9 @@ object Messages {
                 when (lineScanner.next()) {
                     "help-title:" -> {
                         helpTitle = lineScanner.nextLine().trim()
+                    }
+                    "help-about:" -> {
+                        helpAbout = lineScanner.nextLine().trim()
                     }
                     "help-format:" -> {
                         helpFormat = lineScanner.nextLine().trim()
@@ -110,6 +114,7 @@ object Messages {
             val file = File("resources/messages.txt")
             val pw = PrintWriter(file)
             pw.println("help-title: $helpTitle")
+            pw.println("help-about: $helpAbout")
             pw.println("help-format: $helpFormat")
             pw.println("help-description: $helpDescription")
             pw.println("meme-description: $memeDescription")

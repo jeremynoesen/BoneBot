@@ -68,9 +68,10 @@ object Commands {
                         }
                         msg == commandPrefix + Messages.helpCommand -> {
 
-                            var commandList =
-                                Messages.helpFormat.replace("\$CMD\$", commandPrefix + Messages.helpCommand)
-                                    .replace("\$DESC\$", Messages.helpDescription) + "\n"
+                            var commandList = Messages.helpAbout.replace("\$BOT\$", message.jda.selfUser.name) + "\n\n"
+
+                            commandList += Messages.helpFormat.replace("\$CMD\$", commandPrefix + Messages.helpCommand)
+                                .replace("\$DESC\$", Messages.helpDescription) + "\n"
 
                             if (Memes.enabled) commandList += Messages.helpFormat.replace(
                                 "\$CMD\$",
