@@ -58,6 +58,9 @@ BoneBot allows for custom commands to be made to provide text and image response
 ### Statuses
 BoneBot can have various randomized statuses shown in Discord that change over time.
 
+### Welcomer
+The welcomer will send a private message to new users who join to welcome them to the server.
+
 ## Requirements
 Any version of Windows, macOS, or Linux that can run Java 8 or later.
 
@@ -113,9 +116,7 @@ java -jar BoneBot.jar
 - The trigger can include Regex. Case is not ignored if you use Regex.
 - The response can include `\n` as a line separator.
 - You can also include `$USER$` in the response to ping the user who invoked a response, or `$REPLY$` to reply to them.
-- You can send a file by adding `$FILE$ path/to/file $FILE$`.
-  - You can only send one file.
-  - The path is relative to the location of `BoneBot.jar`. use `../` to go back a directory.
+- You can send a single file by adding `$FILE$ path/to/file $FILE$`.
 - The response sends with a delay based on message length multiplied by `typing-speed` in the main configuration in milliseconds. This number must be a whole number.
 - To set a cool down for the responder, set `responder-cooldown` in the main configuration to whole any number in seconds.
 - To enable or disable the responder, set `responder-enabled` in the main configuration to `true` or `false`.
@@ -143,9 +144,7 @@ java -jar BoneBot.jar
   - Need to run multiple commands? Make a shell script and run the script with a command!
   - Add `$CMDOUT$` to your response to also include the output of this command in the response.
   - If the above would return a file path, you can surround it with `$FILE$` to send that file, outlined below
-- You can send a file by adding `$FILE$ path/to/file $FILE$`.
-  - You can only send one file.
-  - The path is relative to the location of `BoneBot.jar`. use `../` to go back a directory.
+- You can send a single file by adding `$FILE$ path/to/file $FILE$`.
 - You can add a reaction to the command trigger message by adding `$REACT$ emote $REACT$`. Format for emotes is similar to the reactor.
 - To change the command prefix, set `command-prefix` in the main configuration to a custom prefix. Case is ignored.
 - To set a cool down for commands, set `commands-cooldown` in the main configuration to any whole number in seconds.
@@ -157,6 +156,17 @@ java -jar BoneBot.jar
 - Each line must start with `playing`, `watching`, or `listening to`.
 - The main config has option `status-delay` to set how long each status shows in seconds as a whole number.
 - To enable or disable statuses, set `statuses-enabled` in the main configuration to `true` or `false`.
+
+### Welcomer
+- The welcome message will be put into `resources/welcome.txt`.
+- The entire file will make up the welcome message.
+- New lines work without using `\n`.
+- To mention the user in the message, add `$USER$`.
+- To mention the server name, add `$GUILD$`.
+- You can send a single file in the embed by adding `$FILE$ path/to/file $FILE$`.
+- To enable or disable the welcomer, set `welcomer-enabled` in the main configuration to `true` or `false`.
+- **NOTE:** To use this module, you must enable `server members intent` on the Bot page in the Discord Developer Portal.
+
 
 ### Miscellaneous
 - You can change the colors of embeds for the meme generator and help message by setting `embed-color` in the main configuration to a hex code.
@@ -183,6 +193,7 @@ quotes-enabled: true
 quote-cooldown: 5
 files-enabled: true
 file-cooldown: 5
+welcomer-enabled: true
 listen-to-bots: false
 embed-color: #fd0605
 bot-token: TOKEN

@@ -19,7 +19,7 @@ import kotlin.math.floor
 
 
 /**
- * meme generator
+ * meme generator module
  *
  * @author Jeremy Noesen
  */

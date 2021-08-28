@@ -96,6 +96,9 @@ object Config {
                     "file-cooldown:" -> {
                         Files.cooldown = lineScanner.nextInt()
                     }
+                    "welcomer-enabled:" -> {
+                        Welcomer.enabled = lineScanner.nextBoolean()
+                    }
                     "listen-to-bots:" -> {
                         listenToBots = lineScanner.nextBoolean()
                     }
@@ -131,6 +134,7 @@ object Config {
             pw.println("quote-cooldown: ${Quotes.cooldown}")
             pw.println("files-enabled: ${Files.enabled}")
             pw.println("file-cooldown: ${Files.cooldown}")
+            pw.println("welcomer-enabled: ${Welcomer.enabled}")
             pw.println("listen-to-bots: $listenToBots")
             pw.println("embed-color: #fd0605")
             pw.println("bot-token: TOKEN")
@@ -143,6 +147,31 @@ object Config {
         loadData("resources/responses.txt", Responder.responses)
         loadData("resources/reactions.txt", Reactor.reactions)
         loadData("resources/quotes.txt", Quotes.quotes)
+        val stringData = loadData("resources/welcome.txt")
+        if (stringData.isNotEmpty()) Welcomer.message = stringData
+    }
+
+    /**
+     * load all data from file to a single string
+     *
+     * @param filePath path to file holding the data
+     */
+    private fun loadData(filePath: String): String {
+        var string = ""
+        try {
+            val fileScanner = Scanner(File(filePath))
+            while (fileScanner.hasNextLine()) {
+                string += fileScanner.nextLine() + "\n"
+            }
+            fileScanner.close()
+            return string.removeSuffix("\n")
+        } catch (e: FileNotFoundException) {
+            val file = File(filePath)
+            val pw = PrintWriter(file)
+            pw.println()
+            pw.close()
+        }
+        return string
     }
 
     /**
