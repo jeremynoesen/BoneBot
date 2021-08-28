@@ -125,12 +125,9 @@ object Commands {
                                         val path = toSend.split("\$FILE\$")[1].trim()
                                         toSend = toSend.replace("\$FILE\$", "").replace(path, "")
                                             .replace("   ", " ").replace("  ", " ").trim()
-                                        try {
-                                            file = File(path)
-                                            if (file.isDirectory || file.isHidden) {
-                                                file = null
-                                            }
-                                        } catch (e: Exception) {
+                                        file = File(path)
+                                        if (file.isDirectory || file.isHidden) {
+                                            file = null
                                         }
                                     }
 
@@ -139,7 +136,8 @@ object Commands {
                                             .replace("   ", " ").replace("  ", " ")
                                         if (toSend.isNotEmpty()) {
                                             if (file != null) {
-                                                message.channel.sendMessage(toSend).addFile(file).reference(message).queue()
+                                                message.channel.sendMessage(toSend).addFile(file).reference(message)
+                                                    .queue()
                                             } else {
                                                 message.channel.sendMessage(toSend).reference(message).queue()
                                             }
@@ -170,6 +168,7 @@ object Commands {
             }
         } catch (e: Exception) {
             message.channel.sendMessage("**An error occurred!** Please check the log file!").queue()
+            e.printStackTrace()
         }
         return false
     }

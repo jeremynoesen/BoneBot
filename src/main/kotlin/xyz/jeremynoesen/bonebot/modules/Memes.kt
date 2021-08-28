@@ -67,6 +67,7 @@ constructor(private val command: Message) {
                 }
             } catch (exception: Exception) {
                 command.channel.sendMessage("**An error occurred!** Please check the log file!").queue()
+                exception.printStackTrace()
             }
         } else {
             val remaining = ((cooldown * 1000) - (System.currentTimeMillis() - prevTime)) / 1000

@@ -78,6 +78,7 @@ object Files {
             }
         } catch (e: Exception) {
             message.channel.sendMessage("**An error occurred!** Please check the log file!").queue()
+            e.printStackTrace()
         }
     }
 }
