@@ -29,6 +29,7 @@ object BoneBot {
         ImageIO.setUseCache(false)
         Config.loadData()
         val log = PrintStream(FileOutputStream("log.txt", true), true)
+        System.setOut(log)
         System.setErr(log)
         val jda = JDABuilder.createLight(Config.botToken).addEventListeners(Listener()).build()
         if (Statuses.enabled) Statuses.setStatus(jda)

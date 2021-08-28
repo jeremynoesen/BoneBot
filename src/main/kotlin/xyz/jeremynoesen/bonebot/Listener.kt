@@ -29,6 +29,7 @@ class Listener : ListenerAdapter() {
             }
         } catch (ex: Exception) {
             e.channel.sendMessage("**An error occurred!** Please check the log file!").queue()
+            ex.printStackTrace()
         }
     }
 
@@ -43,6 +44,7 @@ class Listener : ListenerAdapter() {
                 && Commands.enabled) Commands.perform(e.message)
         } catch (ex: Exception) {
             e.channel.sendMessage("**An error occurred!** Please check the log file!").queue()
+            ex.printStackTrace()
         }
     }
 }
