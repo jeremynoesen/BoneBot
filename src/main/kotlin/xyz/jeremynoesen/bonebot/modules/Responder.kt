@@ -72,12 +72,21 @@ object Responder {
                     if (toSend.contains("\$REPLY\$")) {
                         toSend = toSend.replace("\$REPLY\$", "").replace("   ", " ")
                             .replace("  ", " ")
-                        if (toSend.isNotEmpty()) message.channel.sendMessage(toSend).reference(message)
-                            .queue()
-                        if (file != null) message.channel.sendFile(file).reference(message).queue()
+                        if (toSend.isNotEmpty()) {
+                            if (file != null) {
+                                message.channel.sendMessage(toSend).addFile(file).reference(message).queue()
+                            } else {
+                                message.channel.sendMessage(toSend).reference(message).queue()
+                            }
+                        }
                     } else {
-                        if (toSend.isNotEmpty()) message.channel.sendMessage(toSend).queue()
-                        if (file != null) message.channel.sendFile(file).queue()
+                        if (toSend.isNotEmpty()) {
+                            if (file != null) {
+                                message.channel.sendMessage(toSend).addFile(file).queue()
+                            } else {
+                                message.channel.sendMessage(toSend).queue()
+                            }
+                        }
                     }
                 }
             }
