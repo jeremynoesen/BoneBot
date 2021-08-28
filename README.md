@@ -165,8 +165,6 @@ java -jar BoneBot.jar
 - To mention the server name, add `$GUILD$`.
 - You can send a single file in the embed by adding `$FILE$ path/to/file $FILE$`.
 - To enable or disable the welcomer, set `welcomer-enabled` in the main configuration to `true` or `false`.
-- **NOTE:** To use this module, you must enable `server members intent` on the Bot page in the Discord Developer Portal.
-
 
 ### Miscellaneous
 - You can change the colors of embeds for the meme generator and help message by setting `embed-color` in the main configuration to a hex code.
