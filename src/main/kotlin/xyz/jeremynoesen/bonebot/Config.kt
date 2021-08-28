@@ -149,6 +149,8 @@ object Config {
         loadData("resources/quotes.txt", Quotes.quotes)
         val stringData = loadData("resources/welcome.txt")
         if (stringData.isNotEmpty()) Welcomer.message = stringData
+
+        Messages.loadMessages()
     }
 
     /**

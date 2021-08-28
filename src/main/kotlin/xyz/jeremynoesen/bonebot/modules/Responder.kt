@@ -1,6 +1,7 @@
 package xyz.jeremynoesen.bonebot.modules
 
 import net.dv8tion.jda.api.entities.Message
+import xyz.jeremynoesen.bonebot.Messages
 import java.io.File
 import java.util.*
 
@@ -89,7 +90,7 @@ object Responder {
                 }
             }
         } catch (e: Exception) {
-            message.channel.sendMessage("**An error occurred!** Please check the log file!").queue()
+            message.channel.sendMessage(Messages.error).queue()
             e.printStackTrace()
         }
     }

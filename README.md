@@ -166,6 +166,12 @@ java -jar BoneBot.jar
 - You can send a single file in the embed by adding `$FILE$ path/to/file $FILE$`.
 - To enable or disable the welcomer, set `welcomer-enabled` in the main configuration to `true` or `false`.
 
+### Messages
+- All messages built in to the bot are editable, located in `resources/messages.txt`.
+- The only placeholders allowed are specified per line.
+- Standard Discord Markdown formatting is supported.
+- This file can modify all built-in responses, command descriptions, and commands.
+
 ### Miscellaneous
 - You can change the colors of embeds for the meme generator and help message by setting `embed-color` in the main configuration to a hex code.
 - You can allow BoneBot to listen to input from other bots by setting `listen-to-bots` to `true`. It defaults to `false`.
