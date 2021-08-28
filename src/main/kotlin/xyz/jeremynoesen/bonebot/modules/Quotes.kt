@@ -1,6 +1,7 @@
 package xyz.jeremynoesen.bonebot.modules
 
 import net.dv8tion.jda.api.entities.Message
+import xyz.jeremynoesen.bonebot.Messages
 import java.util.*
 
 /**
@@ -42,14 +43,14 @@ object Quotes {
                 if (quotes.size > 0) {
                     message.channel.sendMessage(quotes[Random().nextInt(quotes.size)].replace("\\n", "\n")).queue()
                 } else {
-                    message.channel.sendMessage("There are no quotes to show!").queue()
+                    message.channel.sendMessage(Messages.noQuotes).queue()
                 }
             } else {
                 val remaining = ((cooldown * 1000) - (System.currentTimeMillis() - prevTime)) / 1000
-                message.channel.sendMessage("Another quote can be sent in **$remaining** seconds.").queue()
+                message.channel.sendMessage(Messages.quoteCooldown.replace("\$TIME\$", remaining.toString())).queue()
             }
         } catch (e: Exception) {
-            message.channel.sendMessage("**An error occurred!** Please check the log file!").queue()
+            message.channel.sendMessage(Messages.error).queue()
             e.printStackTrace()
         }
     }

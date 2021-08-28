@@ -3,6 +3,7 @@ package xyz.jeremynoesen.bonebot.modules
 import xyz.jeremynoesen.bonebot.Config
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.entities.Message
+import xyz.jeremynoesen.bonebot.Messages
 import java.io.BufferedReader
 import java.io.File
 import java.io.InputStreamReader
@@ -53,28 +54,57 @@ object Commands {
                 if ((System.currentTimeMillis() - prevTime) >= cooldown * 1000) {
                     prevTime = System.currentTimeMillis()
                     when {
-                        msg.startsWith(commandPrefix + "meme") && Memes.enabled -> {
+                        msg.startsWith(commandPrefix + Messages.memeCommand) && Memes.enabled -> {
                             Memes(message).generate()
                             return true
                         }
-                        msg == commandPrefix + "quote" && Quotes.enabled -> {
+                        msg == commandPrefix + Messages.quoteCommand && Quotes.enabled -> {
                             Quotes.sendQuote(message)
                             return true
                         }
-                        msg.startsWith(commandPrefix + "file") && Files.enabled -> {
+                        msg.startsWith(commandPrefix + Messages.fileCommand) && Files.enabled -> {
                             Files.sendFile(message)
                             return true
                         }
-                        msg == commandPrefix + "help" -> {
-                            var commandList = "• **`$commandPrefix" + "help`**: Show this message.\n"
-                            if (Memes.enabled) commandList += "• **`$commandPrefix" + "meme`**: Generate a meme.\n"
-                            if (Files.enabled) commandList += "• **`$commandPrefix" + "file`**: Send a random file.\n"
-                            if (Quotes.enabled) commandList += "• **`$commandPrefix" + "quote`**: Show a random quote.\n"
-                            for (command in commands.keys)
-                                commandList += "• **`$commandPrefix$command`**: ${commands[command]!!.first}\n"
+                        msg == commandPrefix + Messages.helpCommand -> {
+
+                            var commandList =
+                                Messages.helpFormat.replace("\$CMD\$", commandPrefix + Messages.helpCommand)
+                                    .replace("\$DESC\$", Messages.helpDescription) + "\n"
+
+                            if (Memes.enabled) commandList += Messages.helpFormat.replace(
+                                "\$CMD\$",
+                                commandPrefix + Messages.memeCommand
+                            )
+                                .replace("\$DESC\$", Messages.memeDescription) + "\n"
+
+                            if (Files.enabled) commandList += Messages.helpFormat.replace(
+                                "\$CMD\$",
+                                commandPrefix + Messages.fileCommand
+                            )
+                                .replace("\$DESC\$", Messages.fileDescription) + "\n"
+
+                            if (Quotes.enabled) commandList += Messages.helpFormat.replace(
+                                "\$CMD\$",
+                                commandPrefix + Messages.quoteCommand
+                            )
+                                .replace("\$DESC\$", Messages.quoteDescription) + "\n"
+
+                            for (command in commands.keys) {
+                                commandList += Messages.helpFormat.replace(
+                                    "\$CMD\$",
+                                    commandPrefix + command
+                                )
+                                    .replace("\$DESC\$", commands[command]!!.first) + "\n"
+                            }
+
                             val embedBuilder = EmbedBuilder()
                             val name = message.jda.selfUser.name
-                            embedBuilder.setAuthor("$name Help", null, message.jda.selfUser.avatarUrl)
+                            embedBuilder.setAuthor(
+                                Messages.helpTitle.replace("\$BOT\$", name),
+                                null,
+                                message.jda.selfUser.avatarUrl
+                            )
                             embedBuilder.setColor(Config.embedColor)
                             embedBuilder.setDescription("$commandList\n[**Source Code**](https://github.com/jeremynoesen/BoneBot)")
                             message.channel.sendMessage(embedBuilder.build()).queue()
@@ -155,19 +185,19 @@ object Commands {
                                     return true
                                 }
                             }
-                            message.channel.sendMessage("**Unknown command!**").queue()
+                            message.channel.sendMessage(Messages.unknownCommand).queue()
                             return true
                         }
                     }
                 } else {
                     val remaining = ((cooldown * 1000) - (System.currentTimeMillis() - prevTime)) / 1000
-                    message.channel.sendMessage("Commands can be used again in **$remaining** seconds.")
+                    message.channel.sendMessage(Messages.commandCooldown.replace("\$TIME\$", remaining.toString()))
                         .queue()
                     return true
                 }
             }
         } catch (e: Exception) {
-            message.channel.sendMessage("**An error occurred!** Please check the log file!").queue()
+            message.channel.sendMessage(Messages.error).queue()
             e.printStackTrace()
         }
         return false

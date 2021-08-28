@@ -5,6 +5,7 @@ import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.entities.Message
 import org.apache.commons.text.WordUtils
 import xyz.jeremynoesen.bonebot.Config
+import xyz.jeremynoesen.bonebot.Messages
 import java.awt.*
 import java.awt.font.TextLayout
 import java.awt.image.BufferedImage
@@ -57,21 +58,25 @@ constructor(private val command: Message) {
                     processImage()
                     val file = convertToFile()
                     val embedBuilder = EmbedBuilder()
-                    embedBuilder.setAuthor(command.author.name + " generated a meme:", null, command.author.avatarUrl)
+                    embedBuilder.setAuthor(
+                        Messages.memeTitle.replace("\$USER\$", command.author.name),
+                        null,
+                        command.author.avatarUrl
+                    )
                     embedBuilder.setColor(Config.embedColor)
                     embedBuilder.setImage("attachment://meme.png")
                     command.channel.sendMessage(embedBuilder.build()).addFile(file, "meme.png").queue()
                     prevTime = System.currentTimeMillis()
                 } else {
-                    command.channel.sendMessage("Please provide the missing **text** and/or **image**!").queue()
+                    command.channel.sendMessage(Messages.memeInputMissing).queue()
                 }
             } catch (exception: Exception) {
-                command.channel.sendMessage("**An error occurred!** Please check the log file!").queue()
+                command.channel.sendMessage(Messages.error).queue()
                 exception.printStackTrace()
             }
         } else {
             val remaining = ((cooldown * 1000) - (System.currentTimeMillis() - prevTime)) / 1000
-            command.channel.sendMessage("Another meme can be generated in **$remaining** seconds.").queue()
+            command.channel.sendMessage(Messages.memeCooldown.replace("\$TIME\$", remaining.toString())).queue()
         }
     }
 
@@ -83,7 +88,7 @@ constructor(private val command: Message) {
     private fun getImageFromURL(url: String): BufferedImage {
         val conn: URLConnection = URL(url).openConnection()
         conn.setRequestProperty("User-Agent", "Wget/1.13.4 (linux-gnu)")
-        conn.getInputStream().use { stream -> return Thumbnails.of(stream).scale(1.0).asBufferedImage()}
+        conn.getInputStream().use { stream -> return Thumbnails.of(stream).scale(1.0).asBufferedImage() }
     }
 
     /**
@@ -94,7 +99,10 @@ constructor(private val command: Message) {
      */
     @Throws(IOException::class)
     private fun readTextAndImage() {
-        var input = command.contentDisplay.substring(Commands.commandPrefix.length + 4, command.contentDisplay.length)
+        var input = command.contentDisplay.substring(
+            Commands.commandPrefix.length + Messages.memeCommand.length,
+            command.contentDisplay.length
+        )
         var altInput = ""
         var imageInput = false
 
