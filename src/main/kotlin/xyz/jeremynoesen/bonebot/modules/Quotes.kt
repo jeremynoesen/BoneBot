@@ -41,7 +41,9 @@ object Quotes {
             if ((System.currentTimeMillis() - prevTime) >= cooldown * 1000) {
                 prevTime = System.currentTimeMillis()
                 if (quotes.size > 0) {
-                    message.channel.sendMessage(quotes[Random().nextInt(quotes.size)].replace("\\n", "\n")).queue()
+                    val quote = quotes[Random().nextInt(quotes.size)].replace("\\n", "\n")
+                    if (quote.isNotEmpty())
+                        message.channel.sendMessage(quote).queue()
                 } else {
                     message.channel.sendMessage(Messages.noQuotes).queue()
                 }
