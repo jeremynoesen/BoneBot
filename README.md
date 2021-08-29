@@ -179,7 +179,8 @@ java -jar BoneBot.jar
 - All files in `temp` will be deleted every time the bot program is closed.
 - You can make other files and directories in the bot folder as needed for your own organization of files the bot may use, but not for the files the bot requires
 
-### Default Main Configuration
+### Defaults
+##### Main Configuration
 Located at `resources/config.txt`
 ```
 responder-enabled: true
@@ -206,7 +207,7 @@ embed-color: #fd0605
 bot-token: TOKEN
 ```
 
-### Default Message Configuration
+##### Messages
 ```
 help-title: $BOT$ Help
 help-about: $BOT$ aims to add more life to a server by responding and reacting to messages. It also adds commands, which are listed below.
@@ -231,6 +232,11 @@ file-cooldown: Another file can be sent in **$TIME$** seconds.
 quote-cooldown: Another quote can be sent in **$TIME$** seconds.
 command-cooldown: Commands can be used again in **$TIME$** seconds.
 
+```
+
+##### Welcomer
+```
+Welcome $USER$ to **$GUILD$**!
 ```
 
 ### Permissions
