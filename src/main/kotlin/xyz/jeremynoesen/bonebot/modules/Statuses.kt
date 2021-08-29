@@ -5,7 +5,7 @@ import net.dv8tion.jda.api.entities.Activity
 import java.util.*
 
 /**
- * class to handle now playing status of the bot
+ * module to handle now playing status of the bot
  *
  * @author Jeremy Noesen
  */

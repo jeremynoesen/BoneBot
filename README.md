@@ -58,6 +58,9 @@ BoneBot allows for custom commands to be made to provide text and image response
 ### Statuses
 BoneBot can have various randomized statuses shown in Discord that change over time.
 
+### Welcomer
+The welcomer will send a private message to new users who join to welcome them to the server.
+
 ## Requirements
 Any version of Windows, macOS, or Linux that can run Java 8 or later.
 
@@ -91,18 +94,18 @@ java -jar BoneBot.jar
   - Each separate line denotes a separate text.
   - The format is `<top text> // <bottom text>`.
 - To set the size of generates memes, set `meme-size` in the main configuration to any number. This sets the image width to this number, and varies the height based on this width. Set it to `0` to use the image's original dimensions with no scaling.
-- To set a cool down for the generator, set `meme-cooldown` in the main configuration to any number. Time is in seconds.
+- To set a cool down for the generator, set `meme-cooldown` in the main configuration to any whole number in seconds.
 - To enable or disable the generator, set `memes-enabled` in the main configuration to `true` or `false`.
 
 ### Quotes
 - Quotes will be put into `resources/quotes.txt`.
 - Each line designates a new entry.
-- To set a cool down for quotes, set `quote-cooldown` in the main configuration to any number. Time is in seconds.
+- To set a cool down for quotes, set `quote-cooldown` in the main configuration to any while number in seconds.
 - To enable or disable quotes, set `quotes-enabled` in the main configuration to `true` or `false`.
 
 ### Files
 - Files will be put into `resources/files`.
-- To set a cool down for files, set `file-cooldown` in the main configuration to any number. Time is in seconds.
+- To set a cool down for files, set `file-cooldown` in the main configuration to any whole number in seconds.
 - To enable or disable files, set `files-enabled` in the main configuration to `true` or `false`.
 
 ### Responder
@@ -113,11 +116,9 @@ java -jar BoneBot.jar
 - The trigger can include Regex. Case is not ignored if you use Regex.
 - The response can include `\n` as a line separator.
 - You can also include `$USER$` in the response to ping the user who invoked a response, or `$REPLY$` to reply to them.
-- You can send a file by adding `$FILE$ path/to/file $FILE$`.
-  - You can only send one file.
-  - The path is relative to the location of `BoneBot.jar`. use `../` to go back a directory.
-- The response sends with a delay based on message length multiplied by `typing-speed` in the main configuration in milliseconds.
-- To set a cool down for the responder, set `responder-cooldown` in the main configuration to any number. Time is in seconds.
+- You can send a single file by adding `$FILE$ path/to/file $FILE$`.
+- The response sends with a delay based on message length multiplied by `typing-speed` in the main configuration in milliseconds. This number must be a whole number.
+- To set a cool down for the responder, set `responder-cooldown` in the main configuration to whole any number in seconds.
 - To enable or disable the responder, set `responder-enabled` in the main configuration to `true` or `false`.
 
 ### Reactor
@@ -127,7 +128,8 @@ java -jar BoneBot.jar
 - Case is ignored in the trigger.
 - The trigger can include Regex. Case is not ignored if you use Regex.
 - For the emote, you can put either a unicode emoji, `U+1F980`, or a raw discord emote, `:bonebot:819645061200347177`.
-- To set a cool down for the reactor, set `reactor-cooldown` in the main configuration to any number. Time is in seconds.
+- To set a delay between when the message is sent and when the bot reacts, set `reactor-delay` in the main configuration to any whole number in milliseconds.
+- To set a cool down for the reactor, set `reactor-cooldown` in the main configuration to any whole number in seconds.
 - To enable or disable the reactor, set `reactor-enabled` in the main configuration to `true` or `false`.
 
 ### Commands
@@ -142,32 +144,50 @@ java -jar BoneBot.jar
   - Need to run multiple commands? Make a shell script and run the script with a command!
   - Add `$CMDOUT$` to your response to also include the output of this command in the response.
   - If the above would return a file path, you can surround it with `$FILE$` to send that file, outlined below
-- You can send a file by adding `$FILE$ path/to/file $FILE$`.
-  - You can only send one file.
-  - The path is relative to the location of `BoneBot.jar`. use `../` to go back a directory.
+- You can send a single file by adding `$FILE$ path/to/file $FILE$`.
 - You can add a reaction to the command trigger message by adding `$REACT$ emote $REACT$`. Format for emotes is similar to the reactor.
 - To change the command prefix, set `command-prefix` in the main configuration to a custom prefix. Case is ignored.
-- To set a cool down for commands, set `commands-cooldown` in the main configuration to any number. Time is in seconds.
+- To set a cool down for commands, set `commands-cooldown` in the main configuration to any whole number in seconds.
 - To enable or disable commands, set `commands-enabled` in the main configuration to `true` or `false`.
 
 ### Statuses
 - Statuses will be put into `resources/statuses.txt`.
 - Each line designates a new entry.
 - Each line must start with `playing`, `watching`, or `listening to`.
-- The main config has option `status-delay` to set how long each status shows in seconds.
+- The main config has option `status-delay` to set how long each status shows in seconds as a whole number.
 - To enable or disable statuses, set `statuses-enabled` in the main configuration to `true` or `false`.
+
+### Welcomer
+- The welcome message will be put into `resources/welcome.txt`.
+- The entire file will make up the welcome message.
+- New lines work without using `\n`.
+- To mention the user in the message, add `$USER$`.
+- To mention the server name, add `$GUILD$`.
+- You can send a single file in the embed by adding `$FILE$ path/to/file $FILE$`.
+- To enable or disable the welcomer, set `welcomer-enabled` in the main configuration to `true` or `false`.
+
+### Messages
+- All messages built in to the bot are editable, located in `resources/messages.txt`.
+- The only placeholders allowed are specified per line.
+- Standard Discord Markdown formatting is supported.
+- This file can modify all built-in responses, command descriptions, and commands.
+- All messages can include new line characters `\n`, except for the commands
 
 ### Miscellaneous
 - You can change the colors of embeds for the meme generator and help message by setting `embed-color` in the main configuration to a hex code.
 - You can allow BoneBot to listen to input from other bots by setting `listen-to-bots` to `true`. It defaults to `false`.
+- All files in `temp` will be deleted every time the bot program is closed.
+- You can make other files and directories in the bot folder as needed for your own organization of files the bot may use, but not for the files the bot requires
 
 ### Default Main Configuration
 Located at `resources/config.txt`
-```yaml
+```
 responder-enabled: true
 responder-cooldown: 180
+typing-speed: 100
 reactor-enabled: true
 reactor-cooldown: 60
+reactor-delay: 1000
 memes-enabled: true
 meme-cooldown: 5
 meme-size: 1024
@@ -180,10 +200,37 @@ quotes-enabled: true
 quote-cooldown: 5
 files-enabled: true
 file-cooldown: 5
+welcomer-enabled: true
 listen-to-bots: false
 embed-color: #fd0605
-typing-speed: 100
 bot-token: TOKEN
+```
+
+### Default Message Configuration
+```
+help-title: $BOT$ Help
+help-about: $BOT$ aims to add more life to a server by responding and reacting to messages. It also adds commands, which are listed below.
+help-format: • **`$CMD$`**: $DESC$
+help-description: Show this help message.
+meme-description: Generate a random or custom meme.
+file-description: Send a random or specific file.
+quote-description: Send a random quote.
+help-command: help
+meme-command: meme
+file-command: file
+quote-command: quote
+error: **An error occurred!** Please check the log file!
+unknown-command: **Unknown command!**
+no-files: There are **no files** to send!
+unknown-file: **Unknown file!**
+meme-title: $USER$ generated a meme:
+meme-input-missing: Please provide the missing **text** and/or **image**!
+no-quotes: There are no quotes to show!
+meme-cooldown: Another meme can be generated in **$TIME$** seconds.
+file-cooldown: Another file can be sent in **$TIME$** seconds.
+quote-cooldown: Another quote can be sent in **$TIME$** seconds.
+command-cooldown: Commands can be used again in **$TIME$** seconds.
+
 ```
 
 ### Permissions
@@ -195,6 +242,7 @@ The following Discord permissions are required for BoneBot to work:
 - Add Reactions
 - Use External Emoji
 - Read Message History
+- Server Members Intent
 
 ## Demonstration
 Below are a few images showing what BoneBot can do. Simple actions, such as reactions, text responses, and status messages, are not shown due to those being basic Discord functions.
