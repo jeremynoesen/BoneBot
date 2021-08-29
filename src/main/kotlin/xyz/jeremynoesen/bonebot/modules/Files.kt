@@ -41,24 +41,7 @@ object Files {
                 if (message.contentRaw.trim()
                         .lowercase() == Commands.commandPrefix + Messages.fileCommand.lowercase()
                 ) {
-                    val r = Random()
-                    val dir = File("resources/files")
-                    if (dir.listFiles()!!.isNotEmpty()) {
-                        var rand = r.nextInt(dir.listFiles()!!.size)
-                        val prev = HashSet<Int>()
-                        while (dir.listFiles()!![rand].isHidden || dir.listFiles()!![rand].isDirectory) {
-                            rand = r.nextInt(dir.listFiles()!!.size)
-                            if (prev.contains(rand)) continue
-                            prev.add(rand)
-                            if (prev.size == dir.listFiles()!!.size) {
-                                message.channel.sendMessage(Messages.noFiles).queue()
-                                return
-                            }
-                        }
-                        message.channel.sendFile(dir.listFiles()!![rand]).queue()
-                    } else {
-                        message.channel.sendMessage(Messages.noFiles).queue()
-                    }
+                    sendRandomFile(message, File("resources/files"))
                 } else {
                     try {
                         val file = File(
@@ -67,10 +50,12 @@ object Files {
                                         .replace("..", "").replace("   ", " ")
                                         .replace("  ", " ").trim()
                         )
-                        if (file.isDirectory || file.isHidden) {
+                        if (!file.exists() || file.isHidden) {
                             message.channel.sendMessage(Messages.unknownFile).queue()
-                        } else {
-                            message.channel.sendFile(file).queue()
+                            return
+                        }
+                        if (file.isDirectory) {
+                            sendRandomFile(message, file)
                         }
                     } catch (e: Exception) {
                         message.channel.sendMessage(Messages.unknownFile).queue()
@@ -83,6 +68,32 @@ object Files {
         } catch (e: Exception) {
             message.channel.sendMessage(Messages.error).queue()
             e.printStackTrace()
+        }
+    }
+
+    /**
+     * send a random file from a directory
+     *
+     * @param message message initiating action
+     * @param dir directory to grab files from
+     */
+    private fun sendRandomFile(message: Message, dir: File) {
+        val r = Random()
+        if (dir.listFiles()!!.isNotEmpty()) {
+            var rand = r.nextInt(dir.listFiles()!!.size)
+            val prev = HashSet<Int>()
+            while (dir.listFiles()!![rand].isHidden || dir.listFiles()!![rand].isDirectory) {
+                rand = r.nextInt(dir.listFiles()!!.size)
+                if (prev.contains(rand)) continue
+                prev.add(rand)
+                if (prev.size == dir.listFiles()!!.size) {
+                    message.channel.sendMessage(Messages.noFiles).queue()
+                    return
+                }
+            }
+            message.channel.sendFile(dir.listFiles()!![rand]).queue()
+        } else {
+            message.channel.sendMessage(Messages.noFiles).queue()
         }
     }
 }
