@@ -171,6 +171,7 @@ java -jar BoneBot.jar
 - The only placeholders allowed are specified per line.
 - Standard Discord Markdown formatting is supported.
 - This file can modify all built-in responses, command descriptions, and commands.
+- All messages can include new line characters `\n`, except for the commands
 
 ### Miscellaneous
 - You can change the colors of embeds for the meme generator and help message by setting `embed-color` in the main configuration to a hex code.
@@ -180,7 +181,7 @@ java -jar BoneBot.jar
 
 ### Default Main Configuration
 Located at `resources/config.txt`
-```yaml
+```
 responder-enabled: true
 responder-cooldown: 180
 typing-speed: 100
@@ -203,6 +204,33 @@ welcomer-enabled: true
 listen-to-bots: false
 embed-color: #fd0605
 bot-token: TOKEN
+```
+
+### Default Message Configuration
+```
+help-title: $BOT$ Help
+help-about: $BOT$ aims to add more life to a server by responding and reacting to messages. It also adds commands, which are listed below.
+help-format: • **`$CMD$`**: $DESC$
+help-description: Show this help message.
+meme-description: Generate a random or custom meme.
+file-description: Send a random or specific file.
+quote-description: Send a random quote.
+help-command: help
+meme-command: meme
+file-command: file
+quote-command: quote
+error: **An error occurred!** Please check the log file!
+unknown-command: **Unknown command!**
+no-files: There are **no files** to send!
+unknown-file: **Unknown file!**
+meme-title: $USER$ generated a meme:
+meme-input-missing: Please provide the missing **text** and/or **image**!
+no-quotes: There are no quotes to show!
+meme-cooldown: Another meme can be generated in **$TIME$** seconds.
+file-cooldown: Another file can be sent in **$TIME$** seconds.
+quote-cooldown: Another quote can be sent in **$TIME$** seconds.
+command-cooldown: Commands can be used again in **$TIME$** seconds.
+
 ```
 
 ### Permissions

@@ -32,6 +32,9 @@ object Messages {
     var fileCooldown = "Another file can be sent in **\$TIME\$** seconds."
     var commandCooldown = "Commands can be used again in **\$TIME\$** seconds."
 
+    /**
+     * load all messages from the messages file
+     */
     fun loadMessages() {
         try {
             val fileScanner = Scanner(File("resources/messages.txt"))
@@ -39,25 +42,25 @@ object Messages {
                 val lineScanner = Scanner(fileScanner.nextLine())
                 when (lineScanner.next()) {
                     "help-title:" -> {
-                        helpTitle = lineScanner.nextLine().trim()
+                        helpTitle = lineScanner.nextLine().replace("\\n", "\n").trim()
                     }
                     "help-about:" -> {
-                        helpAbout = lineScanner.nextLine().trim()
+                        helpAbout = lineScanner.nextLine().replace("\\n", "\n").trim()
                     }
                     "help-format:" -> {
-                        helpFormat = lineScanner.nextLine().trim()
+                        helpFormat = lineScanner.nextLine().replace("\\n", "\n").trim()
                     }
                     "help-description:" -> {
-                        helpDescription = lineScanner.nextLine().trim()
+                        helpDescription = lineScanner.nextLine().replace("\\n", "\n").trim()
                     }
                     "meme-description:" -> {
-                        memeDescription = lineScanner.nextLine().trim()
+                        memeDescription = lineScanner.nextLine().replace("\\n", "\n").trim()
                     }
                     "file-description:" -> {
-                        fileDescription = lineScanner.nextLine().trim()
+                        fileDescription = lineScanner.nextLine().replace("\\n", "\n").trim()
                     }
                     "quote-description:" -> {
-                        quoteDescription = lineScanner.nextLine().trim()
+                        quoteDescription = lineScanner.nextLine().replace("\\n", "\n").trim()
                     }
                     "help-command:" -> {
                         helpCommand = lineScanner.nextLine().trim()
@@ -72,37 +75,37 @@ object Messages {
                         quoteCommand = lineScanner.nextLine().trim()
                     }
                     "error:" -> {
-                        error = lineScanner.nextLine().trim()
+                        error = lineScanner.nextLine().replace("\\n", "\n").trim()
                     }
                     "unknown-command:" -> {
-                        unknownCommand = lineScanner.nextLine().trim()
+                        unknownCommand = lineScanner.nextLine().replace("\\n", "\n").trim()
                     }
                     "no-files:" -> {
-                        noFiles = lineScanner.nextLine().trim()
+                        noFiles = lineScanner.nextLine().replace("\\n", "\n").trim()
                     }
                     "unknown-file:" -> {
-                        unknownFile = lineScanner.nextLine().trim()
+                        unknownFile = lineScanner.nextLine().replace("\\n", "\n").trim()
                     }
                     "meme-title:" -> {
-                        memeTitle = lineScanner.nextLine().trim()
+                        memeTitle = lineScanner.nextLine().replace("\\n", "\n").trim()
                     }
                     "meme-input-missing:" -> {
-                        memeInputMissing = lineScanner.nextLine().trim()
+                        memeInputMissing = lineScanner.nextLine().replace("\\n", "\n").trim()
                     }
                     "no-quotes:" -> {
-                        noQuotes = lineScanner.nextLine().trim()
+                        noQuotes = lineScanner.nextLine().replace("\\n", "\n").trim()
                     }
                     "meme-cooldown:" -> {
-                        memeCooldown = lineScanner.nextLine().trim()
+                        memeCooldown = lineScanner.nextLine().replace("\\n", "\n").trim()
                     }
                     "file-cooldown:" -> {
-                        fileCooldown = lineScanner.nextLine().trim()
+                        fileCooldown = lineScanner.nextLine().replace("\\n", "\n").trim()
                     }
                     "quote-cooldown:" -> {
-                        quoteCooldown = lineScanner.nextLine().trim()
+                        quoteCooldown = lineScanner.nextLine().replace("\\n", "\n").trim()
                     }
                     "command-cooldown:" -> {
-                        commandCooldown = lineScanner.nextLine().trim()
+                        commandCooldown = lineScanner.nextLine().replace("\\n", "\n").trim()
                     }
 
                 }
