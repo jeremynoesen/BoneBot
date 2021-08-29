@@ -27,6 +27,7 @@ object Messages {
     var memeTitle = "\$USER\$ generated a meme:"
     var memeInputMissing = "Please provide the missing **text** and/or **image**!"
     var noQuotes = "There are no quotes to show!"
+    var welcomeTitle = "\$USER\$ joined \$GUILD\$"
     var memeCooldown = "Another meme can be generated in **\$TIME\$** seconds."
     var quoteCooldown = "Another quote can be sent in **\$TIME\$** seconds."
     var fileCooldown = "Another file can be sent in **\$TIME\$** seconds."
@@ -95,6 +96,9 @@ object Messages {
                     "no-quotes:" -> {
                         noQuotes = lineScanner.nextLine().replace("\\n", "\n").trim()
                     }
+                    "welcome-title" -> {
+                        welcomeTitle = lineScanner.nextLine().replace("\\n", "\n").trim()
+                    }
                     "meme-cooldown:" -> {
                         memeCooldown = lineScanner.nextLine().replace("\\n", "\n").trim()
                     }
@@ -134,6 +138,7 @@ object Messages {
             pw.println("meme-title: $memeTitle")
             pw.println("meme-input-missing: $memeInputMissing")
             pw.println("no-quotes: $noQuotes")
+            pw.println("welcome-title: $welcomeTitle")
             pw.println("meme-cooldown: $memeCooldown")
             pw.println("file-cooldown: $fileCooldown")
             pw.println("quote-cooldown: $quoteCooldown")
