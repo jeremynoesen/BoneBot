@@ -1,6 +1,7 @@
 package xyz.jeremynoesen.bonebot.modules
 
 import net.dv8tion.jda.api.entities.Message
+import xyz.jeremynoesen.bonebot.Messages
 import java.io.File
 import java.util.*
 import kotlin.collections.HashSet
@@ -37,7 +38,9 @@ object Files {
             if ((System.currentTimeMillis() - prevTime) >= cooldown * 1000) {
                 prevTime = System.currentTimeMillis()
 
-                if (message.contentRaw.trim().lowercase() == Commands.commandPrefix + "file") {
+                if (message.contentRaw.trim()
+                        .lowercase() == Commands.commandPrefix + Messages.fileCommand.lowercase()
+                ) {
                     val r = Random()
                     val dir = File("resources/files")
                     if (dir.listFiles()!!.isNotEmpty()) {
@@ -48,36 +51,38 @@ object Files {
                             if (prev.contains(rand)) continue
                             prev.add(rand)
                             if (prev.size == dir.listFiles()!!.size) {
-                                message.channel.sendMessage("There are **no files** to send!").queue()
+                                message.channel.sendMessage(Messages.noFiles).queue()
                                 return
                             }
                         }
                         message.channel.sendFile(dir.listFiles()!![rand]).queue()
                     } else {
-                        message.channel.sendMessage("There are **no files** to send!").queue()
+                        message.channel.sendMessage(Messages.noFiles).queue()
                     }
                 } else {
                     try {
-                        val file = File("resources/files/" +
-                                message.contentRaw.substring(Commands.commandPrefix.length + 4)
-                                    .replace("..", "").replace("   ", " ")
-                                    .replace("  ", " ").trim()
+                        val file = File(
+                            "resources/files/" +
+                                    message.contentRaw.substring(Commands.commandPrefix.length + Messages.fileCommand.length)
+                                        .replace("..", "").replace("   ", " ")
+                                        .replace("  ", " ").trim()
                         )
                         if (file.isDirectory || file.isHidden) {
-                            message.channel.sendMessage("**Unknown file!**").queue()
+                            message.channel.sendMessage(Messages.unknownFile).queue()
                         } else {
                             message.channel.sendFile(file).queue()
                         }
                     } catch (e: Exception) {
-                        message.channel.sendMessage("**Unknown file!**").queue()
+                        message.channel.sendMessage(Messages.unknownFile).queue()
                     }
                 }
             } else {
                 val remaining = ((cooldown * 1000) - (System.currentTimeMillis() - prevTime)) / 1000
-                message.channel.sendMessage("Another file can be sent in **$remaining** seconds.").queue()
+                message.channel.sendMessage(Messages.fileCooldown.replace("\$TIME\$", remaining.toString())).queue()
             }
         } catch (e: Exception) {
-            message.channel.sendMessage("**An error occurred!** Please check the log file!").queue()
+            message.channel.sendMessage(Messages.error).queue()
+            e.printStackTrace()
         }
     }
 }

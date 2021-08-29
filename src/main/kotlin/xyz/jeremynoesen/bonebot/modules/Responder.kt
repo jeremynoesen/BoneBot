@@ -1,11 +1,12 @@
 package xyz.jeremynoesen.bonebot.modules
 
 import net.dv8tion.jda.api.entities.Message
+import xyz.jeremynoesen.bonebot.Messages
 import java.io.File
 import java.util.*
 
 /**
- * responder to words and phrases in a message
+ * responder to respond to words and phrases in a message
  *
  * @author Jeremy Noesen
  */
@@ -46,7 +47,8 @@ object Responder {
             val msg = message.contentRaw
             for (trigger in responses.keys) {
                 if ((msg.contains(Regex(trigger)) || msg.lowercase().contains(trigger.lowercase()))
-                        && (System.currentTimeMillis() - prevTime) >= cooldown * 1000) {
+                    && (System.currentTimeMillis() - prevTime) >= cooldown * 1000
+                ) {
                     prevTime = System.currentTimeMillis()
 
                     if (typingSpeed > 0) message.channel.sendTyping().queue()
@@ -60,29 +62,36 @@ object Responder {
                         val path = toSend.split("\$FILE\$")[1].trim()
                         toSend = toSend.replace("\$FILE\$", "").replace(path, "")
                             .replace("   ", " ").replace("  ", " ").trim()
-                        try {
-                            file = File(path)
-                            if (file.isDirectory || file.isHidden) {
-                                file = null
-                            }
-                        } catch (e: Exception) {
+                        file = File(path)
+                        if (file.isDirectory || file.isHidden) {
+                            file = null
                         }
                     }
 
                     if (toSend.contains("\$REPLY\$")) {
                         toSend = toSend.replace("\$REPLY\$", "").replace("   ", " ")
                             .replace("  ", " ")
-                        if (toSend.isNotEmpty()) message.channel.sendMessage(toSend).reference(message)
-                            .queue()
-                        if (file != null) message.channel.sendFile(file).reference(message).queue()
+                        if (toSend.isNotEmpty()) {
+                            if (file != null) {
+                                message.channel.sendMessage(toSend).addFile(file).reference(message).queue()
+                            } else {
+                                message.channel.sendMessage(toSend).reference(message).queue()
+                            }
+                        }
                     } else {
-                        if (toSend.isNotEmpty()) message.channel.sendMessage(toSend).queue()
-                        if (file != null) message.channel.sendFile(file).queue()
+                        if (toSend.isNotEmpty()) {
+                            if (file != null) {
+                                message.channel.sendMessage(toSend).addFile(file).queue()
+                            } else {
+                                message.channel.sendMessage(toSend).queue()
+                            }
+                        }
                     }
                 }
             }
         } catch (e: Exception) {
-            message.channel.sendMessage("**An error occurred!** Please check the log file!").queue()
+            message.channel.sendMessage(Messages.error).queue()
+            e.printStackTrace()
         }
     }
 }

@@ -1,11 +1,13 @@
 package xyz.jeremynoesen.bonebot
 
+import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent
 import xyz.jeremynoesen.bonebot.modules.Commands
 import xyz.jeremynoesen.bonebot.modules.Reactor
 import xyz.jeremynoesen.bonebot.modules.Responder
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import net.dv8tion.jda.api.events.message.MessageUpdateEvent
 import net.dv8tion.jda.api.hooks.ListenerAdapter
+import xyz.jeremynoesen.bonebot.modules.Welcomer
 
 /**
  * all listeners for the bot
@@ -28,7 +30,8 @@ class Listener : ListenerAdapter() {
                 }
             }
         } catch (ex: Exception) {
-            e.channel.sendMessage("**An error occurred!** Please check the log file!").queue()
+            e.channel.sendMessage(Messages.error).queue()
+            ex.printStackTrace()
         }
     }
 
@@ -40,9 +43,21 @@ class Listener : ListenerAdapter() {
     override fun onMessageUpdate(e: MessageUpdateEvent) {
         try {
             if ((!e.author.isBot || (Config.listenToBots && e.author != e.jda.selfUser))
-                && Commands.enabled) Commands.perform(e.message)
+                && Commands.enabled
+            ) Commands.perform(e.message)
         } catch (ex: Exception) {
-            e.channel.sendMessage("**An error occurred!** Please check the log file!").queue()
+            e.channel.sendMessage(Messages.error).queue()
+            ex.printStackTrace()
         }
+    }
+
+    /**
+     * listen for member joins so they can be welcomes
+     *
+     * @param e guild member join event
+     */
+    override fun onGuildMemberJoin(e: GuildMemberJoinEvent) {
+        if (Welcomer.enabled)
+            Welcomer.welcome(e.user, e.guild)
     }
 }
