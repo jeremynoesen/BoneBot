@@ -157,7 +157,7 @@ object Commands {
                                         toSend = toSend.replace("\$FILE\$", "").replace(path, "")
                                             .replace("   ", " ").replace("  ", " ").trim()
                                         file = File(path)
-                                        if (file.isDirectory || file.isHidden) {
+                                        if (!file.exists() || file.isDirectory || file.isHidden) {
                                             file = null
                                         }
                                     }
