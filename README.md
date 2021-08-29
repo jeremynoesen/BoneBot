@@ -47,7 +47,7 @@ The quote module will send a random quote from a file.
 `bbquote`
 
 ### Responder
-The responder will respond to a message with another when a trigger phrase is said.
+The responder will respond to a message with another when a trigger phrase is said. It can appear like it is typing the message itself!
 
 ### Reactor
 The reactor will react to a message with an emote when a trigger phrase is said.
@@ -59,7 +59,7 @@ BoneBot allows for custom commands to be made to provide text and image response
 BoneBot can have various randomized statuses shown in Discord that change over time.
 
 ### Welcomer
-The welcomer will send a private message to new users who join to welcome them to the server.
+The welcomer will send a private message to new users who join to welcome them to the server. This can be used to show server rules and an explanation of how to get started.
 
 ## Requirements
 Any version of Windows, macOS, or Linux that can run Java 8 or later.
@@ -191,7 +191,7 @@ reactor-cooldown: 60
 reactor-delay: 1000
 memes-enabled: true
 meme-cooldown: 5
-meme-size: 1024
+meme-size: 1200
 statuses-enabled: true
 status-delay: 60
 commands-enabled: true
@@ -227,6 +227,7 @@ unknown-file: **Unknown file!**
 meme-title: $USER$ generated a meme:
 meme-input-missing: Please provide the missing **text** and/or **image**!
 no-quotes: There are no quotes to show!
+welcome-title: $USER$ joined $GUILD$
 meme-cooldown: Another meme can be generated in **$TIME$** seconds.
 file-cooldown: Another file can be sent in **$TIME$** seconds.
 quote-cooldown: Another quote can be sent in **$TIME$** seconds.
@@ -263,6 +264,3 @@ The following is an example command sent to the bot to generate a meme with top 
 The following image is an example of the help command with one custom command added.
 
 <div align="center"><img src="img/help.png" alt="Help example" title="Help example" /></div>
-
-## Notice
-This project is no longer in development.

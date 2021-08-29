@@ -4,6 +4,7 @@ import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.entities.Guild
 import net.dv8tion.jda.api.entities.User
 import xyz.jeremynoesen.bonebot.Config
+import xyz.jeremynoesen.bonebot.Messages
 import java.io.File
 
 /**
@@ -43,7 +44,11 @@ object Welcomer {
 
                 val embedBuilder = EmbedBuilder()
                 embedBuilder.setColor(Config.embedColor)
-                embedBuilder.setAuthor(guild.name, null, guild.iconUrl)
+                embedBuilder.setAuthor(
+                    Messages.welcomeTitle.replace("\$GUILD\$", guild.name).replace("\$USER\$", user.name),
+                    null,
+                    guild.iconUrl
+                )
                 embedBuilder.setDescription(
                     toSend.replace("\$USER\$", user.asMention).replace("\$GUILD\$", guild.name)
                 )
