@@ -37,7 +37,7 @@ object Welcomer {
                     val path = toSend.split("\$FILE\$")[1].trim()
                     toSend = toSend.replace("\$FILE\$", "").replace(path, "")
                     file = File(path)
-                    if (file.isDirectory || file.isHidden) {
+                    if (!file.exists() || file.isDirectory || file.isHidden) {
                         file = null
                     }
                 }
