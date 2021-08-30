@@ -9,6 +9,8 @@ import java.io.File
 
 /**
  * module to send a welcome message to new members
+ *
+ * @author Jeremy Noesen
  */
 object Welcomer {
 

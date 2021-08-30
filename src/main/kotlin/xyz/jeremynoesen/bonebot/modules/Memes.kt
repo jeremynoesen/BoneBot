@@ -18,7 +18,6 @@ import javax.imageio.ImageIO
 import kotlin.math.ceil
 import kotlin.math.floor
 
-
 /**
  * meme generator module
  *
