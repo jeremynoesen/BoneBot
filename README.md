@@ -40,6 +40,8 @@ The file module will send a random file from `resources/files`. This can be an i
 - Only works for files in `resources/files`
 - must not start with a `/`
 - If not specified, a random file will be sent.
+  - Only files not in sub-directories will be sent.
+  - Specifying a sub-directory for the path will grab a random file from within that directory.
 
 ### Quotes
 The quote module will send a random quote from a file.
