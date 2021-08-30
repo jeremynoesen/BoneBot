@@ -51,22 +51,22 @@ object Files {
                                         .replace("  ", " ").trim()
                         )
                         if (!file.exists() || file.isHidden) {
-                            message.channel.sendMessage(Messages.unknownFile).queue()
+                            Messages.sendMessage(Messages.unknownFile, message)
                             return
                         }
                         if (file.isDirectory) {
                             sendRandomFile(message, file)
                         }
                     } catch (e: Exception) {
-                        message.channel.sendMessage(Messages.unknownFile).queue()
+                        Messages.sendMessage(Messages.unknownFile, message)
                     }
                 }
             } else {
                 val remaining = ((cooldown * 1000) - (System.currentTimeMillis() - prevTime)) / 1000
-                message.channel.sendMessage(Messages.fileCooldown.replace("\$TIME\$", remaining.toString())).queue()
+                Messages.sendMessage(Messages.fileCooldown.replace("\$TIME\$", remaining.toString()), message)
             }
         } catch (e: Exception) {
-            message.channel.sendMessage(Messages.error).queue()
+            Messages.sendMessage(Messages.error, message)
             e.printStackTrace()
         }
     }
@@ -87,13 +87,13 @@ object Files {
                 if (prev.contains(rand)) continue
                 prev.add(rand)
                 if (prev.size == dir.listFiles()!!.size) {
-                    message.channel.sendMessage(Messages.noFiles).queue()
+                    Messages.sendMessage(Messages.noFiles, message)
                     return
                 }
             }
             message.channel.sendFile(dir.listFiles()!![rand]).queue()
         } else {
-            message.channel.sendMessage(Messages.noFiles).queue()
+            Messages.sendMessage(Messages.noFiles, message)
         }
     }
 }

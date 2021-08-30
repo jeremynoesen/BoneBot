@@ -88,7 +88,7 @@ object Responder {
                 }
             }
         } catch (e: Exception) {
-            message.channel.sendMessage(Messages.error).queue()
+            Messages.sendMessage(Messages.error, message)
             e.printStackTrace()
         }
     }

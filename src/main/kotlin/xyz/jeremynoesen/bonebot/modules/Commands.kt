@@ -183,19 +183,18 @@ object Commands {
                                     return true
                                 }
                             }
-                            message.channel.sendMessage(Messages.unknownCommand).queue()
+                            Messages.sendMessage(Messages.unknownCommand, message)
                             return true
                         }
                     }
                 } else {
                     val remaining = ((cooldown * 1000) - (System.currentTimeMillis() - prevTime)) / 1000
-                    message.channel.sendMessage(Messages.commandCooldown.replace("\$TIME\$", remaining.toString()))
-                        .queue()
+                    Messages.sendMessage(Messages.commandCooldown.replace("\$TIME\$", remaining.toString()), message)
                     return true
                 }
             }
         } catch (e: Exception) {
-            message.channel.sendMessage(Messages.error).queue()
+            Messages.sendMessage(Messages.error, message)
             e.printStackTrace()
         }
         return false
