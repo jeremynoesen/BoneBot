@@ -45,14 +45,14 @@ object Quotes {
                     if (quote.isNotEmpty())
                         message.channel.sendMessage(quote).queue()
                 } else {
-                    message.channel.sendMessage(Messages.noQuotes).queue()
+                    Messages.sendMessage(Messages.noQuotes, message)
                 }
             } else {
                 val remaining = ((cooldown * 1000) - (System.currentTimeMillis() - prevTime)) / 1000
-                message.channel.sendMessage(Messages.quoteCooldown.replace("\$TIME\$", remaining.toString())).queue()
+                Messages.sendMessage(Messages.quoteCooldown.replace("\$TIME\$", remaining.toString()), message)
             }
         } catch (e: Exception) {
-            message.channel.sendMessage(Messages.error).queue()
+            Messages.sendMessage(Messages.error, message)
             e.printStackTrace()
         }
     }

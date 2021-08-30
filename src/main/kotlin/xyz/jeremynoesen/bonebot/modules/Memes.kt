@@ -68,15 +68,15 @@ constructor(private val command: Message) {
                     command.channel.sendMessage(embedBuilder.build()).addFile(file, "meme.png").queue()
                     prevTime = System.currentTimeMillis()
                 } else {
-                    command.channel.sendMessage(Messages.memeInputMissing).queue()
+                    Messages.sendMessage(Messages.memeInputMissing, command)
                 }
             } catch (exception: Exception) {
-                command.channel.sendMessage(Messages.error).queue()
+                Messages.sendMessage(Messages.error, command)
                 exception.printStackTrace()
             }
         } else {
             val remaining = ((cooldown * 1000) - (System.currentTimeMillis() - prevTime)) / 1000
-            command.channel.sendMessage(Messages.memeCooldown.replace("\$TIME\$", remaining.toString())).queue()
+            Messages.sendMessage(Messages.memeCooldown.replace("\$TIME\$", remaining.toString()), command)
         }
     }
 

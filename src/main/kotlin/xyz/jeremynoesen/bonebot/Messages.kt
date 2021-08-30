@@ -1,5 +1,6 @@
 package xyz.jeremynoesen.bonebot
 
+import net.dv8tion.jda.api.entities.Message
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.PrintWriter
@@ -10,7 +11,8 @@ import java.util.*
  */
 object Messages {
     var helpTitle = "\$BOT\$ Help"
-    var helpAbout = "\$BOT\$ aims to add more life to a server by responding and reacting to messages. It also adds commands, which are listed below."
+    var helpAbout =
+        "\$BOT\$ aims to add more life to a server by responding and reacting to messages. It also adds commands, which are listed below."
     var helpFormat = "• **`\$CMD\$`**: \$DESC\$"
     var helpDescription = "Show this help message."
     var memeDescription = "Generate a random or custom meme."
@@ -20,14 +22,15 @@ object Messages {
     var memeCommand = "meme"
     var fileCommand = "file"
     var quoteCommand = "quote"
+    var memeTitle = "\$USER\$ generated a meme:"
+    var welcomeTitle = "\$USER\$ joined \$GUILD\$"
+
     var error = "**An error occurred!** Please check the log file!"
     var unknownCommand = "**Unknown command!**"
     var noFiles = "There are **no files** to send!"
     var unknownFile = "**Unknown file!**"
-    var memeTitle = "\$USER\$ generated a meme:"
     var memeInputMissing = "Please provide the missing **text** and/or **image**!"
     var noQuotes = "There are no quotes to show!"
-    var welcomeTitle = "\$USER\$ joined \$GUILD\$"
     var memeCooldown = "Another meme can be generated in **\$TIME\$** seconds."
     var quoteCooldown = "Another quote can be sent in **\$TIME\$** seconds."
     var fileCooldown = "Another file can be sent in **\$TIME\$** seconds."
@@ -75,6 +78,12 @@ object Messages {
                     "quote-command:" -> {
                         quoteCommand = lineScanner.nextLine().trim()
                     }
+                    "meme-title:" -> {
+                        memeTitle = lineScanner.nextLine().replace("\\n", "\n").trim()
+                    }
+                    "welcome-title" -> {
+                        welcomeTitle = lineScanner.nextLine().replace("\\n", "\n").trim()
+                    }
                     "error:" -> {
                         error = lineScanner.nextLine().replace("\\n", "\n").trim()
                     }
@@ -87,17 +96,11 @@ object Messages {
                     "unknown-file:" -> {
                         unknownFile = lineScanner.nextLine().replace("\\n", "\n").trim()
                     }
-                    "meme-title:" -> {
-                        memeTitle = lineScanner.nextLine().replace("\\n", "\n").trim()
-                    }
                     "meme-input-missing:" -> {
                         memeInputMissing = lineScanner.nextLine().replace("\\n", "\n").trim()
                     }
                     "no-quotes:" -> {
                         noQuotes = lineScanner.nextLine().replace("\\n", "\n").trim()
-                    }
-                    "welcome-title" -> {
-                        welcomeTitle = lineScanner.nextLine().replace("\\n", "\n").trim()
                     }
                     "meme-cooldown:" -> {
                         memeCooldown = lineScanner.nextLine().replace("\\n", "\n").trim()
@@ -131,19 +134,42 @@ object Messages {
             pw.println("meme-command: $memeCommand")
             pw.println("file-command: $fileCommand")
             pw.println("quote-command: $quoteCommand")
+            pw.println("meme-title: $memeTitle")
+            pw.println("welcome-title: $welcomeTitle")
+            pw.println()
             pw.println("error: $error")
             pw.println("unknown-command: $unknownCommand")
             pw.println("no-files: $noFiles")
             pw.println("unknown-file: $unknownFile")
-            pw.println("meme-title: $memeTitle")
             pw.println("meme-input-missing: $memeInputMissing")
             pw.println("no-quotes: $noQuotes")
-            pw.println("welcome-title: $welcomeTitle")
             pw.println("meme-cooldown: $memeCooldown")
             pw.println("file-cooldown: $fileCooldown")
             pw.println("quote-cooldown: $quoteCooldown")
             pw.println("command-cooldown: $commandCooldown")
             pw.close()
+        }
+    }
+
+    /**
+     * send a message to the channel, pinging or replying to the user when specified and only sending when the message
+     * is not empty
+     *
+     * @param message message to send
+     * @param cause message causing this message to be sent
+     */
+    fun sendMessage(message: String, cause: Message) {
+        var toSend = message
+        if (toSend.contains("\$REPLY\$")) {
+            toSend = toSend.replace("\$REPLY\$", "").replace("\$USER\$", cause.author.asMention)
+                .replace("   ", " ").replace("  ", " ")
+            if (toSend.isNotEmpty())
+                cause.channel.sendMessage(toSend).reference(cause).queue()
+        } else {
+            toSend = toSend.replace("\$USER\$", cause.author.asMention)
+                .replace("   ", " ").replace("  ", " ")
+            if (toSend.isNotEmpty())
+                cause.channel.sendMessage(toSend).queue()
         }
     }
 }
