@@ -68,15 +68,15 @@ constructor(private val command: Message) {
                     command.channel.sendMessage(embedBuilder.build()).addFile(file, "meme.png").queue()
                     prevTime = System.currentTimeMillis()
                 } else {
-                    command.channel.sendMessage(Messages.memeInputMissing).queue()
+                    Messages.sendMessage(Messages.memeInputMissing, command)
                 }
             } catch (exception: Exception) {
-                command.channel.sendMessage(Messages.error).queue()
+                Messages.sendMessage(Messages.error, command)
                 exception.printStackTrace()
             }
         } else {
             val remaining = ((cooldown * 1000) - (System.currentTimeMillis() - prevTime)) / 1000
-            command.channel.sendMessage(Messages.memeCooldown.replace("\$TIME\$", remaining.toString())).queue()
+            Messages.sendMessage(Messages.memeCooldown.replace("\$TIME\$", remaining.toString()), command)
         }
     }
 
@@ -165,16 +165,7 @@ constructor(private val command: Message) {
             if (image != null) {
                 altInput = ""
             } else {
-                for (word in altInput.split(" ", "\n", " // ")) {
-                    if (word.startsWith("http://") || word.startsWith("https://")) {
-                        altInput = altInput.replace(word, "").replace("   ", " ")
-                            .replace("  ", " ")
-                    }
-                }
-
-                for (i in reply.mentionedUsers.indices)
-                    altInput = altInput.replace("@${reply.mentionedUsers[i].name}", "")
-                        .replace("   ", " ").replace("  ", " ")
+                altInput = cleanInput(altInput)
             }
         }
 
@@ -196,16 +187,7 @@ constructor(private val command: Message) {
             }
         }
 
-        for (word in input.split(" ", "\n", " // ")) {
-            if (word.startsWith("http://") || word.startsWith("https://")) {
-                input = input.replace(word, "").replace("   ", " ")
-                    .replace("  ", " ")
-            }
-        }
-
-        for (i in command.mentionedUsers.indices) input =
-            input.replace("@${command.mentionedUsers[i].name}", "")
-                .replace("   ", " ").replace("  ", " ")
+        input = cleanInput(input)
 
         if (input.trim().isNotEmpty()) {
             text = input
@@ -214,6 +196,28 @@ constructor(private val command: Message) {
         } else if (texts.isNotEmpty()) {
             text = texts[Random().nextInt(texts.size)]
         }
+    }
+
+    /**
+     * remove user pings and urls from the text input
+     *
+     * @param input input text
+     * @return output text with pings and urls removed
+     */
+    private fun cleanInput(input: String): String {
+        var output = input
+        for (word in output.split(" ", "\n", " // ")) {
+            if (word.startsWith("http://") || word.startsWith("https://")) {
+                output = input.replace(word, "").replace("   ", " ")
+                    .replace("  ", " ")
+            }
+        }
+
+        for (i in command.mentionedUsers.indices) output =
+            input.replace("@${command.mentionedUsers[i].name}", "")
+                .replace("   ", " ").replace("  ", " ")
+
+        return output
     }
 
     /**

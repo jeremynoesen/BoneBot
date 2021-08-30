@@ -157,48 +157,44 @@ object Commands {
                                         toSend = toSend.replace("\$FILE\$", "").replace(path, "")
                                             .replace("   ", " ").replace("  ", " ").trim()
                                         file = File(path)
-                                        if (file.isDirectory || file.isHidden) {
+                                        if (!file.exists() || file.isDirectory || file.isHidden) {
                                             file = null
                                         }
                                     }
 
                                     if (toSend.contains("\$REPLY\$")) {
-                                        toSend = toSend.replace("\$REPLY\$", "")
-                                            .replace("   ", " ").replace("  ", " ")
-                                        if (toSend.isNotEmpty()) {
-                                            if (file != null) {
-                                                message.channel.sendMessage(toSend).addFile(file).reference(message)
-                                                    .queue()
-                                            } else {
+                                        toSend = toSend.replace("\$REPLY\$", "").replace("   ", " ")
+                                            .replace("  ", " ")
+                                        if (file != null) {
+                                            message.channel.sendMessage(toSend).addFile(file).reference(message).queue()
+                                        } else {
+                                            if (toSend.isNotEmpty())
                                                 message.channel.sendMessage(toSend).reference(message).queue()
-                                            }
                                         }
                                     } else {
-                                        if (toSend.isNotEmpty()) {
-                                            if (file != null) {
-                                                message.channel.sendMessage(toSend).addFile(file).queue()
-                                            } else {
+                                        if (file != null) {
+                                            message.channel.sendMessage(toSend).addFile(file).queue()
+                                        } else {
+                                            if (toSend.isNotEmpty())
                                                 message.channel.sendMessage(toSend).queue()
-                                            }
                                         }
                                     }
 
                                     return true
                                 }
                             }
-                            message.channel.sendMessage(Messages.unknownCommand).queue()
+                            Messages.sendMessage(Messages.unknownCommand, message)
                             return true
                         }
                     }
                 } else {
                     val remaining = ((cooldown * 1000) - (System.currentTimeMillis() - prevTime)) / 1000
-                    message.channel.sendMessage(Messages.commandCooldown.replace("\$TIME\$", remaining.toString()))
-                        .queue()
+                    Messages.sendMessage(Messages.commandCooldown.replace("\$TIME\$", remaining.toString()), message)
                     return true
                 }
             }
         } catch (e: Exception) {
-            message.channel.sendMessage(Messages.error).queue()
+            Messages.sendMessage(Messages.error, message)
             e.printStackTrace()
         }
         return false

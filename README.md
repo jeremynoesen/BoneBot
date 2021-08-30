@@ -168,7 +168,7 @@ java -jar BoneBot.jar
 
 ### Messages
 - All messages built in to the bot are editable, located in `resources/messages.txt`.
-- The only placeholders allowed are specified per line.
+- The only placeholders allowed are specified per line, except for all messages from `error` to the end of the file. These can include the `$USER$` and `$REPLY$` placeholders.
 - Standard Discord Markdown formatting is supported.
 - This file can modify all built-in responses, command descriptions, and commands.
 - All messages can include new line characters `\n`, except for the commands
@@ -220,14 +220,15 @@ help-command: help
 meme-command: meme
 file-command: file
 quote-command: quote
+meme-title: $USER$ generated a meme:
+welcome-title: $USER$ joined $GUILD$
+
 error: **An error occurred!** Please check the log file!
 unknown-command: **Unknown command!**
 no-files: There are **no files** to send!
 unknown-file: **Unknown file!**
-meme-title: $USER$ generated a meme:
 meme-input-missing: Please provide the missing **text** and/or **image**!
 no-quotes: There are no quotes to show!
-welcome-title: $USER$ joined $GUILD$
 meme-cooldown: Another meme can be generated in **$TIME$** seconds.
 file-cooldown: Another file can be sent in **$TIME$** seconds.
 quote-cooldown: Another quote can be sent in **$TIME$** seconds.

@@ -63,7 +63,7 @@ object Responder {
                         toSend = toSend.replace("\$FILE\$", "").replace(path, "")
                             .replace("   ", " ").replace("  ", " ").trim()
                         file = File(path)
-                        if (file.isDirectory || file.isHidden) {
+                        if (!file.exists() || file.isDirectory || file.isHidden) {
                             file = null
                         }
                     }
@@ -71,26 +71,24 @@ object Responder {
                     if (toSend.contains("\$REPLY\$")) {
                         toSend = toSend.replace("\$REPLY\$", "").replace("   ", " ")
                             .replace("  ", " ")
-                        if (toSend.isNotEmpty()) {
-                            if (file != null) {
-                                message.channel.sendMessage(toSend).addFile(file).reference(message).queue()
-                            } else {
+                        if (file != null) {
+                            message.channel.sendMessage(toSend).addFile(file).reference(message).queue()
+                        } else {
+                            if (toSend.isNotEmpty())
                                 message.channel.sendMessage(toSend).reference(message).queue()
-                            }
                         }
                     } else {
-                        if (toSend.isNotEmpty()) {
-                            if (file != null) {
-                                message.channel.sendMessage(toSend).addFile(file).queue()
-                            } else {
+                        if (file != null) {
+                            message.channel.sendMessage(toSend).addFile(file).queue()
+                        } else {
+                            if (toSend.isNotEmpty())
                                 message.channel.sendMessage(toSend).queue()
-                            }
                         }
                     }
                 }
             }
         } catch (e: Exception) {
-            message.channel.sendMessage(Messages.error).queue()
+            Messages.sendMessage(Messages.error, message)
             e.printStackTrace()
         }
     }

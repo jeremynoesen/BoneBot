@@ -30,7 +30,7 @@ class Listener : ListenerAdapter() {
                 }
             }
         } catch (ex: Exception) {
-            e.channel.sendMessage(Messages.error).queue()
+            Messages.sendMessage(Messages.error, e.message)
             ex.printStackTrace()
         }
     }
@@ -46,7 +46,7 @@ class Listener : ListenerAdapter() {
                 && Commands.enabled
             ) Commands.perform(e.message)
         } catch (ex: Exception) {
-            e.channel.sendMessage(Messages.error).queue()
+            Messages.sendMessage(Messages.error, e.message)
             ex.printStackTrace()
         }
     }
