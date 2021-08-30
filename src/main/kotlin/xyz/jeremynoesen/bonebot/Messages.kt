@@ -8,6 +8,8 @@ import java.util.*
 
 /**
  * all messages used throughout the bot
+ *
+ * @author Jeremy Noesen
  */
 object Messages {
     var helpTitle = "\$BOT\$ Help"
