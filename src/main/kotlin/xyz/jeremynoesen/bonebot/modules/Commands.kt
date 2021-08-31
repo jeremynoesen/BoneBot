@@ -117,7 +117,7 @@ object Commands {
 
                                     var toSend =
                                         commands[command]!!.second.replace("\$USER\$", message.author.asMention)
-                                            .replace("\\n", "\n")
+                                            .replace("\$ID\$", message.author.id).replace("\\n", "\n")
 
                                     if (toSend.contains("\$CMD\$")) {
                                         val cmd = toSend.split("\$CMD\$")[1].trim()
