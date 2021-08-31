@@ -225,7 +225,6 @@ file-command: file
 quote-command: quote
 meme-title: $USER$ generated a meme:
 welcome-title: $USER$ joined $GUILD$
-
 error: **An error occurred!** Please check the log file!
 unknown-command: **Unknown command!**
 no-files: There are **no files** to send!

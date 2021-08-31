@@ -49,7 +49,7 @@ object Commands {
     fun perform(message: Message): Boolean {
         try {
             val msg = message.contentRaw
-            if (msg.startsWith(commandPrefix)) {
+            if (msg.startsWith(commandPrefix, true)) {
                 message.channel.sendTyping().queue()
                 if ((System.currentTimeMillis() - prevTime) >= cooldown * 1000) {
                     prevTime = System.currentTimeMillis()
