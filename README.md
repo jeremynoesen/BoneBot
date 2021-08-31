@@ -140,12 +140,13 @@ java -jar BoneBot.jar
 - The format is `command // description // response`.
 - Do not put the prefix in the command.
 - The response can include `\n` as a line separator.
-- You can include `$USER$` in the response to ping the user who used the command, or `$REPLY$` to reply to them.
+- You can include `$USER$` in the response to ping the user who used the command, or `$REPLY$` to reply to them. The user replacement happens before the shell commands below.
+- You can also include `$ID$` in the response to place the user's ID into it. This also happens before the shell commands.
 - You can run a shell command by adding `$CMD$ command here $CMD$`.
-  - You can only run one command.
-  - Need to run multiple commands? Make a shell script and run the script with a command!
+  - Need to run multiple commands? Make a shell script and run the script with a command, or separate commands with a semi-colon!
   - Add `$CMDOUT$` to your response to also include the output of this command in the response.
-  - If the above would return a file path, you can surround it with `$FILE$` to send that file, outlined below
+  - If the above would return a file path, you can surround it with `$FILE$` to send that file, outlined below.
+  - You can accept input from the Discord command by using `${BB_INPUT}` (Linux, macOS) or `%BB_INPUT%` (Windows) within the `$CMD$` blocks.
 - You can send a single file by adding `$FILE$ path/to/file $FILE$`.
 - You can add a reaction to the command trigger message by adding `$REACT$ emote $REACT$`. Format for emotes is similar to the reactor.
 - To change the command prefix, set `command-prefix` in the main configuration to a custom prefix. Case is ignored.
