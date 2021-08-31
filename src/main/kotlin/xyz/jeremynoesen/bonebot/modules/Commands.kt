@@ -138,7 +138,7 @@ object Commands {
                                             env["BB_FILE"] = message.attachments[0].url
 
                                         if (message.mentionedUsers.size > 0 &&
-                                                cmd.split(message.mentionedUsers[message.mentionedUsers.size - 1].name).size > 1) {
+                                                message.contentDisplay.split(message.mentionedUsers[message.mentionedUsers.size - 1].name).size > 1) {
                                             env["BB_MENTION_USER"] = message.mentionedUsers[message.mentionedUsers.size - 1].name
                                             env["BB_MENTION_ID"] = message.mentionedUsers[message.mentionedUsers.size - 1].id
                                             env["BB_MENTION_AVATAR"] = message.mentionedUsers[message.mentionedUsers.size - 1].avatarUrl
