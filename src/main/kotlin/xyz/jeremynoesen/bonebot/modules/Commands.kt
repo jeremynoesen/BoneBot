@@ -1,8 +1,8 @@
 package xyz.jeremynoesen.bonebot.modules
 
-import xyz.jeremynoesen.bonebot.Config
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.entities.Message
+import xyz.jeremynoesen.bonebot.Config
 import xyz.jeremynoesen.bonebot.Messages
 import java.io.BufferedReader
 import java.io.File
@@ -49,7 +49,7 @@ object Commands {
     fun perform(message: Message): Boolean {
         try {
             val msg = message.contentRaw
-            if (msg.startsWith(commandPrefix)) {
+            if (msg.startsWith(commandPrefix, true)) {
                 message.channel.sendTyping().queue()
                 if ((System.currentTimeMillis() - prevTime) >= cooldown * 1000) {
                     prevTime = System.currentTimeMillis()
@@ -71,40 +71,40 @@ object Commands {
                             var commandList = Messages.helpAbout.replace("\$BOT\$", message.jda.selfUser.name) + "\n\n"
 
                             commandList += Messages.helpFormat.replace("\$CMD\$", commandPrefix + Messages.helpCommand)
-                                .replace("\$DESC\$", Messages.helpDescription) + "\n"
+                                    .replace("\$DESC\$", Messages.helpDescription) + "\n"
 
                             if (Memes.enabled) commandList += Messages.helpFormat.replace(
-                                "\$CMD\$",
-                                commandPrefix + Messages.memeCommand
+                                    "\$CMD\$",
+                                    commandPrefix + Messages.memeCommand
                             )
-                                .replace("\$DESC\$", Messages.memeDescription) + "\n"
+                                    .replace("\$DESC\$", Messages.memeDescription) + "\n"
 
                             if (Files.enabled) commandList += Messages.helpFormat.replace(
-                                "\$CMD\$",
-                                commandPrefix + Messages.fileCommand
+                                    "\$CMD\$",
+                                    commandPrefix + Messages.fileCommand
                             )
-                                .replace("\$DESC\$", Messages.fileDescription) + "\n"
+                                    .replace("\$DESC\$", Messages.fileDescription) + "\n"
 
                             if (Quotes.enabled) commandList += Messages.helpFormat.replace(
-                                "\$CMD\$",
-                                commandPrefix + Messages.quoteCommand
+                                    "\$CMD\$",
+                                    commandPrefix + Messages.quoteCommand
                             )
-                                .replace("\$DESC\$", Messages.quoteDescription) + "\n"
+                                    .replace("\$DESC\$", Messages.quoteDescription) + "\n"
 
                             for (command in commands.keys) {
                                 commandList += Messages.helpFormat.replace(
-                                    "\$CMD\$",
-                                    commandPrefix + command
+                                        "\$CMD\$",
+                                        commandPrefix + command
                                 )
-                                    .replace("\$DESC\$", commands[command]!!.first) + "\n"
+                                        .replace("\$DESC\$", commands[command]!!.first) + "\n"
                             }
 
                             val embedBuilder = EmbedBuilder()
                             val name = message.jda.selfUser.name
                             embedBuilder.setAuthor(
-                                Messages.helpTitle.replace("\$BOT\$", name),
-                                null,
-                                message.jda.selfUser.avatarUrl
+                                    Messages.helpTitle.replace("\$BOT\$", name),
+                                    null,
+                                    message.jda.selfUser.avatarUrl
                             )
                             embedBuilder.setColor(Config.embedColor)
                             embedBuilder.setDescription("$commandList\n[**Source Code**](https://github.com/jeremynoesen/BoneBot)")
@@ -116,8 +116,8 @@ object Commands {
                                 if (msg.split(" ")[0].equals("$commandPrefix${command.lowercase()}", true)) {
 
                                     var toSend =
-                                        commands[command]!!.second.replace("\$USER\$", message.author.asMention)
-                                            .replace("\$ID\$", message.author.id).replace("\\n", "\n")
+                                            commands[command]!!.second.replace("\$USER\$", message.author.asMention)
+                                                    .replace("\\n", "\n")
 
                                     if (toSend.contains("\$CMD\$")) {
                                         val cmd = toSend.split("\$CMD\$")[1].trim()
@@ -128,13 +128,44 @@ object Commands {
                                             ProcessBuilder("/bin/sh", "-c", cmd)
                                         }
                                         val env = procBuilder.environment()
+
                                         env["BB_INPUT"] =
-                                            msg.substring(commandPrefix.length + command.length, msg.length).trim()
+                                                msg.substring(commandPrefix.length + command.length, msg.length).trim()
+                                        env["BB_USER"] = message.author.name
+                                        env["BB_ID"] = message.author.id
+                                        env["BB_AVATAR"] = message.author.avatarUrl
+                                        if (message.attachments.size > 0)
+                                            env["BB_FILE"] = message.attachments[0].url
+
+                                        if (message.mentionedUsers.size > 0 &&
+                                                message.contentDisplay.split(message.mentionedUsers[message.mentionedUsers.size - 1].name).size > 1) {
+                                            env["BB_MENTION_USER"] = message.mentionedUsers[message.mentionedUsers.size - 1].name
+                                            env["BB_MENTION_ID"] = message.mentionedUsers[message.mentionedUsers.size - 1].id
+                                            env["BB_MENTION_AVATAR"] = message.mentionedUsers[message.mentionedUsers.size - 1].avatarUrl
+                                        }
+
+                                        if (message.referencedMessage != null) {
+                                            val reply = message.referencedMessage!!
+                                            env["BB_REPLY_INPUT"] = reply.contentDisplay
+                                            env["BB_REPLY_USER"] = reply.author.name
+                                            env["BB_REPLY_ID"] = reply.author.id
+                                            env["BB_REPLY_AVATAR"] = reply.author.avatarUrl
+                                            if (reply.attachments.size > 0)
+                                                env["BB_REPLY_FILE"] = reply.attachments[0].url
+
+                                            if (reply.mentionedUsers.size > 0 &&
+                                                    reply.contentDisplay.split(reply.mentionedUsers[reply.mentionedUsers.size - 1].name).size > 1) {
+                                                env["BB_REPLY_MENTION_USER"] = reply.mentionedUsers[reply.mentionedUsers.size - 1].name
+                                                env["BB_REPLY_MENTION_ID"] = reply.mentionedUsers[reply.mentionedUsers.size - 1].id
+                                                env["BB_REPLY_MENTION_AVATAR"] = reply.mentionedUsers[reply.mentionedUsers.size - 1].avatarUrl
+                                            }
+                                        }
+
                                         val stream = procBuilder.start().inputStream
 
                                         toSend = toSend.replace("\$CMD\$", "")
-                                            .replace(cmd, "").replace("   ", " ")
-                                            .replace("  ", " ").trim()
+                                                .replace(cmd, "").replace("   ", " ")
+                                                .replace("  ", " ").trim()
 
                                         if (toSend.contains("\$CMDOUT\$")) {
                                             val stdInput = BufferedReader(InputStreamReader(stream))
@@ -148,7 +179,7 @@ object Commands {
                                     if (toSend.contains("\$REACT\$")) {
                                         val emote = toSend.split("\$REACT\$")[1].trim()
                                         toSend = toSend.replace("\$REACT\$", "").replace(emote, "")
-                                            .replace("   ", " ").replace("  ", " ").trim()
+                                                .replace("   ", " ").replace("  ", " ").trim()
                                         message.addReaction(emote).queue()
                                     }
 
@@ -157,7 +188,7 @@ object Commands {
                                     if (toSend.contains("\$FILE\$")) {
                                         val path = toSend.split("\$FILE\$")[1].trim()
                                         toSend = toSend.replace("\$FILE\$", "").replace(path, "")
-                                            .replace("   ", " ").replace("  ", " ").trim()
+                                                .replace("   ", " ").replace("  ", " ").trim()
                                         file = File(path)
                                         if (!file.exists() || file.isDirectory || file.isHidden) {
                                             file = null
@@ -166,16 +197,22 @@ object Commands {
 
                                     if (toSend.contains("\$REPLY\$")) {
                                         toSend = toSend.replace("\$REPLY\$", "").replace("   ", " ")
-                                            .replace("  ", " ")
+                                                .replace("  ", " ")
                                         if (file != null) {
-                                            message.channel.sendMessage(toSend).addFile(file).reference(message).queue()
+                                            if (toSend.isNotEmpty())
+                                                message.channel.sendMessage(toSend).addFile(file).reference(message).queue()
+                                            else
+                                                message.channel.sendFile(file).reference(message).queue()
                                         } else {
                                             if (toSend.isNotEmpty())
                                                 message.channel.sendMessage(toSend).reference(message).queue()
                                         }
                                     } else {
                                         if (file != null) {
-                                            message.channel.sendMessage(toSend).addFile(file).queue()
+                                            if (toSend.isNotEmpty())
+                                                message.channel.sendMessage(toSend).addFile(file).queue()
+                                            else
+                                                message.channel.sendFile(file).queue()
                                         } else {
                                             if (toSend.isNotEmpty())
                                                 message.channel.sendMessage(toSend).queue()

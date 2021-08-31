@@ -55,7 +55,7 @@ The responder will respond to a message with another when a trigger phrase is sa
 The reactor will react to a message with an emote when a trigger phrase is said.
 
 ### Commands
-BoneBot allows for custom commands to be made to provide text and image responses and run shell commands. Their usage is pretty simple - a command called `test` would be used by typing `bbtest`. If you make a mistake in typing a command, you can edit the message to fix it without needing to send another message.
+BoneBot allows for custom commands to be made to provide text and image responses and run shell commands. Their usage is pretty simple - a command called `test` would be used by typing `bbtest`. If you make a mistake in typing a command, you can edit the message to fix it without needing to send another message. This module can provide simple ping-pong style commands, or more complex commands as needed.
 
 ### Statuses
 BoneBot can have various randomized statuses shown in Discord that change over time.
@@ -135,18 +135,33 @@ java -jar BoneBot.jar
 - To enable or disable the reactor, set `reactor-enabled` in the main configuration to `true` or `false`.
 
 ### Commands
-- Reactions will be put into `resources/commands.txt`.
+- Commands will be put into `resources/commands.txt`.
 - Each line designates a new entry.
 - The format is `command // description // response`.
 - Do not put the prefix in the command.
 - The response can include `\n` as a line separator.
-- You can include `$USER$` in the response to ping the user who used the command, or `$REPLY$` to reply to them. The user replacement happens before the shell commands below.
-- You can also include `$ID$` in the response to place the user's ID into it. This also happens before the shell commands.
+- You can include `$USER$` in the response to ping the user who used the command, or `$REPLY$` to reply to them.
 - You can run a shell command by adding `$CMD$ command here $CMD$`.
   - Need to run multiple commands? Make a shell script and run the script with a command, or separate commands with a semi-colon!
   - Add `$CMDOUT$` to your response to also include the output of this command in the response.
   - If the above would return a file path, you can surround it with `$FILE$` to send that file, outlined below.
-  - You can accept input from the Discord command by using `${BB_INPUT}` (Linux, macOS) or `%BB_INPUT%` (Windows) within the `$CMD$` blocks.
+  - You can accept input from the Discord command by using path variables within the `$CMD$` blocks. These can be used by doing `${VARIABLE}` in Linux and macOS, or `%VARIABLE%` in Windows. The available variables are as follows:
+    - `BB_INPUT`: All text after the command trigger
+    - `BB_USER`: Name of command author
+    - `BB_ID`: ID of user sending command
+    - `BB_AVATAR`: Avatar URL of the command author
+    - `BB_FILE`: URL of the first file attachment in the message
+    - `BB_MENTION_USER`: Name of last pinged user in the message
+    - `BB_MENTION_ID`: ID of last pinged user
+    - `BB_MENTION_AVATAR`: Avatar URL of the last pinged user
+    - `BB_REPLY_INPUT`: All text of replied message
+    - `BB_REPLY_USER`: Name of reply author
+    - `BB_REPLY_ID`: ID of reply author
+    - `BB_REPLY_AVATAR`: Avatar URL of the reply author
+    - `BB_REPLY_FILE`: URL of the first file attachment in the replied message
+    - `BB_REPLY_MENTION_USER`: Name of last pinged user in the replied message
+    - `BB_REPLY_MENTION_ID`: ID of last pinged user in the replied message
+    - `BB_REPLY_MENTION_AVATAR`: Avatar URL of the last pinged user in the replied message
 - You can send a single file by adding `$FILE$ path/to/file $FILE$`.
 - You can add a reaction to the command trigger message by adding `$REACT$ emote $REACT$`. Format for emotes is similar to the reactor.
 - To change the command prefix, set `command-prefix` in the main configuration to a custom prefix. Case is ignored.
@@ -174,13 +189,13 @@ java -jar BoneBot.jar
 - The only placeholders allowed are specified per line, except for all messages from `error` to the end of the file. These can include the `$USER$` and `$REPLY$` placeholders.
 - Standard Discord Markdown formatting is supported.
 - This file can modify all built-in responses, command descriptions, and commands.
-- All messages can include new line characters `\n`, except for the commands
+- All messages can include new line characters `\n`, except for the commands.
 
 ### Miscellaneous
 - You can change the colors of embeds for the meme generator and help message by setting `embed-color` in the main configuration to a hex code.
 - You can allow BoneBot to listen to input from other bots by setting `listen-to-bots` to `true`. It defaults to `false`.
 - All files in `temp` will be deleted every time the bot program is closed.
-- You can make other files and directories in the bot folder as needed for your own organization of files the bot may use, but not for the files the bot requires
+- You can make other files and directories in the bot folder as needed for your own organization of files the bot may use, but not for the files the bot requires.
 
 ### Defaults
 ##### Main Configuration
@@ -225,7 +240,6 @@ file-command: file
 quote-command: quote
 meme-title: $USER$ generated a meme:
 welcome-title: $USER$ joined $GUILD$
-
 error: **An error occurred!** Please check the log file!
 unknown-command: **Unknown command!**
 no-files: There are **no files** to send!
