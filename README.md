@@ -145,7 +145,8 @@ java -jar BoneBot.jar
 - You can run a shell command by adding `$CMD$ command here $CMD$`.
   - Need to run multiple commands? Make a shell script and run the script with a command, or separate commands with a semi-colon!
   - Add `$CMDOUT$` to your response to also include the output of this command in the response.
-  - If the above would return a file path, you can surround it with `$FILE$` to send that file, outlined below
+  - If the above would return a file path, you can surround it with `$FILE$` to send that file, outlined below.
+  - You can accept input from the Discord command by using `${BB_INPUT}` (Linux, macOS) or `%BB_INPUT%` (Windows) within the `$CMD$` blocks.
 - You can send a single file by adding `$FILE$ path/to/file $FILE$`.
 - You can add a reaction to the command trigger message by adding `$REACT$ emote $REACT$`. Format for emotes is similar to the reactor.
 - To change the command prefix, set `command-prefix` in the main configuration to a custom prefix. Case is ignored.

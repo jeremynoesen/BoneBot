@@ -48,25 +48,25 @@ object Commands {
      */
     fun perform(message: Message): Boolean {
         try {
-            val msg = message.contentRaw.lowercase()
+            val msg = message.contentRaw
             if (msg.startsWith(commandPrefix)) {
                 message.channel.sendTyping().queue()
                 if ((System.currentTimeMillis() - prevTime) >= cooldown * 1000) {
                     prevTime = System.currentTimeMillis()
                     when {
-                        msg.startsWith(commandPrefix + Messages.memeCommand) && Memes.enabled -> {
+                        msg.split(" ")[0].equals(commandPrefix + Messages.memeCommand, true) && Memes.enabled -> {
                             Memes(message).generate()
                             return true
                         }
-                        msg == commandPrefix + Messages.quoteCommand && Quotes.enabled -> {
+                        msg.split(" ")[0].equals(commandPrefix + Messages.quoteCommand, true) && Quotes.enabled -> {
                             Quotes.sendQuote(message)
                             return true
                         }
-                        msg.startsWith(commandPrefix + Messages.fileCommand) && Files.enabled -> {
+                        msg.split(" ")[0].equals(commandPrefix + Messages.fileCommand, true) && Files.enabled -> {
                             Files.sendFile(message)
                             return true
                         }
-                        msg == commandPrefix + Messages.helpCommand -> {
+                        msg.split(" ")[0].equals(commandPrefix + Messages.helpCommand, true) -> {
 
                             var commandList = Messages.helpAbout.replace("\$BOT\$", message.jda.selfUser.name) + "\n\n"
 
@@ -113,7 +113,7 @@ object Commands {
                         }
                         else -> {
                             for (command in commands.keys) {
-                                if (msg == "$commandPrefix${command.lowercase()}") {
+                                if (msg.split(" ")[0].equals("$commandPrefix${command.lowercase()}", true)) {
 
                                     var toSend =
                                         commands[command]!!.second.replace("\$USER\$", message.author.asMention)
@@ -122,12 +122,14 @@ object Commands {
                                     if (toSend.contains("\$CMD\$")) {
                                         val cmd = toSend.split("\$CMD\$")[1].trim()
 
-                                        val procBuilder: ProcessBuilder?
-                                        if (System.getProperty("os.name").contains("windows", true)) {
-                                            procBuilder = ProcessBuilder("cmd.exe", "/c", cmd)
+                                        val procBuilder = if (System.getProperty("os.name").contains("windows", true)) {
+                                            ProcessBuilder("cmd.exe", "/c", cmd)
                                         } else {
-                                            procBuilder = ProcessBuilder("/bin/sh", "-c", cmd)
+                                            ProcessBuilder("/bin/sh", "-c", cmd)
                                         }
+                                        val env = procBuilder.environment()
+                                        env["BB_INPUT"] =
+                                            msg.substring(commandPrefix.length + command.length, msg.length).trim()
                                         val stream = procBuilder.start().inputStream
 
                                         toSend = toSend.replace("\$CMD\$", "")
