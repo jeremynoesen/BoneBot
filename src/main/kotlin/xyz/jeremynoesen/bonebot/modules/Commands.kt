@@ -117,7 +117,7 @@ object Commands {
 
                                     var toSend =
                                             commands[command]!!.second.replace("\$USER\$", message.author.asMention)
-                                                    .replace("\$ID\$", message.author.id).replace("\\n", "\n")
+                                                    .replace("\\n", "\n")
 
                                     if (toSend.contains("\$CMD\$")) {
                                         val cmd = toSend.split("\$CMD\$")[1].trim()
@@ -128,8 +128,39 @@ object Commands {
                                             ProcessBuilder("/bin/sh", "-c", cmd)
                                         }
                                         val env = procBuilder.environment()
+
                                         env["BB_INPUT"] =
                                                 msg.substring(commandPrefix.length + command.length, msg.length).trim()
+                                        env["BB_USER"] = message.author.name
+                                        env["BB_ID"] = message.author.id
+                                        env["BB_AVATAR"] = message.author.avatarUrl
+                                        if (message.attachments.size > 0)
+                                            env["BB_FILE"] = message.attachments[0].url
+
+                                        if (message.mentionedUsers.size > 0 &&
+                                                cmd.split(message.mentionedUsers[message.mentionedUsers.size - 1].name).size > 1) {
+                                            env["BB_MENTION_USER"] = message.mentionedUsers[message.mentionedUsers.size - 1].name
+                                            env["BB_MENTION_ID"] = message.mentionedUsers[message.mentionedUsers.size - 1].id
+                                            env["BB_MENTION_AVATAR"] = message.mentionedUsers[message.mentionedUsers.size - 1].avatarUrl
+                                        }
+
+                                        if (message.referencedMessage != null) {
+                                            val reply = message.referencedMessage!!
+                                            env["BB_REPLY_INPUT"] = reply.contentDisplay
+                                            env["BB_REPLY_USER"] = reply.author.name
+                                            env["BB_REPLY_ID"] = reply.author.id
+                                            env["BB_REPLY_AVATAR"] = reply.author.avatarUrl
+                                            if (reply.attachments.size > 0)
+                                                env["BB_REPLY_FILE"] = reply.attachments[0].url
+
+                                            if (reply.mentionedUsers.size > 0 &&
+                                                    reply.contentDisplay.split(reply.mentionedUsers[reply.mentionedUsers.size - 1].name).size > 1) {
+                                                env["BB_REPLY_MENTION_USER"] = reply.mentionedUsers[reply.mentionedUsers.size - 1].name
+                                                env["BB_REPLY_MENTION_ID"] = reply.mentionedUsers[reply.mentionedUsers.size - 1].id
+                                                env["BB_REPLY_MENTION_AVATAR"] = reply.mentionedUsers[reply.mentionedUsers.size - 1].avatarUrl
+                                            }
+                                        }
+
                                         val stream = procBuilder.start().inputStream
 
                                         toSend = toSend.replace("\$CMD\$", "")
