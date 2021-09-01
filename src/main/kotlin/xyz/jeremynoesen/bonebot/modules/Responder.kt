@@ -3,7 +3,6 @@ package xyz.jeremynoesen.bonebot.modules
 import net.dv8tion.jda.api.entities.Message
 import xyz.jeremynoesen.bonebot.Messages
 import java.io.File
-import java.util.*
 
 /**
  * responder to respond to words and phrases in a message
@@ -47,14 +46,15 @@ object Responder {
             val msg = message.contentDisplay
             for (trigger in responses.keys) {
                 if ((msg.contains(Regex(trigger)) || msg.lowercase().contains(trigger.lowercase()))
-                    && (System.currentTimeMillis() - prevTime) >= cooldown * 1000
+                        && (System.currentTimeMillis() - prevTime) >= cooldown * 1000
                 ) {
                     prevTime = System.currentTimeMillis()
 
                     if (typingSpeed > 0) message.channel.sendTyping().queue()
 
                     var toSend = responses[trigger]!!.replace("\$USER\$", message.author.asMention)
-                        .replace("\\n", "\n")
+                            .replace("\$NAME\$", message.author.name)
+                            .replace("\\n", "\n")
 
                     var file: File? = null
 

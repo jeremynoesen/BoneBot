@@ -117,7 +117,9 @@ java -jar BoneBot.jar
 - Case is ignored in the trigger.
 - The trigger can include Regex. Case is not ignored if you use Regex.
 - The response can include `\n` as a line separator.
-- You can also include `$USER$` in the response to ping the user who invoked a response, or `$REPLY$` to reply to them.
+- You can include `$USER$` in the response to ping the user who invoked the response.
+- You can also include `$NAME` to show their username.
+- Include `$REPLY$` to reply to the author.
 - You can send a single file by adding `$FILE$ path/to/file $FILE$`.
 - The response sends with a delay based on message length multiplied by `typing-speed` in the main configuration in milliseconds. This number must be a whole number.
 - To set a cool down for the responder, set `responder-cooldown` in the main configuration to whole any number in seconds.
@@ -140,7 +142,9 @@ java -jar BoneBot.jar
 - The format is `command // description // response`.
 - Do not put the prefix in the command.
 - The response can include `\n` as a line separator.
-- You can include `$USER$` in the response to ping the user who used the command, or `$REPLY$` to reply to them.
+- You can include `$USER$` in the response to ping the user who used the command.
+- You can also include `$NAME` to show their username.
+- Include `$REPLY$` to reply to the author.
 - You can run a shell command by adding `$CMD$ command here $CMD$`.
   - Need to run multiple commands? Make a shell script and run the script with a command, or separate commands with a semi-colon!
   - Add `$CMDOUT$` to your response to also include the output of this command in the response.
@@ -183,13 +187,14 @@ java -jar BoneBot.jar
 - The entire file will make up the welcome message.
 - New lines work without using `\n`.
 - To mention the user in the message, add `$USER$`.
+- To show their name, add `$NAME$`
 - To mention the server name, add `$GUILD$`.
 - You can send a single file in the embed by adding `$FILE$ path/to/file $FILE$`.
 - To enable or disable the welcomer, set `welcomer-enabled` in the main configuration to `true` or `false`.
 
 ### Messages
 - All messages built in to the bot are editable, located in `resources/messages.txt`.
-- The only placeholders allowed are specified per line, except for all messages from `error` to the end of the file. These can include the `$USER$` and `$REPLY$` placeholders.
+- The only placeholders allowed are specified per line, except for all messages from `error` to the end of the file. These can include the `$USER$`, `$NAME$`, and `$REPLY$` placeholders.
 - Standard Discord Markdown formatting is supported.
 - This file can modify all built-in responses, command descriptions, and commands.
 - All messages can include new line characters `\n`, except for the commands.

@@ -49,12 +49,13 @@ object Welcomer {
                 val embedBuilder = EmbedBuilder()
                 embedBuilder.setColor(Config.embedColor)
                 embedBuilder.setAuthor(
-                    Messages.welcomeTitle.replace("\$GUILD\$", guild.name).replace("\$USER\$", user.asMention),
+                    Messages.welcomeTitle.replace("\$GUILD\$", guild.name).replace("\$NAME\$", user.name),
                     null,
                     guild.iconUrl
                 )
                 embedBuilder.setDescription(
-                    toSend.replace("\$USER\$", user.name).replace("\$GUILD\$", guild.name)
+                    toSend.replace("\$USER\$", user.asMention).replace("\$NAME\$", user.name)
+                            .replace("\$GUILD\$", guild.name)
                 )
                 if (file != null) {
                     embedBuilder.setImage("attachment://welcome.png")
