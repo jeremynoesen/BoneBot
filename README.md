@@ -151,6 +151,7 @@ java -jar BoneBot.jar
     - `BB_ID`: ID of user sending command
     - `BB_AVATAR`: Avatar URL of the command author
     - `BB_FILE`: URL of the first file attachment in the message
+    - `BB_EMBED`: URL of the first image in the first embed in the message
     - `BB_MENTION_USER`: Name of last pinged user in the message
     - `BB_MENTION_ID`: ID of last pinged user
     - `BB_MENTION_AVATAR`: Avatar URL of the last pinged user
@@ -159,6 +160,7 @@ java -jar BoneBot.jar
     - `BB_REPLY_ID`: ID of reply author
     - `BB_REPLY_AVATAR`: Avatar URL of the reply author
     - `BB_REPLY_FILE`: URL of the first file attachment in the replied message
+    - `BB_REPLY_EMBED`: URL of the first image in the first embed in the replied message
     - `BB_REPLY_MENTION_USER`: Name of last pinged user in the replied message
     - `BB_REPLY_MENTION_ID`: ID of last pinged user in the replied message
     - `BB_REPLY_MENTION_AVATAR`: Avatar URL of the last pinged user in the replied message
