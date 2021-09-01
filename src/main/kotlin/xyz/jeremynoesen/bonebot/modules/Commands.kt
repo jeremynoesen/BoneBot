@@ -136,6 +136,8 @@ object Commands {
                                         env["BB_AVATAR"] = message.author.effectiveAvatarUrl + "?size=4096"
                                         if (message.attachments.size > 0)
                                             env["BB_FILE"] = message.attachments[0].url
+                                        if (message.embeds.size > 0 && message.embeds[0].image != null)
+                                            env["BB_EMBED"] = message.embeds[0].image!!.url!!
 
                                         if (message.mentionedUsers.size > 0 &&
                                             message.contentDisplay.split(message.mentionedUsers[message.mentionedUsers.size - 1].name).size > 1
@@ -156,6 +158,8 @@ object Commands {
                                             env["BB_REPLY_AVATAR"] = reply.author.effectiveAvatarUrl + "?size=4096"
                                             if (reply.attachments.size > 0)
                                                 env["BB_REPLY_FILE"] = reply.attachments[0].url
+                                            if (reply.embeds.size > 0 && reply.embeds[0].image != null)
+                                                env["BB_REPLY_EMBED"] = reply.embeds[0].image!!.url!!
 
                                             if (reply.mentionedUsers.size > 0 &&
                                                 reply.contentDisplay.split(reply.mentionedUsers[reply.mentionedUsers.size - 1].name).size > 1
