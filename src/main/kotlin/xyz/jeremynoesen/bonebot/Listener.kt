@@ -23,7 +23,7 @@ class Listener : ListenerAdapter() {
      */
     override fun onMessageReceived(e: MessageReceivedEvent) {
         try {
-            if (!e.author.isBot || (Config.listenToBots && e.author != e.jda.selfUser)) {
+            if (!e.author.isBot || (Config.listenToBots && e.author != BoneBot.JDA!!.selfUser)) {
                 if (!Commands.enabled || !Commands.perform(e.message)) {
                     if (Responder.enabled) Responder.respond(e.message)
                     if (Reactor.enabled) Reactor.react(e.message)
@@ -42,7 +42,7 @@ class Listener : ListenerAdapter() {
      */
     override fun onMessageUpdate(e: MessageUpdateEvent) {
         try {
-            if ((!e.author.isBot || (Config.listenToBots && e.author != e.jda.selfUser))
+            if ((!e.author.isBot || (Config.listenToBots && e.author != BoneBot.JDA!!.selfUser))
                 && Commands.enabled
             ) Commands.perform(e.message)
         } catch (ex: Exception) {

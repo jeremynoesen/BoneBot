@@ -1,5 +1,6 @@
 package xyz.jeremynoesen.bonebot
 
+import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.JDABuilder
 import net.dv8tion.jda.api.requests.GatewayIntent
 import xyz.jeremynoesen.bonebot.modules.Statuses
@@ -19,6 +20,11 @@ import javax.imageio.ImageIO
 object BoneBot {
 
     /**
+     * instance of JDA for this bot
+     */
+    var JDA: JDA? = null
+
+    /**
      * create the bot and run it
      *
      * @param args
@@ -32,9 +38,9 @@ object BoneBot {
         val log = PrintStream(FileOutputStream("log.txt", true), true)
         System.setOut(log)
         System.setErr(log)
-        val jda = JDABuilder.createLight(Config.botToken).addEventListeners(Listener())
+        JDA = JDABuilder.createLight(Config.botToken).addEventListeners(Listener())
             .enableIntents(GatewayIntent.GUILD_MEMBERS).build()
-        if (Statuses.enabled) Statuses.setStatus(jda)
+        if (Statuses.enabled) Statuses.setStatus()
         try {
             File("temp").deleteRecursively()
         } catch (ignored: FileNotFoundException) {

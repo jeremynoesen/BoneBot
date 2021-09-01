@@ -58,7 +58,7 @@ constructor(private val command: Message) {
                     val file = convertToFile()
                     val embedBuilder = EmbedBuilder()
                     embedBuilder.setAuthor(
-                        Messages.memeTitle.replace("\$USER\$", command.author.asMention),
+                        Messages.memeTitle.replace("\$USER\$", command.author.name),
                         null,
                         command.author.avatarUrl
                     )
@@ -115,7 +115,7 @@ constructor(private val command: Message) {
             image = getImageFromURL(command.embeds[0].image!!.url!!)
             imageInput = true
 
-        } else if (command.contentRaw.contains("http://") || command.contentRaw.contains("https://")) {
+        } else if (command.contentDisplay.contains("http://") || command.contentDisplay.contains("https://")) {
             for (word in input.split(" ", "\n", " // ")) {
                 try {
                     image = getImageFromURL(word)
@@ -143,8 +143,8 @@ constructor(private val command: Message) {
                 image = getImageFromURL(reply.embeds[0].image!!.url!!)
                 imageInput = true
 
-            } else if (reply.contentRaw.contains("http://") || reply.contentRaw.contains("https://")) {
-                for (word in reply.contentRaw.split(" ", "\n", " // ")) {
+            } else if (reply.contentDisplay.contains("http://") || reply.contentDisplay.contains("https://")) {
+                for (word in reply.contentDisplay.split(" ", "\n", " // ")) {
                     try {
                         image = getImageFromURL(word)
                         break
