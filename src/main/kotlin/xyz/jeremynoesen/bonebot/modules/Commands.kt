@@ -154,6 +154,7 @@ object Commands {
     private fun sendCustomCommand(command: String, message: Message) {
         var toSend =
                 commands[command]!!.second.replace("\$USER\$", message.author.asMention)
+                        .replace("\$NAME\$", message.author.name)
                         .replace("\\n", "\n")
 
         if (toSend.contains("\$CMD\$")) {
@@ -210,7 +211,7 @@ object Commands {
 
             val embedBuilder = EmbedBuilder()
             embedBuilder.setColor(Config.embedColor)
-            if (title.contains("\$NAME\$")) {
+            if (title.contains(message.author.name)) {
                 embedBuilder.setAuthor(title.replace("\$NAME\$", message.author.name), null,
                         message.author.effectiveAvatarUrl)
             } else {
