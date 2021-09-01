@@ -159,8 +159,8 @@ object Commands {
         if (toSend.contains("\$CMD\$")) {
             val cmd = toSend.split("\$CMD\$")[1].trim()
 
-            toSend = toSend.replace("\$CMD\$", "")
-                    .replace(cmd, "").replace("   ", " ")
+            toSend = toSend.replace(toSend.substring(toSend.indexOf("\$CMD\$"),
+                    toSend.lastIndexOf("\$CMD\$") + 5), "")
                     .replace("  ", " ").trim()
 
             val procBuilder = if (System.getProperty("os.name").contains("windows", true)) {
@@ -182,8 +182,9 @@ object Commands {
 
         if (toSend.contains("\$REACT\$")) {
             val emote = toSend.split("\$REACT\$")[1].trim()
-            toSend = toSend.replace("\$REACT\$", "").replace(emote, "")
-                    .replace("   ", " ").replace("  ", " ").trim()
+            toSend = toSend.replace(toSend.substring(toSend.indexOf("\$REACT\$"),
+                    toSend.lastIndexOf("\$REACT\$") + 7), "")
+                    .replace("  ", " ").trim()
             message.addReaction(emote).queue()
         }
 
@@ -191,8 +192,9 @@ object Commands {
 
         if (toSend.contains("\$FILE\$")) {
             val path = toSend.split("\$FILE\$")[1].trim()
-            toSend = toSend.replace("\$FILE\$", "").replace(path, "")
-                    .replace("   ", " ").replace("  ", " ").trim()
+            toSend = toSend.replace(toSend.substring(toSend.indexOf("\$FILE\$"),
+                    toSend.lastIndexOf("\$FILE\$") + 6), "")
+                    .replace("  ", " ").trim()
             file = File(path)
             if (!file.exists() || file.isDirectory || file.isHidden) {
                 file = null
@@ -202,8 +204,8 @@ object Commands {
         if (toSend.contains("\$EMBED\$")) {
             val title = toSend.split("\$EMBED\$")[1].trim()
 
-            toSend = toSend.replace("\$EMBED\$", "")
-                    .replace(title, "").replace("   ", " ")
+            toSend = toSend.replace(toSend.substring(toSend.indexOf("\$EMBED\$"),
+                    toSend.lastIndexOf("\$EMBED\$") + 7), "")
                     .replace("  ", " ").trim()
 
             val embedBuilder = EmbedBuilder()
