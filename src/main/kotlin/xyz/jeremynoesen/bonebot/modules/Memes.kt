@@ -58,7 +58,7 @@ constructor(private val command: Message) {
                     val file = convertToFile()
                     val embedBuilder = EmbedBuilder()
                     embedBuilder.setAuthor(
-                        Messages.memeTitle.replace("\$USER\$", command.author.name),
+                        Messages.memeTitle.replace("\$USER\$", command.author.asMention),
                         null,
                         command.author.avatarUrl
                     )

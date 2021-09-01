@@ -47,7 +47,7 @@ object Welcomer {
                 val embedBuilder = EmbedBuilder()
                 embedBuilder.setColor(Config.embedColor)
                 embedBuilder.setAuthor(
-                    Messages.welcomeTitle.replace("\$GUILD\$", guild.name).replace("\$USER\$", user.name),
+                    Messages.welcomeTitle.replace("\$GUILD\$", guild.name).replace("\$USER\$", user.asMention),
                     null,
                     guild.iconUrl
                 )
