@@ -60,8 +60,9 @@ object Responder {
 
                     if (toSend.contains("\$FILE\$")) {
                         val path = toSend.split("\$FILE\$")[1].trim()
-                        toSend = toSend.replace("\$FILE\$", "").replace(path, "")
-                            .replace("   ", " ").replace("  ", " ").trim()
+                        toSend = toSend.replace(toSend.substring(toSend.indexOf("\$FILE\$"),
+                                toSend.lastIndexOf("\$FILE\$") + 6), "")
+                                .replace("  ", " ").trim()
                         file = File(path)
                         if (!file.exists() || file.isDirectory || file.isHidden) {
                             file = null
