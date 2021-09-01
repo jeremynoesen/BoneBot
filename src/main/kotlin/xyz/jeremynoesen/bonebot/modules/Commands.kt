@@ -53,20 +53,21 @@ object Commands {
                 message.channel.sendTyping().queue()
                 if ((System.currentTimeMillis() - prevTime) >= cooldown * 1000) {
                     prevTime = System.currentTimeMillis()
+                    val label = msg.split(" ")[0]
                     when {
-                        msg.split(" ")[0].equals(commandPrefix + Messages.memeCommand, true) && Memes.enabled -> {
+                        label.equals(commandPrefix + Messages.memeCommand, true) && Memes.enabled -> {
                             Memes(message).generate()
                             return true
                         }
-                        msg.split(" ")[0].equals(commandPrefix + Messages.quoteCommand, true) && Quotes.enabled -> {
+                        label.equals(commandPrefix + Messages.quoteCommand, true) && Quotes.enabled -> {
                             Quotes.sendQuote(message)
                             return true
                         }
-                        msg.split(" ")[0].equals(commandPrefix + Messages.fileCommand, true) && Files.enabled -> {
+                        label.equals(commandPrefix + Messages.fileCommand, true) && Files.enabled -> {
                             Files.sendFile(message)
                             return true
                         }
-                        msg.split(" ")[0].equals(commandPrefix + Messages.helpCommand, true) -> {
+                        label.equals(commandPrefix + Messages.helpCommand, true) -> {
 
                             var commandList = Messages.helpAbout.replace("\$BOT\$", message.jda.selfUser.name) + "\n\n"
 
@@ -113,7 +114,7 @@ object Commands {
                         }
                         else -> {
                             for (command in commands.keys) {
-                                if (msg.split(" ")[0].equals("$commandPrefix${command.lowercase()}", true)) {
+                                if (label.equals("$commandPrefix${command.lowercase()}", true)) {
 
                                     var toSend =
                                         commands[command]!!.second.replace("\$USER\$", message.author.asMention)
