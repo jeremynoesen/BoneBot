@@ -166,6 +166,7 @@ java -jar BoneBot.jar
     - `BB_REPLY_MENTION_AVATAR`: Avatar URL of the last pinged user in the replied message
 - You can send a single file by adding `$FILE$ path/to/file $FILE$`.
 - You can add a reaction to the command trigger message by adding `$REACT$ emote $REACT$`. Format for emotes is similar to the reactor.
+- You can have the command send as an embed instead by using `$EMBED$ embed title here $EMBED$`.
 - To change the command prefix, set `command-prefix` in the main configuration to a custom prefix. Case is ignored.
 - To set a cool down for commands, set `commands-cooldown` in the main configuration to any whole number in seconds.
 - To enable or disable commands, set `commands-enabled` in the main configuration to `true` or `false`.

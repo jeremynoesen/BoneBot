@@ -159,6 +159,10 @@ object Commands {
         if (toSend.contains("\$CMD\$")) {
             val cmd = toSend.split("\$CMD\$")[1].trim()
 
+            toSend = toSend.replace("\$CMD\$", "")
+                    .replace(cmd, "").replace("   ", " ")
+                    .replace("  ", " ").trim()
+
             val procBuilder = if (System.getProperty("os.name").contains("windows", true)) {
                 ProcessBuilder("cmd.exe", "/c", cmd)
             } else {
@@ -166,10 +170,6 @@ object Commands {
             }
             procBuilder.environment().putAll(setPathVariables(message))
             val stream = procBuilder.start().inputStream
-
-            toSend = toSend.replace("\$CMD\$", "")
-                    .replace(cmd, "").replace("   ", " ")
-                    .replace("  ", " ").trim()
 
             if (toSend.contains("\$CMDOUT\$")) {
                 val stdInput = BufferedReader(InputStreamReader(stream))
@@ -199,28 +199,62 @@ object Commands {
             }
         }
 
-        if (toSend.contains("\$REPLY\$")) {
-            toSend = toSend.replace("\$REPLY\$", "").replace("   ", " ")
-                    .replace("  ", " ")
-            if (file != null) {
-                if (toSend.isNotEmpty())
-                    message.channel.sendMessage(toSend).addFile(file).reference(message)
-                            .queue()
-                else
-                    message.channel.sendFile(file).reference(message).queue()
+        if (toSend.contains("\$EMBED\$")) {
+            val title = toSend.split("\$EMBED\$")[1].trim()
+
+            toSend = toSend.replace("\$EMBED\$", "")
+                    .replace(title, "").replace("   ", " ")
+                    .replace("  ", " ").trim()
+
+            val embedBuilder = EmbedBuilder()
+            embedBuilder.setColor(Config.embedColor)
+            if (title.contains("\$NAME\$")) {
+                embedBuilder.setAuthor(title.replace("\$NAME\$", message.author.name), null,
+                        message.author.effectiveAvatarUrl)
             } else {
-                if (toSend.isNotEmpty())
-                    message.channel.sendMessage(toSend).reference(message).queue()
+                embedBuilder.setAuthor(title, null)
+            }
+            embedBuilder.setDescription(toSend)
+
+            if (toSend.contains("\$REPLY\$")) {
+                if (file != null) {
+                    embedBuilder.setImage("attachment://" + file.name)
+                    message.channel.sendMessage(embedBuilder.build()).addFile(file, file.name).reference(message).queue()
+                } else {
+                    message.channel.sendMessage(embedBuilder.build()).reference(message).queue()
+                }
+            } else {
+                if (file != null) {
+                    embedBuilder.setImage("attachment://" + file.name)
+                    message.channel.sendMessage(embedBuilder.build()).addFile(file, file.name).queue()
+                } else {
+                    message.channel.sendMessage(embedBuilder.build()).queue()
+                }
             }
         } else {
-            if (file != null) {
-                if (toSend.isNotEmpty())
-                    message.channel.sendMessage(toSend).addFile(file).queue()
-                else
-                    message.channel.sendFile(file).queue()
+            if (toSend.contains("\$REPLY\$")) {
+                toSend = toSend.replace("\$REPLY\$", "").replace("   ", " ")
+                        .replace("  ", " ")
+                if (file != null) {
+                    if (toSend.isNotEmpty())
+                        message.channel.sendMessage(toSend).addFile(file).reference(message)
+                                .queue()
+                    else
+                        message.channel.sendFile(file).reference(message).queue()
+                } else {
+                    if (toSend.isNotEmpty())
+                        message.channel.sendMessage(toSend).reference(message).queue()
+                }
             } else {
-                if (toSend.isNotEmpty())
-                    message.channel.sendMessage(toSend).queue()
+                if (file != null) {
+                    if (toSend.isNotEmpty())
+                        message.channel.sendMessage(toSend).addFile(file).queue()
+                    else
+                        message.channel.sendFile(file).queue()
+                } else {
+                    if (toSend.isNotEmpty())
+                        message.channel.sendMessage(toSend).queue()
+                }
             }
         }
     }
