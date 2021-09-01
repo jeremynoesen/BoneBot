@@ -38,7 +38,7 @@ object Files {
             if ((System.currentTimeMillis() - prevTime) >= cooldown * 1000) {
                 prevTime = System.currentTimeMillis()
 
-                if (message.contentRaw.trim()
+                if (message.contentDisplay.trim()
                         .lowercase() == Commands.commandPrefix + Messages.fileCommand.lowercase()
                 ) {
                     sendRandomFile(message, File("resources/files"))
@@ -46,7 +46,7 @@ object Files {
                     try {
                         val file = File(
                             "resources/files/" +
-                                    message.contentRaw.substring(Commands.commandPrefix.length + Messages.fileCommand.length)
+                                    message.contentDisplay.substring(Commands.commandPrefix.length + Messages.fileCommand.length)
                                         .replace("..", "").replace("   ", " ")
                                         .replace("  ", " ").trim()
                         )

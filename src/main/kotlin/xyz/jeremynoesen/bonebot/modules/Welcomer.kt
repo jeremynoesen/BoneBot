@@ -52,7 +52,7 @@ object Welcomer {
                     guild.iconUrl
                 )
                 embedBuilder.setDescription(
-                    toSend.replace("\$USER\$", user.asMention).replace("\$GUILD\$", guild.name)
+                    toSend.replace("\$USER\$", user.name).replace("\$GUILD\$", guild.name)
                 )
                 if (file != null) {
                     embedBuilder.setImage("attachment://welcome.png")
