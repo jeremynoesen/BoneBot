@@ -1,9 +1,9 @@
 package xyz.jeremynoesen.bonebot.modules
 
 import net.dv8tion.jda.api.entities.Message
+import xyz.jeremynoesen.bonebot.BoneBot
 import xyz.jeremynoesen.bonebot.Messages
 import java.io.File
-import java.util.*
 
 /**
  * responder to respond to words and phrases in a message
@@ -44,7 +44,7 @@ object Responder {
      */
     fun respond(message: Message) {
         try {
-            val msg = message.contentRaw
+            val msg = message.contentDisplay
             for (trigger in responses.keys) {
                 if ((msg.contains(Regex(trigger)) || msg.lowercase().contains(trigger.lowercase()))
                     && (System.currentTimeMillis() - prevTime) >= cooldown * 1000
@@ -54,14 +54,21 @@ object Responder {
                     if (typingSpeed > 0) message.channel.sendTyping().queue()
 
                     var toSend = responses[trigger]!!.replace("\$USER\$", message.author.asMention)
+                        .replace("\$NAME\$", message.author.name)
+                        .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
                         .replace("\\n", "\n")
 
                     var file: File? = null
 
                     if (toSend.contains("\$FILE\$")) {
                         val path = toSend.split("\$FILE\$")[1].trim()
-                        toSend = toSend.replace("\$FILE\$", "").replace(path, "")
-                            .replace("   ", " ").replace("  ", " ").trim()
+                        toSend = toSend.replace(
+                            toSend.substring(
+                                toSend.indexOf("\$FILE\$"),
+                                toSend.lastIndexOf("\$FILE\$") + 6
+                            ), ""
+                        )
+                            .replace("  ", " ").trim()
                         file = File(path)
                         if (!file.exists() || file.isDirectory || file.isHidden) {
                             file = null
@@ -70,7 +77,7 @@ object Responder {
 
                     if (toSend.contains("\$REPLY\$")) {
                         toSend = toSend.replace("\$REPLY\$", "").replace("   ", " ")
-                                .replace("  ", " ")
+                            .replace("  ", " ")
                         if (file != null) {
                             if (toSend.isNotEmpty())
                                 message.channel.sendMessage(toSend).addFile(file).reference(message).queue()
