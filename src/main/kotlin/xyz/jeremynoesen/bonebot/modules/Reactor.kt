@@ -43,7 +43,7 @@ object Reactor {
      */
     fun react(message: Message) {
         try {
-            val msg = message.contentRaw
+            val msg = message.contentDisplay
             for (trigger in reactions.keys) {
                 if ((msg.contains(Regex(trigger)) || msg.lowercase().contains(trigger.lowercase()))
                     && (System.currentTimeMillis() - prevTime) >= cooldown * 1000

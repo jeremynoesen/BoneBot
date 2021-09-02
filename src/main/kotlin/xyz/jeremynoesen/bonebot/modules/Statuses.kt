@@ -1,7 +1,7 @@
 package xyz.jeremynoesen.bonebot.modules
 
-import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.entities.Activity
+import xyz.jeremynoesen.bonebot.BoneBot
 import java.util.*
 
 /**
@@ -28,10 +28,8 @@ object Statuses {
 
     /**
      * set the status for the bot. this only needs to be called once
-     *
-     * @param jda jda to set status for
      */
-    fun setStatus(jda: JDA) {
+    fun setStatus() {
         Thread {
             while (true) {
                 if (statuses.isNotEmpty()) {
@@ -39,15 +37,15 @@ object Statuses {
                     when {
                         status.lowercase().startsWith("playing") -> {
                             status = status.substring(7, status.length).trim()
-                            jda.presence.activity = Activity.playing(status)
+                            BoneBot.JDA!!.presence.activity = Activity.playing(status)
                         }
                         status.lowercase().startsWith("watching") -> {
                             status = status.substring(8, status.length).trim()
-                            jda.presence.activity = Activity.watching(status)
+                            BoneBot.JDA!!.presence.activity = Activity.watching(status)
                         }
                         status.lowercase().startsWith("listening to") -> {
                             status = status.substring(12, status.length).trim()
-                            jda.presence.activity = Activity.listening(status)
+                            BoneBot.JDA!!.presence.activity = Activity.listening(status)
                         }
                     }
                 }
