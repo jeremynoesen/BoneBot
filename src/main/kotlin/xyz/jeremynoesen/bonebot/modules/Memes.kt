@@ -169,21 +169,7 @@ constructor(private val command: Message) {
         }
 
         if (!imageInput) {
-            val r = Random()
-            val dir = File("resources/memeimages")
-            if (dir.listFiles()!!.isNotEmpty()) {
-                var rand = r.nextInt(dir.listFiles()!!.size)
-                val prev = HashSet<Int>()
-                while (dir.listFiles()!![rand].isHidden || dir.listFiles()!![rand].isDirectory) {
-                    rand = r.nextInt(dir.listFiles()!!.size)
-                    if (prev.contains(rand)) continue
-                    prev.add(rand)
-                    if (prev.size == dir.listFiles()!!.size) {
-                        return
-                    }
-                }
-                image = Thumbnails.of(dir.listFiles()!![rand].inputStream()).scale(1.0).asBufferedImage()
-            }
+            getRandomImage(File("resources/memeimages"))
         }
 
         input = cleanInput(input)
@@ -194,6 +180,32 @@ constructor(private val command: Message) {
             text = altInput
         } else if (texts.isNotEmpty()) {
             text = texts[Random().nextInt(texts.size)]
+        }
+    }
+
+    /**
+     * get random image to use for meme, recursively
+     *
+     * @param dir directory to look in for images
+     */
+    private fun getRandomImage(dir: File) {
+        val r = Random()
+        if (dir.listFiles()!!.isNotEmpty()) {
+            var rand = r.nextInt(dir.listFiles()!!.size)
+            val prev = HashSet<Int>()
+            while (dir.listFiles()!![rand].isHidden) {
+                rand = r.nextInt(dir.listFiles()!!.size)
+                if (prev.contains(rand)) continue
+                prev.add(rand)
+                if (prev.size == dir.listFiles()!!.size) {
+                    return
+                }
+            }
+            if (dir.listFiles()!![rand].isDirectory) {
+                getRandomImage(dir.listFiles()!![rand])
+                return
+            }
+            image = Thumbnails.of(dir.listFiles()!![rand].inputStream()).scale(1.0).asBufferedImage()
         }
     }
 
