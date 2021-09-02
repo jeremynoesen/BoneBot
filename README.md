@@ -55,7 +55,7 @@ The responder will respond to a message with another when a trigger phrase is sa
 The reactor will react to a message with an emote when a trigger phrase is said.
 
 ### Commands
-BoneBot allows for custom commands to be made to provide text and image responses and run shell commands. Their usage is pretty simple - a command called `test` would be used by typing `bbtest`. If you make a mistake in typing a command, you can edit the message to fix it without needing to send another message. This module can provide simple ping-pong style commands, or more complex commands as needed.
+BoneBot allows for custom commands to be made to provide text and image responses and run shell commands. Their usage is pretty simple - a command called `test` would be used by typing `bbtest`. If you make a mistake in typing a command, you can edit the message to fix it without needing to send another message. This module can provide simple ping-pong style commands, or more complex commands as needed. Some fantastic examples of custom commands can be found [here](https://github.com/diademiemi/BoneBot-Scripts).
 
 ### Statuses
 BoneBot can have various randomized statuses shown in Discord that change over time.
