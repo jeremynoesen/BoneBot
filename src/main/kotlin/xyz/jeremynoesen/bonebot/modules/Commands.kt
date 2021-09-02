@@ -105,40 +105,40 @@ object Commands {
         var commandList = Messages.helpAbout.replace("\$BOT\$", BoneBot.JDA!!.selfUser.name) + "\n\n"
 
         commandList += Messages.helpFormat.replace("\$CMD\$", commandPrefix + Messages.helpCommand)
-                .replace("\$DESC\$", Messages.helpDescription) + "\n"
+            .replace("\$DESC\$", Messages.helpDescription) + "\n"
 
         if (Memes.enabled) commandList += Messages.helpFormat.replace(
-                "\$CMD\$",
-                commandPrefix + Messages.memeCommand
+            "\$CMD\$",
+            commandPrefix + Messages.memeCommand
         )
-                .replace("\$DESC\$", Messages.memeDescription) + "\n"
+            .replace("\$DESC\$", Messages.memeDescription) + "\n"
 
         if (Files.enabled) commandList += Messages.helpFormat.replace(
-                "\$CMD\$",
-                commandPrefix + Messages.fileCommand
+            "\$CMD\$",
+            commandPrefix + Messages.fileCommand
         )
-                .replace("\$DESC\$", Messages.fileDescription) + "\n"
+            .replace("\$DESC\$", Messages.fileDescription) + "\n"
 
         if (Quotes.enabled) commandList += Messages.helpFormat.replace(
-                "\$CMD\$",
-                commandPrefix + Messages.quoteCommand
+            "\$CMD\$",
+            commandPrefix + Messages.quoteCommand
         )
-                .replace("\$DESC\$", Messages.quoteDescription) + "\n"
+            .replace("\$DESC\$", Messages.quoteDescription) + "\n"
 
         for (command in commands.keys) {
             commandList += Messages.helpFormat.replace(
-                    "\$CMD\$",
-                    commandPrefix + command
+                "\$CMD\$",
+                commandPrefix + command
             )
-                    .replace("\$DESC\$", commands[command]!!.first) + "\n"
+                .replace("\$DESC\$", commands[command]!!.first) + "\n"
         }
 
         val embedBuilder = EmbedBuilder()
         val name = BoneBot.JDA!!.selfUser.name
         embedBuilder.setAuthor(
-                Messages.helpTitle.replace("\$BOT\$", name),
-                null,
-                BoneBot.JDA!!.selfUser.avatarUrl
+            Messages.helpTitle.replace("\$BOT\$", name),
+            null,
+            BoneBot.JDA!!.selfUser.avatarUrl
         )
         embedBuilder.setColor(Config.embedColor)
         embedBuilder.setDescription("$commandList\n[**Source Code**](https://github.com/jeremynoesen/BoneBot)")
@@ -153,16 +153,20 @@ object Commands {
      */
     private fun sendCustomCommand(command: String, message: Message) {
         var toSend =
-                commands[command]!!.second.replace("\$USER\$", message.author.asMention)
-                        .replace("\$NAME\$", message.author.name)
-                        .replace("\\n", "\n")
+            commands[command]!!.second.replace("\$USER\$", message.author.asMention)
+                .replace("\$NAME\$", message.author.name)
+                .replace("\\n", "\n")
 
         if (toSend.contains("\$CMD\$")) {
             val cmd = toSend.split("\$CMD\$")[1].trim()
 
-            toSend = toSend.replace(toSend.substring(toSend.indexOf("\$CMD\$"),
-                    toSend.lastIndexOf("\$CMD\$") + 5), "")
-                    .replace("  ", " ").trim()
+            toSend = toSend.replace(
+                toSend.substring(
+                    toSend.indexOf("\$CMD\$"),
+                    toSend.lastIndexOf("\$CMD\$") + 5
+                ), ""
+            )
+                .replace("  ", " ").trim()
 
             val procBuilder = if (System.getProperty("os.name").contains("windows", true)) {
                 ProcessBuilder("cmd.exe", "/c", cmd)
@@ -183,9 +187,13 @@ object Commands {
 
         if (toSend.contains("\$REACT\$")) {
             val emote = toSend.split("\$REACT\$")[1].trim()
-            toSend = toSend.replace(toSend.substring(toSend.indexOf("\$REACT\$"),
-                    toSend.lastIndexOf("\$REACT\$") + 7), "")
-                    .replace("  ", " ").trim()
+            toSend = toSend.replace(
+                toSend.substring(
+                    toSend.indexOf("\$REACT\$"),
+                    toSend.lastIndexOf("\$REACT\$") + 7
+                ), ""
+            )
+                .replace("  ", " ").trim()
             message.addReaction(emote).queue()
         }
 
@@ -193,9 +201,13 @@ object Commands {
 
         if (toSend.contains("\$FILE\$")) {
             val path = toSend.split("\$FILE\$")[1].trim()
-            toSend = toSend.replace(toSend.substring(toSend.indexOf("\$FILE\$"),
-                    toSend.lastIndexOf("\$FILE\$") + 6), "")
-                    .replace("  ", " ").trim()
+            toSend = toSend.replace(
+                toSend.substring(
+                    toSend.indexOf("\$FILE\$"),
+                    toSend.lastIndexOf("\$FILE\$") + 6
+                ), ""
+            )
+                .replace("  ", " ").trim()
             file = File(path)
             if (!file.exists() || file.isDirectory || file.isHidden) {
                 file = null
@@ -205,28 +217,38 @@ object Commands {
         if (toSend.contains("\$EMBED\$")) {
             val title = toSend.split("\$EMBED\$")[1].trim()
 
-            toSend = toSend.replace(toSend.substring(toSend.indexOf("\$EMBED\$"),
-                    toSend.lastIndexOf("\$EMBED\$") + 7), "")
-                    .replace("  ", " ").trim()
+            toSend = toSend.replace(
+                toSend.substring(
+                    toSend.indexOf("\$EMBED\$"),
+                    toSend.lastIndexOf("\$EMBED\$") + 7
+                ), ""
+            )
+                .replace("  ", " ").trim()
 
             val embedBuilder = EmbedBuilder()
             embedBuilder.setColor(Config.embedColor)
             if (title.contains(message.author.name)) {
-                embedBuilder.setAuthor(title.replace("\$NAME\$", message.author.name), null,
-                        message.author.effectiveAvatarUrl)
+                embedBuilder.setAuthor(
+                    title.replace("\$NAME\$", message.author.name), null,
+                    message.author.effectiveAvatarUrl
+                )
             } else {
                 embedBuilder.setAuthor(title, null)
             }
-            embedBuilder.setDescription(toSend)
 
             if (toSend.contains("\$REPLY\$")) {
+                toSend = toSend.replace("\$REPLY\$", "").replace("   ", " ")
+                    .replace("  ", " ")
+                embedBuilder.setDescription(toSend)
                 if (file != null) {
                     embedBuilder.setImage("attachment://" + file.name)
-                    message.channel.sendMessage(embedBuilder.build()).addFile(file, file.name).reference(message).queue()
+                    message.channel.sendMessage(embedBuilder.build()).addFile(file, file.name).reference(message)
+                        .queue()
                 } else {
                     message.channel.sendMessage(embedBuilder.build()).reference(message).queue()
                 }
             } else {
+                embedBuilder.setDescription(toSend)
                 if (file != null) {
                     embedBuilder.setImage("attachment://" + file.name)
                     message.channel.sendMessage(embedBuilder.build()).addFile(file, file.name).queue()
@@ -237,11 +259,11 @@ object Commands {
         } else {
             if (toSend.contains("\$REPLY\$")) {
                 toSend = toSend.replace("\$REPLY\$", "").replace("   ", " ")
-                        .replace("  ", " ")
+                    .replace("  ", " ")
                 if (file != null) {
                     if (toSend.isNotEmpty())
                         message.channel.sendMessage(toSend).addFile(file).reference(message)
-                                .queue()
+                            .queue()
                     else
                         message.channel.sendFile(file).reference(message).queue()
                 } else {
@@ -271,7 +293,7 @@ object Commands {
     private fun setPathVariables(message: Message): Map<String, String> {
         val env = HashMap<String, String>()
         env["BB_INPUT"] =
-                message.contentDisplay.replace(message.contentDisplay.split(" ")[0], "").trim()
+            message.contentDisplay.replace(message.contentDisplay.split(" ")[0], "").trim()
         env["BB_USER"] = message.author.name
         env["BB_ID"] = message.author.id
         env["BB_AVATAR"] = message.author.effectiveAvatarUrl + "?size=4096"
@@ -281,14 +303,14 @@ object Commands {
             env["BB_EMBED"] = message.embeds[0].image!!.url!!
 
         if (message.mentionedUsers.size > 0 &&
-                message.contentDisplay.split(message.mentionedUsers[message.mentionedUsers.size - 1].name).size > 1
+            message.contentDisplay.split(message.mentionedUsers[message.mentionedUsers.size - 1].name).size > 1
         ) {
             env["BB_MENTION_USER"] =
-                    message.mentionedUsers[message.mentionedUsers.size - 1].name
+                message.mentionedUsers[message.mentionedUsers.size - 1].name
             env["BB_MENTION_ID"] =
-                    message.mentionedUsers[message.mentionedUsers.size - 1].id
+                message.mentionedUsers[message.mentionedUsers.size - 1].id
             env["BB_MENTION_AVATAR"] =
-                    message.mentionedUsers[message.mentionedUsers.size - 1].effectiveAvatarUrl + "?size=4096"
+                message.mentionedUsers[message.mentionedUsers.size - 1].effectiveAvatarUrl + "?size=4096"
         }
 
         if (message.referencedMessage != null) {
@@ -303,14 +325,14 @@ object Commands {
                 env["BB_REPLY_EMBED"] = reply.embeds[0].image!!.url!!
 
             if (reply.mentionedUsers.size > 0 &&
-                    reply.contentDisplay.split(reply.mentionedUsers[reply.mentionedUsers.size - 1].name).size > 1
+                reply.contentDisplay.split(reply.mentionedUsers[reply.mentionedUsers.size - 1].name).size > 1
             ) {
                 env["BB_REPLY_MENTION_USER"] =
-                        reply.mentionedUsers[reply.mentionedUsers.size - 1].name
+                    reply.mentionedUsers[reply.mentionedUsers.size - 1].name
                 env["BB_REPLY_MENTION_ID"] =
-                        reply.mentionedUsers[reply.mentionedUsers.size - 1].id
+                    reply.mentionedUsers[reply.mentionedUsers.size - 1].id
                 env["BB_REPLY_MENTION_AVATAR"] =
-                        reply.mentionedUsers[reply.mentionedUsers.size - 1].effectiveAvatarUrl + "?size=4096"
+                    reply.mentionedUsers[reply.mentionedUsers.size - 1].effectiveAvatarUrl + "?size=4096"
             }
         }
         return env
