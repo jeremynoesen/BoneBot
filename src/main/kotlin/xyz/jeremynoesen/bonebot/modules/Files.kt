@@ -56,6 +56,8 @@ object Files {
                         }
                         if (file.isDirectory) {
                             sendRandomFile(message, file)
+                        } else {
+                            message.channel.sendFile(file).queue()
                         }
                     } catch (e: Exception) {
                         Messages.sendMessage(Messages.unknownFile, message)
