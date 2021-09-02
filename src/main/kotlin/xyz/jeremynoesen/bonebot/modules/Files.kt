@@ -84,7 +84,7 @@ object Files {
         if (dir.listFiles()!!.isNotEmpty()) {
             var rand = r.nextInt(dir.listFiles()!!.size)
             val prev = HashSet<Int>()
-            while (dir.listFiles()!![rand].isHidden || dir.listFiles()!![rand].isDirectory) {
+            while (dir.listFiles()!![rand].isHidden) {
                 rand = r.nextInt(dir.listFiles()!!.size)
                 if (prev.contains(rand)) continue
                 prev.add(rand)
@@ -92,6 +92,10 @@ object Files {
                     Messages.sendMessage(Messages.noFiles, message)
                     return
                 }
+            }
+            if (dir.listFiles()!![rand].isDirectory) {
+                sendRandomFile(message, dir.listFiles()!![rand])
+                return
             }
             message.channel.sendFile(dir.listFiles()!![rand]).queue()
         } else {
