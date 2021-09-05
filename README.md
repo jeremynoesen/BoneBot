@@ -118,7 +118,7 @@ java -jar BoneBot.jar
 - The trigger can include Regex. Case is not ignored if you use Regex.
 - The response can include `\n` as a line separator.
 - You can include `$USER$` in the response to ping the user who invoked the response.
-- You can also include `$NAME` to show their username.
+- You can also include `$NAME$` to show their username.
 - Include `$REPLY$` to reply to the author.
 - Use `$BOT$` to place the bot's name in the response.
 - You can send a single file by adding `$FILE$ path/to/file $FILE$`.
@@ -144,7 +144,7 @@ java -jar BoneBot.jar
 - Do not put the prefix in the command.
 - The response can include `\n` as a line separator.
 - You can include `$USER$` in the response to ping the user who used the command.
-- You can also include `$NAME` to show their username.
+- You can also include `$NAME$` to show their username.
 - Include `$REPLY$` to reply to the author.
 - Use `$BOT$` to place the bot's name in the response.
 - You can run a shell command by adding `$CMD$ command here $CMD$`.
@@ -175,7 +175,7 @@ java -jar BoneBot.jar
 - You can have the command send as an embed instead by using `$EMBED$ embed title here $EMBED$`.
 - To change the command prefix, set `command-prefix` in the main configuration to a custom prefix. Case is ignored.
 - To set a cool down for commands, set `commands-cooldown` in the main configuration to any whole number in seconds.
-- To enable or disable commands, set `commands-enabled` in the main configuration to `true` or `false`.
+- To enable or disable commands, set `commands-enabled` in the main configuration to `true` or `false`. This will disable all built in command modules as well.
 
 ### Statuses
 - Statuses will be put into `resources/statuses.txt`.
@@ -293,3 +293,6 @@ The following is an example command sent to the bot to generate a meme with top 
 The following image is an example of the help command with one custom command added.
 
 <div align="center"><img src="img/help.png" alt="Help example" title="Help example" /></div>
+
+## Notice
+This project is no longer in development.
