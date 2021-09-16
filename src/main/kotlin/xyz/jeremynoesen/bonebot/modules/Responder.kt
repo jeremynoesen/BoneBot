@@ -46,8 +46,7 @@ object Responder {
         try {
             val msg = message.contentDisplay
             for (trigger in responses.keys) {
-                val editedTrigger = trigger.replace("\$USER\$", message.author.asMention)
-                    .replace("\$NAME\$", message.author.name)
+                val editedTrigger = trigger.replace("\$NAME\$", message.author.name)
                     .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
                     .replace("\$GUILD\$", message.guild.name)
                 if ((msg.contains(Regex(editedTrigger)) || msg.lowercase().contains(editedTrigger.lowercase()))

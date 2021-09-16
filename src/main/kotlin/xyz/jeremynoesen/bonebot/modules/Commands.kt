@@ -103,7 +103,7 @@ object Commands {
      * @return build help message embed
      */
     private fun buildHelpEmbed(message: Message): MessageEmbed {
-        var commandList = Messages.helpAbout.replace("\$BOT\$", BoneBot.JDA!!.selfUser.name) + "\n\n"
+        var commandList = Messages.helpAbout + "\n\n"
 
         commandList += Messages.helpFormat.replace("\$CMD\$", commandPrefix + Messages.helpCommand)
             .replace("\$DESC\$", Messages.helpDescription) + "\n"
@@ -141,9 +141,10 @@ object Commands {
         }
 
         val embedBuilder = EmbedBuilder()
-        val name = BoneBot.JDA!!.selfUser.name
         embedBuilder.setAuthor(
-            Messages.helpTitle.replace("\$BOT\$", name),
+            Messages.helpTitle.replace("\$NAME\$", message.author.name)
+                .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
+                .replace("\$GUILD\$", message.guild.name),
             null,
             BoneBot.JDA!!.selfUser.avatarUrl
         )
