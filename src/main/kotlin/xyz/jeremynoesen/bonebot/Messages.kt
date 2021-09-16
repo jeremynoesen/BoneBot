@@ -163,14 +163,22 @@ object Messages {
     fun sendMessage(message: String, cause: Message) {
         var toSend = message
         if (toSend.contains("\$REPLY\$")) {
-            toSend = toSend.replace("\$REPLY\$", "").replace("\$USER\$", cause.author.asMention)
-                .replace("\$NAME\$", cause.author.name).replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
-                .replace("   ", " ").replace("  ", " ")
+            toSend = toSend.replace("\$REPLY\$", "")
+                .replace("\$USER\$", cause.author.asMention)
+                .replace("\$NAME\$", cause.author.name)
+                .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
+                .replace("\$GUILD\$", cause.guild.name)
+                .replace("   ", " ")
+                .replace("  ", " ")
             if (toSend.isNotEmpty())
                 cause.channel.sendMessage(toSend).reference(cause).queue()
         } else {
-            toSend = toSend.replace("\$USER\$", cause.author.asMention).replace("\$NAME\$", cause.author.name)
-                .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name).replace("   ", " ").replace("  ", " ")
+            toSend = toSend.replace("\$USER\$", cause.author.asMention)
+                .replace("\$NAME\$", cause.author.name)
+                .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
+                .replace("\$GUILD\$", cause.guild.name)
+                .replace("   ", " ")
+                .replace("  ", " ")
             if (toSend.isNotEmpty())
                 cause.channel.sendMessage(toSend).queue()
         }

@@ -56,6 +56,7 @@ object Responder {
                     var toSend = responses[trigger]!!.replace("\$USER\$", message.author.asMention)
                         .replace("\$NAME\$", message.author.name)
                         .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
+                        .replace("\$GUILD\$", message.guild.name)
                         .replace("\\n", "\n")
 
                     var file: File? = null
