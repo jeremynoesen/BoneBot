@@ -138,7 +138,6 @@ object Messages {
             pw.println("quote-command: $quoteCommand")
             pw.println("meme-title: $memeTitle")
             pw.println("welcome-title: $welcomeTitle")
-            pw.println()
             pw.println("error: $error")
             pw.println("unknown-command: $unknownCommand")
             pw.println("no-files: $noFiles")
