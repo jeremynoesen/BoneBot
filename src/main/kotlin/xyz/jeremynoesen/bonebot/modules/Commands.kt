@@ -156,6 +156,7 @@ object Commands {
             commands[command]!!.second.replace("\$USER\$", message.author.asMention)
                 .replace("\$NAME\$", message.author.name)
                 .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
+                .replace("\$GUILD\$", message.guild.name)
                 .replace("\\n", "\n")
 
         if (toSend.contains("\$CMD\$")) {
