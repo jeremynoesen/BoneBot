@@ -4,6 +4,7 @@ import net.coobird.thumbnailator.Thumbnails
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.entities.Message
 import org.apache.commons.text.WordUtils
+import xyz.jeremynoesen.bonebot.BoneBot
 import xyz.jeremynoesen.bonebot.Config
 import xyz.jeremynoesen.bonebot.Messages
 import java.awt.*
@@ -58,7 +59,9 @@ constructor(private val command: Message) {
                     val file = convertToFile()
                     val embedBuilder = EmbedBuilder()
                     embedBuilder.setAuthor(
-                        Messages.memeTitle.replace("\$USER\$", command.author.name),
+                        Messages.memeTitle.replace("\$NAME\$", command.author.name)
+                            .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
+                            .replace("\$GUILD\$", command.guild.name),
                         null,
                         command.author.avatarUrl
                     )

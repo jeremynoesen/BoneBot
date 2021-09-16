@@ -24,8 +24,8 @@ object Messages {
     var memeCommand = "meme"
     var fileCommand = "file"
     var quoteCommand = "quote"
-    var memeTitle = "\$USER\$ generated a meme:"
-    var welcomeTitle = "\$USER\$ joined \$GUILD\$"
+    var memeTitle = "\$NAME\$ generated a meme:"
+    var welcomeTitle = "\$NAME\$ joined \$GUILD\$"
 
     var error = "**An error occurred!** Please check the log file!"
     var unknownCommand = "**Unknown command!**"
