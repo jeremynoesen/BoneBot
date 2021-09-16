@@ -119,8 +119,10 @@ java -jar BoneBot.jar
 - The response can include `\n` as a line separator.
 - You can include `$USER$` in the response to ping the user who invoked the response.
 - You can also include `$NAME$` to show their username.
-- Include `$REPLY$` to reply to the author.
 - Use `$BOT$` to place the bot's name in the response.
+- Use `$GUILD$` to place the guild's name in the response.
+- Use the previous three placeholders and the new line separator in the trigger to search for those replaced terms.
+- Include `$REPLY$` to reply to the author.
 - You can send a single file by adding `$FILE$ path/to/file $FILE$`.
 - The response sends with a delay based on message length multiplied by `typing-speed` in the main configuration in milliseconds. This number must be a whole number.
 - To set a cool down for the responder, set `responder-cooldown` in the main configuration to whole any number in seconds.
@@ -132,6 +134,7 @@ java -jar BoneBot.jar
 - The format is `trigger // emote`.
 - Case is ignored in the trigger.
 - The trigger can include Regex. Case is not ignored if you use Regex.
+- The trigger can also include the prefixes mentioned for the reactor.
 - For the emote, you can put either a unicode emoji, `U+1F980`, or a raw discord emote, `:bonebot:819645061200347177`.
 - To set a delay between when the message is sent and when the bot reacts, set `reactor-delay` in the main configuration to any whole number in milliseconds.
 - To set a cool down for the reactor, set `reactor-cooldown` in the main configuration to any whole number in seconds.
@@ -147,6 +150,8 @@ java -jar BoneBot.jar
 - You can also include `$NAME$` to show their username.
 - Include `$REPLY$` to reply to the author.
 - Use `$BOT$` to place the bot's name in the response.
+- Use `$GUILD$` to place the guild's name in the response.
+- You can use the previous five placeholders and new line separator in the description as well.
 - You can run a shell command by adding `$CMD$ command here $CMD$`.
   - Need to run multiple commands? Make a shell script and run the script with a command, or separate commands with a semi-colon!
   - Add `$CMDOUT$` to your response to also include the output of this command in the response.
@@ -192,15 +197,17 @@ java -jar BoneBot.jar
 - To show their name, add `$NAME$`
 - To mention the server name, add `$GUILD$`.
 - Use `$BOT$` to place the bot's name in the message.
+- Use `$GUILD$` to place the guild's name in the message.
 - You can send a single file in the embed by adding `$FILE$ path/to/file $FILE$`.
 - To enable or disable the welcomer, set `welcomer-enabled` in the main configuration to `true` or `false`.
 
 ### Messages
 - All messages built in to the bot are editable, located in `resources/messages.txt`.
-- The only placeholders allowed are specified per line, except for all messages from `error` to the end of the file. These can include the `$USER$`, `$NAME$`, `$BOT$`, and `$REPLY$` placeholders.
+- Allowed placeholders are `$USER$`, `$NAME$`, `$BOT$`, `$GUILD$`, and `$REPLY$` placeholders.
+  - `$USER$` and `$REPLY$` can not be used for embed titles.
 - Standard Discord Markdown formatting is supported.
 - This file can modify all built-in responses, command descriptions, and commands.
-- All messages can include new line characters `\n`, except for the commands.
+- All messages can include new line characters `\n`, except for the command labels.
 
 ### Miscellaneous
 - You can change the colors of embeds for the meme generator and help message by setting `embed-color` in the main configuration to a hex code.
@@ -249,8 +256,8 @@ help-command: help
 meme-command: meme
 file-command: file
 quote-command: quote
-meme-title: $USER$ generated a meme:
-welcome-title: $USER$ joined $GUILD$
+meme-title: $NAME$ generated a meme:
+welcome-title: $NAME$ joined $GUILD$
 error: **An error occurred!** Please check the log file!
 unknown-command: **Unknown command!**
 no-files: There are **no files** to send!
