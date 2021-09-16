@@ -46,7 +46,11 @@ object Responder {
         try {
             val msg = message.contentDisplay
             for (trigger in responses.keys) {
-                if ((msg.contains(Regex(trigger)) || msg.lowercase().contains(trigger.lowercase()))
+                val editedTrigger = trigger.replace("\$USER\$", message.author.asMention)
+                    .replace("\$NAME\$", message.author.name)
+                    .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
+                    .replace("\$GUILD\$", message.guild.name)
+                if ((msg.contains(Regex(editedTrigger)) || msg.lowercase().contains(editedTrigger.lowercase()))
                     && (System.currentTimeMillis() - prevTime) >= cooldown * 1000
                 ) {
                     prevTime = System.currentTimeMillis()
