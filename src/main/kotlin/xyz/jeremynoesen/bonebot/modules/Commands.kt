@@ -69,7 +69,7 @@ object Commands {
                             return true
                         }
                         label.equals(commandPrefix + Messages.helpCommand, true) -> {
-                            message.channel.sendMessage(buildHelpEmbed()).queue()
+                            message.channel.sendMessage(buildHelpEmbed(message)).queue()
                             return true
                         }
                         else -> {
@@ -99,9 +99,10 @@ object Commands {
     /**
      * build the help message embed
      *
+     * @param message message initiating help embed
      * @return build help message embed
      */
-    private fun buildHelpEmbed(): MessageEmbed {
+    private fun buildHelpEmbed(message: Message): MessageEmbed {
         var commandList = Messages.helpAbout.replace("\$BOT\$", BoneBot.JDA!!.selfUser.name) + "\n\n"
 
         commandList += Messages.helpFormat.replace("\$CMD\$", commandPrefix + Messages.helpCommand)
@@ -130,7 +131,13 @@ object Commands {
                 "\$CMD\$",
                 commandPrefix + command
             )
-                .replace("\$DESC\$", commands[command]!!.first) + "\n"
+                .replace("\$DESC\$", commands[command]!!.first
+                    .replace("\$USER\$", message.author.asMention)
+                    .replace("\$NAME\$", message.author.name)
+                    .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
+                    .replace("\$GUILD\$", message.guild.name)
+                    .replace("\\n", "\n")
+                ) + "\n"
         }
 
         val embedBuilder = EmbedBuilder()
