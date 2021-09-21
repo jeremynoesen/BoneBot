@@ -44,63 +44,63 @@ object Responder {
      */
     fun respond(message: Message) {
         try {
-            val msg = message.contentDisplay
-            for (trigger in responses.keys) {
-                val editedTrigger = trigger.replace("\$NAME\$", message.author.name)
-                    .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
-                    .replace("\$GUILD\$", message.guild.name)
-                    .replace("\\n", "\n")
-                if ((msg.contains(Regex(editedTrigger)) || msg.lowercase().contains(editedTrigger.lowercase()))
-                    && (System.currentTimeMillis() - prevTime) >= cooldown * 1000
-                ) {
-                    prevTime = System.currentTimeMillis()
-
-                    if (typingSpeed > 0) message.channel.sendTyping().queue()
-
-                    var toSend = responses[trigger]!!.replace("\$USER\$", message.author.asMention)
-                        .replace("\$NAME\$", message.author.name)
+            if ((System.currentTimeMillis() - prevTime) >= cooldown * 1000) {
+                val msg = message.contentDisplay
+                for (trigger in responses.keys) {
+                    val editedTrigger = trigger.replace("\$NAME\$", message.author.name)
                         .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
                         .replace("\$GUILD\$", message.guild.name)
                         .replace("\\n", "\n")
+                    if (msg.contains(Regex(editedTrigger)) || msg.lowercase().contains(editedTrigger.lowercase())) {
+                        prevTime = System.currentTimeMillis()
 
-                    var file: File? = null
+                        if (typingSpeed > 0) message.channel.sendTyping().queue()
 
-                    if (toSend.contains("\$FILE\$")) {
-                        val path = toSend.split("\$FILE\$")[1].trim()
-                        toSend = toSend.replace(
-                            toSend.substring(
-                                toSend.indexOf("\$FILE\$"),
-                                toSend.lastIndexOf("\$FILE\$") + 6
-                            ), ""
-                        )
-                            .replace("  ", " ").trim()
-                        file = File(path)
-                        if (!file.exists() || file.isDirectory || file.isHidden) {
-                            file = null
+                        var toSend = responses[trigger]!!.replace("\$USER\$", message.author.asMention)
+                            .replace("\$NAME\$", message.author.name)
+                            .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
+                            .replace("\$GUILD\$", message.guild.name)
+                            .replace("\\n", "\n")
+
+                        var file: File? = null
+
+                        if (toSend.contains("\$FILE\$")) {
+                            val path = toSend.split("\$FILE\$")[1].trim()
+                            toSend = toSend.replace(
+                                toSend.substring(
+                                    toSend.indexOf("\$FILE\$"),
+                                    toSend.lastIndexOf("\$FILE\$") + 6
+                                ), ""
+                            )
+                                .replace("  ", " ").trim()
+                            file = File(path)
+                            if (!file.exists() || file.isDirectory || file.isHidden) {
+                                file = null
+                            }
                         }
-                    }
 
-                    if (toSend.contains("\$REPLY\$")) {
-                        toSend = toSend.replace("\$REPLY\$", "").replace("   ", " ")
-                            .replace("  ", " ")
-                        if (file != null) {
-                            if (toSend.isNotEmpty())
-                                message.channel.sendMessage(toSend).addFile(file).reference(message).queue()
-                            else
-                                message.channel.sendFile(file).reference(message).queue()
+                        if (toSend.contains("\$REPLY\$")) {
+                            toSend = toSend.replace("\$REPLY\$", "").replace("   ", " ")
+                                .replace("  ", " ")
+                            if (file != null) {
+                                if (toSend.isNotEmpty())
+                                    message.channel.sendMessage(toSend).addFile(file).reference(message).queue()
+                                else
+                                    message.channel.sendFile(file).reference(message).queue()
+                            } else {
+                                if (toSend.isNotEmpty())
+                                    message.channel.sendMessage(toSend).reference(message).queue()
+                            }
                         } else {
-                            if (toSend.isNotEmpty())
-                                message.channel.sendMessage(toSend).reference(message).queue()
-                        }
-                    } else {
-                        if (file != null) {
-                            if (toSend.isNotEmpty())
-                                message.channel.sendMessage(toSend).addFile(file).queue()
-                            else
-                                message.channel.sendFile(file).queue()
-                        } else {
-                            if (toSend.isNotEmpty())
-                                message.channel.sendMessage(toSend).queue()
+                            if (file != null) {
+                                if (toSend.isNotEmpty())
+                                    message.channel.sendMessage(toSend).addFile(file).queue()
+                                else
+                                    message.channel.sendFile(file).queue()
+                            } else {
+                                if (toSend.isNotEmpty())
+                                    message.channel.sendMessage(toSend).queue()
+                            }
                         }
                     }
                 }
