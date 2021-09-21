@@ -44,17 +44,17 @@ object Reactor {
      */
     fun react(message: Message) {
         try {
-            val msg = message.contentDisplay
-            for (trigger in reactions.keys) {
-                val editedTrigger = trigger.replace("\$NAME\$", message.author.name)
-                    .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
-                    .replace("\$GUILD\$", message.guild.name)
-                    .replace("\\n", "\n")
-                if ((msg.contains(Regex(editedTrigger)) || msg.lowercase().contains(editedTrigger.lowercase()))
-                    && (System.currentTimeMillis() - prevTime) >= cooldown * 1000
-                ) {
-                    prevTime = System.currentTimeMillis()
-                    message.addReaction(reactions[trigger]!!).queueAfter(delay, TimeUnit.MILLISECONDS)
+            if ((System.currentTimeMillis() - prevTime) >= cooldown * 1000) {
+                val msg = message.contentDisplay
+                for (trigger in reactions.keys) {
+                    val editedTrigger = trigger.replace("\$NAME\$", message.author.name)
+                        .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
+                        .replace("\$GUILD\$", message.guild.name)
+                        .replace("\\n", "\n")
+                    if (msg.contains(Regex(editedTrigger)) || msg.lowercase().contains(editedTrigger.lowercase())) {
+                        prevTime = System.currentTimeMillis()
+                        message.addReaction(reactions[trigger]!!).queueAfter(delay, TimeUnit.MILLISECONDS)
+                    }
                 }
             }
         } catch (e: Exception) {
