@@ -54,7 +54,7 @@ object Commands {
                 message.channel.sendTyping().queue()
                 if ((System.currentTimeMillis() - prevTime) >= cooldown * 1000) {
                     prevTime = System.currentTimeMillis()
-                    val label = message.contentDisplay.split(" ")[0]
+                    val label = message.contentDisplay.split(" ", "\n")[0]
                     when {
                         label.equals(commandPrefix + Messages.memeCommand, true) && Memes.enabled -> {
                             Memes(message).generate()
