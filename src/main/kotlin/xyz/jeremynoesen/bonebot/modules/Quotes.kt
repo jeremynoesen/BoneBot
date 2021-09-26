@@ -1,6 +1,7 @@
 package xyz.jeremynoesen.bonebot.modules
 
 import net.dv8tion.jda.api.entities.Message
+import xyz.jeremynoesen.bonebot.BoneBot
 import xyz.jeremynoesen.bonebot.Messages
 import java.util.*
 
@@ -41,8 +42,13 @@ object Quotes {
             if ((System.currentTimeMillis() - prevTime) >= cooldown * 1000) {
                 prevTime = System.currentTimeMillis()
                 if (quotes.size > 0) {
-                    val quote = quotes[Random().nextInt(quotes.size)].replace("\\n", "\n")
+                    var quote = quotes[Random().nextInt(quotes.size)].replace("\\n", "\n")
                     if (quote.isNotEmpty())
+                        quote = quote
+                            .replace("\$USER\$", message.author.asMention)
+                            .replace("\$NAME\$", message.author.name)
+                            .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
+                            .replace("\$GUILD\$", message.guild.name)
                         message.channel.sendMessage(quote).queue()
                 } else {
                     Messages.sendMessage(Messages.noQuotes, message)
