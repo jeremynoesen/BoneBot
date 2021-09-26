@@ -55,6 +55,13 @@ constructor(private val command: Message) {
             try {
                 readTextAndImage()
                 if (image != null && text != null) {
+                    text = text!!
+                        .replace("\$USER\$", command.author.asMention)
+                        .replace("\$NAME\$", command.author.name)
+                        .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
+                        .replace("\$GUILD\$", command.guild.name)
+                        .replace("\\n", "\n")
+
                     processImage()
                     val file = convertToFile()
                     val embedBuilder = EmbedBuilder()
