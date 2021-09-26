@@ -27,7 +27,7 @@ object BoneBot {
     /**
      * create the bot and run it
      *
-     * @param args
+     * @param args program arguments (not used)
      */
     @JvmStatic
     fun main(args: Array<String>) {

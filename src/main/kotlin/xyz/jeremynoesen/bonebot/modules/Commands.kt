@@ -103,70 +103,39 @@ object Commands {
      * @return build help message embed
      */
     private fun buildHelpEmbed(message: Message): MessageEmbed {
-        var commandList = Messages.helpAbout.replace("\$USER\$", message.author.asMention)
+        var commandList = Messages.helpAbout + "\n\n" + Messages.helpFormat
+            .replace("\$CMD\$", commandPrefix + Messages.helpCommand)
+            .replace("\$DESC\$", Messages.helpDescription) + "\n"
+
+        if (Memes.enabled) commandList += Messages.helpFormat
+            .replace("\$CMD\$", commandPrefix + Messages.memeCommand)
+            .replace("\$DESC\$", Messages.memeDescription) + "\n"
+
+        if (Files.enabled) commandList += Messages.helpFormat
+            .replace("\$CMD\$", commandPrefix + Messages.fileCommand)
+            .replace("\$DESC\$", Messages.fileDescription) + "\n"
+
+        if (Quotes.enabled) commandList += Messages.helpFormat
+            .replace("\$CMD\$", commandPrefix + Messages.quoteCommand)
+            .replace("\$DESC\$", Messages.quoteDescription) + "\n"
+
+        for (command in commands.keys) {
+            commandList += Messages.helpFormat
+                .replace("\$CMD\$", commandPrefix + command)
+                .replace("\$DESC\$", commands[command]!!.first) + "\n"
+        }
+
+        commandList = commandList
+            .replace("\$USER\$", message.author.asMention)
             .replace("\$NAME\$", message.author.name)
             .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
             .replace("\$GUILD\$", message.guild.name)
-            .replace("\\n", "\n") + "\n\n"
-
-        commandList += Messages.helpFormat.replace("\$CMD\$", commandPrefix + Messages.helpCommand)
-            .replace("\$DESC\$", Messages.helpDescription
-                .replace("\$USER\$", message.author.asMention)
-                .replace("\$NAME\$", message.author.name)
-                .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
-                .replace("\$GUILD\$", message.guild.name)
-                .replace("\\n", "\n")) + "\n"
-
-        if (Memes.enabled) commandList += Messages.helpFormat.replace(
-            "\$CMD\$",
-            commandPrefix + Messages.memeCommand
-        )
-            .replace("\$DESC\$", Messages.memeDescription
-                .replace("\$USER\$", message.author.asMention)
-                .replace("\$NAME\$", message.author.name)
-                .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
-                .replace("\$GUILD\$", message.guild.name)
-                .replace("\\n", "\n")) + "\n"
-
-        if (Files.enabled) commandList += Messages.helpFormat.replace(
-            "\$CMD\$",
-            commandPrefix + Messages.fileCommand
-        )
-            .replace("\$DESC\$", Messages.fileDescription
-                .replace("\$USER\$", message.author.asMention)
-                .replace("\$NAME\$", message.author.name)
-                .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
-                .replace("\$GUILD\$", message.guild.name)
-                .replace("\\n", "\n")) + "\n"
-
-        if (Quotes.enabled) commandList += Messages.helpFormat.replace(
-            "\$CMD\$",
-            commandPrefix + Messages.quoteCommand
-        )
-            .replace("\$DESC\$", Messages.quoteDescription
-                .replace("\$USER\$", message.author.asMention)
-                .replace("\$NAME\$", message.author.name)
-                .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
-                .replace("\$GUILD\$", message.guild.name)
-                .replace("\\n", "\n")) + "\n"
-
-        for (command in commands.keys) {
-            commandList += Messages.helpFormat.replace(
-                "\$CMD\$",
-                commandPrefix + command
-            )
-                .replace("\$DESC\$", commands[command]!!.first
-                    .replace("\$USER\$", message.author.asMention)
-                    .replace("\$NAME\$", message.author.name)
-                    .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
-                    .replace("\$GUILD\$", message.guild.name)
-                    .replace("\\n", "\n")
-                ) + "\n"
-        }
+            .replace("\\n", "\n")
 
         val embedBuilder = EmbedBuilder()
         embedBuilder.setAuthor(
-            Messages.helpTitle.replace("\$NAME\$", message.author.name)
+            Messages.helpTitle
+                .replace("\$NAME\$", message.author.name)
                 .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
                 .replace("\$GUILD\$", message.guild.name),
             null,
@@ -185,7 +154,8 @@ object Commands {
      */
     private fun sendCustomCommand(command: String, message: Message) {
         var toSend =
-            commands[command]!!.second.replace("\$USER\$", message.author.asMention)
+            commands[command]!!.second
+                .replace("\$USER\$", message.author.asMention)
                 .replace("\$NAME\$", message.author.name)
                 .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
                 .replace("\$GUILD\$", message.guild.name)
