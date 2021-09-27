@@ -49,7 +49,13 @@ object Quotes {
                             .replace("\$NAME\$", message.author.name)
                             .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
                             .replace("\$GUILD\$", message.guild.name)
+                    if (quote.contains("\$REPLY\$")) {
+                        quote = quote.replace("\$REPLY\$", "").replace("   ", " ")
+                            .replace("  ", " ")
+                        message.channel.sendMessage(quote).reference(message).queue()
+                    } else {
                         message.channel.sendMessage(quote).queue()
+                    }
                 } else {
                     Messages.sendMessage(Messages.noQuotes, message)
                 }
