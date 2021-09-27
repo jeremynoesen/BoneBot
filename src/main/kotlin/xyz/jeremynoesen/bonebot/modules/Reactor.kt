@@ -1,6 +1,7 @@
 package xyz.jeremynoesen.bonebot.modules
 
 import net.dv8tion.jda.api.entities.Message
+import xyz.jeremynoesen.bonebot.BoneBot
 import xyz.jeremynoesen.bonebot.Messages
 import java.util.concurrent.TimeUnit
 
@@ -43,13 +44,17 @@ object Reactor {
      */
     fun react(message: Message) {
         try {
-            val msg = message.contentDisplay
-            for (trigger in reactions.keys) {
-                if ((msg.contains(Regex(trigger)) || msg.lowercase().contains(trigger.lowercase()))
-                    && (System.currentTimeMillis() - prevTime) >= cooldown * 1000
-                ) {
-                    prevTime = System.currentTimeMillis()
-                    message.addReaction(reactions[trigger]!!).queueAfter(delay, TimeUnit.MILLISECONDS)
+            if ((System.currentTimeMillis() - prevTime) >= cooldown * 1000) {
+                val msg = message.contentDisplay
+                for (trigger in reactions.keys) {
+                    val editedTrigger = trigger.replace("\$NAME\$", message.author.name)
+                        .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
+                        .replace("\$GUILD\$", message.guild.name)
+                        .replace("\\n", "\n")
+                    if (msg.contains(Regex(editedTrigger)) || msg.lowercase().contains(editedTrigger.lowercase())) {
+                        prevTime = System.currentTimeMillis()
+                        message.addReaction(reactions[trigger]!!).queueAfter(delay, TimeUnit.MILLISECONDS)
+                    }
                 }
             }
         } catch (e: Exception) {

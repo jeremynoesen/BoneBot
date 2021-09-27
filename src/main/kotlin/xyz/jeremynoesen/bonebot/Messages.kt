@@ -24,8 +24,8 @@ object Messages {
     var memeCommand = "meme"
     var fileCommand = "file"
     var quoteCommand = "quote"
-    var memeTitle = "\$USER\$ generated a meme:"
-    var welcomeTitle = "\$USER\$ joined \$GUILD\$"
+    var memeTitle = "\$NAME\$ generated a meme:"
+    var welcomeTitle = "\$NAME\$ joined \$GUILD\$"
 
     var error = "**An error occurred!** Please check the log file!"
     var unknownCommand = "**Unknown command!**"
@@ -138,7 +138,6 @@ object Messages {
             pw.println("quote-command: $quoteCommand")
             pw.println("meme-title: $memeTitle")
             pw.println("welcome-title: $welcomeTitle")
-            pw.println()
             pw.println("error: $error")
             pw.println("unknown-command: $unknownCommand")
             pw.println("no-files: $noFiles")
@@ -163,14 +162,24 @@ object Messages {
     fun sendMessage(message: String, cause: Message) {
         var toSend = message
         if (toSend.contains("\$REPLY\$")) {
-            toSend = toSend.replace("\$REPLY\$", "").replace("\$USER\$", cause.author.asMention)
-                .replace("\$NAME\$", cause.author.name).replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
-                .replace("   ", " ").replace("  ", " ")
+            toSend = toSend.replace("\$REPLY\$", "")
+                .replace("\$USER\$", cause.author.asMention)
+                .replace("\$NAME\$", cause.author.name)
+                .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
+                .replace("\$GUILD\$", cause.guild.name)
+                .replace("\\n", "\n")
+                .replace("   ", " ")
+                .replace("  ", " ")
             if (toSend.isNotEmpty())
                 cause.channel.sendMessage(toSend).reference(cause).queue()
         } else {
-            toSend = toSend.replace("\$USER\$", cause.author.asMention).replace("\$NAME\$", cause.author.name)
-                .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name).replace("   ", " ").replace("  ", " ")
+            toSend = toSend.replace("\$USER\$", cause.author.asMention)
+                .replace("\$NAME\$", cause.author.name)
+                .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
+                .replace("\$GUILD\$", cause.guild.name)
+                .replace("\\n", "\n")
+                .replace("   ", " ")
+                .replace("  ", " ")
             if (toSend.isNotEmpty())
                 cause.channel.sendMessage(toSend).queue()
         }
