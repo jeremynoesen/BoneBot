@@ -112,7 +112,7 @@ Use these placeholders in most configurations. Places they are disallowed will b
 ### Quotes
 - Quotes will be put into `resources/quotes.txt`.
 - Each line designates a new entry.
-- Quotes can use all placeholders except for `$REPLY$`.
+- Quotes can use all placeholders.
 - To set a cool down for quotes, set `quote-cooldown` in the main configuration to any while number in seconds.
 - To enable or disable quotes, set `quotes-enabled` in the main configuration to `true` or `false`.
 
@@ -193,7 +193,7 @@ Use these placeholders in most configurations. Places they are disallowed will b
 ### Welcomer
 - The welcome message will be put into `resources/welcome.txt`.
 - The entire file will make up the welcome message.
-- The welcomer can use all placeholders.
+- The welcomer can use all placeholders except `$REPLY$`.
 - You can send a single file in the embed by adding `$FILE$ path/to/file $FILE$`.
 - To enable or disable the welcomer, set `welcomer-enabled` in the main configuration to `true` or `false`.
 
