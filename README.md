@@ -49,10 +49,10 @@ The quote module will send a random quote from a file.
 `bbquote`
 
 ### Responder
-The responder will respond to a message with another when a trigger phrase is said. It can appear like it is typing the message itself!
+The responder will respond to a message with another when a trigger phrase is sent in a message or an edit. It can appear like it is typing the message itself!
 
 ### Reactor
-The reactor will react to a message with an emote when a trigger phrase is said.
+The reactor will react to a message with an emote when a trigger phrase is sent in a message or an edit.
 
 ### Commands
 BoneBot allows for custom commands to be made to provide text and image responses and run shell commands. Their usage is pretty simple - a command called `test` would be used by typing `bbtest`. If you make a mistake in typing a command, you can edit the message to fix it without needing to send another message. This module can provide simple ping-pong style commands, or more complex commands as needed. Some fantastic examples of custom commands can be found [here](https://github.com/diademiemi/BoneBot-Scripts).
@@ -90,11 +90,21 @@ java -jar BoneBot.jar
 ## Configuration
 **After changing any of text configurations, save the file and restart the bot.**
 
+#### Placeholders
+Use these placeholders in most configurations. Places they are disallowed will be specified per module. Module-specific placeholders will also be specified per module.
+- `$USER$` - Place a ping of the author in the message.
+- `$NAME$` - Place the author's name in the message.
+- `$BOT$` - Place the bot's name in the message.
+- `$GUILD$` - Place the guild's name in the message. 
+- `$REPLY$` - Send the message as a reply to the author.
+- `\n` - Place a new line character in the message.
+
 ### Meme Generator
 - Images for the randomizer are to be placed in the `resources/memeimages` folder. They must be PNG or JPG format.
 - Texts for the randomizer are to be placed in `resources/memetexts.txt`.
   - Each separate line denotes a separate text.
   - The format is `<top text> // <bottom text>`.
+- Text input can use all placeholders except for `$REPLY$`.
 - To set the size of generates memes, set `meme-size` in the main configuration to any number. This sets the image width to this number, and varies the height based on this width. Set it to `0` to use the image's original dimensions with no scaling.
 - To set a cool down for the generator, set `meme-cooldown` in the main configuration to any whole number in seconds.
 - To enable or disable the generator, set `memes-enabled` in the main configuration to `true` or `false`.
@@ -102,6 +112,7 @@ java -jar BoneBot.jar
 ### Quotes
 - Quotes will be put into `resources/quotes.txt`.
 - Each line designates a new entry.
+- Quotes can use all placeholders.
 - To set a cool down for quotes, set `quote-cooldown` in the main configuration to any while number in seconds.
 - To enable or disable quotes, set `quotes-enabled` in the main configuration to `true` or `false`.
 
@@ -116,11 +127,7 @@ java -jar BoneBot.jar
 - The format is `trigger // response`.
 - Case is ignored in the trigger.
 - The trigger can include Regex. Case is not ignored if you use Regex.
-- The response can include `\n` as a line separator.
-- You can include `$USER$` in the response to ping the user who invoked the response.
-- You can also include `$NAME$` to show their username.
-- Include `$REPLY$` to reply to the author.
-- Use `$BOT$` to place the bot's name in the response.
+- The trigger and response can include all placeholders.
 - You can send a single file by adding `$FILE$ path/to/file $FILE$`.
 - The response sends with a delay based on message length multiplied by `typing-speed` in the main configuration in milliseconds. This number must be a whole number.
 - To set a cool down for the responder, set `responder-cooldown` in the main configuration to whole any number in seconds.
@@ -132,6 +139,7 @@ java -jar BoneBot.jar
 - The format is `trigger // emote`.
 - Case is ignored in the trigger.
 - The trigger can include Regex. Case is not ignored if you use Regex.
+- Trigger can use all placeholders except for `$REPLY$`.
 - For the emote, you can put either a unicode emoji, `U+1F980`, or a raw discord emote, `:bonebot:819645061200347177`.
 - To set a delay between when the message is sent and when the bot reacts, set `reactor-delay` in the main configuration to any whole number in milliseconds.
 - To set a cool down for the reactor, set `reactor-cooldown` in the main configuration to any whole number in seconds.
@@ -142,15 +150,15 @@ java -jar BoneBot.jar
 - Each line designates a new entry.
 - The format is `command // description // response`.
 - Do not put the prefix in the command.
-- The response can include `\n` as a line separator.
-- You can include `$USER$` in the response to ping the user who used the command.
-- You can also include `$NAME$` to show their username.
-- Include `$REPLY$` to reply to the author.
-- Use `$BOT$` to place the bot's name in the response.
+- The response and description can include all placeholders.
+  - Description can not include `$REPLY$`
+- You can send a single file by adding `$FILE$ path/to/file $FILE$`.
+- You can add a reaction to the command trigger message by adding `$REACT$ emote $REACT$`. Format for emotes is similar to the reactor.
+- You can have the command send as an embed instead by using `$EMBED$ embed title here $EMBED$`.
 - You can run a shell command by adding `$CMD$ command here $CMD$`.
   - Need to run multiple commands? Make a shell script and run the script with a command, or separate commands with a semi-colon!
   - Add `$CMDOUT$` to your response to also include the output of this command in the response.
-  - If the above would return a file path, you can surround it with `$FILE$` to send that file, outlined below.
+  - If the above would return a file path, you can surround it with `$FILE$` to send that file.
   - You can accept input from the Discord command by using path variables within the `$CMD$` blocks. These can be used by doing `${VARIABLE}` in Linux and macOS, or `%VARIABLE%` in Windows. The available variables are as follows:
     - `BB_INPUT`: All text after the command trigger
     - `BB_USER`: Name of command author
@@ -170,9 +178,6 @@ java -jar BoneBot.jar
     - `BB_REPLY_MENTION_USER`: Name of last pinged user in the replied message
     - `BB_REPLY_MENTION_ID`: ID of last pinged user in the replied message
     - `BB_REPLY_MENTION_AVATAR`: Avatar URL of the last pinged user in the replied message
-- You can send a single file by adding `$FILE$ path/to/file $FILE$`.
-- You can add a reaction to the command trigger message by adding `$REACT$ emote $REACT$`. Format for emotes is similar to the reactor.
-- You can have the command send as an embed instead by using `$EMBED$ embed title here $EMBED$`.
 - To change the command prefix, set `command-prefix` in the main configuration to a custom prefix. Case is ignored.
 - To set a cool down for commands, set `commands-cooldown` in the main configuration to any whole number in seconds.
 - To enable or disable commands, set `commands-enabled` in the main configuration to `true` or `false`. This will disable all built in command modules as well.
@@ -181,26 +186,24 @@ java -jar BoneBot.jar
 - Statuses will be put into `resources/statuses.txt`.
 - Each line designates a new entry.
 - Each line must start with `playing`, `watching`, or `listening to`.
+- The only placeholder that works for statuses is `$BOT$`.
 - The main config has option `status-delay` to set how long each status shows in seconds as a whole number.
 - To enable or disable statuses, set `statuses-enabled` in the main configuration to `true` or `false`.
 
 ### Welcomer
 - The welcome message will be put into `resources/welcome.txt`.
 - The entire file will make up the welcome message.
-- New lines work without using `\n`.
-- To mention the user in the message, add `$USER$`.
-- To show their name, add `$NAME$`
-- To mention the server name, add `$GUILD$`.
-- Use `$BOT$` to place the bot's name in the message.
+- The welcomer can use all placeholders except `$REPLY$`.
 - You can send a single file in the embed by adding `$FILE$ path/to/file $FILE$`.
 - To enable or disable the welcomer, set `welcomer-enabled` in the main configuration to `true` or `false`.
 
 ### Messages
 - All messages built in to the bot are editable, located in `resources/messages.txt`.
-- The only placeholders allowed are specified per line, except for all messages from `error` to the end of the file. These can include the `$USER$`, `$NAME$`, `$BOT$`, and `$REPLY$` placeholders.
+- Messages can include all placeholders
+  - `$USER$` and `$REPLY$` can not be used for embed titles.
+  - Command labels can not use any placeholders.
 - Standard Discord Markdown formatting is supported.
 - This file can modify all built-in responses, command descriptions, and commands.
-- All messages can include new line characters `\n`, except for the commands.
 
 ### Miscellaneous
 - You can change the colors of embeds for the meme generator and help message by setting `embed-color` in the main configuration to a hex code.
@@ -249,8 +252,8 @@ help-command: help
 meme-command: meme
 file-command: file
 quote-command: quote
-meme-title: $USER$ generated a meme:
-welcome-title: $USER$ joined $GUILD$
+meme-title: $NAME$ generated a meme:
+welcome-title: $NAME$ joined $GUILD$
 error: **An error occurred!** Please check the log file!
 unknown-command: **Unknown command!**
 no-files: There are **no files** to send!

@@ -36,15 +36,18 @@ class Listener : ListenerAdapter() {
     }
 
     /**
-     * listen for message edits for fixing command typos
+     * listen for message edits for fixing typos
      *
      * @param e message update event
      */
     override fun onMessageUpdate(e: MessageUpdateEvent) {
         try {
-            if ((!e.author.isBot || (Config.listenToBots && e.author != BoneBot.JDA!!.selfUser))
-                && Commands.enabled
-            ) Commands.perform(e.message)
+            if (!e.author.isBot || (Config.listenToBots && e.author != BoneBot.JDA!!.selfUser)) {
+                if (!Commands.enabled || !Commands.perform(e.message)) {
+                    if (Responder.enabled) Responder.respond(e.message)
+                    if (Reactor.enabled) Reactor.react(e.message)
+                }
+            }
         } catch (ex: Exception) {
             Messages.sendMessage(Messages.error, e.message)
             ex.printStackTrace()
