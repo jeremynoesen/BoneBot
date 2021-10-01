@@ -4,6 +4,7 @@ import net.dv8tion.jda.api.entities.Message
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.PrintWriter
+import java.lang.IllegalStateException
 import java.util.*
 
 /**
@@ -166,20 +167,24 @@ object Messages {
                 .replace("\$USER\$", cause.author.asMention)
                 .replace("\$NAME\$", cause.author.name)
                 .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
-                .replace("\$GUILD\$", cause.guild.name)
                 .replace("\\n", "\n")
                 .replace("   ", " ")
                 .replace("  ", " ")
+            try {
+                toSend = toSend.replace("\$GUILD\$", cause.guild.name)
+            } catch (e: IllegalStateException) {}
             if (toSend.isNotEmpty())
                 cause.channel.sendMessage(toSend).reference(cause).queue()
         } else {
             toSend = toSend.replace("\$USER\$", cause.author.asMention)
                 .replace("\$NAME\$", cause.author.name)
                 .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
-                .replace("\$GUILD\$", cause.guild.name)
                 .replace("\\n", "\n")
                 .replace("   ", " ")
                 .replace("  ", " ")
+            try {
+                toSend = toSend.replace("\$GUILD\$", cause.guild.name)
+            } catch (e: IllegalStateException) {}
             if (toSend.isNotEmpty())
                 cause.channel.sendMessage(toSend).queue()
         }

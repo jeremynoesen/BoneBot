@@ -4,6 +4,7 @@ import net.dv8tion.jda.api.entities.Message
 import xyz.jeremynoesen.bonebot.BoneBot
 import xyz.jeremynoesen.bonebot.Messages
 import java.io.File
+import java.lang.IllegalStateException
 
 /**
  * responder to respond to words and phrases in a message
@@ -47,10 +48,12 @@ object Responder {
             if ((System.currentTimeMillis() - prevTime) >= cooldown * 1000) {
                 val msg = message.contentDisplay
                 for (trigger in responses.keys) {
-                    val editedTrigger = trigger.replace("\$NAME\$", message.author.name)
+                    var editedTrigger = trigger.replace("\$NAME\$", message.author.name)
                         .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
-                        .replace("\$GUILD\$", message.guild.name)
                         .replace("\\n", "\n")
+                    try {
+                        editedTrigger = editedTrigger.replace("\$GUILD\$", message.guild.name)
+                    } catch (e: IllegalStateException) {}
                     if (msg.contains(Regex(editedTrigger)) || msg.lowercase().contains(editedTrigger.lowercase())) {
                         prevTime = System.currentTimeMillis()
 
@@ -59,8 +62,10 @@ object Responder {
                         var toSend = responses[trigger]!!.replace("\$USER\$", message.author.asMention)
                             .replace("\$NAME\$", message.author.name)
                             .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
-                            .replace("\$GUILD\$", message.guild.name)
                             .replace("\\n", "\n")
+                        try {
+                            toSend = toSend.replace("\$GUILD\$", message.guild.name)
+                        } catch (e: IllegalStateException) {}
 
                         var file: File? = null
 

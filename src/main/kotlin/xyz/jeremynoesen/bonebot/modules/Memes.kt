@@ -12,6 +12,7 @@ import java.awt.font.TextLayout
 import java.awt.image.BufferedImage
 import java.io.File
 import java.io.IOException
+import java.lang.IllegalStateException
 import java.net.URL
 import java.net.URLConnection
 import java.util.*
@@ -59,19 +60,20 @@ constructor(private val command: Message) {
                         .replace("\$USER\$", command.author.asMention)
                         .replace("\$NAME\$", command.author.name)
                         .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
-                        .replace("\$GUILD\$", command.guild.name)
                         .replace("\\n", "\n")
+                    try {
+                        text = text!!.replace("\$GUILD\$", command.guild.name)
+                    } catch (e: IllegalStateException) {}
 
                     processImage()
                     val file = convertToFile()
                     val embedBuilder = EmbedBuilder()
-                    embedBuilder.setAuthor(
-                        Messages.memeTitle.replace("\$NAME\$", command.author.name)
-                            .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
-                            .replace("\$GUILD\$", command.guild.name),
-                        null,
-                        command.author.avatarUrl
-                    )
+                    var title = Messages.memeTitle.replace("\$NAME\$", command.author.name)
+                        .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
+                        try {
+                            title = title.replace("\$GUILD\$", command.guild.name)
+                        } catch (e: IllegalStateException) {}
+                    embedBuilder.setAuthor(title, null, command.author.avatarUrl)
                     embedBuilder.setColor(Config.embedColor)
                     embedBuilder.setImage("attachment://meme.png")
                     command.channel.sendMessage(embedBuilder.build()).addFile(file, "meme.png").queue()
