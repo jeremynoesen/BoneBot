@@ -3,6 +3,7 @@ package xyz.jeremynoesen.bonebot.modules
 import net.dv8tion.jda.api.entities.Message
 import xyz.jeremynoesen.bonebot.BoneBot
 import xyz.jeremynoesen.bonebot.Messages
+import java.lang.IllegalStateException
 import java.util.concurrent.TimeUnit
 
 /**
@@ -47,10 +48,12 @@ object Reactor {
             if ((System.currentTimeMillis() - prevTime) >= cooldown * 1000) {
                 val msg = message.contentDisplay
                 for (trigger in reactions.keys) {
-                    val editedTrigger = trigger.replace("\$NAME\$", message.author.name)
+                    var editedTrigger = trigger.replace("\$NAME\$", message.author.name)
                         .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
-                        .replace("\$GUILD\$", message.guild.name)
                         .replace("\\n", "\n")
+                    try {
+                        editedTrigger = editedTrigger.replace("\$GUILD\$", message.guild.name)
+                    } catch (e: IllegalStateException) {}
                     if (msg.contains(Regex(editedTrigger)) || msg.lowercase().contains(editedTrigger.lowercase())) {
                         prevTime = System.currentTimeMillis()
                         message.addReaction(reactions[trigger]!!).queueAfter(delay, TimeUnit.MILLISECONDS)

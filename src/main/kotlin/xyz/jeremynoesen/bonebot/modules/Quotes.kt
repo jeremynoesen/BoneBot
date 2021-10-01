@@ -3,6 +3,7 @@ package xyz.jeremynoesen.bonebot.modules
 import net.dv8tion.jda.api.entities.Message
 import xyz.jeremynoesen.bonebot.BoneBot
 import xyz.jeremynoesen.bonebot.Messages
+import java.lang.IllegalStateException
 import java.util.*
 
 /**
@@ -48,7 +49,9 @@ object Quotes {
                             .replace("\$USER\$", message.author.asMention)
                             .replace("\$NAME\$", message.author.name)
                             .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
-                            .replace("\$GUILD\$", message.guild.name)
+                    try {
+                        quote = quote.replace("\$GUILD\$", message.guild.name)
+                    } catch (e: IllegalStateException) {}
                     if (quote.contains("\$REPLY\$")) {
                         quote = quote.replace("\$REPLY\$", "").replace("   ", " ")
                             .replace("  ", " ")

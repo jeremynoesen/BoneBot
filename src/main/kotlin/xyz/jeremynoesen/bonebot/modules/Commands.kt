@@ -9,6 +9,7 @@ import xyz.jeremynoesen.bonebot.Messages
 import java.io.BufferedReader
 import java.io.File
 import java.io.InputStreamReader
+import java.lang.IllegalStateException
 
 /**
  * command handler with simple message responses
@@ -129,18 +130,19 @@ object Commands {
             .replace("\$USER\$", message.author.asMention)
             .replace("\$NAME\$", message.author.name)
             .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
-            .replace("\$GUILD\$", message.guild.name)
             .replace("\\n", "\n")
+        try {
+            commandList = commandList.replace("\$GUILD\$", message.guild.name)
+        } catch (e: IllegalStateException) {}
 
         val embedBuilder = EmbedBuilder()
-        embedBuilder.setAuthor(
-            Messages.helpTitle
-                .replace("\$NAME\$", message.author.name)
-                .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
-                .replace("\$GUILD\$", message.guild.name),
-            null,
-            BoneBot.JDA!!.selfUser.avatarUrl
-        )
+        var title = Messages.helpTitle
+            .replace("\$NAME\$", message.author.name)
+            .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
+            try {
+                title = title.replace("\$GUILD\$", message.guild.name)
+            } catch (e: IllegalStateException) {}
+        embedBuilder.setAuthor(title, null, BoneBot.JDA!!.selfUser.avatarUrl)
         embedBuilder.setColor(Config.embedColor)
         embedBuilder.setDescription("$commandList\n[**Source Code**](https://github.com/jeremynoesen/BoneBot)")
         return embedBuilder.build()
@@ -158,8 +160,10 @@ object Commands {
                 .replace("\$USER\$", message.author.asMention)
                 .replace("\$NAME\$", message.author.name)
                 .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
-                .replace("\$GUILD\$", message.guild.name)
                 .replace("\\n", "\n")
+        try {
+            toSend = toSend.replace("\$GUILD\$", message.guild.name)
+        } catch (e: IllegalStateException) {}
 
         if (toSend.contains("\$CMD\$")) {
             val cmd = toSend.split("\$CMD\$")[1].trim()
