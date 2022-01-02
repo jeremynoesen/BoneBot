@@ -76,7 +76,7 @@ constructor(private val command: Message) {
                     embedBuilder.setAuthor(title, null, command.author.avatarUrl)
                     embedBuilder.setColor(Config.embedColor)
                     embedBuilder.setImage("attachment://meme.png")
-                    command.channel.sendMessage(embedBuilder.build()).addFile(file, "meme.png").queue()
+                    command.channel.sendMessageEmbeds(embedBuilder.build()).addFile(file, "meme.png").queue()
                     prevTime = System.currentTimeMillis()
                 } else {
                     Messages.sendMessage(Messages.memeInputMissing, command)
@@ -254,7 +254,7 @@ constructor(private val command: Message) {
         val g2d = meme!!.graphics as Graphics2D
         val font =
             Font.createFont(Font.TRUETYPE_FONT, javaClass.getResourceAsStream("/Impact.ttf"))
-                .deriveFont((height + width) / 20.0f)
+                .deriveFont(((height + width) / 20.0f) * fontScale)
         g2d.font = font
         val metrics = g2d.getFontMetrics(font)
         g2d.drawImage(image, 0, 0, width, height, null)
@@ -282,7 +282,7 @@ constructor(private val command: Message) {
             )
         }
 
-        val outlineThickness = ceil((height + width) / 450f)
+        val outlineThickness = ceil(((height + width) / 450f) * fontScale)
 
         for (i in topText.indices) {
             val line = topText[i].trim { it <= ' ' }.uppercase()
@@ -369,6 +369,11 @@ constructor(private val command: Message) {
          * width of generated memes
          */
         var size = 1200
+
+        /**
+         * scale of text font on image
+         */
+        var fontScale = 1.0f
 
         /**
          * last time the meme generator was used in milliseconds
