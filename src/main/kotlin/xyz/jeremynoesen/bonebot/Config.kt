@@ -69,6 +69,9 @@ object Config {
                     "meme-size:" -> {
                         Memes.size = lineScanner.nextInt()
                     }
+                    "meme-font-scale:" -> {
+                        Memes.fontScale = lineScanner.nextFloat()
+                    }
                     "statuses-enabled:" -> {
                         Statuses.enabled = lineScanner.nextBoolean()
                     }
@@ -125,6 +128,7 @@ object Config {
             pw.println("memes-enabled: ${Memes.enabled}")
             pw.println("meme-cooldown: ${Memes.cooldown}")
             pw.println("meme-size: ${Memes.size}")
+            pw.println("meme-font-scale: ${Memes.fontScale}")
             pw.println("statuses-enabled: ${Statuses.enabled}")
             pw.println("status-delay: ${Statuses.delay}")
             pw.println("commands-enabled: ${Commands.enabled}")
