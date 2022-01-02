@@ -70,7 +70,7 @@ object Commands {
                             return true
                         }
                         label.equals(commandPrefix + Messages.helpCommand, true) -> {
-                            message.channel.sendMessage(buildHelpEmbed(message)).queue()
+                            message.channel.sendMessageEmbeds(buildHelpEmbed(message)).queue()
                             return true
                         }
                         else -> {
@@ -249,18 +249,18 @@ object Commands {
                 embedBuilder.setDescription(toSend)
                 if (file != null) {
                     embedBuilder.setImage("attachment://" + file.name)
-                    message.channel.sendMessage(embedBuilder.build()).addFile(file, file.name).reference(message)
+                    message.channel.sendMessageEmbeds(embedBuilder.build()).addFile(file, file.name).reference(message)
                         .queue()
                 } else {
-                    message.channel.sendMessage(embedBuilder.build()).reference(message).queue()
+                    message.channel.sendMessageEmbeds(embedBuilder.build()).reference(message).queue()
                 }
             } else {
                 embedBuilder.setDescription(toSend)
                 if (file != null) {
                     embedBuilder.setImage("attachment://" + file.name)
-                    message.channel.sendMessage(embedBuilder.build()).addFile(file, file.name).queue()
+                    message.channel.sendMessageEmbeds(embedBuilder.build()).addFile(file, file.name).queue()
                 } else {
-                    message.channel.sendMessage(embedBuilder.build()).queue()
+                    message.channel.sendMessageEmbeds(embedBuilder.build()).queue()
                 }
             }
         } else {

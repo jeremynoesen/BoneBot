@@ -76,7 +76,7 @@ constructor(private val command: Message) {
                     embedBuilder.setAuthor(title, null, command.author.avatarUrl)
                     embedBuilder.setColor(Config.embedColor)
                     embedBuilder.setImage("attachment://meme.png")
-                    command.channel.sendMessage(embedBuilder.build()).addFile(file, "meme.png").queue()
+                    command.channel.sendMessageEmbeds(embedBuilder.build()).addFile(file, "meme.png").queue()
                     prevTime = System.currentTimeMillis()
                 } else {
                     Messages.sendMessage(Messages.memeInputMissing, command)
