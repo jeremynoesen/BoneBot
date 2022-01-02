@@ -68,9 +68,9 @@ object Welcomer {
                 )
                 if (file != null) {
                     embedBuilder.setImage("attachment://welcome.png")
-                    channel.sendMessage(embedBuilder.build()).addFile(file, "welcome.png").queue()
+                    channel.sendMessageEmbeds(embedBuilder.build()).addFile(file, "welcome.png").queue()
                 } else {
-                    channel.sendMessage(embedBuilder.build()).queue()
+                    channel.sendMessageEmbeds(embedBuilder.build()).queue()
                 }
             }
         }
