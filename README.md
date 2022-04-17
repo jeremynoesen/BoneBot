@@ -33,7 +33,7 @@ If you make a mistake in typing the command, or wish to generate another meme wi
 
 ### Files
 The file module will send a random file from `resources/files`. This can be an image, video, text file, audio file, etc. A specific file can also be sent from the `resources/files` folder
-#### Command
+##### Command
 - `bbfile`  
 - `bbfile <path>`
 ##### File input
@@ -45,7 +45,7 @@ The file module will send a random file from `resources/files`. This can be an i
 
 ### Quotes
 The quote module will send a random quote from a file.
-#### Command
+##### Command
 `bbquote`
 
 ### Responder
@@ -90,7 +90,7 @@ java -jar BoneBot.jar
 ## Configuration
 **After changing any of text configurations, save the file and restart the bot.**
 
-#### Placeholders
+### Placeholders
 Use these placeholders in most configurations. Places they are disallowed will be specified per module. Module-specific placeholders will also be specified per module.
 - `$USER$` - Place a ping of the author in the message.
 - `$NAME$` - Place the author's name in the message.
