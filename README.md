@@ -69,7 +69,7 @@ Any version of Windows, macOS, or Linux that can run Java 8 or later.
 ## Building
 1. Clone or download this repository.
 2. Run `./gradlew shadowJar` in the directory of the project.
-3. A file called `BoneBot.jar` should have been created.  
+3. `/build/libs/BoneBot.jar` should have been generated.  
 
 You can also grab `BoneBot.jar` from the latest releases.
 
