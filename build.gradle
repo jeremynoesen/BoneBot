@@ -11,7 +11,6 @@ compileJava.options.encoding = 'UTF-8'
 
 repositories {
     mavenCentral()
-    mavenLocal()
     maven {
         name 'm2-dv8tion'
         url 'https://m2.dv8tion.net/releases'
@@ -30,17 +29,10 @@ application {
 }
 
 shadowJar {
-    mergeServiceFiles()
     archiveFileName = 'BoneBot.jar'
 }
 
 compileKotlin {
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
-}
-
-compileTestKotlin {
     kotlinOptions {
         jvmTarget = "1.8"
     }
