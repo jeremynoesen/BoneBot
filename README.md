@@ -14,7 +14,7 @@ BoneBot was originally written as a meme-generating Discord bot for the ISUCF'V'
 The meme generator will generate a meme with top and bottom text in Impact font.
 ##### Command
 - `bbmeme`
-- `bbmeme <image> <top text> // <bottom text>` (Can also press shift+enter instead of ` // `)
+- `bbmeme <image> <top text> \\ <bottom text>` (Can also press shift+enter instead of ` \\ `)
 ##### Image input
 - Image (PNG, JPG)
 - Image link (PNG, JPG)
@@ -103,7 +103,7 @@ Use these placeholders in most configurations. Places they are disallowed will b
 - Images for the randomizer are to be placed in the `resources/memeimages` folder. They must be PNG or JPG format.
 - Texts for the randomizer are to be placed in `resources/memetexts.txt`.
   - Each separate line denotes a separate text.
-  - The format is `<top text> // <bottom text>`.
+  - The format is `<top text> \\ <bottom text>`.
 - Text input can use all placeholders except for `$REPLY$`.
 - To set the size of generates memes, set `meme-size` in the main configuration to any number. This sets the image width to this number, and varies the height based on this width. Set it to `0` to use the image's original dimensions with no scaling.
 - To set the font size of text, set `meme-font-scale` in the main configuration. It defaults to `1.0`.
@@ -125,7 +125,7 @@ Use these placeholders in most configurations. Places they are disallowed will b
 ### Responder
 - Responses will be put into `resources/responses.txt`.
 - Each line designates a new entry.
-- The format is `trigger // response`.
+- The format is `trigger \\ response`.
 - Case is ignored in the trigger.
 - The trigger can include Regex. Case is not ignored if you use Regex.
 - The trigger and response can include all placeholders.
@@ -137,7 +137,7 @@ Use these placeholders in most configurations. Places they are disallowed will b
 ### Reactor
 - Reactions will be put into `resources/reactions.txt`.
 - Each line designates a new entry.
-- The format is `trigger // emote`.
+- The format is `trigger \\ emote`.
 - Case is ignored in the trigger.
 - The trigger can include Regex. Case is not ignored if you use Regex.
 - Trigger can use all placeholders except for `$REPLY$`.
@@ -149,7 +149,7 @@ Use these placeholders in most configurations. Places they are disallowed will b
 ### Commands
 - Commands will be put into `resources/commands.txt`.
 - Each line designates a new entry.
-- The format is `command // description // response`.
+- The format is `command \\ description \\ response`.
 - Do not put the prefix in the command.
 - The response and description can include all placeholders.
   - Description can not include `$REPLY$`
