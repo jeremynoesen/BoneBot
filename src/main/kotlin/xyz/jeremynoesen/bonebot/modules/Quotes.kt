@@ -46,15 +46,16 @@ object Quotes {
                     var quote = quotes[Random().nextInt(quotes.size)].replace("\\n", "\n")
                     if (quote.isNotEmpty())
                         quote = quote
-                            .replace("\$USER\$", message.author.asMention)
-                            .replace("\$NAME\$", message.author.name)
-                            .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
+                                .replace("\$USER\$", message.author.asMention)
+                                .replace("\$NAME\$", message.author.name)
+                                .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
                     try {
                         quote = quote.replace("\$GUILD\$", message.guild.name)
-                    } catch (e: IllegalStateException) {}
+                    } catch (e: IllegalStateException) {
+                    }
                     if (quote.contains("\$REPLY\$")) {
                         quote = quote.replace("\$REPLY\$", "").replace("   ", " ")
-                            .replace("  ", " ")
+                                .replace("  ", " ")
                         message.channel.sendMessage(quote).reference(message).queue()
                     } else {
                         message.channel.sendMessage(quote).queue()
@@ -64,7 +65,7 @@ object Quotes {
                 }
             } else {
                 val remaining = ((cooldown * 1000) - (System.currentTimeMillis() - prevTime)) / 1000
-                Messages.sendMessage(Messages.quoteCooldown.replace("\$TIME\$", remaining.toString()), message)
+                Messages.sendMessage(Messages.quoteCooldown.replace("\$TIME\$", (remaining + 1).toString()), message)
             }
         } catch (e: Exception) {
             Messages.sendMessage(Messages.error, message)

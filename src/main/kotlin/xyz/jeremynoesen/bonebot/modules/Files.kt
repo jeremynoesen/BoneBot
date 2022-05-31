@@ -39,16 +39,16 @@ object Files {
                 prevTime = System.currentTimeMillis()
 
                 if (message.contentDisplay.trim()
-                        .lowercase() == Commands.commandPrefix + Messages.fileCommand.lowercase()
+                                .lowercase() == Commands.commandPrefix + Messages.fileCommand.lowercase()
                 ) {
                     sendRandomFile(message, File("resources/files"))
                 } else {
                     try {
                         val file = File(
-                            "resources/files/" +
-                                    message.contentDisplay.substring(Commands.commandPrefix.length + Messages.fileCommand.length)
-                                        .replace("..", "").replace("   ", " ")
-                                        .replace("  ", " ").trim()
+                                "resources/files/" +
+                                        message.contentDisplay.substring(Commands.commandPrefix.length + Messages.fileCommand.length)
+                                                .replace("..", "").replace("   ", " ")
+                                                .replace("  ", " ").trim()
                         )
                         if (!file.exists() || file.isHidden) {
                             Messages.sendMessage(Messages.unknownFile, message)
@@ -65,7 +65,7 @@ object Files {
                 }
             } else {
                 val remaining = ((cooldown * 1000) - (System.currentTimeMillis() - prevTime)) / 1000
-                Messages.sendMessage(Messages.fileCooldown.replace("\$TIME\$", remaining.toString()), message)
+                Messages.sendMessage(Messages.fileCooldown.replace("\$TIME\$", (remaining + 1).toString()), message)
             }
         } catch (e: Exception) {
             Messages.sendMessage(Messages.error, message)

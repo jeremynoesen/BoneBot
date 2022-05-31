@@ -90,7 +90,7 @@ constructor(private val command: Message) {
             }
         } else {
             val remaining = ((cooldown * 1000) - (System.currentTimeMillis() - prevTime)) / 1000
-            Messages.sendMessage(Messages.memeCooldown.replace("\$TIME\$", remaining.toString()), command)
+            Messages.sendMessage(Messages.memeCooldown.replace("\$TIME\$", (remaining + 1).toString()), command)
         }
     }
 

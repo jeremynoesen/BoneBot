@@ -34,10 +34,10 @@ object Messages {
     var unknownFile = "**Unknown file!**"
     var memeInputMissing = "Please provide the missing **text** and/or **image**!"
     var noQuotes = "There are no quotes to show!"
-    var memeCooldown = "Another meme can be generated in **\$TIME\$** seconds."
-    var quoteCooldown = "Another quote can be sent in **\$TIME\$** seconds."
-    var fileCooldown = "Another file can be sent in **\$TIME\$** seconds."
-    var commandCooldown = "Commands can be used again in **\$TIME\$** seconds."
+    var memeCooldown = "Another meme can be generated in **\$TIME\$** second(s)."
+    var quoteCooldown = "Another quote can be sent in **\$TIME\$** second(s)."
+    var fileCooldown = "Another file can be sent in **\$TIME\$** second(s)."
+    var commandCooldown = "Commands can be used again in **\$TIME\$** second(s)."
 
     /**
      * load all messages from the messages file
