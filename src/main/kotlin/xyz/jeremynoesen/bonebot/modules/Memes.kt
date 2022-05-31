@@ -131,11 +131,11 @@ constructor(private val command: Message) {
             for (word in input.split(" ", "\n", " // ")) {
                 try {
                     image = getImageFromURL(word)
+                    imageInput = true
                     break
                 } catch (e: java.lang.Exception) {
                 }
             }
-            imageInput = true
 
         } else if (command.mentionedUsers.size > 0 &&
             input.split(command.mentionedUsers[command.mentionedUsers.size - 1].name).size > 1
@@ -159,11 +159,11 @@ constructor(private val command: Message) {
                 for (word in reply.contentDisplay.split(" ", "\n", " // ")) {
                     try {
                         image = getImageFromURL(word)
+                        imageInput = true
                         break
                     } catch (e: java.lang.Exception) {
                     }
                 }
-                imageInput = true
 
             } else if (reply.mentionedUsers.size > 0 &&
                 altInput.split(reply.mentionedUsers[reply.mentionedUsers.size - 1].name).size > 1
