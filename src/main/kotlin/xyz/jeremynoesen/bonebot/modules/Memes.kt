@@ -3,6 +3,7 @@ package xyz.jeremynoesen.bonebot.modules
 import net.coobird.thumbnailator.Thumbnails
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.entities.Message
+import net.dv8tion.jda.api.utils.MarkdownSanitizer
 import org.apache.commons.text.WordUtils
 import xyz.jeremynoesen.bonebot.BoneBot
 import xyz.jeremynoesen.bonebot.Config
@@ -57,22 +58,24 @@ constructor(private val command: Message) {
                 readTextAndImage()
                 if (image != null && text != null) {
                     text = text!!
-                        .replace("\$USER\$", command.author.asMention)
-                        .replace("\$NAME\$", command.author.name)
-                        .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
-                        .replace("\\n", "\n")
+                            .replace("\$USER\$", command.author.asMention)
+                            .replace("\$NAME\$", command.author.name)
+                            .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
+                            .replace("\\n", "\n")
                     try {
                         text = text!!.replace("\$GUILD\$", command.guild.name)
-                    } catch (e: IllegalStateException) {}
+                    } catch (e: IllegalStateException) {
+                    }
 
                     processImage()
                     val file = convertToFile()
                     val embedBuilder = EmbedBuilder()
                     var title = Messages.memeTitle.replace("\$NAME\$", command.author.name)
-                        .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
-                        try {
-                            title = title.replace("\$GUILD\$", command.guild.name)
-                        } catch (e: IllegalStateException) {}
+                            .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
+                    try {
+                        title = title.replace("\$GUILD\$", command.guild.name)
+                    } catch (e: IllegalStateException) {
+                    }
                     embedBuilder.setAuthor(title, null, command.author.avatarUrl)
                     embedBuilder.setColor(Config.embedColor)
                     embedBuilder.setImage("attachment://meme.png")
@@ -111,8 +114,8 @@ constructor(private val command: Message) {
     @Throws(IOException::class)
     private fun readTextAndImage() {
         var input = command.contentDisplay.substring(
-            Commands.commandPrefix.length + Messages.memeCommand.length,
-            command.contentDisplay.length
+                Commands.commandPrefix.length + Messages.memeCommand.length,
+                command.contentDisplay.length
         )
         var altInput = ""
         var imageInput = false
@@ -130,7 +133,8 @@ constructor(private val command: Message) {
         } else if (command.contentDisplay.contains("http://") || command.contentDisplay.contains("https://")) {
             for (word in input.split(" ", "\n", " \\\\ ")) {
                 try {
-                    image = getImageFromURL(word)
+                    image = getImageFromURL(MarkdownSanitizer.sanitize(
+                            word.replace("<", "").replace(">", "")))
                     imageInput = true
                     break
                 } catch (e: java.lang.Exception) {
@@ -138,10 +142,10 @@ constructor(private val command: Message) {
             }
 
         } else if (command.mentionedUsers.size > 0 &&
-            input.split(command.mentionedUsers[command.mentionedUsers.size - 1].name).size > 1
+                input.split(command.mentionedUsers[command.mentionedUsers.size - 1].name).size > 1
         ) {
             image =
-                getImageFromURL(command.mentionedUsers[command.mentionedUsers.size - 1].effectiveAvatarUrl + "?size=4096")
+                    getImageFromURL(command.mentionedUsers[command.mentionedUsers.size - 1].effectiveAvatarUrl + "?size=4096")
             imageInput = true
 
         } else if (command.referencedMessage != null) {
@@ -158,7 +162,8 @@ constructor(private val command: Message) {
             } else if (reply.contentDisplay.contains("http://") || reply.contentDisplay.contains("https://")) {
                 for (word in reply.contentDisplay.split(" ", "\n", " \\\\ ")) {
                     try {
-                        image = getImageFromURL(word)
+                        image = getImageFromURL(MarkdownSanitizer.sanitize(
+                                word.replace("<", "").replace(">", "")))
                         imageInput = true
                         break
                     } catch (e: java.lang.Exception) {
@@ -166,10 +171,10 @@ constructor(private val command: Message) {
                 }
 
             } else if (reply.mentionedUsers.size > 0 &&
-                altInput.split(reply.mentionedUsers[reply.mentionedUsers.size - 1].name).size > 1
+                    altInput.split(reply.mentionedUsers[reply.mentionedUsers.size - 1].name).size > 1
             ) {
                 image =
-                    getImageFromURL(reply.mentionedUsers[reply.mentionedUsers.size - 1].effectiveAvatarUrl + "?size=4096")
+                        getImageFromURL(reply.mentionedUsers[reply.mentionedUsers.size - 1].effectiveAvatarUrl + "?size=4096")
                 imageInput = true
             }
 
@@ -230,15 +235,15 @@ constructor(private val command: Message) {
     private fun cleanInput(input: String): String {
         var output = input
         for (word in output.split(" ", "\n", " \\\\ ")) {
-            if (word.startsWith("http://") || word.startsWith("https://")) {
+            if (word.contains("http://") || word.contains("https://")) {
                 output = input.replace(word, "").replace("   ", " ")
-                    .replace("  ", " ")
+                        .replace("  ", " ")
             }
         }
 
         for (i in command.mentionedUsers.indices) output =
-            input.replace("@${command.mentionedUsers[i].name}", "")
-                .replace("   ", " ").replace("  ", " ")
+                input.replace("@${command.mentionedUsers[i].name}", "")
+                        .replace("   ", " ").replace("  ", " ")
 
         return output
     }
@@ -253,8 +258,8 @@ constructor(private val command: Message) {
         meme = BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB)
         val g2d = meme!!.graphics as Graphics2D
         val font =
-            Font.createFont(Font.TRUETYPE_FONT, javaClass.getResourceAsStream("/Impact.ttf"))
-                .deriveFont(((height + width) / 20.0f) * fontScale)
+                Font.createFont(Font.TRUETYPE_FONT, javaClass.getResourceAsStream("/Impact.ttf"))
+                        .deriveFont(((height + width) / 20.0f) * fontScale)
         g2d.font = font
         val metrics = g2d.getFontMetrics(font)
         g2d.drawImage(image, 0, 0, width, height, null)
@@ -266,19 +271,19 @@ constructor(private val command: Message) {
         val bottomText = ArrayList<String>()
 
         val topWrapLength =
-            floor(sections[0].length / (metrics.stringWidth(sections[0]) / (width.toFloat() - (width / 6.4)))).toInt()
+                floor(sections[0].length / (metrics.stringWidth(sections[0]) / (width.toFloat() - (width / 6.4)))).toInt()
         topText.addAll(
-            listOf(
-                *WordUtils.wrap(sections[0], topWrapLength, "\n\n", true).split("\n\n").toTypedArray()
-            )
+                listOf(
+                        *WordUtils.wrap(sections[0], topWrapLength, "\n\n", true).split("\n\n").toTypedArray()
+                )
         )
         if (sections.size > 1) {
             val bottomWrapLength =
-                floor(sections[1].length / (metrics.stringWidth(sections[1]) / (width.toFloat() - (width / 6.4)))).toInt()
+                    floor(sections[1].length / (metrics.stringWidth(sections[1]) / (width.toFloat() - (width / 6.4)))).toInt()
             bottomText.addAll(
-                listOf(
-                    *WordUtils.wrap(sections[1], bottomWrapLength, "\n\n", true).split("\n\n").toTypedArray()
-                )
+                    listOf(
+                            *WordUtils.wrap(sections[1], bottomWrapLength, "\n\n", true).split("\n\n").toTypedArray()
+                    )
             )
         }
 
