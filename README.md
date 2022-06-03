@@ -298,6 +298,3 @@ The following is an example command sent to the bot to generate a meme with top 
 The following image is an example of the help command with one custom command added.
 
 <div align="center"><img src="img/help.png" alt="Help example" title="Help example" /></div>
-
-## Notice
-This project is no longer in development.
