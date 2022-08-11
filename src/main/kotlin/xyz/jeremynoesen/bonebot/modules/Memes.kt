@@ -139,11 +139,12 @@ constructor(private val command: Message) {
                 }
             }
 
-        } else if (command.mentions.users.size > 0 &&
-                input.split(command.mentions.users[command.mentions.users.size - 1].name).size > 1
+        } else if (command.mentions.members.size > 0 &&
+                (input.split(command.mentions.members[command.mentions.members.size - 1].user.name).size > 1 ||
+                        input.split(command.mentions.members[command.mentions.members.size - 1].effectiveName).size > 1)
         ) {
             image =
-                    getImageFromURL(command.mentions.users[command.mentions.users.size - 1].effectiveAvatarUrl + "?size=4096")
+                    getImageFromURL(command.mentions.members[command.mentions.members.size - 1].effectiveAvatarUrl + "?size=4096")
             imageInput = true
 
         } else if (command.referencedMessage != null) {
@@ -167,11 +168,12 @@ constructor(private val command: Message) {
                     }
                 }
 
-            } else if (reply.mentions.users.size > 0 &&
-                    altInput.split(reply.mentions.users[reply.mentions.users.size - 1].name).size > 1
+            } else if (reply.mentions.members.size > 0 &&
+                    (altInput.split(reply.mentions.members[reply.mentions.members.size - 1].user.name).size > 1 ||
+                            altInput.split(reply.mentions.members[reply.mentions.members.size - 1].effectiveName).size > 1)
             ) {
                 image =
-                        getImageFromURL(reply.mentions.users[reply.mentions.users.size - 1].effectiveAvatarUrl + "?size=4096")
+                        getImageFromURL(reply.mentions.members[reply.mentions.members.size - 1].effectiveAvatarUrl + "?size=4096")
                 imageInput = true
             }
 
@@ -239,8 +241,9 @@ constructor(private val command: Message) {
             }
         }
 
-        for (i in command.mentions.users.indices) output =
-                input.replace("@${command.mentions.users[i].name}", "")
+        for (i in command.mentions.members.indices) output =
+                input.replace("@${command.mentions.members[i].user.name}", "")
+                        .replace("@${command.mentions.members[i].effectiveName}", "")
                         .replace("   ", " ").replace("  ", " ")
 
         return output
