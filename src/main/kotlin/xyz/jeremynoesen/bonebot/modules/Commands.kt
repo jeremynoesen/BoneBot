@@ -11,6 +11,7 @@ import java.io.BufferedReader
 import java.io.File
 import java.io.InputStreamReader
 import java.lang.IllegalStateException
+import kotlin.concurrent.thread
 import kotlin.random.Random
 
 /**
@@ -54,31 +55,42 @@ object Commands {
     fun perform(message: Message): Boolean {
         try {
             if (message.contentDisplay.startsWith(commandPrefix, true)) {
-                message.channel.sendTyping().queue()
+                var done = false
+                thread {
+                    while (!done) {
+                        message.channel.sendTyping().queue()
+                        Thread.sleep(9000);
+                    }
+                }
                 if ((System.currentTimeMillis() - prevTime) >= cooldown * 1000) {
                     prevTime = System.currentTimeMillis()
                     val label = message.contentDisplay.split(" ", "\n")[0]
                     when {
                         label.equals(commandPrefix + Messages.memeCommand, true) && Memes.enabled -> {
                             Memes(message).generate()
+                            done = true
                             return true
                         }
                         label.equals(commandPrefix + Messages.quoteCommand, true) && Quotes.enabled -> {
                             Quotes.sendQuote(message)
+                            done = true
                             return true
                         }
                         label.equals(commandPrefix + Messages.fileCommand, true) && Files.enabled -> {
                             Files.sendFile(message)
+                            done = true
                             return true
                         }
                         label.equals(commandPrefix + Messages.helpCommand, true) -> {
                             message.channel.sendMessageEmbeds(buildHelpEmbed(message)).queue()
+                            done = true
                             return true
                         }
                         else -> {
                             for (command in commands.keys) {
                                 if (label.equals("$commandPrefix${command.lowercase()}", true)) {
                                     sendCustomCommand(command, message)
+                                    done = true
                                     return true
                                 }
                             }
@@ -89,6 +101,7 @@ object Commands {
                 } else {
                     val remaining = ((cooldown * 1000) - (System.currentTimeMillis() - prevTime)) / 1000
                     Messages.sendMessage(Messages.commandCooldown.replace("\$TIME\$", (remaining + 1).toString()), message)
+                    done = true
                     return true
                 }
             }

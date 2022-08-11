@@ -65,8 +65,6 @@ object Responder {
 
                         for (responseMessage in selectedResponse.split(" && ")) {
 
-                            if (typingSpeed > 0) message.channel.sendTyping().queue()
-
                             var toSend = responseMessage.replace("\$USER\$", message.author.asMention)
                                     .replace("\$NAME\$", message.author.name)
                                     .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
@@ -96,6 +94,17 @@ object Responder {
                             if (toSend.contains("\$REPLY\$")) {
                                 toSend = toSend.replace("\$REPLY\$", "")
                                         .replace("  ", " ")
+
+                                if (typingSpeed > 0) {
+                                    var typingTime = 0L
+                                    for (i in toSend.indices) {
+                                        if (typingTime >= 9000L) typingTime = 0L
+                                        if (typingTime == 0L) message.channel.sendTyping().queue()
+                                        typingTime += typingSpeed
+                                        Thread.sleep(typingSpeed);
+                                    }
+                                }
+
                                 if (file != null) {
                                     if (toSend.isNotEmpty())
                                         message.channel.sendMessage(toSend).addFile(file).reference(message).queue()
@@ -106,6 +115,17 @@ object Responder {
                                         message.channel.sendMessage(toSend).reference(message).queue()
                                 }
                             } else {
+
+                                if (typingSpeed > 0) {
+                                    var typingTime = 0L
+                                    for (i in toSend.indices) {
+                                        if (typingTime >= 9000L) typingTime = 0L
+                                        if (typingTime == 0L) message.channel.sendTyping().queue()
+                                        typingTime += typingSpeed
+                                        Thread.sleep(typingSpeed);
+                                    }
+                                }
+
                                 if (file != null) {
                                     if (toSend.isNotEmpty())
                                         message.channel.sendMessage(toSend).addFile(file).queue()
