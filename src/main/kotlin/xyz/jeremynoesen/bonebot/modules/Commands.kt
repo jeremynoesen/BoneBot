@@ -11,6 +11,7 @@ import java.io.BufferedReader
 import java.io.File
 import java.io.InputStreamReader
 import java.lang.IllegalStateException
+import kotlin.random.Random
 
 /**
  * command handler with simple message responses
@@ -158,138 +159,145 @@ object Commands {
      * @param message message containing command label and arguments
      */
     private fun sendCustomCommand(command: String, message: Message) {
-        var toSend =
-                commands[command]!!.second
-                        .replace("\$USER\$", message.author.asMention)
-                        .replace("\$NAME\$", message.author.name)
-                        .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
-                        .replace("\\n", "\n")
-        try {
-            toSend = toSend.replace("\$GUILD\$", message.guild.name)
-        } catch (e: IllegalStateException) {
-        }
 
-        if (toSend.contains("\$CMD\$")) {
-            val cmd = toSend.split("\$CMD\$")[1].trim()
+        val randomCommands = commands[command]!!.second.split(" || ")
+        val selectedCommand = randomCommands[Random.nextInt(randomCommands.size)]
 
-            toSend = toSend.replace(
-                    toSend.substring(
-                            toSend.indexOf("\$CMD\$"),
-                            toSend.lastIndexOf("\$CMD\$") + 5
-                    ), ""
-            )
-                    .replace("  ", " ").trim()
+        for (commandMessage in selectedCommand.split(" && ")) {
 
-            val procBuilder = if (System.getProperty("os.name").contains("windows", true)) {
-                ProcessBuilder("cmd.exe", "/c", cmd)
-            } else {
-                ProcessBuilder("/bin/sh", "-c", cmd)
-            }
-            procBuilder.environment().putAll(setPathVariables(message))
-            val stream = procBuilder.start().inputStream
-
-            if (toSend.contains("\$CMDOUT\$")) {
-                val stdInput = BufferedReader(InputStreamReader(stream))
-                var output = ""
-                for (line in stdInput.readLines()) output += "$line\n"
-                output = output.removeSuffix("\n")
-                toSend = toSend.replace("\$CMDOUT\$", output)
-            }
-        }
-
-        if (toSend.contains("\$REACT\$")) {
-            val emote = toSend.split("\$REACT\$")[1].trim()
-            toSend = toSend.replace(
-                    toSend.substring(
-                            toSend.indexOf("\$REACT\$"),
-                            toSend.lastIndexOf("\$REACT\$") + 7
-                    ), ""
-            )
-                    .replace("  ", " ").trim()
-            message.addReaction(Emoji.fromFormatted(emote)).queue()
-        }
-
-        var file: File? = null
-
-        if (toSend.contains("\$FILE\$")) {
-            val path = toSend.split("\$FILE\$")[1].trim()
-            toSend = toSend.replace(
-                    toSend.substring(
-                            toSend.indexOf("\$FILE\$"),
-                            toSend.lastIndexOf("\$FILE\$") + 6
-                    ), ""
-            )
-                    .replace("  ", " ").trim()
-            file = File(path)
-            if (!file.exists() || file.isDirectory || file.isHidden) {
-                file = null
-            }
-        }
-
-        if (toSend.contains("\$EMBED\$")) {
-            val title = toSend.split("\$EMBED\$")[1].trim()
-
-            toSend = toSend.replace(
-                    toSend.substring(
-                            toSend.indexOf("\$EMBED\$"),
-                            toSend.lastIndexOf("\$EMBED\$") + 7
-                    ), ""
-            )
-                    .replace("  ", " ").trim()
-
-            val embedBuilder = EmbedBuilder()
-            embedBuilder.setColor(Config.embedColor)
-            if (title.contains(message.author.name)) {
-                embedBuilder.setAuthor(title, null, message.author.effectiveAvatarUrl)
-            } else if (title.contains(BoneBot.JDA!!.selfUser.name)) {
-                embedBuilder.setAuthor(title, null, BoneBot.JDA!!.selfUser.effectiveAvatarUrl)
-            } else {
-                embedBuilder.setAuthor(title, null)
+            var toSend =
+                    commandMessage
+                            .replace("\$USER\$", message.author.asMention)
+                            .replace("\$NAME\$", message.author.name)
+                            .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
+                            .replace("\\n", "\n")
+            try {
+                toSend = toSend.replace("\$GUILD\$", message.guild.name)
+            } catch (e: IllegalStateException) {
             }
 
-            if (toSend.contains("\$REPLY\$")) {
-                toSend = toSend.replace("\$REPLY\$", "")
-                        .replace("  ", " ")
-                embedBuilder.setDescription(toSend)
-                if (file != null) {
-                    embedBuilder.setImage("attachment://" + file.name)
-                    message.channel.sendMessageEmbeds(embedBuilder.build()).addFile(file, file.name).reference(message)
-                            .queue()
+            if (toSend.contains("\$CMD\$")) {
+                val cmd = toSend.split("\$CMD\$")[1].trim()
+
+                toSend = toSend.replace(
+                        toSend.substring(
+                                toSend.indexOf("\$CMD\$"),
+                                toSend.lastIndexOf("\$CMD\$") + 5
+                        ), ""
+                )
+                        .replace("  ", " ").trim()
+
+                val procBuilder = if (System.getProperty("os.name").contains("windows", true)) {
+                    ProcessBuilder("cmd.exe", "/c", cmd)
                 } else {
-                    message.channel.sendMessageEmbeds(embedBuilder.build()).reference(message).queue()
+                    ProcessBuilder("/bin/sh", "-c", cmd)
                 }
-            } else {
-                embedBuilder.setDescription(toSend)
-                if (file != null) {
-                    embedBuilder.setImage("attachment://" + file.name)
-                    message.channel.sendMessageEmbeds(embedBuilder.build()).addFile(file, file.name).queue()
-                } else {
-                    message.channel.sendMessageEmbeds(embedBuilder.build()).queue()
+                procBuilder.environment().putAll(setPathVariables(message))
+                val stream = procBuilder.start().inputStream
+
+                if (toSend.contains("\$CMDOUT\$")) {
+                    val stdInput = BufferedReader(InputStreamReader(stream))
+                    var output = ""
+                    for (line in stdInput.readLines()) output += "$line\n"
+                    output = output.removeSuffix("\n")
+                    toSend = toSend.replace("\$CMDOUT\$", output)
                 }
             }
-        } else {
-            if (toSend.contains("\$REPLY\$")) {
-                toSend = toSend.replace("\$REPLY\$", "")
-                        .replace("  ", " ")
-                if (file != null) {
-                    if (toSend.isNotEmpty())
-                        message.channel.sendMessage(toSend).addFile(file).reference(message)
+
+            if (toSend.contains("\$REACT\$")) {
+                val emote = toSend.split("\$REACT\$")[1].trim()
+                toSend = toSend.replace(
+                        toSend.substring(
+                                toSend.indexOf("\$REACT\$"),
+                                toSend.lastIndexOf("\$REACT\$") + 7
+                        ), ""
+                )
+                        .replace("  ", " ").trim()
+                message.addReaction(Emoji.fromFormatted(emote)).queue()
+            }
+
+            var file: File? = null
+
+            if (toSend.contains("\$FILE\$")) {
+                val path = toSend.split("\$FILE\$")[1].trim()
+                toSend = toSend.replace(
+                        toSend.substring(
+                                toSend.indexOf("\$FILE\$"),
+                                toSend.lastIndexOf("\$FILE\$") + 6
+                        ), ""
+                )
+                        .replace("  ", " ").trim()
+                file = File(path)
+                if (!file.exists() || file.isDirectory || file.isHidden) {
+                    file = null
+                }
+            }
+
+            if (toSend.contains("\$EMBED\$")) {
+                val title = toSend.split("\$EMBED\$")[1].trim()
+
+                toSend = toSend.replace(
+                        toSend.substring(
+                                toSend.indexOf("\$EMBED\$"),
+                                toSend.lastIndexOf("\$EMBED\$") + 7
+                        ), ""
+                )
+                        .replace("  ", " ").trim()
+
+                val embedBuilder = EmbedBuilder()
+                embedBuilder.setColor(Config.embedColor)
+                if (title.contains(message.author.name)) {
+                    embedBuilder.setAuthor(title, null, message.author.effectiveAvatarUrl)
+                } else if (title.contains(BoneBot.JDA!!.selfUser.name)) {
+                    embedBuilder.setAuthor(title, null, BoneBot.JDA!!.selfUser.effectiveAvatarUrl)
+                } else {
+                    embedBuilder.setAuthor(title, null)
+                }
+
+                if (toSend.contains("\$REPLY\$")) {
+                    toSend = toSend.replace("\$REPLY\$", "")
+                            .replace("  ", " ")
+                    embedBuilder.setDescription(toSend)
+                    if (file != null) {
+                        embedBuilder.setImage("attachment://" + file.name)
+                        message.channel.sendMessageEmbeds(embedBuilder.build()).addFile(file, file.name).reference(message)
                                 .queue()
-                    else
-                        message.channel.sendFile(file).reference(message).queue()
+                    } else {
+                        message.channel.sendMessageEmbeds(embedBuilder.build()).reference(message).queue()
+                    }
                 } else {
-                    if (toSend.isNotEmpty())
-                        message.channel.sendMessage(toSend).reference(message).queue()
+                    embedBuilder.setDescription(toSend)
+                    if (file != null) {
+                        embedBuilder.setImage("attachment://" + file.name)
+                        message.channel.sendMessageEmbeds(embedBuilder.build()).addFile(file, file.name).queue()
+                    } else {
+                        message.channel.sendMessageEmbeds(embedBuilder.build()).queue()
+                    }
                 }
             } else {
-                if (file != null) {
-                    if (toSend.isNotEmpty())
-                        message.channel.sendMessage(toSend).addFile(file).queue()
-                    else
-                        message.channel.sendFile(file).queue()
+                if (toSend.contains("\$REPLY\$")) {
+                    toSend = toSend.replace("\$REPLY\$", "")
+                            .replace("  ", " ")
+                    if (file != null) {
+                        if (toSend.isNotEmpty())
+                            message.channel.sendMessage(toSend).addFile(file).reference(message)
+                                    .queue()
+                        else
+                            message.channel.sendFile(file).reference(message).queue()
+                    } else {
+                        if (toSend.isNotEmpty())
+                            message.channel.sendMessage(toSend).reference(message).queue()
+                    }
                 } else {
-                    if (toSend.isNotEmpty())
-                        message.channel.sendMessage(toSend).queue()
+                    if (file != null) {
+                        if (toSend.isNotEmpty())
+                            message.channel.sendMessage(toSend).addFile(file).queue()
+                        else
+                            message.channel.sendFile(file).queue()
+                    } else {
+                        if (toSend.isNotEmpty())
+                            message.channel.sendMessage(toSend).queue()
+                    }
                 }
             }
         }

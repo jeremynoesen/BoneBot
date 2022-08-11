@@ -6,6 +6,7 @@ import xyz.jeremynoesen.bonebot.BoneBot
 import xyz.jeremynoesen.bonebot.Messages
 import java.lang.IllegalStateException
 import java.util.concurrent.TimeUnit
+import kotlin.random.Random
 
 /**
  * reactor to add reactions based on words and phrases in a message
@@ -57,7 +58,13 @@ object Reactor {
                     } catch (e: IllegalStateException) {}
                     if (msg.contains(Regex(editedTrigger)) || msg.lowercase().contains(editedTrigger.lowercase())) {
                         prevTime = System.currentTimeMillis()
-                        message.addReaction(Emoji.fromFormatted(reactions[trigger]!!)).queueAfter(delay, TimeUnit.MILLISECONDS)
+
+                        val randomReactions = reactions[trigger]!!.split(" || ")
+                        val selectedReaction = randomReactions[Random.nextInt(randomReactions.size)]
+
+                        for (reactionEmojis in selectedReaction.split(" && ")) {
+                            message.addReaction(Emoji.fromFormatted(reactionEmojis)).queueAfter(delay, TimeUnit.MILLISECONDS)
+                        }
                     }
                 }
             }

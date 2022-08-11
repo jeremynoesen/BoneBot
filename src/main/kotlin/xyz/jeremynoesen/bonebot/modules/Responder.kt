@@ -5,6 +5,7 @@ import xyz.jeremynoesen.bonebot.BoneBot
 import xyz.jeremynoesen.bonebot.Messages
 import java.io.File
 import java.lang.IllegalStateException
+import kotlin.random.Random
 
 /**
  * responder to respond to words and phrases in a message
@@ -49,62 +50,71 @@ object Responder {
                 val msg = message.contentDisplay
                 for (trigger in responses.keys) {
                     var editedTrigger = trigger.replace("\$NAME\$", message.author.name)
-                        .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
-                        .replace("\\n", "\n")
+                            .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
+                            .replace("\\n", "\n")
                     try {
                         editedTrigger = editedTrigger.replace("\$GUILD\$", message.guild.name)
-                    } catch (e: IllegalStateException) {}
+                    } catch (e: IllegalStateException) {
+                    }
                     if (msg.contains(Regex(editedTrigger)) || msg.lowercase().contains(editedTrigger.lowercase())) {
                         prevTime = System.currentTimeMillis()
 
-                        if (typingSpeed > 0) message.channel.sendTyping().queue()
 
-                        var toSend = responses[trigger]!!.replace("\$USER\$", message.author.asMention)
-                            .replace("\$NAME\$", message.author.name)
-                            .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
-                            .replace("\\n", "\n")
-                        try {
-                            toSend = toSend.replace("\$GUILD\$", message.guild.name)
-                        } catch (e: IllegalStateException) {}
+                        val randomResponses = responses[trigger]!!.split(" || ")
+                        val selectedResponse = randomResponses[Random.nextInt(randomResponses.size)]
 
-                        var file: File? = null
+                        for (responseMessage in selectedResponse.split(" && ")) {
 
-                        if (toSend.contains("\$FILE\$")) {
-                            val path = toSend.split("\$FILE\$")[1].trim()
-                            toSend = toSend.replace(
-                                toSend.substring(
-                                    toSend.indexOf("\$FILE\$"),
-                                    toSend.lastIndexOf("\$FILE\$") + 6
-                                ), ""
-                            )
-                                .replace("  ", " ").trim()
-                            file = File(path)
-                            if (!file.exists() || file.isDirectory || file.isHidden) {
-                                file = null
+                            if (typingSpeed > 0) message.channel.sendTyping().queue()
+
+                            var toSend = responseMessage.replace("\$USER\$", message.author.asMention)
+                                    .replace("\$NAME\$", message.author.name)
+                                    .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
+                                    .replace("\\n", "\n")
+                            try {
+                                toSend = toSend.replace("\$GUILD\$", message.guild.name)
+                            } catch (e: IllegalStateException) {
                             }
-                        }
 
-                        if (toSend.contains("\$REPLY\$")) {
-                            toSend = toSend.replace("\$REPLY\$", "")
-                                .replace("  ", " ")
-                            if (file != null) {
-                                if (toSend.isNotEmpty())
-                                    message.channel.sendMessage(toSend).addFile(file).reference(message).queue()
-                                else
-                                    message.channel.sendFile(file).reference(message).queue()
-                            } else {
-                                if (toSend.isNotEmpty())
-                                    message.channel.sendMessage(toSend).reference(message).queue()
+                            var file: File? = null
+
+                            if (toSend.contains("\$FILE\$")) {
+                                val path = toSend.split("\$FILE\$")[1].trim()
+                                toSend = toSend.replace(
+                                        toSend.substring(
+                                                toSend.indexOf("\$FILE\$"),
+                                                toSend.lastIndexOf("\$FILE\$") + 6
+                                        ), ""
+                                )
+                                        .replace("  ", " ").trim()
+                                file = File(path)
+                                if (!file.exists() || file.isDirectory || file.isHidden) {
+                                    file = null
+                                }
                             }
-                        } else {
-                            if (file != null) {
-                                if (toSend.isNotEmpty())
-                                    message.channel.sendMessage(toSend).addFile(file).queue()
-                                else
-                                    message.channel.sendFile(file).queue()
+
+                            if (toSend.contains("\$REPLY\$")) {
+                                toSend = toSend.replace("\$REPLY\$", "")
+                                        .replace("  ", " ")
+                                if (file != null) {
+                                    if (toSend.isNotEmpty())
+                                        message.channel.sendMessage(toSend).addFile(file).reference(message).queue()
+                                    else
+                                        message.channel.sendFile(file).reference(message).queue()
+                                } else {
+                                    if (toSend.isNotEmpty())
+                                        message.channel.sendMessage(toSend).reference(message).queue()
+                                }
                             } else {
-                                if (toSend.isNotEmpty())
-                                    message.channel.sendMessage(toSend).queue()
+                                if (file != null) {
+                                    if (toSend.isNotEmpty())
+                                        message.channel.sendMessage(toSend).addFile(file).queue()
+                                    else
+                                        message.channel.sendFile(file).queue()
+                                } else {
+                                    if (toSend.isNotEmpty())
+                                        message.channel.sendMessage(toSend).queue()
+                                }
                             }
                         }
                     }
