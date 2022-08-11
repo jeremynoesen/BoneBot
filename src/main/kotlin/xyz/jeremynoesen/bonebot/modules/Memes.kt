@@ -3,7 +3,6 @@ package xyz.jeremynoesen.bonebot.modules
 import net.coobird.thumbnailator.Thumbnails
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.entities.Message
-import net.dv8tion.jda.api.utils.MarkdownSanitizer
 import org.apache.commons.text.WordUtils
 import xyz.jeremynoesen.bonebot.BoneBot
 import xyz.jeremynoesen.bonebot.Config
@@ -133,8 +132,7 @@ constructor(private val command: Message) {
         } else if (command.contentDisplay.contains("http://") || command.contentDisplay.contains("https://")) {
             for (word in input.split(" ", "\n", " \\\\ ")) {
                 try {
-                    image = getImageFromURL(MarkdownSanitizer.sanitize(
-                            word.replace("<", "").replace(">", "")))
+                    image = getImageFromURL(word.replace("<", "").replace(">", ""))
                     imageInput = true
                     break
                 } catch (e: java.lang.Exception) {
@@ -162,8 +160,7 @@ constructor(private val command: Message) {
             } else if (reply.contentDisplay.contains("http://") || reply.contentDisplay.contains("https://")) {
                 for (word in reply.contentDisplay.split(" ", "\n", " \\\\ ")) {
                     try {
-                        image = getImageFromURL(MarkdownSanitizer.sanitize(
-                                word.replace("<", "").replace(">", "")))
+                        image = getImageFromURL(word.replace("<", "").replace(">", ""))
                         imageInput = true
                         break
                     } catch (e: java.lang.Exception) {
