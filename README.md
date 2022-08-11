@@ -238,6 +238,7 @@ file-cooldown: 5
 welcomer-enabled: true
 listen-to-bots: false
 embed-color: #fd0605
+thread-cap: 4
 bot-token: TOKEN
 ```
 
