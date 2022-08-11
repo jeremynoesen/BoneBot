@@ -85,7 +85,7 @@ object Responder {
                         }
 
                         if (toSend.contains("\$REPLY\$")) {
-                            toSend = toSend.replace("\$REPLY\$", "").replace("   ", " ")
+                            toSend = toSend.replace("\$REPLY\$", "")
                                 .replace("  ", " ")
                             if (file != null) {
                                 if (toSend.isNotEmpty())

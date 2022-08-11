@@ -168,7 +168,7 @@ object Messages {
                 .replace("\$NAME\$", cause.author.name)
                 .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
                 .replace("\\n", "\n")
-                .replace("   ", " ")
+                
                 .replace("  ", " ")
             try {
                 toSend = toSend.replace("\$GUILD\$", cause.guild.name)
@@ -180,7 +180,7 @@ object Messages {
                 .replace("\$NAME\$", cause.author.name)
                 .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
                 .replace("\\n", "\n")
-                .replace("   ", " ")
+                
                 .replace("  ", " ")
             try {
                 toSend = toSend.replace("\$GUILD\$", cause.guild.name)

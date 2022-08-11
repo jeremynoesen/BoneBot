@@ -235,7 +235,7 @@ constructor(private val command: Message) {
         var output = input
         for (word in output.split(" ", "\n", " \\\\ ")) {
             if (word.contains("http://") || word.contains("https://")) {
-                output = input.replace(word, "").replace("   ", " ")
+                output = input.replace(word, "")
                         .replace("  ", " ").replace("<", "")
                         .replace(">", "")
             }
@@ -244,7 +244,7 @@ constructor(private val command: Message) {
         for (i in command.mentions.members.indices) output =
                 input.replace("@${command.mentions.members[i].user.name}", "")
                         .replace("@${command.mentions.members[i].effectiveName}", "")
-                        .replace("   ", " ").replace("  ", " ")
+                        .replace("  ", " ")
 
         return output
     }
@@ -267,7 +267,9 @@ constructor(private val command: Message) {
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON)
         g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR)
 
-        val sections = text!!.split("\n", " \\\\ ").toTypedArray()
+        val sections = text!!.trim().split("\n", " \\\\ ").toTypedArray()
+        sections[0] = sections[0].trim()
+        sections[1] = sections[1].trim()
         val topText = ArrayList<String>()
         val bottomText = ArrayList<String>()
 

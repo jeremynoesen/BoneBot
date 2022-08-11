@@ -248,7 +248,7 @@ object Commands {
             }
 
             if (toSend.contains("\$REPLY\$")) {
-                toSend = toSend.replace("\$REPLY\$", "").replace("   ", " ")
+                toSend = toSend.replace("\$REPLY\$", "")
                         .replace("  ", " ")
                 embedBuilder.setDescription(toSend)
                 if (file != null) {
@@ -269,7 +269,7 @@ object Commands {
             }
         } else {
             if (toSend.contains("\$REPLY\$")) {
-                toSend = toSend.replace("\$REPLY\$", "").replace("   ", " ")
+                toSend = toSend.replace("\$REPLY\$", "")
                         .replace("  ", " ")
                 if (file != null) {
                     if (toSend.isNotEmpty())

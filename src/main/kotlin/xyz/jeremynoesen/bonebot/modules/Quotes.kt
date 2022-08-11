@@ -54,7 +54,7 @@ object Quotes {
                     } catch (e: IllegalStateException) {
                     }
                     if (quote.contains("\$REPLY\$")) {
-                        quote = quote.replace("\$REPLY\$", "").replace("   ", " ")
+                        quote = quote.replace("\$REPLY\$", "")
                                 .replace("  ", " ")
                         message.channel.sendMessage(quote).reference(message).queue()
                     } else {

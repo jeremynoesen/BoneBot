@@ -47,7 +47,7 @@ object Files {
                         val file = File(
                                 "resources/files/" +
                                         message.contentDisplay.substring(Commands.commandPrefix.length + Messages.fileCommand.length)
-                                                .replace("..", "").replace("   ", " ")
+                                                .replace("..", "")
                                                 .replace("  ", " ").trim()
                         )
                         if (!file.exists() || file.isHidden) {
