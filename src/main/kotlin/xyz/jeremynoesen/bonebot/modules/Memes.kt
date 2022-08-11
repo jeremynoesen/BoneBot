@@ -268,11 +268,10 @@ constructor(private val command: Message) {
         g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR)
 
         val sections = text!!.trim().split("\n", " \\\\ ").toTypedArray()
-        sections[0] = sections[0].trim()
-        sections[1] = sections[1].trim()
         val topText = ArrayList<String>()
         val bottomText = ArrayList<String>()
 
+        sections[0] = sections[0].trim()
         val topWrapLength =
                 floor(sections[0].length / (metrics.stringWidth(sections[0]) / (width.toFloat() - (width / 6.4)))).toInt()
         topText.addAll(
@@ -281,6 +280,7 @@ constructor(private val command: Message) {
                 )
         )
         if (sections.size > 1) {
+            sections[1] = sections[1].trim()
             val bottomWrapLength =
                     floor(sections[1].length / (metrics.stringWidth(sections[1]) / (width.toFloat() - (width / 6.4)))).toInt()
             bottomText.addAll(
