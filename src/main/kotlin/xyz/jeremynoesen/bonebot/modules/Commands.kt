@@ -3,6 +3,7 @@ package xyz.jeremynoesen.bonebot.modules
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.entities.Message
 import net.dv8tion.jda.api.entities.MessageEmbed
+import net.dv8tion.jda.api.entities.emoji.Emoji
 import xyz.jeremynoesen.bonebot.BoneBot
 import xyz.jeremynoesen.bonebot.Config
 import xyz.jeremynoesen.bonebot.Messages
@@ -205,7 +206,7 @@ object Commands {
                     ), ""
             )
                     .replace("  ", " ").trim()
-            message.addReaction(emote).queue()
+            message.addReaction(Emoji.fromFormatted(emote)).queue()
         }
 
         var file: File? = null
@@ -312,15 +313,15 @@ object Commands {
         if (message.embeds.size > 0 && message.embeds[0].image != null)
             env["BB_EMBED"] = message.embeds[0].image!!.url!!
 
-        if (message.mentionedUsers.size > 0 &&
-                message.contentDisplay.split(message.mentionedUsers[message.mentionedUsers.size - 1].name).size > 1
+        if (message.mentions.users.size > 0 &&
+                message.contentDisplay.split(message.mentions.users[message.mentions.users.size - 1].name).size > 1
         ) {
             env["BB_MENTION_USER"] =
-                    message.mentionedUsers[message.mentionedUsers.size - 1].name
+                    message.mentions.users[message.mentions.users.size - 1].name
             env["BB_MENTION_ID"] =
-                    message.mentionedUsers[message.mentionedUsers.size - 1].id
+                    message.mentions.users[message.mentions.users.size - 1].id
             env["BB_MENTION_AVATAR"] =
-                    message.mentionedUsers[message.mentionedUsers.size - 1].effectiveAvatarUrl + "?size=4096"
+                    message.mentions.users[message.mentions.users.size - 1].effectiveAvatarUrl + "?size=4096"
         }
 
         if (message.referencedMessage != null) {
@@ -334,15 +335,15 @@ object Commands {
             if (reply.embeds.size > 0 && reply.embeds[0].image != null)
                 env["BB_REPLY_EMBED"] = reply.embeds[0].image!!.url!!
 
-            if (reply.mentionedUsers.size > 0 &&
-                    reply.contentDisplay.split(reply.mentionedUsers[reply.mentionedUsers.size - 1].name).size > 1
+            if (reply.mentions.users.size > 0 &&
+                    reply.contentDisplay.split(reply.mentions.users[reply.mentions.users.size - 1].name).size > 1
             ) {
                 env["BB_REPLY_MENTION_USER"] =
-                        reply.mentionedUsers[reply.mentionedUsers.size - 1].name
+                        reply.mentions.users[reply.mentions.users.size - 1].name
                 env["BB_REPLY_MENTION_ID"] =
-                        reply.mentionedUsers[reply.mentionedUsers.size - 1].id
+                        reply.mentions.users[reply.mentions.users.size - 1].id
                 env["BB_REPLY_MENTION_AVATAR"] =
-                        reply.mentionedUsers[reply.mentionedUsers.size - 1].effectiveAvatarUrl + "?size=4096"
+                        reply.mentions.users[reply.mentions.users.size - 1].effectiveAvatarUrl + "?size=4096"
             }
         }
         return env

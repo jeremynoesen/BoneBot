@@ -284,6 +284,7 @@ The following Discord permissions are required for BoneBot to work:
 - Use External Emoji
 - Read Message History
 - Server Members Intent
+- Message Content Intent
 
 ## Demonstration
 Below are a few images showing what BoneBot can do. Simple actions, such as reactions, text responses, and status messages, are not shown due to those being basic Discord functions.

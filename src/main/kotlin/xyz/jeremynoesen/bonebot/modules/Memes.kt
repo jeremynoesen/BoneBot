@@ -139,11 +139,11 @@ constructor(private val command: Message) {
                 }
             }
 
-        } else if (command.mentionedUsers.size > 0 &&
-                input.split(command.mentionedUsers[command.mentionedUsers.size - 1].name).size > 1
+        } else if (command.mentions.users.size > 0 &&
+                input.split(command.mentions.users[command.mentions.users.size - 1].name).size > 1
         ) {
             image =
-                    getImageFromURL(command.mentionedUsers[command.mentionedUsers.size - 1].effectiveAvatarUrl + "?size=4096")
+                    getImageFromURL(command.mentions.users[command.mentions.users.size - 1].effectiveAvatarUrl + "?size=4096")
             imageInput = true
 
         } else if (command.referencedMessage != null) {
@@ -167,11 +167,11 @@ constructor(private val command: Message) {
                     }
                 }
 
-            } else if (reply.mentionedUsers.size > 0 &&
-                    altInput.split(reply.mentionedUsers[reply.mentionedUsers.size - 1].name).size > 1
+            } else if (reply.mentions.users.size > 0 &&
+                    altInput.split(reply.mentions.users[reply.mentions.users.size - 1].name).size > 1
             ) {
                 image =
-                        getImageFromURL(reply.mentionedUsers[reply.mentionedUsers.size - 1].effectiveAvatarUrl + "?size=4096")
+                        getImageFromURL(reply.mentions.users[reply.mentions.users.size - 1].effectiveAvatarUrl + "?size=4096")
                 imageInput = true
             }
 
@@ -234,12 +234,13 @@ constructor(private val command: Message) {
         for (word in output.split(" ", "\n", " \\\\ ")) {
             if (word.contains("http://") || word.contains("https://")) {
                 output = input.replace(word, "").replace("   ", " ")
-                        .replace("  ", " ")
+                        .replace("  ", " ").replace("<", "")
+                        .replace(">", "")
             }
         }
 
-        for (i in command.mentionedUsers.indices) output =
-                input.replace("@${command.mentionedUsers[i].name}", "")
+        for (i in command.mentions.users.indices) output =
+                input.replace("@${command.mentions.users[i].name}", "")
                         .replace("   ", " ").replace("  ", " ")
 
         return output

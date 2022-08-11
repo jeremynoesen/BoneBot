@@ -39,7 +39,7 @@ object BoneBot {
         System.setOut(log)
         System.setErr(log)
         JDA = JDABuilder.createLight(Config.botToken).addEventListeners(Listener())
-            .enableIntents(GatewayIntent.GUILD_MEMBERS).build()
+            .enableIntents(GatewayIntent.GUILD_MEMBERS, GatewayIntent.MESSAGE_CONTENT).build()
         if (Statuses.enabled) Statuses.setStatus()
         try {
             File("temp").deleteRecursively()

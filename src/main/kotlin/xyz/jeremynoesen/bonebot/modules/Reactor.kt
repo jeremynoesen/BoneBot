@@ -1,6 +1,7 @@
 package xyz.jeremynoesen.bonebot.modules
 
 import net.dv8tion.jda.api.entities.Message
+import net.dv8tion.jda.api.entities.emoji.Emoji
 import xyz.jeremynoesen.bonebot.BoneBot
 import xyz.jeremynoesen.bonebot.Messages
 import java.lang.IllegalStateException
@@ -56,7 +57,7 @@ object Reactor {
                     } catch (e: IllegalStateException) {}
                     if (msg.contains(Regex(editedTrigger)) || msg.lowercase().contains(editedTrigger.lowercase())) {
                         prevTime = System.currentTimeMillis()
-                        message.addReaction(reactions[trigger]!!).queueAfter(delay, TimeUnit.MILLISECONDS)
+                        message.addReaction(Emoji.fromFormatted(reactions[trigger]!!)).queueAfter(delay, TimeUnit.MILLISECONDS)
                     }
                 }
             }
