@@ -215,6 +215,7 @@ Use these placeholders in most configurations. Places they are disallowed will b
 ### Miscellaneous
 - You can change the colors of embeds for the meme generator and help message by setting `embed-color` in the main configuration to a hex code.
 - You can allow BoneBot to listen to input from other bots by setting `listen-to-bots` to `true`. It defaults to `false`.
+- BoneBot spawns new threads for every message, edit, and member join. To limit the maximum number of worker threads at a time, set `max-threads` to any integer. 0 or lower removes the limit.
 - All files in `temp` will be deleted every time the bot program is closed.
 - You can make other files and directories in the bot folder as needed for your own organization of files the bot may use, but not for the files the bot requires.
 
@@ -244,7 +245,7 @@ file-cooldown: 5
 welcomer-enabled: true
 listen-to-bots: false
 embed-color: #fd0605
-thread-cap: 4
+max-threads: 8
 bot-token: TOKEN
 ```
 

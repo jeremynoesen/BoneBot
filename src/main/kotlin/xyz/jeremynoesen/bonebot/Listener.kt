@@ -92,6 +92,6 @@ class Listener : ListenerAdapter() {
         /**
          * Limit to how many threads should run concurrently
          */
-        var maxThreads: Int = 4;
+        var maxThreads: Int = 8;
     }
 }

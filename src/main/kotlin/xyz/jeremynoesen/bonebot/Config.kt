@@ -108,7 +108,7 @@ object Config {
                     "embed-color:" -> {
                         embedColor = Color.decode(lineScanner.next())
                     }
-                    "thread-cap:" -> {
+                    "max-threads:" -> {
                         Listener.maxThreads = lineScanner.nextInt()
                     }
                     "bot-token:" -> {
@@ -144,7 +144,7 @@ object Config {
             pw.println("welcomer-enabled: ${Welcomer.enabled}")
             pw.println("listen-to-bots: $listenToBots")
             pw.println("embed-color: #fd0605")
-            pw.println("thread-cap: ${Listener.maxThreads}")
+            pw.println("max-threads: ${Listener.maxThreads}")
             pw.println("bot-token: TOKEN")
             pw.close()
         }
