@@ -173,10 +173,10 @@ object Commands {
      */
     private fun sendCustomCommand(command: String, message: Message) {
 
-        val randomCommands = commands[command]!!.second.split(" || ")
+        val randomCommands = commands[command]!!.second.split(" \$||\$ ")
         val selectedCommand = randomCommands[Random.nextInt(randomCommands.size)]
 
-        for (commandMessage in selectedCommand.split(" && ")) {
+        for (commandMessage in selectedCommand.split(" \$&&\$ ")) {
 
             var toSend =
                     commandMessage

@@ -60,10 +60,10 @@ object Responder {
                         prevTime = System.currentTimeMillis()
 
 
-                        val randomResponses = responses[trigger]!!.split(" || ")
+                        val randomResponses = responses[trigger]!!.split(" \$||\$ ")
                         val selectedResponse = randomResponses[Random.nextInt(randomResponses.size)]
 
-                        for (responseMessage in selectedResponse.split(" && ")) {
+                        for (responseMessage in selectedResponse.split(" \$&&\$ ")) {
 
                             var toSend = responseMessage.replace("\$USER\$", message.author.asMention)
                                     .replace("\$NAME\$", message.author.name)

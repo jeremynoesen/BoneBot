@@ -126,8 +126,8 @@ Use these placeholders in most configurations. Places they are disallowed will b
 - Responses will be put into `resources/responses.txt`.
 - Each line designates a new entry.
 - The format is `trigger \\ response`.
-- Append ` && response` to add a multi-message response.
-- Append ` || response` to have multiple messages to randomly choose from for a response.
+- Append ` $&&$ response` to add a multi-message response.
+- Append ` $||$ response` to have multiple messages to randomly choose from for a response.
 - Case is ignored in the trigger.
 - The trigger can include Regex. Case is not ignored if you use Regex.
 - The trigger and response can include all placeholders.
@@ -140,8 +140,8 @@ Use these placeholders in most configurations. Places they are disallowed will b
 - Reactions will be put into `resources/reactions.txt`.
 - Each line designates a new entry.
 - The format is `trigger \\ emote`.
-- Append ` && emote` to add a multi-emote reaction.
-- Append ` || emote` to have multiple emotes to randomly choose from for a reaction.
+- Append ` $&&$ emote` to add a multi-emote reaction.
+- Append ` $||$ emote` to have multiple emotes to randomly choose from for a reaction.
 - Case is ignored in the trigger.
 - The trigger can include Regex. Case is not ignored if you use Regex.
 - Trigger can use all placeholders except for `$REPLY$`.
@@ -154,8 +154,8 @@ Use these placeholders in most configurations. Places they are disallowed will b
 - Commands will be put into `resources/commands.txt`.
 - Each line designates a new entry.
 - The format is `command \\ description \\ response`.
-- Append ` && response` to add a multi-message response.
-- Append ` || response` to have multiple messages to randomly choose from for a response.
+- Append ` $&&$ response` to add a multi-message response.
+- Append ` $||$ response` to have multiple messages to randomly choose from for a response.
 - Do not put the prefix in the command.
 - The response and description can include all placeholders.
   - Description can not include `$REPLY$`
