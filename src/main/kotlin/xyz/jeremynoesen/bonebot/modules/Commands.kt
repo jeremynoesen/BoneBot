@@ -53,9 +53,9 @@ object Commands {
      * @return true if command was performed
      */
     fun perform(message: Message): Boolean {
+        var done = false
         try {
             if (message.contentDisplay.startsWith(commandPrefix, true)) {
-                var done = false
                 thread {
                     while (!done) {
                         message.channel.sendTyping().queue()
@@ -95,6 +95,7 @@ object Commands {
                                 }
                             }
                             Messages.sendMessage(Messages.unknownCommand, message)
+                            done = true
                             return true
                         }
                     }
@@ -108,6 +109,7 @@ object Commands {
         } catch (e: Exception) {
             Messages.sendMessage(Messages.error, message)
             e.printStackTrace()
+            done = true
         }
         return false
     }
