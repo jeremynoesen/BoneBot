@@ -332,24 +332,52 @@ object Commands {
         env["BB_PING"] = message.member!!.asMention
         env["BB_ID"] = message.member!!.id
         env["BB_AVATAR"] = message.member!!.effectiveAvatarUrl + "?size=4096"
-        if (message.attachments.size > 0)
-            env["BB_FILE"] = message.attachments[0].url
-        if (message.embeds.size > 0 && message.embeds[0].image != null)
-            env["BB_EMBED"] = message.embeds[0].image!!.url!!
 
-        if (message.mentions.members.size > 0 &&
-                (message.contentDisplay.split(message.mentions.members[message.mentions.members.size - 1].user.name).size > 1 ||
-                        message.contentDisplay.split(message.mentions.members[message.mentions.members.size - 1].effectiveName).size > 1)
-        ) {
-            env["BB_MENTION_NAME"] =
-                    message.mentions.members[message.mentions.members.size - 1].effectiveName
-            env["BB_MENTION_PING"] =
-                    message.mentions.members[message.mentions.members.size - 1].asMention
-            env["BB_MENTION_ID"] =
-                    message.mentions.members[message.mentions.members.size - 1].id
-            env["BB_MENTION_AVATAR"] =
-                    message.mentions.members[message.mentions.members.size - 1].effectiveAvatarUrl + "?size=4096"
+        if (message.attachments.size > 0) {
+            for (i in message.attachments.indices) {
+                env["BB_FILE_$i"] = message.attachments[i].url
+            }
         }
+        env["BB_FILE_COUNT"] = message.attachments.size.toString()
+
+        var j = 0
+        if (message.embeds.size > 0) {
+            for (i in message.attachments.indices) {
+                if (message.embeds[i].image != null) {
+                    env["BB_EMBED_$j"] = message.embeds[i].image!!.url!!
+                    j++
+                }
+            }
+        }
+        env["BB_EMBED_COUNT"] = j.toString()
+
+        var k = 0
+        for (word in message.contentDisplay.split(" ", "\n")) {
+            if (word.startsWith("http://") || word.startsWith("https://")) {
+                env["BB_URL_$k"] = word
+                k++
+            }
+        }
+        env["BB_URL_COUNT"] = k.toString()
+
+        var l = 0
+        if (message.mentions.members.size > 0) {
+            for (i in message.mentions.members.indices) {
+                if (message.contentDisplay.split(message.mentions.members[i].user.name).size > 1 ||
+                        message.contentDisplay.split(message.mentions.members[i].effectiveName).size > 1) {
+                    env["BB_MENTION_${l}_NAME"] =
+                            message.mentions.members[i].effectiveName
+                    env["BB_MENTION_${l}_PING"] =
+                            message.mentions.members[i].asMention
+                    env["BB_MENTION_${l}_ID"] =
+                            message.mentions.members[i].id
+                    env["BB_MENTION_${l}_AVATAR"] =
+                            message.mentions.members[i].effectiveAvatarUrl + "?size=4096"
+                    l++
+                }
+            }
+        }
+        env["BB_MENTION_COUNT"] = l.toString()
 
         if (message.referencedMessage != null) {
             val reply = message.referencedMessage!!
@@ -358,24 +386,52 @@ object Commands {
             env["BB_REPLY_PING"] = reply.member!!.asMention
             env["BB_REPLY_ID"] = reply.member!!.id
             env["BB_REPLY_AVATAR"] = reply.member!!.effectiveAvatarUrl + "?size=4096"
-            if (reply.attachments.size > 0)
-                env["BB_REPLY_FILE"] = reply.attachments[0].url
-            if (reply.embeds.size > 0 && reply.embeds[0].image != null)
-                env["BB_REPLY_EMBED"] = reply.embeds[0].image!!.url!!
 
-            if (reply.mentions.members.size > 0 &&
-                    (reply.contentDisplay.split(reply.mentions.members[reply.mentions.members.size - 1].user.name).size > 1 ||
-                            reply.contentDisplay.split(reply.mentions.members[reply.mentions.members.size - 1].effectiveName).size > 1)
-            ) {
-                env["BB_REPLY_MENTION_NAME"] =
-                        reply.mentions.members[reply.mentions.members.size - 1].effectiveName
-                env["BB_REPLY_MENTION_PING"] =
-                        reply.mentions.members[reply.mentions.members.size - 1].asMention
-                env["BB_REPLY_MENTION_ID"] =
-                        reply.mentions.members[reply.mentions.members.size - 1].id
-                env["BB_REPLY_MENTION_AVATAR"] =
-                        reply.mentions.members[reply.mentions.members.size - 1].effectiveAvatarUrl + "?size=4096"
+            if (reply.attachments.size > 0) {
+                for (i in reply.attachments.indices) {
+                    env["BB_REPLY_FILE_$i"] = reply.attachments[i].url
+                }
             }
+            env["BB_REPLY_FILE_COUNT"] = reply.attachments.size.toString()
+
+            j = 0
+            if (reply.embeds.size > 0) {
+                for (i in reply.attachments.indices) {
+                    if (reply.embeds[i].image != null) {
+                        env["BB_REPLY_EMBED_$j"] = reply.embeds[i].image!!.url!!
+                        j++
+                    }
+                }
+            }
+            env["BB_REPLY_EMBED_COUNT"] = j.toString()
+
+            k = 0
+            for (word in reply.contentDisplay.split(" ", "\n")) {
+                if (word.startsWith("http://") || word.startsWith("https://")) {
+                    env["BB_REPLY_URL_$k"] = word
+                    k++
+                }
+            }
+            env["BB_REPLY_URL_COUNT"] = k.toString()
+
+            var l = 0
+            if (reply.mentions.members.size > 0) {
+                for (i in reply.mentions.members.indices) {
+                    if (reply.contentDisplay.split(reply.mentions.members[i].user.name).size > 1 ||
+                            reply.contentDisplay.split(reply.mentions.members[i].effectiveName).size > 1) {
+                        env["BB_REPLY_MENTION_${l}_NAME"] =
+                                reply.mentions.members[i].effectiveName
+                        env["BB_REPLY_MENTION_${l}_PING"] =
+                                reply.mentions.members[i].asMention
+                        env["BB_REPLY_MENTION_${l}_ID"] =
+                                reply.mentions.members[i].id
+                        env["BB_REPLY_MENTION_${l}_AVATAR"] =
+                                reply.mentions.members[i].effectiveAvatarUrl + "?size=4096"
+                        l++
+                    }
+                }
+            }
+            env["BB_REPLY_MENTION_COUNT"] = l.toString()
         }
         return env
     }
