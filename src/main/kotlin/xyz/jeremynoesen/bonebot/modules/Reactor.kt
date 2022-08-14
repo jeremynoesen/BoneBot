@@ -50,7 +50,7 @@ object Reactor {
             if ((System.currentTimeMillis() - prevTime) >= cooldown * 1000) {
                 val msg = message.contentDisplay
                 for (trigger in reactions.keys) {
-                    var editedTrigger = trigger.replace("\$NAME\$", message.author.name)
+                    var editedTrigger = trigger.replace("\$NAME\$", message.member!!.effectiveName)
                         .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
                         .replace("\\n", "\n")
                     try {

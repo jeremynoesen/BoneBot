@@ -144,8 +144,8 @@ object Commands {
         }
 
         commandList = commandList
-                .replace("\$USER\$", message.author.asMention)
-                .replace("\$NAME\$", message.author.name)
+                .replace("\$PING\$", message.member!!.asMention)
+                .replace("\$NAME\$", message.member!!.effectiveName)
                 .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
                 .replace("\\n", "\n")
         try {
@@ -155,7 +155,7 @@ object Commands {
 
         val embedBuilder = EmbedBuilder()
         var title = Messages.helpTitle
-                .replace("\$NAME\$", message.author.name)
+                .replace("\$NAME\$", message.member!!.effectiveName)
                 .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
         try {
             title = title.replace("\$GUILD\$", message.guild.name)
@@ -182,8 +182,8 @@ object Commands {
 
             var toSend =
                     commandMessage
-                            .replace("\$USER\$", message.author.asMention)
-                            .replace("\$NAME\$", message.author.name)
+                            .replace("\$PING\$", message.member!!.asMention)
+                            .replace("\$NAME\$", message.member!!.effectiveName)
                             .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
                             .replace("\\n", "\n")
             try {
@@ -261,8 +261,8 @@ object Commands {
 
                 val embedBuilder = EmbedBuilder()
                 embedBuilder.setColor(Config.embedColor)
-                if (title.contains(message.author.name)) {
-                    embedBuilder.setAuthor(title, null, message.author.effectiveAvatarUrl)
+                if (title.contains(message.member!!.effectiveName)) {
+                    embedBuilder.setAuthor(title, null, message.member!!.effectiveAvatarUrl)
                 } else if (title.contains(BoneBot.JDA!!.selfUser.name)) {
                     embedBuilder.setAuthor(title, null, BoneBot.JDA!!.selfUser.effectiveAvatarUrl)
                 } else {
@@ -326,47 +326,55 @@ object Commands {
      */
     private fun setPathVariables(message: Message): Map<String, String> {
         val env = HashMap<String, String>()
-        env["BB_INPUT"] =
+        env["BB_CONTENT"] =
                 message.contentDisplay.replace(message.contentDisplay.split(" ")[0], "").trim()
-        env["BB_USER"] = message.author.name
-        env["BB_ID"] = message.author.id
-        env["BB_AVATAR"] = message.author.effectiveAvatarUrl + "?size=4096"
+        env["BB_NAME"] = message.member!!.effectiveName
+        env["BB_PING"] = message.member!!.asMention
+        env["BB_ID"] = message.member!!.id
+        env["BB_AVATAR"] = message.member!!.effectiveAvatarUrl + "?size=4096"
         if (message.attachments.size > 0)
             env["BB_FILE"] = message.attachments[0].url
         if (message.embeds.size > 0 && message.embeds[0].image != null)
             env["BB_EMBED"] = message.embeds[0].image!!.url!!
 
-        if (message.mentions.users.size > 0 &&
-                message.contentDisplay.split(message.mentions.users[message.mentions.users.size - 1].name).size > 1
+        if (message.mentions.members.size > 0 &&
+                (message.contentDisplay.split(message.mentions.members[message.mentions.members.size - 1].user.name).size > 1 ||
+                        message.contentDisplay.split(message.mentions.members[message.mentions.members.size - 1].effectiveName).size > 1)
         ) {
-            env["BB_MENTION_USER"] =
-                    message.mentions.users[message.mentions.users.size - 1].name
+            env["BB_MENTION_NAME"] =
+                    message.mentions.members[message.mentions.members.size - 1].effectiveName
+            env["BB_MENTION_PING"] =
+                    message.mentions.members[message.mentions.members.size - 1].asMention
             env["BB_MENTION_ID"] =
-                    message.mentions.users[message.mentions.users.size - 1].id
+                    message.mentions.members[message.mentions.members.size - 1].id
             env["BB_MENTION_AVATAR"] =
-                    message.mentions.users[message.mentions.users.size - 1].effectiveAvatarUrl + "?size=4096"
+                    message.mentions.members[message.mentions.members.size - 1].effectiveAvatarUrl + "?size=4096"
         }
 
         if (message.referencedMessage != null) {
             val reply = message.referencedMessage!!
-            env["BB_REPLY_INPUT"] = reply.contentDisplay
-            env["BB_REPLY_USER"] = reply.author.name
-            env["BB_REPLY_ID"] = reply.author.id
-            env["BB_REPLY_AVATAR"] = reply.author.effectiveAvatarUrl + "?size=4096"
+            env["BB_REPLY_CONTENT"] = reply.contentDisplay
+            env["BB_REPLY_NAME"] = reply.member!!.effectiveName
+            env["BB_REPLY_PING"] = reply.member!!.asMention
+            env["BB_REPLY_ID"] = reply.member!!.id
+            env["BB_REPLY_AVATAR"] = reply.member!!.effectiveAvatarUrl + "?size=4096"
             if (reply.attachments.size > 0)
                 env["BB_REPLY_FILE"] = reply.attachments[0].url
             if (reply.embeds.size > 0 && reply.embeds[0].image != null)
                 env["BB_REPLY_EMBED"] = reply.embeds[0].image!!.url!!
 
-            if (reply.mentions.users.size > 0 &&
-                    reply.contentDisplay.split(reply.mentions.users[reply.mentions.users.size - 1].name).size > 1
+            if (reply.mentions.members.size > 0 &&
+                    (reply.contentDisplay.split(reply.mentions.members[reply.mentions.members.size - 1].user.name).size > 1 ||
+                            reply.contentDisplay.split(reply.mentions.members[reply.mentions.members.size - 1].effectiveName).size > 1)
             ) {
-                env["BB_REPLY_MENTION_USER"] =
-                        reply.mentions.users[reply.mentions.users.size - 1].name
+                env["BB_REPLY_MENTION_NAME"] =
+                        reply.mentions.members[reply.mentions.members.size - 1].effectiveName
+                env["BB_REPLY_MENTION_PING"] =
+                        reply.mentions.members[reply.mentions.members.size - 1].asMention
                 env["BB_REPLY_MENTION_ID"] =
-                        reply.mentions.users[reply.mentions.users.size - 1].id
+                        reply.mentions.members[reply.mentions.members.size - 1].id
                 env["BB_REPLY_MENTION_AVATAR"] =
-                        reply.mentions.users[reply.mentions.users.size - 1].effectiveAvatarUrl + "?size=4096"
+                        reply.mentions.members[reply.mentions.members.size - 1].effectiveAvatarUrl + "?size=4096"
             }
         }
         return env

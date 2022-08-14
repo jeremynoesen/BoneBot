@@ -164,8 +164,8 @@ object Messages {
         var toSend = message
         if (toSend.contains("\$REPLY\$")) {
             toSend = toSend.replace("\$REPLY\$", "")
-                .replace("\$USER\$", cause.author.asMention)
-                .replace("\$NAME\$", cause.author.name)
+                .replace("\$PING\$", cause.member!!.asMention)
+                .replace("\$NAME\$", cause.member!!.effectiveName)
                 .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
                 .replace("\\n", "\n")
                 
@@ -176,8 +176,8 @@ object Messages {
             if (toSend.isNotEmpty())
                 cause.channel.sendMessage(toSend).reference(cause).queue()
         } else {
-            toSend = toSend.replace("\$USER\$", cause.author.asMention)
-                .replace("\$NAME\$", cause.author.name)
+            toSend = toSend.replace("\$PING\$", cause.member!!.asMention)
+                .replace("\$NAME\$", cause.member!!.effectiveName)
                 .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
                 .replace("\\n", "\n")
                 

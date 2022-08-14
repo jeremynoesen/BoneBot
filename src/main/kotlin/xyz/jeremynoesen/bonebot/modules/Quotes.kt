@@ -46,8 +46,8 @@ object Quotes {
                     var quote = quotes[Random().nextInt(quotes.size)].replace("\\n", "\n")
                     if (quote.isNotEmpty())
                         quote = quote
-                                .replace("\$USER\$", message.author.asMention)
-                                .replace("\$NAME\$", message.author.name)
+                                .replace("\$PING\$", message.member!!.asMention)
+                                .replace("\$NAME\$", message.member!!.effectiveName)
                                 .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
                     try {
                         quote = quote.replace("\$GUILD\$", message.guild.name)

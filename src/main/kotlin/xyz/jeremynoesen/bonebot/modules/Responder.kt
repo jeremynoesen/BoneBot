@@ -49,7 +49,7 @@ object Responder {
             if ((System.currentTimeMillis() - prevTime) >= cooldown * 1000) {
                 val msg = message.contentDisplay
                 for (trigger in responses.keys) {
-                    var editedTrigger = trigger.replace("\$NAME\$", message.author.name)
+                    var editedTrigger = trigger.replace("\$NAME\$", message.member!!.effectiveName)
                             .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
                             .replace("\\n", "\n")
                     try {
@@ -65,8 +65,8 @@ object Responder {
 
                         for (responseMessage in selectedResponse.split(" \$&&\$ ")) {
 
-                            var toSend = responseMessage.replace("\$USER\$", message.author.asMention)
-                                    .replace("\$NAME\$", message.author.name)
+                            var toSend = responseMessage.replace("\$PING\$", message.member!!.asMention)
+                                    .replace("\$NAME\$", message.member!!.effectiveName)
                                     .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
                                     .replace("\\n", "\n")
                             try {

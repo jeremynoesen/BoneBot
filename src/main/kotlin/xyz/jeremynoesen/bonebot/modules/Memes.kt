@@ -57,8 +57,8 @@ constructor(private val command: Message) {
                 readTextAndImage()
                 if (image != null && text != null) {
                     text = text!!
-                            .replace("\$USER\$", command.author.asMention)
-                            .replace("\$NAME\$", command.author.name)
+                            .replace("\$PING\$", command.member!!.asMention)
+                            .replace("\$NAME\$", command.member!!.effectiveName)
                             .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
                             .replace("\\n", "\n")
                     try {
@@ -69,13 +69,13 @@ constructor(private val command: Message) {
                     processImage()
                     val file = convertToFile()
                     val embedBuilder = EmbedBuilder()
-                    var title = Messages.memeTitle.replace("\$NAME\$", command.author.name)
+                    var title = Messages.memeTitle.replace("\$NAME\$", command.member!!.effectiveName)
                             .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
                     try {
                         title = title.replace("\$GUILD\$", command.guild.name)
                     } catch (e: IllegalStateException) {
                     }
-                    embedBuilder.setAuthor(title, null, command.author.avatarUrl)
+                    embedBuilder.setAuthor(title, null, command.member!!.effectiveAvatarUrl)
                     embedBuilder.setColor(Config.embedColor)
                     embedBuilder.setImage("attachment://meme.png")
                     command.channel.sendMessageEmbeds(embedBuilder.build()).addFile(file, "meme.png").queue()

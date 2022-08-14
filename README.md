@@ -92,7 +92,7 @@ java -jar BoneBot.jar
 
 ### Placeholders
 Use these placeholders in most configurations. Places they are disallowed will be specified per module. Module-specific placeholders will also be specified per module.
-- `$USER$` - Place a ping of the author in the message.
+- `$PING$` - Place a ping of the author in the message.
 - `$NAME$` - Place the author's name in the message.
 - `$BOT$` - Place the bot's name in the message.
 - `$GUILD$` - Place the guild's name in the message. 
@@ -167,22 +167,22 @@ Use these placeholders in most configurations. Places they are disallowed will b
   - Add `$CMDOUT$` to your response to also include the output of this command in the response.
   - If the above would return a file path, you can surround it with `$FILE$` to send that file.
   - You can accept input from the Discord command by using path variables within the `$CMD$` blocks. These can be used by doing `${VARIABLE}` in Linux and macOS, or `%VARIABLE%` in Windows. The available variables are as follows:
-    - `BB_INPUT`: All text after the command trigger
-    - `BB_USER`: Name of command author
+    - `BB_CONTENT`: All text after the command trigger
+    - `BB_NAME`: Display name of command author
     - `BB_ID`: ID of user sending command
     - `BB_AVATAR`: Avatar URL of the command author
     - `BB_FILE`: URL of the first file attachment in the message
     - `BB_EMBED`: URL of the first image in the first embed in the message
-    - `BB_MENTION_USER`: Name of last pinged user in the message
+    - `BB_MENTION_NAME`: Name of last pinged user in the message
     - `BB_MENTION_ID`: ID of last pinged user
     - `BB_MENTION_AVATAR`: Avatar URL of the last pinged user
-    - `BB_REPLY_INPUT`: All text of replied message
-    - `BB_REPLY_USER`: Name of reply author
+    - `BB_REPLY_CONTENT`: All text of replied message
+    - `BB_REPLY_NAME`: Display name of reply author
     - `BB_REPLY_ID`: ID of reply author
     - `BB_REPLY_AVATAR`: Avatar URL of the reply author
     - `BB_REPLY_FILE`: URL of the first file attachment in the replied message
     - `BB_REPLY_EMBED`: URL of the first image in the first embed in the replied message
-    - `BB_REPLY_MENTION_USER`: Name of last pinged user in the replied message
+    - `BB_REPLY_MENTION_NAME`: Name of last pinged user in the replied message
     - `BB_REPLY_MENTION_ID`: ID of last pinged user in the replied message
     - `BB_REPLY_MENTION_AVATAR`: Avatar URL of the last pinged user in the replied message
 - To change the command prefix, set `command-prefix` in the main configuration to a custom prefix. Case is ignored.
@@ -207,7 +207,7 @@ Use these placeholders in most configurations. Places they are disallowed will b
 ### Messages
 - All messages built in to the bot are editable, located in `resources/messages.txt`.
 - Messages can include all placeholders
-  - `$USER$` and `$REPLY$` can not be used for embed titles.
+  - `$PING$` and `$REPLY$` can not be used for embed titles.
   - Command labels can not use any placeholders.
 - Standard Discord Markdown formatting is supported.
 - This file can modify all built-in responses, command descriptions, and commands.
@@ -279,7 +279,7 @@ command-cooldown: Commands can be used again in **$TIME$** seconds.
 
 ##### Welcomer
 ```
-Welcome $USER$ to **$GUILD$**!
+Welcome $PING$ to **$GUILD$**!
 ```
 
 ### Permissions

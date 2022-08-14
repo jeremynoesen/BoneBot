@@ -1,5 +1,6 @@
 package xyz.jeremynoesen.bonebot
 
+import net.dv8tion.jda.api.entities.ChannelType
 import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent
 import xyz.jeremynoesen.bonebot.modules.Commands
 import xyz.jeremynoesen.bonebot.modules.Reactor
@@ -27,7 +28,8 @@ class Listener : ListenerAdapter() {
             numThreads++
             thread {
                 try {
-                    if (!e.author.isBot || (Config.listenToBots && e.author != BoneBot.JDA!!.selfUser)) {
+                    if ((!e.author.isBot || (Config.listenToBots && e.author != BoneBot.JDA!!.selfUser))
+                            && !e.isFromType(ChannelType.PRIVATE)) {
                         if (!Commands.enabled || !Commands.perform(e.message)) {
                             if (Responder.enabled) Responder.respond(e.message)
                             if (Reactor.enabled) Reactor.react(e.message)
@@ -52,7 +54,8 @@ class Listener : ListenerAdapter() {
             numThreads++
             thread {
                 try {
-                    if (!e.author.isBot || (Config.listenToBots && e.author != BoneBot.JDA!!.selfUser)) {
+                    if ((!e.author.isBot || (Config.listenToBots && e.author != BoneBot.JDA!!.selfUser))
+                            && !e.isFromType(ChannelType.PRIVATE)) {
                         if (!Commands.enabled || !Commands.perform(e.message)) {
                             if (Responder.enabled) Responder.respond(e.message)
                             if (Reactor.enabled) Reactor.react(e.message)

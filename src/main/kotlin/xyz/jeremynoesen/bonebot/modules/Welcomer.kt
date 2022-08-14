@@ -18,7 +18,7 @@ object Welcomer {
     /**
      * message to show in welcome message embed
      */
-    var message = "Welcome \$USER\$ to **\$GUILD\$**!"
+    var message = "Welcome \$PING\$ to **\$GUILD\$**!"
 
     /**
      * whether this module is enabled or not
@@ -60,7 +60,7 @@ object Welcomer {
                     null, guild.iconUrl
                 )
                 embedBuilder.setDescription(
-                    toSend.replace("\$USER\$", user.asMention)
+                    toSend.replace("\$PING\$", user.asMention)
                         .replace("\$NAME\$", user.name)
                         .replace("\$GUILD\$", guild.name)
                         .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
