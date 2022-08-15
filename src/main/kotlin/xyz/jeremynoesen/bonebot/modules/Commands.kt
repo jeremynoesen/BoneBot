@@ -163,7 +163,8 @@ object Commands {
             title = title.replace("\$GUILD\$", message.guild.name)
         } catch (e: IllegalStateException) {
         }
-        embedBuilder.setAuthor(title, null, message.guild.getMember(BoneBot.JDA!!.selfUser)!!.effectiveAvatarUrl)
+        embedBuilder.setAuthor(title, null, null)
+        embedBuilder.setThumbnail(message.guild.getMember(BoneBot.JDA!!.selfUser)!!.effectiveAvatarUrl)
         embedBuilder.setColor(Config.embedColor)
         embedBuilder.setDescription("$commandList\n\n[**Source Code**](https://github.com/jeremynoesen/BoneBot)")
         return embedBuilder.build()
