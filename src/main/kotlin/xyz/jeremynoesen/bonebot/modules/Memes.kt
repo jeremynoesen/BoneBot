@@ -275,7 +275,7 @@ constructor(private val command: Message) {
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON)
         g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR)
 
-        val sections = text!!.trim().split("\n", " \\\\ ").toTypedArray()
+        val sections = text!!.split("\n", " \\\\ ").toTypedArray()
         val topText = ArrayList<String>()
         val bottomText = ArrayList<String>()
 
