@@ -270,6 +270,8 @@ object Commands {
                     embedBuilder.setAuthor(title, null, message.member!!.effectiveAvatarUrl)
                 } else if (title.contains(message.guild.getMember(BoneBot.JDA!!.selfUser)!!.effectiveName)) {
                     embedBuilder.setAuthor(title, null, BoneBot.JDA!!.selfUser.effectiveAvatarUrl)
+                } else if (title.contains(message.guild.name)) {
+                    embedBuilder.setAuthor(title, null, message.guild.iconUrl)
                 } else {
                     embedBuilder.setAuthor(title, null)
                 }
