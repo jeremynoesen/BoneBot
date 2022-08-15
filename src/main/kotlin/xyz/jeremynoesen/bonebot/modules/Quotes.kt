@@ -49,6 +49,9 @@ object Quotes {
                                 .replace("\$PING\$", message.member!!.asMention)
                                 .replace("\$NAME\$", message.member!!.effectiveName)
                                 .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
+                                .replace("\\n", "\n")
+                                .replace("  ", " ")
+                                .trim()
                     try {
                         quote = quote.replace("\$GUILD\$", message.guild.name)
                     } catch (e: IllegalStateException) {

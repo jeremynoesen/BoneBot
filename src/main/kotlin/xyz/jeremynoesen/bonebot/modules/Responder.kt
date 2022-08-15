@@ -60,15 +60,17 @@ object Responder {
                         prevTime = System.currentTimeMillis()
 
 
-                        val randomResponses = responses[trigger]!!.split(" \$||\$ ")
+                        val randomResponses = responses[trigger]!!.split("\$||\$")
                         val selectedResponse = randomResponses[Random.nextInt(randomResponses.size)]
 
-                        for (responseMessage in selectedResponse.split(" \$&&\$ ")) {
+                        for (responseMessage in selectedResponse.split("\$&&\$")) {
 
                             var toSend = responseMessage.replace("\$PING\$", message.member!!.asMention)
                                     .replace("\$NAME\$", message.member!!.effectiveName)
                                     .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
                                     .replace("\\n", "\n")
+                                    .replace("  ", " ")
+                                    .trim()
                             try {
                                 toSend = toSend.replace("\$GUILD\$", message.guild.name)
                             } catch (e: IllegalStateException) {

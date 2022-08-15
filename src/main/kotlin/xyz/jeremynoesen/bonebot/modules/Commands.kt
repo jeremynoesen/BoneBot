@@ -148,6 +148,8 @@ object Commands {
                 .replace("\$NAME\$", message.member!!.effectiveName)
                 .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
                 .replace("\\n", "\n")
+                .replace("  ", " ")
+                .trim()
         try {
             commandList = commandList.replace("\$GUILD\$", message.guild.name)
         } catch (e: IllegalStateException) {
@@ -175,10 +177,10 @@ object Commands {
      */
     private fun sendCustomCommand(command: String, message: Message) {
 
-        val randomCommands = commands[command]!!.second.split(" \$||\$ ")
+        val randomCommands = commands[command]!!.second.split("\$||\$")
         val selectedCommand = randomCommands[Random.nextInt(randomCommands.size)]
 
-        for (commandMessage in selectedCommand.split(" \$&&\$ ")) {
+        for (commandMessage in selectedCommand.split("\$&&\$")) {
 
             var toSend =
                     commandMessage
@@ -186,6 +188,8 @@ object Commands {
                             .replace("\$NAME\$", message.member!!.effectiveName)
                             .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
                             .replace("\\n", "\n")
+                            .replace("  ", " ")
+                            .trim()
             try {
                 toSend = toSend.replace("\$GUILD\$", message.guild.name)
             } catch (e: IllegalStateException) {

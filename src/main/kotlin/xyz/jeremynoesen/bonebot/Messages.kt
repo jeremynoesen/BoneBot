@@ -15,7 +15,7 @@ import java.util.*
 object Messages {
     var helpTitle = "\$BOT\$ Help"
     var helpAbout =
-        "\$BOT\$ aims to add more life to a server by responding and reacting to messages. It also adds commands, which are listed below."
+            "\$BOT\$ aims to add more life to a server by responding and reacting to messages. It also adds commands, which are listed below."
     var helpFormat = "• **`\$CMD\$`**: \$DESC\$"
     var helpDescription = "Show this help message."
     var memeDescription = "Generate a random or custom meme."
@@ -164,27 +164,29 @@ object Messages {
         var toSend = message
         if (toSend.contains("\$REPLY\$")) {
             toSend = toSend.replace("\$REPLY\$", "")
-                .replace("\$PING\$", cause.member!!.asMention)
-                .replace("\$NAME\$", cause.member!!.effectiveName)
-                .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
-                .replace("\\n", "\n")
-                
-                .replace("  ", " ")
+                    .replace("\$PING\$", cause.member!!.asMention)
+                    .replace("\$NAME\$", cause.member!!.effectiveName)
+                    .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
+                    .replace("\\n", "\n")
+                    .replace("  ", " ")
+                    .trim()
             try {
                 toSend = toSend.replace("\$GUILD\$", cause.guild.name)
-            } catch (e: IllegalStateException) {}
+            } catch (e: IllegalStateException) {
+            }
             if (toSend.isNotEmpty())
                 cause.channel.sendMessage(toSend).reference(cause).queue()
         } else {
             toSend = toSend.replace("\$PING\$", cause.member!!.asMention)
-                .replace("\$NAME\$", cause.member!!.effectiveName)
-                .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
-                .replace("\\n", "\n")
-                
-                .replace("  ", " ")
+                    .replace("\$NAME\$", cause.member!!.effectiveName)
+                    .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
+                    .replace("\\n", "\n")
+                    .replace("  ", " ")
+                    .trim()
             try {
                 toSend = toSend.replace("\$GUILD\$", cause.guild.name)
-            } catch (e: IllegalStateException) {}
+            } catch (e: IllegalStateException) {
+            }
             if (toSend.isNotEmpty())
                 cause.channel.sendMessage(toSend).queue()
         }

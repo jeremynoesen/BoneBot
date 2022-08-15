@@ -39,12 +39,12 @@ object Welcomer {
                 if (toSend.contains("\$FILE\$")) {
                     val path = toSend.split("\$FILE\$")[1].trim()
                     toSend = toSend.replace(
-                        toSend.substring(
-                            toSend.indexOf("\$FILE\$"),
-                            toSend.lastIndexOf("\$FILE\$") + 6
-                        ), ""
+                            toSend.substring(
+                                    toSend.indexOf("\$FILE\$"),
+                                    toSend.lastIndexOf("\$FILE\$") + 6
+                            ), ""
                     )
-                        .replace("  ", " ").trim()
+                            .replace("  ", " ").trim()
                     file = File(path)
                     if (!file.exists() || file.isDirectory || file.isHidden) {
                         file = null
@@ -54,17 +54,19 @@ object Welcomer {
                 val embedBuilder = EmbedBuilder()
                 embedBuilder.setColor(Config.embedColor)
                 embedBuilder.setAuthor(
-                    Messages.welcomeTitle.replace("\$GUILD\$", guild.name)
-                        .replace("\$NAME\$", user.name)
-                        .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name),
-                    null, guild.iconUrl
+                        Messages.welcomeTitle.replace("\$GUILD\$", guild.name)
+                                .replace("\$NAME\$", user.name)
+                                .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name),
+                        null, guild.iconUrl
                 )
                 embedBuilder.setDescription(
-                    toSend.replace("\$PING\$", user.asMention)
-                        .replace("\$NAME\$", user.name)
-                        .replace("\$GUILD\$", guild.name)
-                        .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
-                        .replace("\\n", "\n")
+                        toSend.replace("\$PING\$", user.asMention)
+                                .replace("\$NAME\$", user.name)
+                                .replace("\$GUILD\$", guild.name)
+                                .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
+                                .replace("\\n", "\n")
+                                .replace("  ", " ")
+                                .trim()
                 )
                 if (file != null) {
                     embedBuilder.setImage("attachment://welcome.png")
