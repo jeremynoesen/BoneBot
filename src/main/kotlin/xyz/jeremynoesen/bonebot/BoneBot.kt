@@ -38,9 +38,5 @@ object BoneBot {
         JDA = JDABuilder.createLight(Config.botToken).addEventListeners(Listener())
             .enableIntents(GatewayIntent.GUILD_MEMBERS, GatewayIntent.MESSAGE_CONTENT).build()
         if (Statuses.enabled) Statuses.setStatus()
-        try {
-            File("temp").deleteRecursively()
-        } catch (ignored: FileNotFoundException) {
-        }
     }
 }

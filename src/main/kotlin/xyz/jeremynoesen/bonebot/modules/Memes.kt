@@ -10,6 +10,7 @@ import xyz.jeremynoesen.bonebot.Messages
 import java.awt.*
 import java.awt.font.TextLayout
 import java.awt.image.BufferedImage
+import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.IOException
 import java.lang.IllegalStateException
@@ -55,7 +56,9 @@ constructor(private val command: Message) {
         if ((System.currentTimeMillis() - prevTime) >= cooldown * 1000) {
             try {
                 readTextAndImage()
+
                 if (image != null && text != null) {
+
                     text = text!!
                             .replace("\$PING\$", command.member!!.asMention)
                             .replace("\$NAME\$", command.member!!.effectiveName)
@@ -67,7 +70,7 @@ constructor(private val command: Message) {
                     }
 
                     processImage()
-                    val file = convertToFile()
+
                     val embedBuilder = EmbedBuilder()
                     var title = Messages.memeTitle.replace("\$NAME\$", command.member!!.effectiveName)
                             .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
@@ -78,7 +81,12 @@ constructor(private val command: Message) {
                     embedBuilder.setAuthor(title, null, command.member!!.effectiveAvatarUrl)
                     embedBuilder.setColor(Config.embedColor)
                     embedBuilder.setImage("attachment://meme.png")
-                    command.channel.sendMessageEmbeds(embedBuilder.build()).addFile(file, "meme.png").queue()
+
+                    val baos = ByteArrayOutputStream()
+                    ImageIO.write(meme, "png", baos)
+                    val bytes = baos.toByteArray()
+                    command.channel.sendMessageEmbeds(embedBuilder.build()).addFile(bytes, "meme.png").queue()
+
                     prevTime = System.currentTimeMillis()
                 } else {
                     Messages.sendMessage(Messages.memeInputMissing, command)
@@ -337,31 +345,11 @@ constructor(private val command: Message) {
         g2d.dispose()
     }
 
-    /**
-     * convert the meme image to a file, save it to the temp folder, and set it to auto delete later
-     *
-     * @return meme image converted to file
-     * @throws IOException
-     */
-    @Throws(IOException::class)
-    private fun convertToFile(): File {
-        File("temp").mkdir()
-        val file = File("temp/meme$memeCount.png")
-        ImageIO.write(meme, "png", file)
-        memeCount++
-        return file
-    }
-
     companion object {
         /**
          * list of text lines loaded from the text file
          */
         val texts = ArrayList<String>()
-
-        /**
-         * number of memes created. helpful to separate meme files to prevent overwriting a meme being processed
-         */
-        private var memeCount = 0
 
         /**
          * cooldown for meme generator, in seconds
