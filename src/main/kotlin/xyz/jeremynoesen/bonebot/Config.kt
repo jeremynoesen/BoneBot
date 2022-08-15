@@ -223,7 +223,7 @@ object Config {
             while (fileScanner.hasNextLine()) {
                 val line = fileScanner.nextLine()
                 if (line.isNotBlank()) {
-                    val parts = line.split(" \\\\ ")
+                    val parts = line.split(": ")
                     map[parts[0]] = parts[1]
                 }
             }
@@ -249,7 +249,7 @@ object Config {
             while (fileScanner.hasNextLine()) {
                 val line = fileScanner.nextLine()
                 if (line.isNotBlank()) {
-                    val parts = line.split(" \\\\ ")
+                    val parts = line.split(": ")
                     map[parts[0]] = Pair(parts[1], parts[2])
                 }
             }

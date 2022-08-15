@@ -138,7 +138,7 @@ constructor(private val command: Message) {
             imageInput = true
 
         } else if (command.contentDisplay.contains("http://") || command.contentDisplay.contains("https://")) {
-            for (word in input.split(" ", "\n", " \\\\ ")) {
+            for (word in input.split(" ", "\n")) {
                 try {
                     image = getImageFromURL(word.replace("<", "").replace(">", ""))
                     imageInput = true
@@ -167,7 +167,7 @@ constructor(private val command: Message) {
                 imageInput = true
 
             } else if (reply.contentDisplay.contains("http://") || reply.contentDisplay.contains("https://")) {
-                for (word in reply.contentDisplay.split(" ", "\n", " \\\\ ")) {
+                for (word in reply.contentDisplay.split(" ", "\n")) {
                     try {
                         image = getImageFromURL(word.replace("<", "").replace(">", ""))
                         imageInput = true
@@ -241,7 +241,7 @@ constructor(private val command: Message) {
      */
     private fun cleanInput(input: String): String {
         var output = input
-        for (word in output.split(" ", "\n", " \\\\ ")) {
+        for (word in output.split(" ", "\n")) {
             if (word.contains("http://") || word.contains("https://")) {
                 output = input.replace(word, "")
                         .replace("  ", " ").replace("<", "")
@@ -275,7 +275,7 @@ constructor(private val command: Message) {
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON)
         g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR)
 
-        val sections = text!!.split("\n", " \\\\ ").toTypedArray()
+        val sections = text!!.split("\n").toTypedArray()
         val topText = ArrayList<String>()
         val bottomText = ArrayList<String>()
 
