@@ -165,7 +165,7 @@ object Commands {
         }
         embedBuilder.setAuthor(title, null, message.guild.getMember(BoneBot.JDA!!.selfUser)!!.effectiveAvatarUrl)
         embedBuilder.setColor(Config.embedColor)
-        embedBuilder.setDescription("$commandList\n[**Source Code**](https://github.com/jeremynoesen/BoneBot)")
+        embedBuilder.setDescription("$commandList\n\n[**Source Code**](https://github.com/jeremynoesen/BoneBot)")
         return embedBuilder.build()
     }
 
