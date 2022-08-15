@@ -162,6 +162,7 @@ Use these placeholders in most configurations. Places they are disallowed will b
 - You can send a single file by adding `$FILE$ path/to/file $FILE$`.
 - You can add a reaction to the command trigger message by adding `$REACT$ emote $REACT$`. Format for emotes is similar to the reactor.
 - You can have the command send as an embed instead by using `$EMBED$ embed title here $EMBED$`.
+  - If the embed title has the author's name, the bot's name, or the guild's name, the author icon will be set to their image.
 - You can run a shell command by adding `$CMD$ command here $CMD$`.
   - Need to run multiple commands? Make a shell script and run the script with a command, or separate commands with a semi-colon!
   - Add `$CMDOUT$` to your response to also include the output of this command in the response.
