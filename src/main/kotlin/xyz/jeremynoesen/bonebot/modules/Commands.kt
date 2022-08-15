@@ -146,7 +146,7 @@ object Commands {
         commandList = commandList
                 .replace("\$PING\$", message.member!!.asMention)
                 .replace("\$NAME\$", message.member!!.effectiveName)
-                .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
+                .replace("\$BOT\$", message.guild.getMember(BoneBot.JDA!!.selfUser)!!.effectiveName)
                 .replace("\\n", "\n")
                 .replace("  ", " ")
                 .trim()
@@ -158,12 +158,12 @@ object Commands {
         val embedBuilder = EmbedBuilder()
         var title = Messages.helpTitle
                 .replace("\$NAME\$", message.member!!.effectiveName)
-                .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
+                .replace("\$BOT\$", message.guild.getMember(BoneBot.JDA!!.selfUser)!!.effectiveName)
         try {
             title = title.replace("\$GUILD\$", message.guild.name)
         } catch (e: IllegalStateException) {
         }
-        embedBuilder.setAuthor(title, null, BoneBot.JDA!!.selfUser.avatarUrl)
+        embedBuilder.setAuthor(title, null, message.guild.getMember(BoneBot.JDA!!.selfUser)!!.effectiveAvatarUrl)
         embedBuilder.setColor(Config.embedColor)
         embedBuilder.setDescription("$commandList\n[**Source Code**](https://github.com/jeremynoesen/BoneBot)")
         return embedBuilder.build()
@@ -186,7 +186,7 @@ object Commands {
                     commandMessage
                             .replace("\$PING\$", message.member!!.asMention)
                             .replace("\$NAME\$", message.member!!.effectiveName)
-                            .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
+                            .replace("\$BOT\$", message.guild.getMember(BoneBot.JDA!!.selfUser)!!.effectiveName)
                             .replace("\\n", "\n")
                             .replace("  ", " ")
                             .trim()
@@ -267,7 +267,7 @@ object Commands {
                 embedBuilder.setColor(Config.embedColor)
                 if (title.contains(message.member!!.effectiveName)) {
                     embedBuilder.setAuthor(title, null, message.member!!.effectiveAvatarUrl)
-                } else if (title.contains(BoneBot.JDA!!.selfUser.name)) {
+                } else if (title.contains(message.guild.getMember(BoneBot.JDA!!.selfUser)!!.effectiveName)) {
                     embedBuilder.setAuthor(title, null, BoneBot.JDA!!.selfUser.effectiveAvatarUrl)
                 } else {
                     embedBuilder.setAuthor(title, null)

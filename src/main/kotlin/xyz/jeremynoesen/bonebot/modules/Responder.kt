@@ -50,7 +50,7 @@ object Responder {
                 val msg = message.contentDisplay
                 for (trigger in responses.keys) {
                     var editedTrigger = trigger.replace("\$NAME\$", message.member!!.effectiveName)
-                            .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
+                            .replace("\$BOT\$", message.guild.getMember(BoneBot.JDA!!.selfUser)!!.effectiveName)
                             .replace("\\n", "\n")
                     try {
                         editedTrigger = editedTrigger.replace("\$GUILD\$", message.guild.name)
@@ -67,7 +67,7 @@ object Responder {
 
                             var toSend = responseMessage.replace("\$PING\$", message.member!!.asMention)
                                     .replace("\$NAME\$", message.member!!.effectiveName)
-                                    .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
+                                    .replace("\$BOT\$", message.guild.getMember(BoneBot.JDA!!.selfUser)!!.effectiveName)
                                     .replace("\\n", "\n")
                                     .replace("  ", " ")
                                     .trim()

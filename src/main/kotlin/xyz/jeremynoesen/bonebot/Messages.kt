@@ -166,7 +166,7 @@ object Messages {
             toSend = toSend.replace("\$REPLY\$", "")
                     .replace("\$PING\$", cause.member!!.asMention)
                     .replace("\$NAME\$", cause.member!!.effectiveName)
-                    .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
+                    .replace("\$BOT\$", cause.guild.getMember(BoneBot.JDA!!.selfUser)!!.effectiveName)
                     .replace("\\n", "\n")
                     .replace("  ", " ")
                     .trim()
@@ -179,7 +179,7 @@ object Messages {
         } else {
             toSend = toSend.replace("\$PING\$", cause.member!!.asMention)
                     .replace("\$NAME\$", cause.member!!.effectiveName)
-                    .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
+                    .replace("\$BOT\$", cause.guild.getMember(BoneBot.JDA!!.selfUser)!!.effectiveName)
                     .replace("\\n", "\n")
                     .replace("  ", " ")
                     .trim()

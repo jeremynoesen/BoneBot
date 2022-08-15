@@ -51,7 +51,7 @@ object Reactor {
                 val msg = message.contentDisplay
                 for (trigger in reactions.keys) {
                     var editedTrigger = trigger.replace("\$NAME\$", message.member!!.effectiveName)
-                        .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
+                        .replace("\$BOT\$", message.guild.getMember(BoneBot.JDA!!.selfUser)!!.effectiveName)
                         .replace("\\n", "\n")
                     try {
                         editedTrigger = editedTrigger.replace("\$GUILD\$", message.guild.name)

@@ -48,7 +48,7 @@ object Quotes {
                         quote = quote
                                 .replace("\$PING\$", message.member!!.asMention)
                                 .replace("\$NAME\$", message.member!!.effectiveName)
-                                .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
+                                .replace("\$BOT\$", message.guild.getMember(BoneBot.JDA!!.selfUser)!!.effectiveName)
                                 .replace("\\n", "\n")
                                 .replace("  ", " ")
                                 .trim()

@@ -62,7 +62,7 @@ constructor(private val command: Message) {
                     text = text!!
                             .replace("\$PING\$", command.member!!.asMention)
                             .replace("\$NAME\$", command.member!!.effectiveName)
-                            .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
+                            .replace("\$BOT\$", command.guild.getMember(BoneBot.JDA!!.selfUser)!!.effectiveName)
                             .replace("\\n", "\n")
                     try {
                         text = text!!.replace("\$GUILD\$", command.guild.name)
@@ -73,7 +73,7 @@ constructor(private val command: Message) {
 
                     val embedBuilder = EmbedBuilder()
                     var title = Messages.memeTitle.replace("\$NAME\$", command.member!!.effectiveName)
-                            .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
+                            .replace("\$BOT\$", command.guild.getMember(BoneBot.JDA!!.selfUser)!!.effectiveName)
                     try {
                         title = title.replace("\$GUILD\$", command.guild.name)
                     } catch (e: IllegalStateException) {

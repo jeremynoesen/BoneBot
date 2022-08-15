@@ -56,14 +56,14 @@ object Welcomer {
                 embedBuilder.setAuthor(
                         Messages.welcomeTitle.replace("\$GUILD\$", guild.name)
                                 .replace("\$NAME\$", user.name)
-                                .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name),
+                                .replace("\$BOT\$", guild.getMember(BoneBot.JDA!!.selfUser)!!.effectiveName),
                         null, guild.iconUrl
                 )
                 embedBuilder.setDescription(
                         toSend.replace("\$PING\$", user.asMention)
                                 .replace("\$NAME\$", user.name)
                                 .replace("\$GUILD\$", guild.name)
-                                .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name)
+                                .replace("\$BOT\$", guild.getMember(BoneBot.JDA!!.selfUser)!!.effectiveName)
                                 .replace("\\n", "\n")
                                 .replace("  ", " ")
                                 .trim()
