@@ -1,8 +1,12 @@
 package xyz.jeremynoesen.bonebot.modules.commands
 
+import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.entities.Message
+import xyz.jeremynoesen.bonebot.BoneBot
+import xyz.jeremynoesen.bonebot.Config
 import xyz.jeremynoesen.bonebot.Messages
 import java.io.File
+import java.lang.IllegalStateException
 import java.util.*
 import kotlin.collections.HashSet
 
@@ -54,10 +58,34 @@ object Files {
                             Messages.sendMessage(Messages.unknownFile, message)
                             return
                         }
+
                         if (file.isDirectory) {
                             sendRandomFile(message, file)
                         } else {
-                            message.channel.sendFile(file).queue()
+                            val embedBuilder = EmbedBuilder()
+                            var title = Messages.fileTitle
+                                    .replace("\$NAME\$", message.member!!.effectiveName)
+                                    .replace("\$BOT\$", message.guild.getMember(BoneBot.JDA!!.selfUser)!!.effectiveName)
+                                    .replace("\\n", "\n")
+                                    .replace("  ", " ")
+                                    .trim()
+                            try {
+                                title = title.replace("\$GUILD\$", message.guild.name)
+                            } catch (e: IllegalStateException) {
+                            }
+
+                            if (title.contains(message.member!!.effectiveName)) {
+                                embedBuilder.setAuthor(title, null, message.member!!.effectiveAvatarUrl)
+                            } else if (title.contains(message.guild.getMember(BoneBot.JDA!!.selfUser)!!.effectiveName)) {
+                                embedBuilder.setAuthor(title, null, BoneBot.JDA!!.selfUser.effectiveAvatarUrl)
+                            } else if (title.contains(message.guild.name)) {
+                                embedBuilder.setAuthor(title, null, message.guild.iconUrl)
+                            } else {
+                                embedBuilder.setAuthor(title, null)
+                            }
+                            embedBuilder.setColor(Config.embedColor)
+                            embedBuilder.setImage("attachment://" + file.name.replace(" ", "_"))
+                            message.channel.sendMessageEmbeds(embedBuilder.build()).addFile(file, file.name.replace(" ", "_")).queue()
                         }
                     } catch (e: Exception) {
                         Messages.sendMessage(Messages.unknownFile, message)
@@ -97,7 +125,32 @@ object Files {
                 sendRandomFile(message, dir.listFiles()!![rand])
                 return
             }
-            message.channel.sendFile(dir.listFiles()!![rand]).queue()
+
+            val file = dir.listFiles()!![rand]
+            val embedBuilder = EmbedBuilder()
+            var title = Messages.fileTitle
+                    .replace("\$NAME\$", message.member!!.effectiveName)
+                    .replace("\$BOT\$", message.guild.getMember(BoneBot.JDA!!.selfUser)!!.effectiveName)
+                    .replace("\\n", "\n")
+                    .replace("  ", " ")
+                    .trim()
+            try {
+                title = title.replace("\$GUILD\$", message.guild.name)
+            } catch (e: IllegalStateException) {
+            }
+
+            if (title.contains(message.member!!.effectiveName)) {
+                embedBuilder.setAuthor(title, null, message.member!!.effectiveAvatarUrl)
+            } else if (title.contains(message.guild.getMember(BoneBot.JDA!!.selfUser)!!.effectiveName)) {
+                embedBuilder.setAuthor(title, null, BoneBot.JDA!!.selfUser.effectiveAvatarUrl)
+            } else if (title.contains(message.guild.name)) {
+                embedBuilder.setAuthor(title, null, message.guild.iconUrl)
+            } else {
+                embedBuilder.setAuthor(title, null)
+            }
+            embedBuilder.setColor(Config.embedColor)
+            embedBuilder.setImage("attachment://" + file.name.replace(" ", "_"))
+            message.channel.sendMessageEmbeds(embedBuilder.build()).addFile(file, file.name.replace(" ", "_")).queue()
         } else {
             Messages.sendMessage(Messages.noFiles, message)
         }

@@ -54,9 +54,13 @@ object Welcomer {
                 val embedBuilder = EmbedBuilder()
                 embedBuilder.setColor(Config.embedColor)
                 embedBuilder.setAuthor(
-                        Messages.welcomeTitle.replace("\$GUILD\$", guild.name)
+                        Messages.welcomeTitle
+                                .replace("\$GUILD\$", guild.name)
                                 .replace("\$NAME\$", user.name)
-                                .replace("\$BOT\$", guild.getMember(BoneBot.JDA!!.selfUser)!!.effectiveName),
+                                .replace("\$BOT\$", guild.getMember(BoneBot.JDA!!.selfUser)!!.effectiveName)
+                                .replace("\\n", "\n")
+                                .replace("  ", " ")
+                                .trim(),
                         null, null
                 )
                 embedBuilder.setThumbnail(guild.iconUrl)
@@ -70,8 +74,8 @@ object Welcomer {
                                 .trim()
                 )
                 if (file != null) {
-                    embedBuilder.setImage("attachment://" + file.name)
-                    channel.sendMessageEmbeds(embedBuilder.build()).addFile(file, file.name).queue()
+                    embedBuilder.setImage("attachment://" + file.name.replace(" ", "_"))
+                    channel.sendMessageEmbeds(embedBuilder.build()).addFile(file, file.name.replace(" ", "_")).queue()
                 } else {
                     channel.sendMessageEmbeds(embedBuilder.build()).queue()
                 }

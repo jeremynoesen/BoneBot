@@ -113,7 +113,7 @@ Use these placeholders in most configurations. Places they are disallowed will b
 ### Quotes
 - Quotes will be put into `resources/quotes.txt`.
 - Each line designates a new entry.
-- Quotes can use all placeholders.
+- Quotes can use all placeholders except `$REPLY$`.
 - To set a cool down for quotes, set `quote-cooldown` in the main configuration to any while number in seconds.
 - To enable or disable quotes, set `quotes-enabled` in the main configuration to `true` or `false`.
 

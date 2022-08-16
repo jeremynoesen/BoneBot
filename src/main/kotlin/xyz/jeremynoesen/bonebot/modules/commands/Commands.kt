@@ -177,6 +177,9 @@ object Commands {
         var title = Messages.helpTitle
                 .replace("\$NAME\$", message.member!!.effectiveName)
                 .replace("\$BOT\$", message.guild.getMember(BoneBot.JDA!!.selfUser)!!.effectiveName)
+                .replace("\\n", "\n")
+                .replace("  ", " ")
+                .trim()
         try {
             title = title.replace("\$GUILD\$", message.guild.name)
         } catch (e: IllegalStateException) {
@@ -188,8 +191,8 @@ object Commands {
         embedBuilder.setDescription("$commandList\n\n[**Source Code**](https://github.com/jeremynoesen/BoneBot)")
 
         if (file != null) {
-            embedBuilder.setImage("attachment://" + file.name)
-            message.channel.sendMessageEmbeds(embedBuilder.build()).addFile(file, file.name).queue()
+            embedBuilder.setImage("attachment://" + file.name.replace(" ", "_"))
+            message.channel.sendMessageEmbeds(embedBuilder.build()).addFile(file, file.name.replace(" ", "_")).queue()
         } else {
             message.channel.sendMessageEmbeds(embedBuilder.build()).queue()
         }
@@ -306,8 +309,8 @@ object Commands {
                             .replace("  ", " ")
                     embedBuilder.setDescription(toSend)
                     if (file != null) {
-                        embedBuilder.setImage("attachment://" + file.name)
-                        message.channel.sendMessageEmbeds(embedBuilder.build()).addFile(file, file.name).reference(message)
+                        embedBuilder.setImage("attachment://" + file.name.replace(" ", "_"))
+                        message.channel.sendMessageEmbeds(embedBuilder.build()).addFile(file, file.name.replace(" ", "_")).reference(message)
                                 .queue()
                     } else {
                         message.channel.sendMessageEmbeds(embedBuilder.build()).reference(message).queue()
@@ -315,8 +318,8 @@ object Commands {
                 } else {
                     embedBuilder.setDescription(toSend)
                     if (file != null) {
-                        embedBuilder.setImage("attachment://" + file.name)
-                        message.channel.sendMessageEmbeds(embedBuilder.build()).addFile(file, file.name).queue()
+                        embedBuilder.setImage("attachment://" + file.name.replace(" ", "_"))
+                        message.channel.sendMessageEmbeds(embedBuilder.build()).addFile(file, file.name.replace(" ", "_")).queue()
                     } else {
                         message.channel.sendMessageEmbeds(embedBuilder.build()).queue()
                     }

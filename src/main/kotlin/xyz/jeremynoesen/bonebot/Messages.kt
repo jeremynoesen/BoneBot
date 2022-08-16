@@ -27,7 +27,8 @@ object Messages {
     var quoteCommand = "quote"
     var memeTitle = "\$NAME\$ generated a meme:"
     var welcomeTitle = "\$NAME\$ joined \$GUILD\$"
-
+    var quoteTitle = "\$NAME\$ summoned a quote:"
+    var fileTitle = "\$NAME\$ summoned a file:"
     var error = "**An error occurred!** Please check the console!"
     var unknownCommand = "**Unknown command!**"
     var noFiles = "There are **no files** to send!"
@@ -49,7 +50,7 @@ object Messages {
                 val lineScanner = Scanner(fileScanner.nextLine())
                 when (lineScanner.next()) {
                     "help-title:" -> {
-                        helpTitle = lineScanner.nextLine().replace("\\n", "\n").trim()
+                        helpTitle = lineScanner.nextLine()
                     }
                     "help-about:" -> {
                         helpAbout = lineScanner.nextLine().replace("\\n", "\n").trim()
@@ -82,10 +83,16 @@ object Messages {
                         quoteCommand = lineScanner.nextLine().trim()
                     }
                     "meme-title:" -> {
-                        memeTitle = lineScanner.nextLine().replace("\\n", "\n").trim()
+                        memeTitle = lineScanner.nextLine()
                     }
                     "welcome-title" -> {
-                        welcomeTitle = lineScanner.nextLine().replace("\\n", "\n").trim()
+                        welcomeTitle = lineScanner.nextLine()
+                    }
+                    "quote-title" -> {
+                        quoteTitle = lineScanner.nextLine()
+                    }
+                    "file-title" -> {
+                        fileTitle = lineScanner.nextLine()
                     }
                     "error:" -> {
                         error = lineScanner.nextLine()
@@ -139,6 +146,8 @@ object Messages {
             pw.println("quote-command: $quoteCommand")
             pw.println("meme-title: $memeTitle")
             pw.println("welcome-title: $welcomeTitle")
+            pw.println("quote-title: $quoteTitle")
+            pw.println("file-title: $fileTitle")
             pw.println("error: $error")
             pw.println("unknown-command: $unknownCommand")
             pw.println("no-files: $noFiles")
