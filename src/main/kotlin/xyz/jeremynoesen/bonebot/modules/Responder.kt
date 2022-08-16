@@ -49,9 +49,12 @@ object Responder {
             if ((System.currentTimeMillis() - prevTime) >= cooldown * 1000) {
                 val msg = message.contentDisplay
                 for (trigger in responses.keys) {
-                    var editedTrigger = trigger.replace("\$NAME\$", message.member!!.effectiveName)
+                    var editedTrigger = trigger.replace("\$PING\$", message.member!!.asMention)
+                            .replace("\$NAME\$", message.member!!.effectiveName)
                             .replace("\$BOT\$", message.guild.getMember(BoneBot.JDA!!.selfUser)!!.effectiveName)
                             .replace("\\n", "\n")
+                            .replace("  ", " ")
+                            .trim()
                     try {
                         editedTrigger = editedTrigger.replace("\$GUILD\$", message.guild.name)
                     } catch (e: IllegalStateException) {

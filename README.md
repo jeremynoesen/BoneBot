@@ -129,8 +129,9 @@ Use these placeholders in most configurations. Places they are disallowed will b
 - Append ` $&&$ response` to add a multi-message response.
 - Append ` $||$ response` to have multiple messages to randomly choose from for a response.
 - Case is ignored in the trigger.
-- The trigger can include Regex. Case is not ignored if you use Regex.
-- The trigger and response can include all placeholders.
+- The trigger can include Regex. Case is not ignored if you use Regex.\
+- Trigger can use all placeholders except for `$REPLY$`.
+- The response can include all placeholders.
 - You can send a single file by adding `$FILE$ path/to/file $FILE$`.
 - The response sends with a delay based on message length multiplied by `typing-speed` in the main configuration in milliseconds. This number must be a whole number.
 - To set a cool down for the responder, set `responder-cooldown` in the main configuration to whole any number in seconds.
