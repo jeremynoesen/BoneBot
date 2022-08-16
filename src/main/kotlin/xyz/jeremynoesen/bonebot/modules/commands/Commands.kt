@@ -2,7 +2,6 @@ package xyz.jeremynoesen.bonebot.modules.commands
 
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.entities.Message
-import net.dv8tion.jda.api.entities.MessageEmbed
 import net.dv8tion.jda.api.entities.emoji.Emoji
 import xyz.jeremynoesen.bonebot.BoneBot
 import xyz.jeremynoesen.bonebot.Config
@@ -83,7 +82,7 @@ object Commands {
                             return true
                         }
                         label.equals(commandPrefix + Messages.helpCommand, true) -> {
-                            message.channel.sendMessageEmbeds(buildHelpEmbed(message)).queue()
+                            sendHelp(message)
                             done = true
                             return true
                         }
@@ -119,10 +118,28 @@ object Commands {
      * build the help message embed
      *
      * @param message message initiating help embed
-     * @return build help message embed
      */
-    private fun buildHelpEmbed(message: Message): MessageEmbed {
-        var commandList = Messages.helpAbout + "\n\n" + Messages.helpFormat
+    private fun sendHelp(message: Message) {
+
+        var commandList = Messages.helpAbout
+
+        var file: File? = null
+        if (commandList.contains("\$FILE\$")) {
+            val path = commandList.split("\$FILE\$")[1].trim()
+            commandList = commandList.replace(
+                    commandList.substring(
+                            commandList.indexOf("\$FILE\$"),
+                            commandList.lastIndexOf("\$FILE\$") + 6
+                    ), ""
+            )
+                    .replace("  ", " ").trim()
+            file = File(path)
+            if (!file.exists() || file.isDirectory || file.isHidden) {
+                file = null
+            }
+        }
+
+        commandList += "\n\n" + Messages.helpFormat
                 .replace("\$CMD\$", commandPrefix + Messages.helpCommand)
                 .replace("\$DESC\$", Messages.helpDescription) + "\n"
 
@@ -164,11 +181,18 @@ object Commands {
             title = title.replace("\$GUILD\$", message.guild.name)
         } catch (e: IllegalStateException) {
         }
+
         embedBuilder.setAuthor(title, null, null)
         embedBuilder.setThumbnail(message.guild.getMember(BoneBot.JDA!!.selfUser)!!.effectiveAvatarUrl)
         embedBuilder.setColor(Config.embedColor)
         embedBuilder.setDescription("$commandList\n\n[**Source Code**](https://github.com/jeremynoesen/BoneBot)")
-        return embedBuilder.build()
+
+        if (file != null) {
+            embedBuilder.setImage("attachment://" + file.name)
+            message.channel.sendMessageEmbeds(embedBuilder.build()).addFile(file, file.name).queue()
+        } else {
+            message.channel.sendMessageEmbeds(embedBuilder.build()).queue()
+        }
     }
 
     /**

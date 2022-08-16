@@ -57,8 +57,9 @@ object Welcomer {
                         Messages.welcomeTitle.replace("\$GUILD\$", guild.name)
                                 .replace("\$NAME\$", user.name)
                                 .replace("\$BOT\$", guild.getMember(BoneBot.JDA!!.selfUser)!!.effectiveName),
-                        null, guild.iconUrl
+                        null, null
                 )
+                embedBuilder.setThumbnail(guild.iconUrl)
                 embedBuilder.setDescription(
                         toSend.replace("\$PING\$", user.asMention)
                                 .replace("\$NAME\$", user.name)
@@ -69,8 +70,8 @@ object Welcomer {
                                 .trim()
                 )
                 if (file != null) {
-                    embedBuilder.setImage("attachment://welcome.png")
-                    channel.sendMessageEmbeds(embedBuilder.build()).addFile(file, "welcome.png").queue()
+                    embedBuilder.setImage("attachment://" + file.name)
+                    channel.sendMessageEmbeds(embedBuilder.build()).addFile(file, file.name).queue()
                 } else {
                     channel.sendMessageEmbeds(embedBuilder.build()).queue()
                 }

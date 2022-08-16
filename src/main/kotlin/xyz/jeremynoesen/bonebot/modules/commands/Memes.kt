@@ -78,7 +78,17 @@ constructor(private val command: Message) {
                         title = title.replace("\$GUILD\$", command.guild.name)
                     } catch (e: IllegalStateException) {
                     }
-                    embedBuilder.setAuthor(title, null, command.member!!.effectiveAvatarUrl)
+
+                    if (title.contains(command.member!!.effectiveName)) {
+                        embedBuilder.setAuthor(title, null, command.member!!.effectiveAvatarUrl)
+                    } else if (title.contains(command.guild.getMember(BoneBot.JDA!!.selfUser)!!.effectiveName)) {
+                        embedBuilder.setAuthor(title, null, BoneBot.JDA!!.selfUser.effectiveAvatarUrl)
+                    } else if (title.contains(command.guild.name)) {
+                        embedBuilder.setAuthor(title, null, command.guild.iconUrl)
+                    } else {
+                        embedBuilder.setAuthor(title, null)
+                    }
+
                     embedBuilder.setColor(Config.embedColor)
                     embedBuilder.setImage("attachment://meme.png")
 

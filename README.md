@@ -235,6 +235,7 @@ Use these placeholders in most configurations. Places they are disallowed will b
   - Command labels can not use any placeholders.
 - Standard Discord Markdown formatting is supported.
 - This file can modify all built-in responses, command descriptions, and commands.
+- The `help-about` message can include a file foe the embed using the `$FILE$` format.
 
 ### Miscellaneous
 - You can change the colors of embeds for the meme generator and help message by setting `embed-color` in the main configuration to a hex code.
