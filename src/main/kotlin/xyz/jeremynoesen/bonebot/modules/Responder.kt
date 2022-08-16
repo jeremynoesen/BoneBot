@@ -30,6 +30,11 @@ object Responder {
     var enabled = true
 
     /**
+     * delay before starting to reply in milliseconds
+     */
+    var delay = 1000L
+
+    /**
      * speed at which the bot types each letter
      */
     var typingSpeed = 100L
@@ -99,9 +104,9 @@ object Responder {
                             if (toSend.contains("\$REPLY\$")) {
                                 toSend = toSend.replace("\$REPLY\$", "")
                                         .replace("  ", " ")
+                                Thread.sleep(delay)
 
-                                if (typingSpeed * toSend.length > 100) {
-                                    Thread.sleep(100)
+                                if (typingSpeed * toSend.length > 0) {
                                     var typingTime = 0L
                                     for (i in toSend.indices) {
                                         if (typingTime >= 5000L) typingTime = 0L
@@ -121,9 +126,9 @@ object Responder {
                                         message.channel.sendMessage(toSend).reference(message).queue()
                                 }
                             } else {
+                                Thread.sleep(delay)
 
-                                if (typingSpeed * toSend.length > 100) {
-                                    Thread.sleep(100)
+                                if (typingSpeed * toSend.length > 0) {
                                     var typingTime = 0L
                                     for (i in toSend.indices) {
                                         if (typingTime >= 5000L) typingTime = 0L

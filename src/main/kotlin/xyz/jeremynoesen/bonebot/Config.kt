@@ -52,6 +52,9 @@ object Config {
                     "responder-cooldown:" -> {
                         Responder.cooldown = lineScanner.nextInt()
                     }
+                    "responder-delay:" -> {
+                        Responder.delay = lineScanner.nextLong()
+                    }
                     "typing-speed:" -> {
                         Responder.typingSpeed = lineScanner.nextLong()
                     }
@@ -130,6 +133,7 @@ object Config {
         val pw = PrintWriter(file)
         pw.println("responder-enabled: ${Responder.enabled}")
         pw.println("responder-cooldown: ${Responder.cooldown}")
+        pw.println("responder-delay: ${Responder.delay}")
         pw.println("typing-speed: ${Responder.typingSpeed}")
         pw.println("reactor-enabled: ${Reactor.enabled}")
         pw.println("reactor-cooldown: ${Reactor.cooldown}")

@@ -134,6 +134,7 @@ Use these placeholders in most configurations. Places they are disallowed will b
 - The response can include all placeholders.
 - You can send a single file by adding `$FILE$ path/to/file $FILE$`.
 - The response sends with a delay based on message length multiplied by `typing-speed` in the main configuration in milliseconds. This number must be a whole number.
+- To set a delay between when the message is sent and when the bot starts to respond, set `responder-delay` in the main configuration to any whole number in milliseconds.
 - To set a cool down for the responder, set `responder-cooldown` in the main configuration to whole any number in seconds.
 - To enable or disable the responder, set `responder-enabled` in the main configuration to `true` or `false`.
 

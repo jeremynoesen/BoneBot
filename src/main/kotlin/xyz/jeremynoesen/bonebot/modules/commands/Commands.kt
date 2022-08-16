@@ -56,7 +56,6 @@ object Commands {
         try {
             if (message.contentDisplay.startsWith(commandPrefix, true)) {
                 thread {
-                    Thread.sleep(100)
                     while (!done) {
                         message.channel.sendTyping().queue()
                         Thread.sleep(5000);

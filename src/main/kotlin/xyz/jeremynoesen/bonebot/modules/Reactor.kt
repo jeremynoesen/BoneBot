@@ -36,7 +36,7 @@ object Reactor {
     private var prevTime = 0L
 
     /**
-     * delay before adding a reaction in seconds
+     * delay before adding a reaction in milliseconds
      */
     var delay = 1000L
 
