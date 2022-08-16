@@ -16,11 +16,6 @@ import java.io.File
 object Welcomer {
 
     /**
-     * message to show in welcome message embed
-     */
-    var message = "Welcome \$PING\$ to **\$GUILD\$**!"
-
-    /**
      * whether this module is enabled or not
      */
     var enabled = true
@@ -34,7 +29,7 @@ object Welcomer {
     fun welcome(user: User, guild: Guild) {
         user.openPrivateChannel().queue { channel ->
             run {
-                var toSend = message
+                var toSend = Messages.welcomeMessage
                 var file: File? = null
                 if (toSend.contains("\$FILE\$")) {
                     val path = toSend.split("\$FILE\$")[1].trim()

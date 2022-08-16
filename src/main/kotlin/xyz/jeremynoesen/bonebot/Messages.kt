@@ -29,6 +29,7 @@ object Messages {
     var welcomeTitle = "\$NAME\$ joined \$GUILD\$"
     var quoteTitle = "\$NAME\$ summoned a quote:"
     var fileTitle = "\$NAME\$ summoned a file:"
+    var welcomeMessage = "Welcome \$PING\$ to **\$GUILD\$**!"
     var error = "**An error occurred!** Please check the console!"
     var unknownCommand = "**Unknown command!**"
     var noFiles = "There are **no files** to send!"
@@ -94,6 +95,9 @@ object Messages {
                     "file-title:" -> {
                         fileTitle = lineScanner.nextLine()
                     }
+                    "welcome-message:" -> {
+                        welcomeMessage = lineScanner.nextLine()
+                    }
                     "error:" -> {
                         error = lineScanner.nextLine()
                     }
@@ -148,6 +152,7 @@ object Messages {
             pw.println("welcome-title: $welcomeTitle")
             pw.println("quote-title: $quoteTitle")
             pw.println("file-title: $fileTitle")
+            pw.println("welcome-message: $welcomeMessage")
             pw.println("error: $error")
             pw.println("unknown-command: $unknownCommand")
             pw.println("no-files: $noFiles")
