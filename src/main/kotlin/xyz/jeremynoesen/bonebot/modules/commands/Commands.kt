@@ -1,4 +1,4 @@
-package xyz.jeremynoesen.bonebot.modules
+package xyz.jeremynoesen.bonebot.modules.commands
 
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.entities.Message

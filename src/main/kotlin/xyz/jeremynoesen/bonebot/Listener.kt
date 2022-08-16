@@ -2,7 +2,7 @@ package xyz.jeremynoesen.bonebot
 
 import net.dv8tion.jda.api.entities.ChannelType
 import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent
-import xyz.jeremynoesen.bonebot.modules.Commands
+import xyz.jeremynoesen.bonebot.modules.commands.Commands
 import xyz.jeremynoesen.bonebot.modules.Reactor
 import xyz.jeremynoesen.bonebot.modules.Responder
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent

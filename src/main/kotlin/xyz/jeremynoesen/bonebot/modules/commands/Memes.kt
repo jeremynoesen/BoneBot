@@ -1,4 +1,4 @@
-package xyz.jeremynoesen.bonebot.modules
+package xyz.jeremynoesen.bonebot.modules.commands
 
 import net.coobird.thumbnailator.Thumbnails
 import net.dv8tion.jda.api.EmbedBuilder

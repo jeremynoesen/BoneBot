@@ -1,6 +1,10 @@
 package xyz.jeremynoesen.bonebot
 
 import xyz.jeremynoesen.bonebot.modules.*
+import xyz.jeremynoesen.bonebot.modules.commands.Commands
+import xyz.jeremynoesen.bonebot.modules.commands.Files
+import xyz.jeremynoesen.bonebot.modules.commands.Memes
+import xyz.jeremynoesen.bonebot.modules.commands.Quotes
 import java.awt.Color
 import java.io.File
 import java.io.FileNotFoundException
