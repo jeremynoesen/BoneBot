@@ -340,6 +340,13 @@ object Commands {
         env["BB_ID"] = message.member!!.id
         env["BB_AVATAR"] = message.member!!.effectiveAvatarUrl + "?size=4096"
 
+        if (message.member!!.roles.size > 0) {
+            for (i in message.member!!.roles.indices) {
+                env["BB_ROLE_$i"] = message.member!!.roles[i].id
+            }
+        }
+        env["BB_ROLE_COUNT"] = message.member!!.roles.size.toString()
+
         if (message.attachments.size > 0) {
             for (i in message.attachments.indices) {
                 env["BB_FILE_$i"] = message.attachments[i].url
@@ -380,6 +387,12 @@ object Commands {
                             message.mentions.members[i].id
                     env["BB_MENTION_${l}_AVATAR"] =
                             message.mentions.members[i].effectiveAvatarUrl + "?size=4096"
+                    if (message.mentions.members[i].roles.size > 0) {
+                        for (r in message.mentions.members[i].roles.indices) {
+                            env["BB_MENTION_${l}_ROLE_$r"] = message.mentions.members[i].roles[r].id
+                        }
+                    }
+                    env["BB_MENTION_${l}_ROLE_COUNT"] = message.mentions.members[i].roles.size.toString()
                     l++
                 }
             }
@@ -393,6 +406,13 @@ object Commands {
             env["BB_REPLY_PING"] = reply.member!!.asMention
             env["BB_REPLY_ID"] = reply.member!!.id
             env["BB_REPLY_AVATAR"] = reply.member!!.effectiveAvatarUrl + "?size=4096"
+
+            if (reply.member!!.roles.size > 0) {
+                for (i in reply.member!!.roles.indices) {
+                    env["BB_REPLY_ROLE_$i"] = reply.member!!.roles[i].id
+                }
+            }
+            env["BB_REPLY_ROLE_COUNT"] = reply.member!!.roles.size.toString()
 
             if (reply.attachments.size > 0) {
                 for (i in reply.attachments.indices) {
@@ -434,6 +454,12 @@ object Commands {
                                 reply.mentions.members[i].id
                         env["BB_REPLY_MENTION_${l}_AVATAR"] =
                                 reply.mentions.members[i].effectiveAvatarUrl + "?size=4096"
+                        if (reply.mentions.members[i].roles.size > 0) {
+                            for (r in reply.mentions.members[i].roles.indices) {
+                                env["BB_REPLY_MENTION_${l}_ROLE_$r"] = reply.mentions.members[i].roles[r].id
+                            }
+                        }
+                        env["BB_REPLY_MENTION_${l}_ROLE_COUNT"] = reply.mentions.members[i].roles.size.toString()
                         l++
                     }
                 }

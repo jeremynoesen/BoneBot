@@ -174,6 +174,8 @@ Use these placeholders in most configurations. Places they are disallowed will b
     - `BB_PING`: A mention of the command author
     - `BB_ID`: ID of user sending command
     - `BB_AVATAR`: Avatar URL of the command author
+    - `BB_ROLE_N`: Role ID of the Nth role the author has
+    - `BB_ROLE_COUNT`: Number of roles the author has
     - `BB_FILE_N`: URL of the Nth file attachment in the message
     - `BB_FILE_COUNT`: Number of files in the message
     - `BB_EMBED_N`: URL of the Nth image in the first embed in the message
@@ -184,12 +186,16 @@ Use these placeholders in most configurations. Places they are disallowed will b
     - `BB_MENTION_N_PING`: A mention of the Nth pinged user in the message
     - `BB_MENTION_N_ID`: ID of Nth pinged user
     - `BB_MENTION_N_AVATAR`: Avatar URL of the Nth pinged user
+    - `BB_MENTION_N_ROLE_M`: Role ID of the Mth role the Nth mentioned user has
+    - `BB_MENTION_N_ROLE_COUNT`: Number of roles the Nth mentioned user has
     - `BB_MENTION_COUNT`: Number of mentions in the message
     - `BB_REPLY_CONTENT`: All text of replied message
     - `BB_REPLY_NAME`: Display name of reply author
     - `BB_REPLY_PING`: A mention of the reply author
     - `BB_REPLY_ID`: ID of reply author
     - `BB_REPLY_AVATAR`: Avatar URL of the reply author
+    - `BB_REPLY_ROLE_N`: Role ID of the Nth role the reply author has
+    - `BB_REPLY_ROLE_COUNT`: Number of roles the reply author has
     - `BB_REPLY_FILE_N`: URL of the Nth file attachment in the replied message
     - `BB_REPLY_FILE_COUNT`: Number of files in the reply
     - `BB_REPLY_EMBED_N`: URL of the Nth image in the first embed in the replied message
@@ -200,6 +206,8 @@ Use these placeholders in most configurations. Places they are disallowed will b
     - `BB_REPLY_MENTION_N_PING`: A mention of the Nth pinged user in the reply
     - `BB_REPLY_MENTION_N_ID`: ID of Nth pinged user in the replied message
     - `BB_REPLY_MENTION_N_AVATAR`: Avatar URL of the Nth pinged user in the replied message
+    - `BB_REPLY_MENTION_N_ROLE_M`: Role ID of the Mth role the Nth mentioned user in a reply has
+    - `BB_REPLY_MENTION_N_ROLE_COUNT`: Number of roles the Nth mentioned user in a reply has
     - `BB_REPLY_MENTION_COUNT`: Number of mentions in the reply
 - To change the command prefix, set `command-prefix` in the main configuration to a custom prefix. Case is ignored.
 - To set a cool down for commands, set `commands-cooldown` in the main configuration to any whole number in seconds.
