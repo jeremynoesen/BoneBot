@@ -49,43 +49,43 @@ object Messages {
                 val lineScanner = Scanner(fileScanner.nextLine())
                 when (lineScanner.next()) {
                     "help-title:" -> {
-                        helpTitle = lineScanner.nextLine()
+                        helpTitle = lineScanner.nextLine().replace("\\n", "\n").trim()
                     }
                     "help-about:" -> {
-                        helpAbout = lineScanner.nextLine()
+                        helpAbout = lineScanner.nextLine().replace("\\n", "\n").trim()
                     }
                     "help-format:" -> {
-                        helpFormat = lineScanner.nextLine()
+                        helpFormat = lineScanner.nextLine().replace("\\n", "\n").trim()
                     }
                     "help-description:" -> {
-                        helpDescription = lineScanner.nextLine()
+                        helpDescription = lineScanner.nextLine().replace("\\n", "\n").trim()
                     }
                     "meme-description:" -> {
-                        memeDescription = lineScanner.nextLine()
+                        memeDescription = lineScanner.nextLine().replace("\\n", "\n").trim()
                     }
                     "file-description:" -> {
-                        fileDescription = lineScanner.nextLine()
+                        fileDescription = lineScanner.nextLine().replace("\\n", "\n").trim()
                     }
                     "quote-description:" -> {
-                        quoteDescription = lineScanner.nextLine()
+                        quoteDescription = lineScanner.nextLine().replace("\\n", "\n").trim()
                     }
                     "help-command:" -> {
-                        helpCommand = lineScanner.nextLine()
+                        helpCommand = lineScanner.nextLine().trim()
                     }
                     "meme-command:" -> {
-                        memeCommand = lineScanner.nextLine()
+                        memeCommand = lineScanner.nextLine().trim()
                     }
                     "file-command:" -> {
-                        fileCommand = lineScanner.nextLine()
+                        fileCommand = lineScanner.nextLine().trim()
                     }
                     "quote-command:" -> {
-                        quoteCommand = lineScanner.nextLine()
+                        quoteCommand = lineScanner.nextLine().trim()
                     }
                     "meme-title:" -> {
-                        memeTitle = lineScanner.nextLine()
+                        memeTitle = lineScanner.nextLine().replace("\\n", "\n").trim()
                     }
                     "welcome-title" -> {
-                        welcomeTitle = lineScanner.nextLine()
+                        welcomeTitle = lineScanner.nextLine().replace("\\n", "\n").trim()
                     }
                     "error:" -> {
                         error = lineScanner.nextLine()
