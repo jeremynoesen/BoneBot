@@ -51,7 +51,7 @@ object Messages {
                 val lineScanner = Scanner(fileScanner.nextLine())
                 when (lineScanner.next()) {
                     "help-title:" -> {
-                        helpTitle = lineScanner.nextLine()
+                        helpTitle = lineScanner.nextLine().trim()
                     }
                     "help-about:" -> {
                         helpAbout = lineScanner.nextLine().replace("\\n", "\n").trim()
@@ -84,49 +84,49 @@ object Messages {
                         quoteCommand = lineScanner.nextLine().trim()
                     }
                     "meme-title:" -> {
-                        memeTitle = lineScanner.nextLine()
+                        memeTitle = lineScanner.nextLine().trim()
                     }
                     "welcome-title:" -> {
-                        welcomeTitle = lineScanner.nextLine()
+                        welcomeTitle = lineScanner.nextLine().trim()
                     }
                     "quote-title:" -> {
-                        quoteTitle = lineScanner.nextLine()
+                        quoteTitle = lineScanner.nextLine().trim()
                     }
                     "file-title:" -> {
-                        fileTitle = lineScanner.nextLine()
+                        fileTitle = lineScanner.nextLine().trim()
                     }
                     "welcome-message:" -> {
-                        welcomeMessage = lineScanner.nextLine()
+                        welcomeMessage = lineScanner.nextLine().trim()
                     }
                     "error:" -> {
-                        error = lineScanner.nextLine()
+                        error = lineScanner.nextLine().trim()
                     }
                     "unknown-command:" -> {
-                        unknownCommand = lineScanner.nextLine()
+                        unknownCommand = lineScanner.nextLine().trim()
                     }
                     "no-files:" -> {
-                        noFiles = lineScanner.nextLine()
+                        noFiles = lineScanner.nextLine().trim()
                     }
                     "unknown-file:" -> {
-                        unknownFile = lineScanner.nextLine()
+                        unknownFile = lineScanner.nextLine().trim()
                     }
                     "meme-input-missing:" -> {
-                        memeInputMissing = lineScanner.nextLine()
+                        memeInputMissing = lineScanner.nextLine().trim()
                     }
                     "no-quotes:" -> {
-                        noQuotes = lineScanner.nextLine()
+                        noQuotes = lineScanner.nextLine().trim()
                     }
                     "meme-cooldown:" -> {
-                        memeCooldown = lineScanner.nextLine()
+                        memeCooldown = lineScanner.nextLine().trim()
                     }
                     "file-cooldown:" -> {
-                        fileCooldown = lineScanner.nextLine()
+                        fileCooldown = lineScanner.nextLine().trim()
                     }
                     "quote-cooldown:" -> {
-                        quoteCooldown = lineScanner.nextLine()
+                        quoteCooldown = lineScanner.nextLine().trim()
                     }
                     "command-cooldown:" -> {
-                        commandCooldown = lineScanner.nextLine()
+                        commandCooldown = lineScanner.nextLine().trim()
                     }
 
                 }
@@ -134,37 +134,38 @@ object Messages {
             }
             fileScanner.close()
 
-        } catch (e: FileNotFoundException) {
-            val file = File("resources/messages.txt")
-            val pw = PrintWriter(file)
-            pw.println("help-title: $helpTitle")
-            pw.println("help-about: $helpAbout")
-            pw.println("help-format: $helpFormat")
-            pw.println("help-description: $helpDescription")
-            pw.println("meme-description: $memeDescription")
-            pw.println("file-description: $fileDescription")
-            pw.println("quote-description: $quoteDescription")
-            pw.println("help-command: $helpCommand")
-            pw.println("meme-command: $memeCommand")
-            pw.println("file-command: $fileCommand")
-            pw.println("quote-command: $quoteCommand")
-            pw.println("meme-title: $memeTitle")
-            pw.println("welcome-title: $welcomeTitle")
-            pw.println("quote-title: $quoteTitle")
-            pw.println("file-title: $fileTitle")
-            pw.println("welcome-message: $welcomeMessage")
-            pw.println("error: $error")
-            pw.println("unknown-command: $unknownCommand")
-            pw.println("no-files: $noFiles")
-            pw.println("unknown-file: $unknownFile")
-            pw.println("meme-input-missing: $memeInputMissing")
-            pw.println("no-quotes: $noQuotes")
-            pw.println("meme-cooldown: $memeCooldown")
-            pw.println("file-cooldown: $fileCooldown")
-            pw.println("quote-cooldown: $quoteCooldown")
-            pw.println("command-cooldown: $commandCooldown")
-            pw.close()
-        }
+        } catch (e: FileNotFoundException) {}
+
+        val file = File("resources/messages.txt")
+        file.delete()
+        val pw = PrintWriter(file)
+        pw.println("help-title: $helpTitle")
+        pw.println("help-about: $helpAbout")
+        pw.println("help-format: $helpFormat")
+        pw.println("help-description: $helpDescription")
+        pw.println("meme-description: $memeDescription")
+        pw.println("file-description: $fileDescription")
+        pw.println("quote-description: $quoteDescription")
+        pw.println("help-command: $helpCommand")
+        pw.println("meme-command: $memeCommand")
+        pw.println("file-command: $fileCommand")
+        pw.println("quote-command: $quoteCommand")
+        pw.println("meme-title: $memeTitle")
+        pw.println("welcome-title: $welcomeTitle")
+        pw.println("quote-title: $quoteTitle")
+        pw.println("file-title: $fileTitle")
+        pw.println("welcome-message: $welcomeMessage")
+        pw.println("error: $error")
+        pw.println("unknown-command: $unknownCommand")
+        pw.println("no-files: $noFiles")
+        pw.println("unknown-file: $unknownFile")
+        pw.println("meme-input-missing: $memeInputMissing")
+        pw.println("no-quotes: $noQuotes")
+        pw.println("meme-cooldown: $memeCooldown")
+        pw.println("file-cooldown: $fileCooldown")
+        pw.println("quote-cooldown: $quoteCooldown")
+        pw.println("command-cooldown: $commandCooldown")
+        pw.close()
     }
 
     /**

@@ -26,7 +26,7 @@ object Config {
     /**
      * color used for embeds
      */
-    var embedColor = Color(253, 6, 5)
+    var embedColor = Color(0xFD0605)
 
     /**
      * whether BoneBot can listen to other bots for input
@@ -123,35 +123,36 @@ object Config {
             }
             fileScanner.close()
 
-        } catch (e: FileNotFoundException) {
-            val file = File("resources/config.txt")
-            val pw = PrintWriter(file)
-            pw.println("responder-enabled: ${Responder.enabled}")
-            pw.println("responder-cooldown: ${Responder.cooldown}")
-            pw.println("typing-speed: ${Responder.typingSpeed}")
-            pw.println("reactor-enabled: ${Reactor.enabled}")
-            pw.println("reactor-cooldown: ${Reactor.cooldown}")
-            pw.println("reactor-delay: ${Reactor.delay}")
-            pw.println("memes-enabled: ${Memes.enabled}")
-            pw.println("meme-cooldown: ${Memes.cooldown}")
-            pw.println("meme-size: ${Memes.size}")
-            pw.println("meme-font-scale: ${Memes.fontScale}")
-            pw.println("statuses-enabled: ${Statuses.enabled}")
-            pw.println("status-delay: ${Statuses.delay}")
-            pw.println("commands-enabled: ${Commands.enabled}")
-            pw.println("command-cooldown: ${Commands.cooldown}")
-            pw.println("command-prefix: ${Commands.commandPrefix}")
-            pw.println("quotes-enabled: ${Quotes.enabled}")
-            pw.println("quote-cooldown: ${Quotes.cooldown}")
-            pw.println("files-enabled: ${Files.enabled}")
-            pw.println("file-cooldown: ${Files.cooldown}")
-            pw.println("welcomer-enabled: ${Welcomer.enabled}")
-            pw.println("listen-to-bots: $listenToBots")
-            pw.println("embed-color: #fd0605")
-            pw.println("max-threads: ${Listener.maxThreads}")
-            pw.println("bot-token: TOKEN")
-            pw.close()
-        }
+        } catch (e: FileNotFoundException) {}
+
+        val file = File("resources/config.txt")
+        file.delete()
+        val pw = PrintWriter(file)
+        pw.println("responder-enabled: ${Responder.enabled}")
+        pw.println("responder-cooldown: ${Responder.cooldown}")
+        pw.println("typing-speed: ${Responder.typingSpeed}")
+        pw.println("reactor-enabled: ${Reactor.enabled}")
+        pw.println("reactor-cooldown: ${Reactor.cooldown}")
+        pw.println("reactor-delay: ${Reactor.delay}")
+        pw.println("memes-enabled: ${Memes.enabled}")
+        pw.println("meme-cooldown: ${Memes.cooldown}")
+        pw.println("meme-size: ${Memes.size}")
+        pw.println("meme-font-scale: ${Memes.fontScale}")
+        pw.println("statuses-enabled: ${Statuses.enabled}")
+        pw.println("status-delay: ${Statuses.delay}")
+        pw.println("commands-enabled: ${Commands.enabled}")
+        pw.println("command-cooldown: ${Commands.cooldown}")
+        pw.println("command-prefix: ${Commands.commandPrefix}")
+        pw.println("quotes-enabled: ${Quotes.enabled}")
+        pw.println("quote-cooldown: ${Quotes.cooldown}")
+        pw.println("files-enabled: ${Files.enabled}")
+        pw.println("file-cooldown: ${Files.cooldown}")
+        pw.println("welcomer-enabled: ${Welcomer.enabled}")
+        pw.println("listen-to-bots: $listenToBots")
+        pw.println("embed-color: ${String.format("#%02x%02x%02x", embedColor.red, embedColor.green, embedColor.blue)}")
+        pw.println("max-threads: ${Listener.maxThreads}")
+        pw.println("bot-token: $botToken")
+        pw.close()
 
         loadData("resources/memetexts.txt", Memes.texts)
         loadData("resources/statuses.txt", Statuses.statuses)
