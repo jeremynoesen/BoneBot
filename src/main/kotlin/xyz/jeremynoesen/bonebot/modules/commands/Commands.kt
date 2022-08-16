@@ -441,7 +441,7 @@ object Commands {
             }
             env["BB_REPLY_URL_COUNT"] = k.toString()
 
-            var l = 0
+            l = 0
             if (reply.mentions.members.size > 0) {
                 for (i in reply.mentions.members.indices) {
                     if (reply.contentDisplay.split(reply.mentions.members[i].user.name).size > 1 ||
