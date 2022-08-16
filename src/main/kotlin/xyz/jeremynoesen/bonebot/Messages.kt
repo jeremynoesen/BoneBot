@@ -85,13 +85,13 @@ object Messages {
                     "meme-title:" -> {
                         memeTitle = lineScanner.nextLine()
                     }
-                    "welcome-title" -> {
+                    "welcome-title:" -> {
                         welcomeTitle = lineScanner.nextLine()
                     }
-                    "quote-title" -> {
+                    "quote-title:" -> {
                         quoteTitle = lineScanner.nextLine()
                     }
-                    "file-title" -> {
+                    "file-title:" -> {
                         fileTitle = lineScanner.nextLine()
                     }
                     "error:" -> {
