@@ -368,8 +368,8 @@ object Commands {
 
         var k = 0
         for (word in message.contentDisplay.split(" ", "\n")) {
-            if (word.startsWith("http://") || word.startsWith("https://")) {
-                env["BB_URL_$k"] = word
+            if (word.contains("http://") || word.contains("https://")) {
+                env["BB_URL_$k"] = word.replace("<", "").replace(">", "")
                 k++
             }
         }
@@ -435,8 +435,8 @@ object Commands {
 
             k = 0
             for (word in reply.contentDisplay.split(" ", "\n")) {
-                if (word.startsWith("http://") || word.startsWith("https://")) {
-                    env["BB_REPLY_URL_$k"] = word
+                if (word.contains("http://") || word.contains("https://")) {
+                    env["BB_REPLY_URL_$k"] = word.replace("<", "").replace(">", "")
                     k++
                 }
             }
