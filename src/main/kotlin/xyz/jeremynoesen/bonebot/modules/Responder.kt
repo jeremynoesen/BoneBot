@@ -100,10 +100,11 @@ object Responder {
                                 toSend = toSend.replace("\$REPLY\$", "")
                                         .replace("  ", " ")
 
-                                if (typingSpeed > 0) {
+                                if (typingSpeed * toSend.length > 100) {
+                                    Thread.sleep(100)
                                     var typingTime = 0L
                                     for (i in toSend.indices) {
-                                        if (typingTime >= 9000L) typingTime = 0L
+                                        if (typingTime >= 5000L) typingTime = 0L
                                         if (typingTime == 0L) message.channel.sendTyping().queue()
                                         typingTime += typingSpeed
                                         Thread.sleep(typingSpeed);
@@ -121,10 +122,11 @@ object Responder {
                                 }
                             } else {
 
-                                if (typingSpeed > 0) {
+                                if (typingSpeed * toSend.length > 100) {
+                                    Thread.sleep(100)
                                     var typingTime = 0L
                                     for (i in toSend.indices) {
-                                        if (typingTime >= 9000L) typingTime = 0L
+                                        if (typingTime >= 5000L) typingTime = 0L
                                         if (typingTime == 0L) message.channel.sendTyping().queue()
                                         typingTime += typingSpeed
                                         Thread.sleep(typingSpeed);

@@ -57,10 +57,10 @@ object Commands {
         try {
             if (message.contentDisplay.startsWith(commandPrefix, true)) {
                 thread {
-                    Thread.sleep(1)
+                    Thread.sleep(100)
                     while (!done) {
                         message.channel.sendTyping().queue()
-                        Thread.sleep(9000);
+                        Thread.sleep(5000);
                     }
                 }
                 if ((System.currentTimeMillis() - prevTime) >= cooldown * 1000) {
