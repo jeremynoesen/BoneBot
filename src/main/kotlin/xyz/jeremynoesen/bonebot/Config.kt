@@ -29,11 +29,6 @@ object Config {
     var embedColor = Color(0xFD0605)
 
     /**
-     * whether BoneBot can listen to other bots for input
-     */
-    var listenToBots = false
-
-    /**
      * load config values, write default config if missing
      */
     fun loadData() {
@@ -110,13 +105,13 @@ object Config {
                         Welcomer.enabled = lineScanner.nextBoolean()
                     }
                     "listen-to-bots:" -> {
-                        listenToBots = lineScanner.nextBoolean()
-                    }
-                    "embed-color:" -> {
-                        embedColor = Color.decode(lineScanner.next())
+                        Listener.listenToBots = lineScanner.nextBoolean()
                     }
                     "max-threads:" -> {
                         Listener.maxThreads = lineScanner.nextInt()
+                    }
+                    "embed-color:" -> {
+                        embedColor = Color.decode(lineScanner.next())
                     }
                     "bot-token:" -> {
                         botToken = lineScanner.next()
@@ -152,9 +147,9 @@ object Config {
         pw.println("files-enabled: ${Files.enabled}")
         pw.println("file-cooldown: ${Files.cooldown}")
         pw.println("welcomer-enabled: ${Welcomer.enabled}")
-        pw.println("listen-to-bots: $listenToBots")
-        pw.println("embed-color: ${String.format("#%02x%02x%02x", embedColor.red, embedColor.green, embedColor.blue)}")
+        pw.println("listen-to-bots: ${Listener.listenToBots}")
         pw.println("max-threads: ${Listener.maxThreads}")
+        pw.println("embed-color: ${String.format("#%02x%02x%02x", embedColor.red, embedColor.green, embedColor.blue)}")
         pw.println("bot-token: $botToken")
         pw.close()
 

@@ -28,7 +28,7 @@ class Listener : ListenerAdapter() {
             numThreads++
             thread {
                 try {
-                    if ((!e.author.isBot || (Config.listenToBots && e.author != BoneBot.JDA!!.selfUser))
+                    if ((!e.author.isBot || (listenToBots && e.author != BoneBot.JDA!!.selfUser))
                             && !e.isFromType(ChannelType.PRIVATE)) {
                         if (!Commands.enabled || !Commands.perform(e.message)) {
                             if (Responder.enabled) Responder.respond(e.message)
@@ -54,7 +54,7 @@ class Listener : ListenerAdapter() {
             numThreads++
             thread {
                 try {
-                    if ((!e.author.isBot || (Config.listenToBots && e.author != BoneBot.JDA!!.selfUser))
+                    if ((!e.author.isBot || (listenToBots && e.author != BoneBot.JDA!!.selfUser))
                             && !e.isFromType(ChannelType.PRIVATE)) {
                         if (!Commands.enabled || !Commands.perform(e.message)) {
                             if (Responder.enabled) Responder.respond(e.message)
@@ -96,5 +96,10 @@ class Listener : ListenerAdapter() {
          * Limit to how many threads should run concurrently
          */
         var maxThreads: Int = 8;
+
+        /**
+         * whether BoneBot can listen to other bots for input
+         */
+        var listenToBots = false
     }
 }

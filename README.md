@@ -223,7 +223,7 @@ Use these placeholders in most configurations. Places they are disallowed will b
 - To enable or disable statuses, set `statuses-enabled` in the main configuration to `true` or `false`.
 
 ### Welcomer
-- The welcome message will be put into `resources/welcome.txt`.
+- The welcome message is located `resources/messages.txt` under `welcome-message`.
 - The entire file will make up the welcome message.
 - The welcomer can use all placeholders except `$REPLY$`.
 - You can send a single file in the embed by adding `$FILE$ path/to/file $FILE$`.
