@@ -87,7 +87,7 @@ object Config {
                         Commands.cooldown = lineScanner.nextInt()
                     }
                     "command-prefix:" -> {
-                        Commands.commandPrefix = lineScanner.next().lowercase()
+                        Commands.prefix = lineScanner.next().lowercase()
                     }
                     "quotes-enabled:" -> {
                         Quotes.enabled = lineScanner.nextBoolean()
@@ -141,7 +141,7 @@ object Config {
         pw.println("status-delay: ${Statuses.delay}")
         pw.println("commands-enabled: ${Commands.enabled}")
         pw.println("command-cooldown: ${Commands.cooldown}")
-        pw.println("command-prefix: ${Commands.commandPrefix}")
+        pw.println("command-prefix: ${Commands.prefix}")
         pw.println("quotes-enabled: ${Quotes.enabled}")
         pw.println("quote-cooldown: ${Quotes.cooldown}")
         pw.println("files-enabled: ${Files.enabled}")

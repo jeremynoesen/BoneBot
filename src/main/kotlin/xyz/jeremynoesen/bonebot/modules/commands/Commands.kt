@@ -28,7 +28,7 @@ object Commands {
     /**
      * command prefix
      */
-    var commandPrefix = "bb"
+    var prefix = "bb"
 
     /**
      * cooldown for commands, in seconds
@@ -54,7 +54,7 @@ object Commands {
     fun perform(message: Message): Boolean {
         var done = false
         try {
-            if (message.contentDisplay.startsWith(commandPrefix, true)) {
+            if (message.contentDisplay.startsWith(prefix, true)) {
                 thread {
                     while (!done) {
                         message.channel.sendTyping().queue()
@@ -65,29 +65,29 @@ object Commands {
                     prevTime = System.currentTimeMillis()
                     val label = message.contentDisplay.split(" ", "\n")[0]
                     when {
-                        label.equals(commandPrefix + Messages.memeCommand, true) && Memes.enabled -> {
+                        label.equals(prefix + Messages.memeCommand, true) && Memes.enabled -> {
                             Memes(message).generate()
                             done = true
                             return true
                         }
-                        label.equals(commandPrefix + Messages.quoteCommand, true) && Quotes.enabled -> {
+                        label.equals(prefix + Messages.quoteCommand, true) && Quotes.enabled -> {
                             Quotes.sendQuote(message)
                             done = true
                             return true
                         }
-                        label.equals(commandPrefix + Messages.fileCommand, true) && Files.enabled -> {
+                        label.equals(prefix + Messages.fileCommand, true) && Files.enabled -> {
                             Files.sendFile(message)
                             done = true
                             return true
                         }
-                        label.equals(commandPrefix + Messages.helpCommand, true) -> {
+                        label.equals(prefix + Messages.helpCommand, true) -> {
                             sendHelp(message)
                             done = true
                             return true
                         }
                         else -> {
                             for (command in commands.keys) {
-                                if (label.equals("$commandPrefix${command.lowercase()}", true)) {
+                                if (label.equals("$prefix${command.lowercase()}", true)) {
                                     sendCustomCommand(command, message)
                                     done = true
                                     return true
@@ -139,24 +139,24 @@ object Commands {
         }
 
         commandList += "\n\n" + Messages.helpFormat
-                .replace("\$CMD\$", commandPrefix + Messages.helpCommand)
+                .replace("\$CMD\$", prefix + Messages.helpCommand)
                 .replace("\$DESC\$", Messages.helpDescription) + "\n"
 
         if (Memes.enabled) commandList += Messages.helpFormat
-                .replace("\$CMD\$", commandPrefix + Messages.memeCommand)
+                .replace("\$CMD\$", prefix + Messages.memeCommand)
                 .replace("\$DESC\$", Messages.memeDescription) + "\n"
 
         if (Files.enabled) commandList += Messages.helpFormat
-                .replace("\$CMD\$", commandPrefix + Messages.fileCommand)
+                .replace("\$CMD\$", prefix + Messages.fileCommand)
                 .replace("\$DESC\$", Messages.fileDescription) + "\n"
 
         if (Quotes.enabled) commandList += Messages.helpFormat
-                .replace("\$CMD\$", commandPrefix + Messages.quoteCommand)
+                .replace("\$CMD\$", prefix + Messages.quoteCommand)
                 .replace("\$DESC\$", Messages.quoteDescription) + "\n"
 
         for (command in commands.keys) {
             commandList += Messages.helpFormat
-                    .replace("\$CMD\$", commandPrefix + command)
+                    .replace("\$CMD\$", prefix + command)
                     .replace("\$DESC\$", commands[command]!!.first) + "\n"
         }
 

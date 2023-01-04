@@ -43,14 +43,14 @@ object Files {
                 prevTime = System.currentTimeMillis()
 
                 if (message.contentDisplay.trim()
-                                .lowercase() == Commands.commandPrefix + Messages.fileCommand.lowercase()
+                                .lowercase() == Commands.prefix + Messages.fileCommand.lowercase()
                 ) {
                     sendRandomFile(message, File("resources/files"))
                 } else {
                     try {
                         val file = File(
                                 "resources/files/" +
-                                        message.contentDisplay.substring(Commands.commandPrefix.length + Messages.fileCommand.length)
+                                        message.contentDisplay.substring(Commands.prefix.length + Messages.fileCommand.length)
                                                 .replace("..", "")
                                                 .replace("  ", " ").trim()
                         )

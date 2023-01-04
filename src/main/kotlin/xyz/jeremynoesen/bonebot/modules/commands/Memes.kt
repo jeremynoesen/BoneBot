@@ -135,7 +135,7 @@ constructor(private val command: Message) {
     @Throws(IOException::class)
     private fun readTextAndImage() {
         var input = command.contentDisplay.substring(
-                Commands.commandPrefix.length + Messages.memeCommand.length,
+                Commands.prefix.length + Messages.memeCommand.length,
                 command.contentDisplay.length
         )
         var altInput = ""
