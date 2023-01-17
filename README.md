@@ -250,6 +250,7 @@ Located at `resources/config.txt`
 ```
 responder-enabled: true
 responder-cooldown: 180
+responder-delay: 1000
 responder-typing-speed: 100
 reactor-enabled: true
 reactor-cooldown: 60
@@ -289,6 +290,9 @@ file-command: file
 quote-command: quote
 meme-title: $NAME$ generated a meme:
 welcome-title: $NAME$ joined $GUILD$
+quote-title: "$NAME$ summoned a quote:"
+file-title: "$NAME$ summoned a file:"
+welcome-message: "Welcome $PING$ to **$GUILD$**!"
 error: **An error occurred!** Please check the console!
 unknown-command: **Unknown command!**
 no-files: There are **no files** to send!
