@@ -50,7 +50,7 @@ object Config {
                     "responder-delay:" -> {
                         Responder.delay = lineScanner.nextLong()
                     }
-                    "typing-speed:" -> {
+                    "responder-typing-speed:" -> {
                         Responder.typingSpeed = lineScanner.nextLong()
                     }
                     "reactor-enabled:" -> {
@@ -65,40 +65,40 @@ object Config {
                     "memes-enabled:" -> {
                         Memes.enabled = lineScanner.nextBoolean()
                     }
-                    "meme-cooldown:" -> {
+                    "memes-cooldown:" -> {
                         Memes.cooldown = lineScanner.nextInt()
                     }
-                    "meme-size:" -> {
+                    "memes-size:" -> {
                         Memes.size = lineScanner.nextInt()
                     }
-                    "meme-font-scale:" -> {
+                    "memes-font-scale:" -> {
                         Memes.fontScale = lineScanner.nextFloat()
                     }
                     "statuses-enabled:" -> {
                         Statuses.enabled = lineScanner.nextBoolean()
                     }
-                    "status-delay:" -> {
+                    "statuses-delay:" -> {
                         Statuses.delay = lineScanner.nextInt()
                     }
                     "commands-enabled:" -> {
                         Commands.enabled = lineScanner.nextBoolean()
                     }
-                    "command-cooldown:" -> {
+                    "commands-cooldown:" -> {
                         Commands.cooldown = lineScanner.nextInt()
                     }
-                    "command-prefix:" -> {
+                    "commands-prefix:" -> {
                         Commands.prefix = lineScanner.next().lowercase()
                     }
                     "quotes-enabled:" -> {
                         Quotes.enabled = lineScanner.nextBoolean()
                     }
-                    "quote-cooldown:" -> {
+                    "quotes-cooldown:" -> {
                         Quotes.cooldown = lineScanner.nextInt()
                     }
                     "files-enabled:" -> {
                         Files.enabled = lineScanner.nextBoolean()
                     }
-                    "file-cooldown:" -> {
+                    "files-cooldown:" -> {
                         Files.cooldown = lineScanner.nextInt()
                     }
                     "welcomer-enabled:" -> {
@@ -129,23 +129,23 @@ object Config {
         pw.println("responder-enabled: ${Responder.enabled}")
         pw.println("responder-cooldown: ${Responder.cooldown}")
         pw.println("responder-delay: ${Responder.delay}")
-        pw.println("typing-speed: ${Responder.typingSpeed}")
+        pw.println("responder-typing-speed: ${Responder.typingSpeed}")
         pw.println("reactor-enabled: ${Reactor.enabled}")
         pw.println("reactor-cooldown: ${Reactor.cooldown}")
         pw.println("reactor-delay: ${Reactor.delay}")
         pw.println("memes-enabled: ${Memes.enabled}")
-        pw.println("meme-cooldown: ${Memes.cooldown}")
-        pw.println("meme-size: ${Memes.size}")
-        pw.println("meme-font-scale: ${Memes.fontScale}")
+        pw.println("memes-cooldown: ${Memes.cooldown}")
+        pw.println("memes-size: ${Memes.size}")
+        pw.println("memes-font-scale: ${Memes.fontScale}")
         pw.println("statuses-enabled: ${Statuses.enabled}")
-        pw.println("status-delay: ${Statuses.delay}")
+        pw.println("statuses-delay: ${Statuses.delay}")
         pw.println("commands-enabled: ${Commands.enabled}")
-        pw.println("command-cooldown: ${Commands.cooldown}")
-        pw.println("command-prefix: ${Commands.prefix}")
+        pw.println("commands-cooldown: ${Commands.cooldown}")
+        pw.println("commands-prefix: ${Commands.prefix}")
         pw.println("quotes-enabled: ${Quotes.enabled}")
-        pw.println("quote-cooldown: ${Quotes.cooldown}")
+        pw.println("quotes-cooldown: ${Quotes.cooldown}")
         pw.println("files-enabled: ${Files.enabled}")
-        pw.println("file-cooldown: ${Files.cooldown}")
+        pw.println("files-cooldown: ${Files.cooldown}")
         pw.println("welcomer-enabled: ${Welcomer.enabled}")
         pw.println("listen-to-bots: ${Listener.listenToBots}")
         pw.println("max-threads: ${Listener.maxThreads}")

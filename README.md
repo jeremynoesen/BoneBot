@@ -105,21 +105,21 @@ Use these placeholders in most configurations. Places they are disallowed will b
   - Each separate line denotes a separate text.
   - The format is `<top text> \n <bottom text>`.
 - Text input can use all placeholders except for `$REPLY$`.
-- To set the size of generates memes, set `meme-size` in the main configuration to any number. This sets the image width to this number, and varies the height based on this width. Set it to `0` to use the image's original dimensions with no scaling.
-- To set the font size of text, set `meme-font-scale` in the main configuration. It defaults to `1.0`.
-- To set a cool down for the generator, set `meme-cooldown` in the main configuration to any whole number in seconds.
+- To set the size of generates memes, set `memes-size` in the main configuration to any number. This sets the image width to this number, and varies the height based on this width. Set it to `0` to use the image's original dimensions with no scaling.
+- To set the font size of text, set `memes-font-scale` in the main configuration. It defaults to `1.0`.
+- To set a cool down for the generator, set `memes-cooldown` in the main configuration to any whole number in seconds.
 - To enable or disable the generator, set `memes-enabled` in the main configuration to `true` or `false`.
 
 ### Quotes
 - Quotes will be put into `resources/quotes.txt`.
 - Each line designates a new entry.
 - Quotes can use all placeholders except `$REPLY$`.
-- To set a cool down for quotes, set `quote-cooldown` in the main configuration to any while number in seconds.
+- To set a cool down for quotes, set `quotes-cooldown` in the main configuration to any while number in seconds.
 - To enable or disable quotes, set `quotes-enabled` in the main configuration to `true` or `false`.
 
 ### Files
 - Files will be put into `resources/files`.
-- To set a cool down for files, set `file-cooldown` in the main configuration to any whole number in seconds.
+- To set a cool down for files, set `files-cooldown` in the main configuration to any whole number in seconds.
 - To enable or disable files, set `files-enabled` in the main configuration to `true` or `false`.
 
 ### Responder
@@ -133,7 +133,7 @@ Use these placeholders in most configurations. Places they are disallowed will b
 - Trigger can use all placeholders except for `$REPLY$`.
 - The response can include all placeholders.
 - You can send a single file by adding `$FILE$ path/to/file $FILE$`.
-- The response sends with a delay based on message length multiplied by `typing-speed` in the main configuration in milliseconds. This number must be a whole number.
+- The response sends with a delay based on message length multiplied by `responder-typing-speed` in the main configuration in milliseconds. This number must be a whole number.
 - To set a delay between when the message is sent and when the bot starts to respond, set `responder-delay` in the main configuration to any whole number in milliseconds.
 - To set a cool down for the responder, set `responder-cooldown` in the main configuration to whole any number in seconds.
 - To enable or disable the responder, set `responder-enabled` in the main configuration to `true` or `false`.
@@ -210,7 +210,7 @@ Use these placeholders in most configurations. Places they are disallowed will b
     - `BB_REPLY_MENTION_N_ROLE_M`: Role ID of the Mth role the Nth mentioned user in a reply has
     - `BB_REPLY_MENTION_N_ROLE_COUNT`: Number of roles the Nth mentioned user in a reply has
     - `BB_REPLY_MENTION_COUNT`: Number of mentions in the reply
-- To change the command prefix, set `command-prefix` in the main configuration to a custom prefix. Case is ignored.
+- To change the command prefix, set `commands-prefix` in the main configuration to a custom prefix. Case is ignored.
 - To set a cool down for commands, set `commands-cooldown` in the main configuration to any whole number in seconds.
 - To enable or disable commands, set `commands-enabled` in the main configuration to `true` or `false`. This will disable all built in command modules as well.
 
@@ -219,7 +219,7 @@ Use these placeholders in most configurations. Places they are disallowed will b
 - Each line designates a new entry.
 - Each line must start with `playing`, `watching`, or `listening to`.
 - The only placeholder that works for statuses is `$BOT$`.
-- The main config has option `status-delay` to set how long each status shows in seconds as a whole number.
+- The main config has option `statuses-delay` to set how long each status shows in seconds as a whole number.
 - To enable or disable statuses, set `statuses-enabled` in the main configuration to `true` or `false`.
 
 ### Welcomer
@@ -250,23 +250,23 @@ Located at `resources/config.txt`
 ```
 responder-enabled: true
 responder-cooldown: 180
-typing-speed: 100
+responder-typing-speed: 100
 reactor-enabled: true
 reactor-cooldown: 60
 reactor-delay: 1000
 memes-enabled: true
-meme-cooldown: 5
-meme-size: 1200
-meme-font-scale: 1.0
+memes-cooldown: 5
+memes-size: 1200
+memes-font-scale: 1.0
 statuses-enabled: true
-status-delay: 60
+statuses-delay: 60
 commands-enabled: true
-command-cooldown: 5
-command-prefix: bb
+commands-cooldown: 5
+commands-prefix: bb
 quotes-enabled: true
-quote-cooldown: 5
+quotes-cooldown: 5
 files-enabled: true
-file-cooldown: 5
+files-cooldown: 5
 welcomer-enabled: true
 listen-to-bots: false
 embed-color: #fd0605
