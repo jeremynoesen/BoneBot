@@ -2,6 +2,7 @@ package xyz.jeremynoesen.bonebot.modules.commands
 
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.entities.Message
+import net.dv8tion.jda.api.utils.FileUpload
 import xyz.jeremynoesen.bonebot.BoneBot
 import xyz.jeremynoesen.bonebot.Config
 import xyz.jeremynoesen.bonebot.Messages
@@ -85,7 +86,7 @@ object Files {
                             }
                             embedBuilder.setColor(Config.embedColor)
                             embedBuilder.setImage("attachment://" + file.name.replace(" ", "_"))
-                            message.channel.sendMessageEmbeds(embedBuilder.build()).addFile(file, file.name.replace(" ", "_")).queue()
+                            message.channel.sendMessageEmbeds(embedBuilder.build()).addFiles(FileUpload.fromData(file, file.name.replace(" ", "_"))).queue()
                         }
                     } catch (e: Exception) {
                         Messages.sendMessage(Messages.unknownFile, message)
@@ -150,7 +151,7 @@ object Files {
             }
             embedBuilder.setColor(Config.embedColor)
             embedBuilder.setImage("attachment://" + file.name.replace(" ", "_"))
-            message.channel.sendMessageEmbeds(embedBuilder.build()).addFile(file, file.name.replace(" ", "_")).queue()
+            message.channel.sendMessageEmbeds(embedBuilder.build()).addFiles(FileUpload.fromData(file, file.name.replace(" ", "_"))).queue()
         } else {
             Messages.sendMessage(Messages.noFiles, message)
         }

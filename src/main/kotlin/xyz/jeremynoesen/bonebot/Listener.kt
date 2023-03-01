@@ -1,6 +1,6 @@
 package xyz.jeremynoesen.bonebot
 
-import net.dv8tion.jda.api.entities.ChannelType
+import net.dv8tion.jda.api.entities.channel.ChannelType
 import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent
 import xyz.jeremynoesen.bonebot.modules.commands.Commands
 import xyz.jeremynoesen.bonebot.modules.Reactor

@@ -1,6 +1,7 @@
 package xyz.jeremynoesen.bonebot.modules
 
 import net.dv8tion.jda.api.entities.Message
+import net.dv8tion.jda.api.utils.FileUpload
 import xyz.jeremynoesen.bonebot.BoneBot
 import xyz.jeremynoesen.bonebot.Messages
 import java.io.File
@@ -118,12 +119,12 @@ object Responder {
 
                                 if (file != null) {
                                     if (toSend.isNotEmpty())
-                                        message.channel.sendMessage(toSend).addFile(file).reference(message).queue()
+                                        message.channel.sendMessage(toSend).addFiles(FileUpload.fromData(file)).setMessageReference(message).queue()
                                     else
-                                        message.channel.sendFile(file).reference(message).queue()
+                                        message.channel.sendFiles(FileUpload.fromData(file)).setMessageReference(message).queue()
                                 } else {
                                     if (toSend.isNotEmpty())
-                                        message.channel.sendMessage(toSend).reference(message).queue()
+                                        message.channel.sendMessage(toSend).setMessageReference(message).queue()
                                 }
                             } else {
                                 Thread.sleep(delay)
@@ -140,9 +141,9 @@ object Responder {
 
                                 if (file != null) {
                                     if (toSend.isNotEmpty())
-                                        message.channel.sendMessage(toSend).addFile(file).queue()
+                                        message.channel.sendMessage(toSend).addFiles(FileUpload.fromData(file)).queue()
                                     else
-                                        message.channel.sendFile(file).queue()
+                                        message.channel.sendFiles(FileUpload.fromData(file)).queue()
                                 } else {
                                     if (toSend.isNotEmpty())
                                         message.channel.sendMessage(toSend).queue()

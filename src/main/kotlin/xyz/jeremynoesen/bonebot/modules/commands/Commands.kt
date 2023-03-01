@@ -3,6 +3,7 @@ package xyz.jeremynoesen.bonebot.modules.commands
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.entities.Message
 import net.dv8tion.jda.api.entities.emoji.Emoji
+import net.dv8tion.jda.api.utils.FileUpload
 import xyz.jeremynoesen.bonebot.BoneBot
 import xyz.jeremynoesen.bonebot.Config
 import xyz.jeremynoesen.bonebot.Messages
@@ -191,7 +192,7 @@ object Commands {
 
         if (file != null) {
             embedBuilder.setImage("attachment://" + file.name.replace(" ", "_"))
-            message.channel.sendMessageEmbeds(embedBuilder.build()).addFile(file, file.name.replace(" ", "_")).queue()
+            message.channel.sendMessageEmbeds(embedBuilder.build()).addFiles(FileUpload.fromData(file, file.name.replace(" ", "_"))).queue()
         } else {
             message.channel.sendMessageEmbeds(embedBuilder.build()).queue()
         }
@@ -309,16 +310,16 @@ object Commands {
                     embedBuilder.setDescription(toSend)
                     if (file != null) {
                         embedBuilder.setImage("attachment://" + file.name.replace(" ", "_"))
-                        message.channel.sendMessageEmbeds(embedBuilder.build()).addFile(file, file.name.replace(" ", "_")).reference(message)
+                        message.channel.sendMessageEmbeds(embedBuilder.build()).addFiles(FileUpload.fromData(file, file.name.replace(" ", "_"))).setMessageReference(message)
                                 .queue()
                     } else {
-                        message.channel.sendMessageEmbeds(embedBuilder.build()).reference(message).queue()
+                        message.channel.sendMessageEmbeds(embedBuilder.build()).setMessageReference(message).queue()
                     }
                 } else {
                     embedBuilder.setDescription(toSend)
                     if (file != null) {
                         embedBuilder.setImage("attachment://" + file.name.replace(" ", "_"))
-                        message.channel.sendMessageEmbeds(embedBuilder.build()).addFile(file, file.name.replace(" ", "_")).queue()
+                        message.channel.sendMessageEmbeds(embedBuilder.build()).addFiles(FileUpload.fromData(file, file.name.replace(" ", "_"))).queue()
                     } else {
                         message.channel.sendMessageEmbeds(embedBuilder.build()).queue()
                     }
@@ -329,20 +330,20 @@ object Commands {
                             .replace("  ", " ")
                     if (file != null) {
                         if (toSend.isNotEmpty())
-                            message.channel.sendMessage(toSend).addFile(file).reference(message)
+                            message.channel.sendMessage(toSend).addFiles(FileUpload.fromData(file)).setMessageReference(message)
                                     .queue()
                         else
-                            message.channel.sendFile(file).reference(message).queue()
+                            message.channel.sendFiles(FileUpload.fromData(file)).setMessageReference(message).queue()
                     } else {
                         if (toSend.isNotEmpty())
-                            message.channel.sendMessage(toSend).reference(message).queue()
+                            message.channel.sendMessage(toSend).setMessageReference(message).queue()
                     }
                 } else {
                     if (file != null) {
                         if (toSend.isNotEmpty())
-                            message.channel.sendMessage(toSend).addFile(file).queue()
+                            message.channel.sendMessage(toSend).addFiles(FileUpload.fromData(file)).queue()
                         else
-                            message.channel.sendFile(file).queue()
+                            message.channel.sendFiles(FileUpload.fromData(file)).queue()
                     } else {
                         if (toSend.isNotEmpty())
                             message.channel.sendMessage(toSend).queue()

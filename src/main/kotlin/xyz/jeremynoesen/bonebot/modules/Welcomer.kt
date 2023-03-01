@@ -3,6 +3,7 @@ package xyz.jeremynoesen.bonebot.modules
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.entities.Guild
 import net.dv8tion.jda.api.entities.User
+import net.dv8tion.jda.api.utils.FileUpload
 import xyz.jeremynoesen.bonebot.BoneBot
 import xyz.jeremynoesen.bonebot.Config
 import xyz.jeremynoesen.bonebot.Messages
@@ -70,7 +71,7 @@ object Welcomer {
                 )
                 if (file != null) {
                     embedBuilder.setImage("attachment://" + file.name.replace(" ", "_"))
-                    channel.sendMessageEmbeds(embedBuilder.build()).addFile(file, file.name.replace(" ", "_")).queue()
+                    channel.sendMessageEmbeds(embedBuilder.build()).addFiles(FileUpload.fromData(file, file.name.replace(" ", "_"))).queue()
                 } else {
                     channel.sendMessageEmbeds(embedBuilder.build()).queue()
                 }

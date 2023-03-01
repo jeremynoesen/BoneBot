@@ -3,6 +3,7 @@ package xyz.jeremynoesen.bonebot.modules.commands
 import net.coobird.thumbnailator.Thumbnails
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.entities.Message
+import net.dv8tion.jda.api.utils.FileUpload
 import org.apache.commons.text.WordUtils
 import xyz.jeremynoesen.bonebot.BoneBot
 import xyz.jeremynoesen.bonebot.Config
@@ -99,7 +100,7 @@ constructor(private val command: Message) {
                     val baos = ByteArrayOutputStream()
                     ImageIO.write(meme, "png", baos)
                     val bytes = baos.toByteArray()
-                    command.channel.sendMessageEmbeds(embedBuilder.build()).addFile(bytes, "meme.png").queue()
+                    command.channel.sendMessageEmbeds(embedBuilder.build()).addFiles(FileUpload.fromData(bytes, "meme.png")).queue()
 
                     prevTime = System.currentTimeMillis()
                 } else {

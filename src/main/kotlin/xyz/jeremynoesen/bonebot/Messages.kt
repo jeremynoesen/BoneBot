@@ -190,7 +190,7 @@ object Messages {
             } catch (e: IllegalStateException) {
             }
             if (toSend.isNotEmpty())
-                cause.channel.sendMessage(toSend).reference(cause).queue()
+                cause.channel.sendMessage(toSend).setMessageReference(cause).queue()
         } else {
             toSend = toSend.replace("\$PING\$", cause.member!!.asMention)
                     .replace("\$NAME\$", cause.member!!.effectiveName)
