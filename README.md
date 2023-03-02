@@ -87,6 +87,42 @@ cd botdir
 java -jar BoneBot.jar
 ```
 
+## Docker
+If you wish to run BoneBot in a Docker container, you can use the following `Dockerfile` to create the image, and the following `docker-compose.yml` to run the container.
+### Dockerfile
+```Dockerfile
+FROM ubuntu:20.04 as runtime
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt update
+
+RUN apt install default-jre-headless wget -y
+
+WORKDIR /app
+
+RUN wget https://github.com/jeremynoesen/BoneBot/releases/download/1.6.3/BoneBot.jar
+
+ENTRYPOINT ["java", "-jar", "BoneBot.jar"]
+```
+
+### docker-compose.yml
+```yaml
+version: '3'
+name: bonebot
+services:
+  bonebot:
+    container_name: bonebot
+    build:
+      context: /path/to/dir/containing/Dockerfile
+    restart: unless-stopped
+    network_mode: host
+    volumes:
+    - /path/to/volume:/app/resources
+```
+
+Run `docker compose -f /path/to/docker-compose.yml up -d` to start the container.
+
 ## Configuration
 **After changing any of text configurations, save the file and restart the bot.**
 
