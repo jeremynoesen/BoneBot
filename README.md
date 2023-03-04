@@ -64,7 +64,7 @@ BoneBot can have various randomized statuses shown in Discord that change over t
 The welcomer will send a private message to new users who join to welcome them to the server. This can be used to show server rules and an explanation of how to get started.
 
 ## Requirements
-Any version of Windows, macOS, or Linux that can run Java 8 or later.
+Any version of Windows, macOS, or Linux that can run Java 11 or later.
 
 ## Building
 1. Clone or download this repository.
