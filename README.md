@@ -97,11 +97,19 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt update
 
-RUN apt install default-jre-headless wget -y
+RUN apt install default-jre-headless wget locales -y
 
 WORKDIR /app
 
 RUN wget https://github.com/jeremynoesen/BoneBot/releases/download/1.6.4/BoneBot.jar
+
+RUN locale-gen en_US.UTF-8
+
+ENV LANG en_US.UTF-8
+
+ENV LANGUAGE en_US:en
+
+ENV LC_ALL en_US.UTF-8
 
 ENTRYPOINT ["java", "-jar", "BoneBot.jar"]
 ```
