@@ -101,7 +101,7 @@ RUN apt install default-jre-headless wget -y
 
 WORKDIR /app
 
-RUN wget https://github.com/jeremynoesen/BoneBot/releases/download/1.6.3/BoneBot.jar
+RUN wget https://github.com/jeremynoesen/BoneBot/releases/download/1.6.4/BoneBot.jar
 
 ENTRYPOINT ["java", "-jar", "BoneBot.jar"]
 ```
@@ -109,7 +109,6 @@ ENTRYPOINT ["java", "-jar", "BoneBot.jar"]
 ### docker-compose.yml
 ```yaml
 version: '3'
-name: bonebot
 services:
   bonebot:
     container_name: bonebot
