@@ -88,15 +88,13 @@ java -jar BoneBot.jar
 ```
 
 ## Docker
-If you wish to run BoneBot in a Docker container, you can use the following `Dockerfile` to create the image, and the following `docker-compose.yml` to run the container.
+If you wish to run BoneBot in a Docker container, you can create the following `Dockerfile` to create the image, and the use following `docker-compose.yml` to run the container.
 ### Dockerfile
 ```Dockerfile
 FROM ubuntu:20.04 as runtime
-
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt update
-
 RUN apt install default-jre-headless wget locales -y
 
 WORKDIR /app
@@ -104,11 +102,8 @@ WORKDIR /app
 RUN wget https://github.com/jeremynoesen/BoneBot/releases/download/1.6.4/BoneBot.jar
 
 RUN locale-gen en_US.UTF-8
-
 ENV LANG en_US.UTF-8
-
 ENV LANGUAGE en_US:en
-
 ENV LC_ALL en_US.UTF-8
 
 ENTRYPOINT ["java", "-jar", "BoneBot.jar"]
