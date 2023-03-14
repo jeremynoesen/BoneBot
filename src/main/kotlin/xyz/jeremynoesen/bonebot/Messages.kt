@@ -8,7 +8,7 @@ import java.lang.IllegalStateException
 import java.util.*
 
 /**
- * all messages used throughout the bot
+ * Messages and message file handler
  *
  * @author Jeremy Noesen
  */
@@ -42,7 +42,7 @@ object Messages {
     var commandCooldown = "Commands can be used again in **\$TIME\$** second(s)."
 
     /**
-     * load all messages from the messages file
+     * Load all messages from the messages file
      */
     fun loadMessages() {
         try {
@@ -53,78 +53,103 @@ object Messages {
                     "help-title:" -> {
                         helpTitle = lineScanner.nextLine().trim()
                     }
+
                     "help-about:" -> {
                         helpAbout = lineScanner.nextLine().replace("\\n", "\n").trim()
                     }
+
                     "help-format:" -> {
                         helpFormat = lineScanner.nextLine().replace("\\n", "\n").trim()
                     }
+
                     "help-description:" -> {
                         helpDescription = lineScanner.nextLine().replace("\\n", "\n").trim()
                     }
+
                     "meme-description:" -> {
                         memeDescription = lineScanner.nextLine().replace("\\n", "\n").trim()
                     }
+
                     "file-description:" -> {
                         fileDescription = lineScanner.nextLine().replace("\\n", "\n").trim()
                     }
+
                     "quote-description:" -> {
                         quoteDescription = lineScanner.nextLine().replace("\\n", "\n").trim()
                     }
+
                     "help-command:" -> {
                         helpCommand = lineScanner.nextLine().trim()
                     }
+
                     "meme-command:" -> {
                         memeCommand = lineScanner.nextLine().trim()
                     }
+
                     "file-command:" -> {
                         fileCommand = lineScanner.nextLine().trim()
                     }
+
                     "quote-command:" -> {
                         quoteCommand = lineScanner.nextLine().trim()
                     }
+
                     "meme-title:" -> {
                         memeTitle = lineScanner.nextLine().trim()
                     }
+
                     "welcome-title:" -> {
                         welcomeTitle = lineScanner.nextLine().trim()
                     }
+
                     "quote-title:" -> {
                         quoteTitle = lineScanner.nextLine().trim()
                     }
+
                     "file-title:" -> {
                         fileTitle = lineScanner.nextLine().trim()
                     }
+
                     "welcome-message:" -> {
                         welcomeMessage = lineScanner.nextLine().trim()
                     }
+
                     "error:" -> {
                         error = lineScanner.nextLine().trim()
                     }
+
                     "unknown-command:" -> {
                         unknownCommand = lineScanner.nextLine().trim()
                     }
+
                     "no-files:" -> {
                         noFiles = lineScanner.nextLine().trim()
                     }
+
                     "unknown-file:" -> {
                         unknownFile = lineScanner.nextLine().trim()
                     }
+
                     "meme-input-missing:" -> {
                         memeInputMissing = lineScanner.nextLine().trim()
                     }
+
                     "no-quotes:" -> {
                         noQuotes = lineScanner.nextLine().trim()
                     }
+
                     "meme-cooldown:" -> {
                         memeCooldown = lineScanner.nextLine().trim()
                     }
+
                     "file-cooldown:" -> {
                         fileCooldown = lineScanner.nextLine().trim()
                     }
+
                     "quote-cooldown:" -> {
                         quoteCooldown = lineScanner.nextLine().trim()
                     }
+
                     "command-cooldown:" -> {
                         commandCooldown = lineScanner.nextLine().trim()
                     }
@@ -134,7 +159,8 @@ object Messages {
             }
             fileScanner.close()
 
-        } catch (e: FileNotFoundException) {}
+        } catch (e: FileNotFoundException) {
+        }
 
         val file = File("resources/messages.txt")
         file.delete()
@@ -169,11 +195,11 @@ object Messages {
     }
 
     /**
-     * send a message to the channel, pinging or replying to the user when specified and only sending when the message
+     * Send a message to the channel, pinging or replying to the user when specified and only sending when the message
      * is not empty
      *
-     * @param message message to send
-     * @param cause message causing this message to be sent
+     * @param message Message to send
+     * @param cause Message causing this message to be sent
      */
     fun sendMessage(message: String, cause: Message) {
         var toSend = message

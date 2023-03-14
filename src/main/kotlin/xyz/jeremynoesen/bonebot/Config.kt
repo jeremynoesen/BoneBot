@@ -12,24 +12,24 @@ import java.io.PrintWriter
 import java.util.*
 
 /**
- * class to handle config values
+ * Configuration file handler
  *
  * @author Jeremy Noesen
  */
 object Config {
 
     /**
-     * bot token
+     * Bot token
      */
     var botToken = "TOKEN"
 
     /**
-     * color used for embeds
+     * Color used for embeds
      */
     var embedColor = Color(0xFD0605)
 
     /**
-     * load config values, write default config if missing
+     * Load config values and write default config if missing
      */
     fun loadData() {
         try {
@@ -44,75 +44,99 @@ object Config {
                     "responder-enabled:" -> {
                         Responder.enabled = lineScanner.nextBoolean()
                     }
+
                     "responder-cooldown:" -> {
                         Responder.cooldown = lineScanner.nextInt()
                     }
+
                     "responder-delay:" -> {
                         Responder.delay = lineScanner.nextLong()
                     }
+
                     "responder-typing-speed:" -> {
                         Responder.typingSpeed = lineScanner.nextLong()
                     }
+
                     "reactor-enabled:" -> {
                         Reactor.enabled = lineScanner.nextBoolean()
                     }
+
                     "reactor-cooldown:" -> {
                         Reactor.cooldown = lineScanner.nextInt()
                     }
+
                     "reactor-delay:" -> {
                         Reactor.delay = lineScanner.nextLong()
                     }
+
                     "memes-enabled:" -> {
                         Memes.enabled = lineScanner.nextBoolean()
                     }
+
                     "memes-cooldown:" -> {
                         Memes.cooldown = lineScanner.nextInt()
                     }
+
                     "memes-size:" -> {
                         Memes.size = lineScanner.nextInt()
                     }
+
                     "memes-font-scale:" -> {
                         Memes.fontScale = lineScanner.nextFloat()
                     }
+
                     "statuses-enabled:" -> {
                         Statuses.enabled = lineScanner.nextBoolean()
                     }
+
                     "statuses-delay:" -> {
                         Statuses.delay = lineScanner.nextInt()
                     }
+
                     "commands-enabled:" -> {
                         Commands.enabled = lineScanner.nextBoolean()
                     }
+
                     "commands-cooldown:" -> {
                         Commands.cooldown = lineScanner.nextInt()
                     }
+
                     "commands-prefix:" -> {
                         Commands.prefix = lineScanner.next().lowercase()
                     }
+
                     "quotes-enabled:" -> {
                         Quotes.enabled = lineScanner.nextBoolean()
                     }
+
                     "quotes-cooldown:" -> {
                         Quotes.cooldown = lineScanner.nextInt()
                     }
+
                     "files-enabled:" -> {
                         Files.enabled = lineScanner.nextBoolean()
                     }
+
                     "files-cooldown:" -> {
                         Files.cooldown = lineScanner.nextInt()
                     }
+
                     "welcomer-enabled:" -> {
                         Welcomer.enabled = lineScanner.nextBoolean()
                     }
+
                     "listen-to-bots:" -> {
                         Listener.listenToBots = lineScanner.nextBoolean()
                     }
+
                     "max-threads:" -> {
                         Listener.maxThreads = lineScanner.nextInt()
                     }
+
                     "embed-color:" -> {
                         embedColor = Color.decode(lineScanner.next())
                     }
+
                     "bot-token:" -> {
                         botToken = lineScanner.next()
                     }
@@ -121,7 +145,8 @@ object Config {
             }
             fileScanner.close()
 
-        } catch (e: FileNotFoundException) {}
+        } catch (e: FileNotFoundException) {
+        }
 
         val file = File("resources/config.txt")
         file.delete()
@@ -164,10 +189,10 @@ object Config {
     }
 
     /**
-     * load all data from file to array list
+     * Load all data from file to array list
      *
-     * @param filePath path to file holding the data
-     * @param list     list to load data into
+     * @param filePath Path to file holding the data
+     * @param list     List to load data into
      */
     private fun loadData(filePath: String, list: ArrayList<String>) {
         try {
@@ -189,10 +214,10 @@ object Config {
     }
 
     /**
-     * load all data from file to a hashmap, where a string points to another
+     * Load all data from file to a hashmap, where a string points to a string
      *
-     * @param filePath path to file holding the data
-     * @param map     hashmap to load data into
+     * @param filePath Path to file holding the data
+     * @param map     Hashmap to load data into
      */
     private fun loadData(filePath: String, map: LinkedHashMap<String, String>) {
         try {
@@ -214,10 +239,10 @@ object Config {
     }
 
     /**
-     * load all data from file to a hashmap, where a string points to a pair of strings
+     * Load all data from file to a hashmap, where a string points to a pair of strings
      *
-     * @param filePath path to file holding the data
-     * @param map     hashmap to load data into
+     * @param filePath Path to file holding the data
+     * @param map     Hashmap to load data into
      */
     @JvmName("loadData1")
     private fun loadData(filePath: String, map: LinkedHashMap<String, Pair<String, String>>) {

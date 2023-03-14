@@ -9,36 +9,36 @@ import java.lang.IllegalStateException
 import java.util.*
 
 /**
- * quote module to send quotes from a file
+ * Module to send quotes from a file
  *
  * @author Jeremy Noesen
  */
 object Quotes {
 
     /**
-     * list of quotes loaded from the quotes file
+     * List of quotes loaded from the quotes file
      */
     val quotes = ArrayList<String>()
 
     /**
-     * cooldown for quote module, in seconds
+     * Cooldown for quote module in seconds
      */
     var cooldown = 5
 
     /**
-     * whether this module is enabled or not
+     * Whether this module is enabled or not
      */
     var enabled = true
 
     /**
-     * last time a quote was sent in milliseconds
+     * Last time a quote was sent in milliseconds
      */
     private var prevTime = 0L
 
     /**
-     * send a random quote from the quotes file
+     * Send a random quote from the quotes file
      *
-     * @param message message initiating action
+     * @param message Message initiating action
      */
     fun sendQuote(message: Message) {
         try {

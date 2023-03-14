@@ -15,42 +15,42 @@ import kotlin.concurrent.thread
 import kotlin.random.Random
 
 /**
- * command handler with simple message responses
+ * Command handler for built-in and custom commands
  *
  * @author Jeremy Noesen
  */
 object Commands {
 
     /**
-     * list of commands loaded from the command file
+     * List of commands loaded from the command file
      */
     val commands = LinkedHashMap<String, Pair<String, String>>()
 
     /**
-     * command prefix
+     * Command prefix
      */
     var prefix = "bb"
 
     /**
-     * cooldown for commands, in seconds
+     * Cooldown for commands in seconds
      */
     var cooldown = 5
 
     /**
-     * whether this module is enabled or not
+     * Whether this module is enabled or not
      */
     var enabled = true
 
     /**
-     * last time the command handler sent a message in milliseconds
+     * Last time the command handler sent a message in milliseconds
      */
     private var prevTime = 0L
 
     /**
-     * respond to a message if it is a command
+     * Respond to a message if it is a command
      *
-     * @param message message to check and respond to
-     * @return true if command was performed
+     * @param message Message to check and respond to
+     * @return True if command was performed
      */
     fun perform(message: Message): Boolean {
         var done = false
@@ -71,21 +71,25 @@ object Commands {
                             done = true
                             return true
                         }
+
                         label.equals(prefix + Messages.quoteCommand, true) && Quotes.enabled -> {
                             Quotes.sendQuote(message)
                             done = true
                             return true
                         }
+
                         label.equals(prefix + Messages.fileCommand, true) && Files.enabled -> {
                             Files.sendFile(message)
                             done = true
                             return true
                         }
+
                         label.equals(prefix + Messages.helpCommand, true) -> {
                             sendHelp(message)
                             done = true
                             return true
                         }
+
                         else -> {
                             for (command in commands.keys) {
                                 if (label.equals("$prefix${command.lowercase()}", true)) {
@@ -115,9 +119,9 @@ object Commands {
     }
 
     /**
-     * build the help message embed
+     * Send the help message embed
      *
-     * @param message message initiating help embed
+     * @param message Message initiating help command
      */
     private fun sendHelp(message: Message) {
 
@@ -199,10 +203,10 @@ object Commands {
     }
 
     /**
-     * send and process a custom command
+     * Send and process a custom command
      *
-     * @param command command to run
-     * @param message message containing command label and arguments
+     * @param command Command to run
+     * @param message Message containing command label and arguments
      */
     private fun sendCustomCommand(command: String, message: Message) {
 
@@ -354,10 +358,10 @@ object Commands {
     }
 
     /**
-     * set all available path variables for custom commands
+     * Set all available path variables for custom commands
      *
-     * @param message input message
-     * @return map with added path variables
+     * @param message Input message
+     * @return Map with added path variables
      */
     private fun setPathVariables(message: Message): Map<String, String> {
         val env = HashMap<String, String>()

@@ -23,35 +23,36 @@ import kotlin.math.ceil
 import kotlin.math.floor
 
 /**
- * meme generator module
+ * Module to generate memes from various images and text sources
  *
  * @author Jeremy Noesen
  */
 class Memes
+
 /**
- * constructs a new meme generator class with the original message for get command arguments from
+ * Constructs a new meme generator with the original message for get command arguments from
  *
- * @param command command containing meme arguments
+ * @param command Command containing meme generator arguments
  */
 constructor(private val command: Message) {
 
     /**
-     * meme text
+     * Meme text
      */
     private var text: String? = null
 
     /**
-     * background image
+     * Background image
      */
     private var image: BufferedImage? = null
 
     /**
-     * generated meme image
+     * Generated meme image
      */
     private var meme: BufferedImage? = null
 
     /**
-     * generate and send a meme
+     * Generate and send a meme
      */
     fun generate() {
         if ((System.currentTimeMillis() - prevTime) >= cooldown * 1000) {
@@ -117,9 +118,9 @@ constructor(private val command: Message) {
     }
 
     /**
-     * read an image from url
+     * Read an image from URL
      *
-     * @param url string url
+     * @param url Image URL
      */
     private fun getImageFromURL(url: String): BufferedImage {
         val conn: URLConnection = URL(url).openConnection()
@@ -128,7 +129,7 @@ constructor(private val command: Message) {
     }
 
     /**
-     * read an image from a discord message, user mention, or a random to use to generate a meme, as well as grab the
+     * Read an image from a discord message, user mention, or a random to use to generate a meme, as well as grab the
      * text from the message or use a random to make a meme
      *
      * @throws IOException
@@ -223,9 +224,9 @@ constructor(private val command: Message) {
     }
 
     /**
-     * get random image to use for meme, recursively
+     * Get random image to use for meme, recursively
      *
-     * @param dir directory to look in for images
+     * @param dir Directory to look in for images
      */
     private fun getRandomImage(dir: File) {
         val r = Random()
@@ -249,10 +250,10 @@ constructor(private val command: Message) {
     }
 
     /**
-     * remove user pings and urls from the text input
+     * Remove user pings and URLs from the text input
      *
-     * @param input input text
-     * @return output text with pings and urls removed
+     * @param input Input text
+     * @return Output text with pings and URLs removed
      */
     private fun cleanInput(input: String): String {
         var output = input
@@ -273,7 +274,7 @@ constructor(private val command: Message) {
     }
 
     /**
-     * generate a meme using the input text and image
+     * Generate the meme image using the input text and image
      */
     @Throws(IOException::class, FontFormatException::class)
     private fun processImage() {
@@ -362,32 +363,32 @@ constructor(private val command: Message) {
 
     companion object {
         /**
-         * list of text lines loaded from the text file
+         * List of text lines loaded from the text file
          */
         val texts = ArrayList<String>()
 
         /**
-         * cooldown for meme generator, in seconds
+         * Cooldown for meme generator in seconds
          */
         var cooldown = 5
 
         /**
-         * whether this module is enabled or not
+         * Whether this module is enabled or not
          */
         var enabled = true
 
         /**
-         * width of generated memes
+         * Width of generated memes in pixels
          */
         var size = 1200
 
         /**
-         * scale of text font on image
+         * Scale of text font on image
          */
         var fontScale = 1.0f
 
         /**
-         * last time the meme generator was used in milliseconds
+         * Last time the meme generator was used in milliseconds
          */
         private var prevTime = 0L
     }

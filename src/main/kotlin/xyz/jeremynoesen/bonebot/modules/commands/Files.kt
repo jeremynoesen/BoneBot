@@ -12,31 +12,31 @@ import java.util.*
 import kotlin.collections.HashSet
 
 /**
- * file module to send files from a directory
+ * Module to send files from a directory
  *
  * @author Jeremy Noesen
  */
 object Files {
 
     /**
-     * cooldown for file module, in seconds
+     * Cooldown for file module in seconds
      */
     var cooldown = 5
 
     /**
-     * whether this module is enabled or not
+     * Whether this module is enabled or not
      */
     var enabled = true
 
     /**
-     * last time a file was sent in milliseconds
+     * Last time a file was sent in milliseconds
      */
     private var prevTime = 0L
 
     /**
-     * send a random file from the files folder
+     * Send a random file from the files folder
      *
-     * @param message message initiating action
+     * @param message Message initiating action
      */
     fun sendFile(message: Message) {
         try {
@@ -103,10 +103,10 @@ object Files {
     }
 
     /**
-     * send a random file from a directory
+     * Send a random file from a directory
      *
-     * @param message message initiating action
-     * @param dir directory to grab files from
+     * @param message Message initiating action
+     * @param dir Directory to grab files from
      */
     private fun sendRandomFile(message: Message, dir: File) {
         val r = Random()

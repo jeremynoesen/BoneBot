@@ -10,22 +10,22 @@ import xyz.jeremynoesen.bonebot.Messages
 import java.io.File
 
 /**
- * module to send a welcome message to new members
+ * Module to send a welcome message to new members
  *
  * @author Jeremy Noesen
  */
 object Welcomer {
 
     /**
-     * whether this module is enabled or not
+     * Whether this module is enabled or not
      */
     var enabled = true
 
     /**
-     * send the welcome message embed
+     * Send the welcome message embed
      *
-     * @param user user to welcome
-     * @param guild guild to welcome them to
+     * @param user User to welcome
+     * @param guild Guild to welcome them to
      */
     fun welcome(user: User, guild: Guild) {
         user.openPrivateChannel().queue { channel ->

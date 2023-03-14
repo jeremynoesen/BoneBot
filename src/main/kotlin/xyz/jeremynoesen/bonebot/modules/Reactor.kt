@@ -9,41 +9,41 @@ import java.util.concurrent.TimeUnit
 import kotlin.random.Random
 
 /**
- * reactor to add reactions based on words and phrases in a message
+ * Module to add reactions based on words and phrases in a message
  *
  * @author Jeremy Noesen
  */
 object Reactor {
 
     /**
-     * list of reactions loaded from the reactions file
+     * List of reactions loaded from the reactions file
      */
     val reactions = LinkedHashMap<String, String>()
 
     /**
-     * cooldown for reactor, in seconds
+     * Cooldown for reactor in seconds
      */
     var cooldown = 60
 
     /**
-     * whether this module is enabled or not
+     * Whether this module is enabled or not
      */
     var enabled = true
 
     /**
-     * last time the reactor reacted to a message in milliseconds
+     * Last time the reactor reacted to a message in milliseconds
      */
     private var prevTime = 0L
 
     /**
-     * delay before adding a reaction in milliseconds
+     * Delay before adding a reaction in milliseconds
      */
     var delay = 1000L
 
     /**
-     * react to a message if a trigger phrase is said
+     * React to a message if a trigger phrase is said
      *
-     * @param message message to check and react to
+     * @param message Message to check and react to
      */
     fun react(message: Message) {
         try {
@@ -58,7 +58,8 @@ object Reactor {
                             .trim()
                     try {
                         editedTrigger = editedTrigger.replace("\$GUILD\$", message.guild.name)
-                    } catch (e: IllegalStateException) {}
+                    } catch (e: IllegalStateException) {
+                    }
                     if (msg.contains(Regex(editedTrigger)) || msg.lowercase().contains(editedTrigger.lowercase())) {
                         prevTime = System.currentTimeMillis()
 

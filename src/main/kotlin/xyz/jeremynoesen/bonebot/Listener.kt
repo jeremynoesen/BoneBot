@@ -12,16 +12,16 @@ import xyz.jeremynoesen.bonebot.modules.Welcomer
 import kotlin.concurrent.thread
 
 /**
- * all listeners for the bot
+ * Listener handlers for events
  *
  * @author Jeremy Noesen
  */
 class Listener : ListenerAdapter() {
 
     /**
-     * respond and/or react to users when they say certain keywords or type commands
+     * Respond and react to users when they say certain keywords or type commands
      *
-     * @param e message received event
+     * @param e Message received event
      */
     override fun onMessageReceived(e: MessageReceivedEvent) {
         if (maxThreads <= 0 || numThreads < maxThreads) {
@@ -45,9 +45,9 @@ class Listener : ListenerAdapter() {
     }
 
     /**
-     * listen for message edits for fixing typos
+     * Listen for message edits for fixing typos
      *
-     * @param e message update event
+     * @param e Message update event
      */
     override fun onMessageUpdate(e: MessageUpdateEvent) {
         if (maxThreads <= 0 || numThreads < maxThreads) {
@@ -71,9 +71,9 @@ class Listener : ListenerAdapter() {
     }
 
     /**
-     * listen for member joins so they can be welcomes
+     * Listen for member joins so they can be welcomed
      *
-     * @param e guild member join event
+     * @param e Guild member join event
      */
     override fun onGuildMemberJoin(e: GuildMemberJoinEvent) {
         if (maxThreads <= 0 || numThreads < maxThreads) {
@@ -98,7 +98,7 @@ class Listener : ListenerAdapter() {
         var maxThreads: Int = 8;
 
         /**
-         * whether BoneBot can listen to other bots for input
+         * Whether BoneBot can listen to other bots for input
          */
         var listenToBots = false
     }

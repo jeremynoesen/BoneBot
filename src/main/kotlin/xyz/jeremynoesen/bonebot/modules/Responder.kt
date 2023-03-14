@@ -9,46 +9,46 @@ import java.lang.IllegalStateException
 import kotlin.random.Random
 
 /**
- * responder to respond to words and phrases in a message
+ * Module to respond to words and phrases in a message
  *
  * @author Jeremy Noesen
  */
 object Responder {
 
     /**
-     * list of phrases loaded from the responses file
+     * List of phrases loaded from the responses file
      */
     val responses = LinkedHashMap<String, String>()
 
     /**
-     * cooldown for responder, in seconds
+     * Cooldown for responder in seconds
      */
     var cooldown = 180
 
     /**
-     * whether this module is enabled or not
+     * Whether this module is enabled or not
      */
     var enabled = true
 
     /**
-     * delay before starting to reply in milliseconds
+     * Delay before starting to reply in milliseconds
      */
     var delay = 1000L
 
     /**
-     * speed at which the bot types each letter
+     * Speed at which the bot types each letter
      */
     var typingSpeed = 100L
 
     /**
-     * last time the responder sent a message in milliseconds
+     * Last time the responder sent a message in milliseconds
      */
     private var prevTime = 0L
 
     /**
-     * respond to a message if a trigger phrase is said
+     * Respond to a message if a trigger phrase is said
      *
-     * @param message message to check and respond to
+     * @param message Message to check and respond to
      */
     fun respond(message: Message) {
         try {
