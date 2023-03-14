@@ -260,7 +260,6 @@ Use these placeholders in most configurations. Places they are disallowed will b
 
 ### Welcomer
 - The welcome message is located `resources/messages.txt` under `welcome-message`.
-- The entire file will make up the welcome message.
 - The welcomer can use all placeholders except `$REPLY$`.
 - You can send a single file in the embed by adding `$FILE$ path/to/file $FILE$`.
 - To enable or disable the welcomer, set `welcomer-enabled` in the main configuration to `true` or `false`.
@@ -277,7 +276,7 @@ Use these placeholders in most configurations. Places they are disallowed will b
 ### Miscellaneous
 - You can change the colors of embeds for the meme generator and help message by setting `embed-color` in the main configuration to a hex code.
 - You can allow BoneBot to listen to input from other bots by setting `listen-to-bots` to `true`. It defaults to `false`.
-- BoneBot spawns new threads for every message, edit, and member join. To limit the maximum number of worker threads at a time, set `max-threads` to any integer. 0 or lower removes the limit.
+- BoneBot spawns new threads to process every message, edit, and member join. To limit the maximum number of worker threads at a time, set `max-threads` to any integer. 0 or lower removes the limit.
 - You can make other files and directories in the bot folder as needed for your own organization of files the bot may use, but not for the files the bot requires.
 
 ### Defaults
@@ -306,8 +305,8 @@ files-enabled: true
 files-cooldown: 5
 welcomer-enabled: true
 listen-to-bots: false
-embed-color: #fd0605
 max-threads: 8
+embed-color: #fd0605
 bot-token: TOKEN
 ```
 
@@ -339,16 +338,10 @@ meme-cooldown: Another meme can be generated in **$TIME$** seconds.
 file-cooldown: Another file can be sent in **$TIME$** seconds.
 quote-cooldown: Another quote can be sent in **$TIME$** seconds.
 command-cooldown: Commands can be used again in **$TIME$** seconds.
-
-```
-
-##### Welcomer
-```
-Welcome $PING$ to **$GUILD$**!
 ```
 
 ### Permissions
-The following Discord permissions are required for BoneBot to work:
+The following user/role permissions are required for BoneBot to work:
 - View Channels
 - Send Messages
 - Embed Links
@@ -356,6 +349,8 @@ The following Discord permissions are required for BoneBot to work:
 - Add Reactions
 - Use External Emoji
 - Read Message History
+
+The following intents are required for BoneBot to work:
 - Server Members Intent
 - Message Content Intent
 
@@ -363,12 +358,11 @@ The following Discord permissions are required for BoneBot to work:
 Below are a few images showing what BoneBot can do. Simple actions, such as reactions, text responses, and status messages, are not shown due to those being basic Discord functions.
 
 ### Meme Generator
-The following is an example command sent to the bot to generate a meme with top and bottom text, as well as a user's avatar as the image input. The next image is the output of this command.
+The following image is an example of the meme generator using a user's avatar, as well as top and bottom texts:
 
-<div align="center"><img src="img/memeinput.png" alt="Meme example command" title="Meme example command" /></div>
-<div align="center"><img src="img/memeoutput.png" alt="Meme example output" title="Meme example output" width="512" /></div>
+<div align="center"><img src="img/meme.png" alt="Meme generator example" title="Meme generator example" /></div>
 
 ### Help Command
-The following image is an example of the help command with one custom command added.
+The following image is an example of the help command, with some built-in commands disabled and some custom commands added:
 
 <div align="center"><img src="img/help.png" alt="Help example" title="Help example" /></div>
