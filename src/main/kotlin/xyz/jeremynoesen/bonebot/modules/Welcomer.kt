@@ -46,7 +46,6 @@ object Welcomer {
                         file = null
                     }
                 }
-
                 val embedBuilder = EmbedBuilder()
                 embedBuilder.setColor(Config.embedColor)
                 embedBuilder.setAuthor(

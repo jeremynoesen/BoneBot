@@ -62,10 +62,8 @@ object Reactor {
                     }
                     if (msg.contains(Regex(editedTrigger)) || msg.lowercase().contains(editedTrigger.lowercase())) {
                         prevTime = System.currentTimeMillis()
-
                         val randomReactions = reactions[trigger]!!.split("\$||\$")
                         val selectedReaction = randomReactions[Random.nextInt(randomReactions.size)]
-
                         for (reactionEmojis in selectedReaction.split("\$&&\$")) {
                             message.addReaction(Emoji.fromFormatted(reactionEmojis.trim())).queueAfter(delay, TimeUnit.MILLISECONDS)
                         }

@@ -58,9 +58,7 @@ constructor(private val command: Message) {
         if ((System.currentTimeMillis() - prevTime) >= cooldown * 1000) {
             try {
                 readTextAndImage()
-
                 if (image != null && text != null) {
-
                     text = text!!
                             .replace("\$PING\$", command.member!!.asMention)
                             .replace("\$NAME\$", command.member!!.effectiveName)
@@ -70,9 +68,7 @@ constructor(private val command: Message) {
                         text = text!!.replace("\$GUILD\$", command.guild.name)
                     } catch (e: IllegalStateException) {
                     }
-
                     processImage()
-
                     val embedBuilder = EmbedBuilder()
                     var title = Messages.memeTitle
                             .replace("\$NAME\$", command.member!!.effectiveName)
@@ -84,7 +80,6 @@ constructor(private val command: Message) {
                         title = title.replace("\$GUILD\$", command.guild.name)
                     } catch (e: IllegalStateException) {
                     }
-
                     if (title.contains(command.member!!.effectiveName)) {
                         embedBuilder.setAuthor(title, null, command.member!!.effectiveAvatarUrl)
                     } else if (title.contains(command.guild.getMember(BoneBot.JDA!!.selfUser)!!.effectiveName)) {
@@ -94,15 +89,12 @@ constructor(private val command: Message) {
                     } else {
                         embedBuilder.setAuthor(title, null)
                     }
-
                     embedBuilder.setColor(Config.embedColor)
                     embedBuilder.setImage("attachment://meme.png")
-
                     val baos = ByteArrayOutputStream()
                     ImageIO.write(meme, "png", baos)
                     val bytes = baos.toByteArray()
                     command.channel.sendMessageEmbeds(embedBuilder.build()).addFiles(FileUpload.fromData(bytes, "meme.png")).queue()
-
                     prevTime = System.currentTimeMillis()
                 } else {
                     Messages.sendMessage(Messages.memeInputMissing, command)
@@ -142,17 +134,13 @@ constructor(private val command: Message) {
         )
         var altInput = ""
         var imageInput = false
-
         if (command.referencedMessage != null) altInput = command.referencedMessage!!.contentDisplay
-
         if (command.attachments.size > 0 && command.attachments[0].isImage) {
             image = getImageFromURL(command.attachments[0].url)
             imageInput = true
-
         } else if (command.embeds.size > 0 && command.embeds[0].image != null) {
             image = getImageFromURL(command.embeds[0].image!!.url!!)
             imageInput = true
-
         } else if (command.contentDisplay.contains("http://") || command.contentDisplay.contains("https://")) {
             for (word in input.split(" ", "\n")) {
                 try {
@@ -162,7 +150,6 @@ constructor(private val command: Message) {
                 } catch (e: java.lang.Exception) {
                 }
             }
-
         } else if (command.mentions.members.size > 0 &&
                 (input.split(command.mentions.members[command.mentions.members.size - 1].user.name).size > 1 ||
                         input.split(command.mentions.members[command.mentions.members.size - 1].effectiveName).size > 1)
@@ -170,18 +157,14 @@ constructor(private val command: Message) {
             image =
                     getImageFromURL(command.mentions.members[command.mentions.members.size - 1].effectiveAvatarUrl + "?size=4096")
             imageInput = true
-
         } else if (command.referencedMessage != null) {
             val reply = command.referencedMessage!!
-
             if (reply.attachments.size > 0 && reply.attachments[0].isImage) {
                 image = getImageFromURL(reply.attachments[0].url)
                 imageInput = true
-
             } else if (reply.embeds.size > 0 && reply.embeds[0].image != null) {
                 image = getImageFromURL(reply.embeds[0].image!!.url!!)
                 imageInput = true
-
             } else if (reply.contentDisplay.contains("http://") || reply.contentDisplay.contains("https://")) {
                 for (word in reply.contentDisplay.split(" ", "\n")) {
                     try {
@@ -191,7 +174,6 @@ constructor(private val command: Message) {
                     } catch (e: java.lang.Exception) {
                     }
                 }
-
             } else if (reply.mentions.members.size > 0 &&
                     (altInput.split(reply.mentions.members[reply.mentions.members.size - 1].user.name).size > 1 ||
                             altInput.split(reply.mentions.members[reply.mentions.members.size - 1].effectiveName).size > 1)
@@ -200,20 +182,16 @@ constructor(private val command: Message) {
                         getImageFromURL(reply.mentions.members[reply.mentions.members.size - 1].effectiveAvatarUrl + "?size=4096")
                 imageInput = true
             }
-
             if (image != null) {
                 altInput = ""
             } else {
                 altInput = cleanInput(altInput)
             }
         }
-
         if (!imageInput) {
             getRandomImage(File("resources/memeimages"))
         }
-
         input = cleanInput(input)
-
         if (input.trim().isNotEmpty()) {
             text = input
         } else if (altInput.trim().isNotEmpty() && command.referencedMessage != null) {
@@ -224,7 +202,7 @@ constructor(private val command: Message) {
     }
 
     /**
-     * Get random image to use for meme, recursively
+     * Get random image to use for meme recursively
      *
      * @param dir Directory to look in for images
      */
@@ -264,12 +242,10 @@ constructor(private val command: Message) {
                         .replace(">", "")
             }
         }
-
         for (i in command.mentions.members.indices) output =
                 input.replace("@${command.mentions.members[i].user.name}", "")
                         .replace("@${command.mentions.members[i].effectiveName}", "")
                         .replace("  ", " ")
-
         return output
     }
 
@@ -290,11 +266,9 @@ constructor(private val command: Message) {
         g2d.drawImage(image, 0, 0, width, height, null)
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON)
         g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR)
-
         val sections = text!!.split("\n").toTypedArray()
         val topText = ArrayList<String>()
         val bottomText = ArrayList<String>()
-
         sections[0] = sections[0].trim()
         val topWrapLength =
                 floor(sections[0].length / (metrics.stringWidth(sections[0]) / (width.toFloat() - (width / 6.4)))).toInt()
@@ -313,9 +287,7 @@ constructor(private val command: Message) {
                     )
             )
         }
-
         val outlineThickness = ceil(((height + width) / 450f) * fontScale)
-
         for (i in topText.indices) {
             val line = topText[i].trim { it <= ' ' }.uppercase()
             if (line.isEmpty()) break
@@ -336,7 +308,6 @@ constructor(private val command: Message) {
             g2d.fill(shape)
             g2d.translate(-x, -y)
         }
-
         for (i in bottomText.indices) {
             val line = bottomText[i].trim { it <= ' ' }.uppercase()
             if (line.isEmpty()) break
@@ -357,7 +328,6 @@ constructor(private val command: Message) {
             g2d.fill(shape)
             g2d.translate(-x, -y)
         }
-
         g2d.dispose()
     }
 

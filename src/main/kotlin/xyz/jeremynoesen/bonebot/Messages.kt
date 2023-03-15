@@ -153,15 +153,12 @@ object Messages {
                     "command-cooldown:" -> {
                         commandCooldown = lineScanner.nextLine().trim()
                     }
-
                 }
                 lineScanner.close()
             }
             fileScanner.close()
-
         } catch (e: FileNotFoundException) {
         }
-
         val file = File("resources/messages.txt")
         file.delete()
         val pw = PrintWriter(file)

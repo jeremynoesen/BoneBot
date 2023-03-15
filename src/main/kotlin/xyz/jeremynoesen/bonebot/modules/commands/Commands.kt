@@ -124,9 +124,7 @@ object Commands {
      * @param message Message initiating help command
      */
     private fun sendHelp(message: Message) {
-
         var commandList = Messages.helpAbout
-
         var file: File? = null
         if (commandList.contains("\$FILE\$")) {
             val path = commandList.split("\$FILE\$")[1].trim()
@@ -142,7 +140,6 @@ object Commands {
                 file = null
             }
         }
-
         commandList += "\n\n" + Messages.helpFormat
                 .replace("\$CMD\$", prefix + Messages.helpCommand)
                 .replace("\$DESC\$", Messages.helpDescription) + "\n"
@@ -164,7 +161,6 @@ object Commands {
                     .replace("\$CMD\$", prefix + command)
                     .replace("\$DESC\$", commands[command]!!.first) + "\n"
         }
-
         commandList = commandList
                 .replace("\$PING\$", message.member!!.asMention)
                 .replace("\$NAME\$", message.member!!.effectiveName)
@@ -176,7 +172,6 @@ object Commands {
             commandList = commandList.replace("\$GUILD\$", message.guild.name)
         } catch (e: IllegalStateException) {
         }
-
         val embedBuilder = EmbedBuilder()
         var title = Messages.helpTitle
                 .replace("\$NAME\$", message.member!!.effectiveName)
@@ -188,12 +183,10 @@ object Commands {
             title = title.replace("\$GUILD\$", message.guild.name)
         } catch (e: IllegalStateException) {
         }
-
         embedBuilder.setAuthor(title, null, null)
         embedBuilder.setThumbnail(message.guild.getMember(BoneBot.JDA!!.selfUser)!!.effectiveAvatarUrl)
         embedBuilder.setColor(Config.embedColor)
         embedBuilder.setDescription("$commandList\n\n[**Source Code**](https://github.com/jeremynoesen/BoneBot)")
-
         if (file != null) {
             embedBuilder.setImage("attachment://" + file.name.replace(" ", "_"))
             message.channel.sendMessageEmbeds(embedBuilder.build()).addFiles(FileUpload.fromData(file, file.name.replace(" ", "_"))).queue()
@@ -209,12 +202,9 @@ object Commands {
      * @param message Message containing command label and arguments
      */
     private fun sendCustomCommand(command: String, message: Message) {
-
         val randomCommands = commands[command]!!.second.split("\$||\$")
         val selectedCommand = randomCommands[Random.nextInt(randomCommands.size)]
-
         for (commandMessage in selectedCommand.split("\$&&\$")) {
-
             var toSend =
                     commandMessage
                             .replace("\$PING\$", message.member!!.asMention)
@@ -227,7 +217,6 @@ object Commands {
                 toSend = toSend.replace("\$GUILD\$", message.guild.name)
             } catch (e: IllegalStateException) {
             }
-
             if (toSend.contains("\$CMD\$")) {
                 val cmd = toSend.split("\$CMD\$")[1].trim()
 
@@ -238,7 +227,6 @@ object Commands {
                         ), ""
                 )
                         .replace("  ", " ").trim()
-
                 val procBuilder = if (System.getProperty("os.name").contains("windows", true)) {
                     ProcessBuilder("cmd.exe", "/c", cmd)
                 } else {
@@ -255,7 +243,6 @@ object Commands {
                     toSend = toSend.replace("\$CMDOUT\$", output)
                 }
             }
-
             if (toSend.contains("\$REACT\$")) {
                 val emote = toSend.split("\$REACT\$")[1].trim()
                 toSend = toSend.replace(
@@ -267,9 +254,7 @@ object Commands {
                         .replace("  ", " ").trim()
                 message.addReaction(Emoji.fromFormatted(emote)).queue()
             }
-
             var file: File? = null
-
             if (toSend.contains("\$FILE\$")) {
                 val path = toSend.split("\$FILE\$")[1].trim()
                 toSend = toSend.replace(
@@ -284,7 +269,6 @@ object Commands {
                     file = null
                 }
             }
-
             if (toSend.contains("\$EMBED\$")) {
                 val title = toSend.split("\$EMBED\$")[1].trim()
 
@@ -295,7 +279,6 @@ object Commands {
                         ), ""
                 )
                         .replace("  ", " ").trim()
-
                 val embedBuilder = EmbedBuilder()
                 embedBuilder.setColor(Config.embedColor)
                 if (title.contains(message.member!!.effectiveName)) {
@@ -307,7 +290,6 @@ object Commands {
                 } else {
                     embedBuilder.setAuthor(title, null)
                 }
-
                 if (toSend.contains("\$REPLY\$")) {
                     toSend = toSend.replace("\$REPLY\$", "")
                             .replace("  ", " ")
@@ -371,21 +353,18 @@ object Commands {
         env["BB_PING"] = message.member!!.asMention
         env["BB_ID"] = message.member!!.id
         env["BB_AVATAR"] = message.member!!.effectiveAvatarUrl + "?size=4096"
-
         if (message.member!!.roles.size > 0) {
             for (i in message.member!!.roles.indices) {
                 env["BB_ROLE_$i"] = message.member!!.roles[i].id
             }
         }
         env["BB_ROLE_COUNT"] = message.member!!.roles.size.toString()
-
         if (message.attachments.size > 0) {
             for (i in message.attachments.indices) {
                 env["BB_FILE_$i"] = message.attachments[i].url
             }
         }
         env["BB_FILE_COUNT"] = message.attachments.size.toString()
-
         var j = 0
         if (message.embeds.size > 0) {
             for (i in message.attachments.indices) {
@@ -396,7 +375,6 @@ object Commands {
             }
         }
         env["BB_EMBED_COUNT"] = j.toString()
-
         var k = 0
         for (word in message.contentDisplay.split(" ", "\n")) {
             if (word.contains("http://") || word.contains("https://")) {
@@ -405,7 +383,6 @@ object Commands {
             }
         }
         env["BB_URL_COUNT"] = k.toString()
-
         var l = 0
         if (message.mentions.members.size > 0) {
             for (i in message.mentions.members.indices) {
@@ -430,7 +407,6 @@ object Commands {
             }
         }
         env["BB_MENTION_COUNT"] = l.toString()
-
         if (message.referencedMessage != null) {
             val reply = message.referencedMessage!!
             env["BB_REPLY_CONTENT"] = reply.contentDisplay
@@ -438,21 +414,18 @@ object Commands {
             env["BB_REPLY_PING"] = reply.member!!.asMention
             env["BB_REPLY_ID"] = reply.member!!.id
             env["BB_REPLY_AVATAR"] = reply.member!!.effectiveAvatarUrl + "?size=4096"
-
             if (reply.member!!.roles.size > 0) {
                 for (i in reply.member!!.roles.indices) {
                     env["BB_REPLY_ROLE_$i"] = reply.member!!.roles[i].id
                 }
             }
             env["BB_REPLY_ROLE_COUNT"] = reply.member!!.roles.size.toString()
-
             if (reply.attachments.size > 0) {
                 for (i in reply.attachments.indices) {
                     env["BB_REPLY_FILE_$i"] = reply.attachments[i].url
                 }
             }
             env["BB_REPLY_FILE_COUNT"] = reply.attachments.size.toString()
-
             j = 0
             if (reply.embeds.size > 0) {
                 for (i in reply.attachments.indices) {
@@ -463,7 +436,6 @@ object Commands {
                 }
             }
             env["BB_REPLY_EMBED_COUNT"] = j.toString()
-
             k = 0
             for (word in reply.contentDisplay.split(" ", "\n")) {
                 if (word.contains("http://") || word.contains("https://")) {
@@ -472,7 +444,6 @@ object Commands {
                 }
             }
             env["BB_REPLY_URL_COUNT"] = k.toString()
-
             l = 0
             if (reply.mentions.members.size > 0) {
                 for (i in reply.mentions.members.indices) {

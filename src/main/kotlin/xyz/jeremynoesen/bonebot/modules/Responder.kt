@@ -67,13 +67,9 @@ object Responder {
                     }
                     if (msg.contains(Regex(editedTrigger)) || msg.lowercase().contains(editedTrigger.lowercase())) {
                         prevTime = System.currentTimeMillis()
-
-
                         val randomResponses = responses[trigger]!!.split("\$||\$")
                         val selectedResponse = randomResponses[Random.nextInt(randomResponses.size)]
-
                         for (responseMessage in selectedResponse.split("\$&&\$")) {
-
                             var toSend = responseMessage.replace("\$PING\$", message.member!!.asMention)
                                     .replace("\$NAME\$", message.member!!.effectiveName)
                                     .replace("\$BOT\$", message.guild.getMember(BoneBot.JDA!!.selfUser)!!.effectiveName)
@@ -84,9 +80,7 @@ object Responder {
                                 toSend = toSend.replace("\$GUILD\$", message.guild.name)
                             } catch (e: IllegalStateException) {
                             }
-
                             var file: File? = null
-
                             if (toSend.contains("\$FILE\$")) {
                                 val path = toSend.split("\$FILE\$")[1].trim()
                                 toSend = toSend.replace(
@@ -101,12 +95,10 @@ object Responder {
                                     file = null
                                 }
                             }
-
                             if (toSend.contains("\$REPLY\$")) {
                                 toSend = toSend.replace("\$REPLY\$", "")
                                         .replace("  ", " ")
                                 Thread.sleep(delay)
-
                                 if (typingSpeed * toSend.length > 0) {
                                     var typingTime = 0L
                                     for (i in toSend.indices) {
@@ -116,7 +108,6 @@ object Responder {
                                         Thread.sleep(typingSpeed);
                                     }
                                 }
-
                                 if (file != null) {
                                     if (toSend.isNotEmpty())
                                         message.channel.sendMessage(toSend).addFiles(FileUpload.fromData(file)).setMessageReference(message).queue()
@@ -128,7 +119,6 @@ object Responder {
                                 }
                             } else {
                                 Thread.sleep(delay)
-
                                 if (typingSpeed * toSend.length > 0) {
                                     var typingTime = 0L
                                     for (i in toSend.indices) {
@@ -138,7 +128,6 @@ object Responder {
                                         Thread.sleep(typingSpeed);
                                     }
                                 }
-
                                 if (file != null) {
                                     if (toSend.isNotEmpty())
                                         message.channel.sendMessage(toSend).addFiles(FileUpload.fromData(file)).queue()

@@ -36,7 +36,6 @@ object Config {
             File("resources").mkdir()
             File("resources/memeimages").mkdir()
             File("resources/files").mkdir()
-
             val fileScanner = Scanner(File("resources/config.txt"))
             while (fileScanner.hasNextLine()) {
                 val lineScanner = Scanner(fileScanner.nextLine())
@@ -144,10 +143,8 @@ object Config {
                 lineScanner.close()
             }
             fileScanner.close()
-
         } catch (e: FileNotFoundException) {
         }
-
         val file = File("resources/config.txt")
         file.delete()
         val pw = PrintWriter(file)
@@ -177,14 +174,12 @@ object Config {
         pw.println("embed-color: ${String.format("#%02x%02x%02x", embedColor.red, embedColor.green, embedColor.blue)}")
         pw.println("bot-token: $botToken")
         pw.close()
-
         loadData("resources/memetexts.txt", Memes.texts)
         loadData("resources/statuses.txt", Statuses.statuses)
         loadData("resources/commands.txt", Commands.commands)
         loadData("resources/responses.txt", Responder.responses)
         loadData("resources/reactions.txt", Reactor.reactions)
         loadData("resources/quotes.txt", Quotes.quotes)
-
         Messages.loadMessages()
     }
 

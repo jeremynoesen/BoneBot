@@ -58,7 +58,6 @@ object Quotes {
                         quote = quote.replace("\$GUILD\$", message.guild.name)
                     } catch (e: IllegalStateException) {
                     }
-
                     val embedBuilder = EmbedBuilder()
                     var title = Messages.quoteTitle
                             .replace("\$NAME\$", message.member!!.effectiveName)
@@ -70,7 +69,6 @@ object Quotes {
                         title = title.replace("\$GUILD\$", message.guild.name)
                     } catch (e: IllegalStateException) {
                     }
-
                     if (title.contains(message.member!!.effectiveName)) {
                         embedBuilder.setAuthor(title, null, message.member!!.effectiveAvatarUrl)
                     } else if (title.contains(message.guild.getMember(BoneBot.JDA!!.selfUser)!!.effectiveName)) {

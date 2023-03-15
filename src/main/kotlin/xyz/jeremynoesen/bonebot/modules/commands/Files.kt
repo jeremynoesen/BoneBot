@@ -42,7 +42,6 @@ object Files {
         try {
             if ((System.currentTimeMillis() - prevTime) >= cooldown * 1000) {
                 prevTime = System.currentTimeMillis()
-
                 if (message.contentDisplay.trim()
                                 .lowercase() == Commands.prefix + Messages.fileCommand.lowercase()
                 ) {
@@ -59,7 +58,6 @@ object Files {
                             Messages.sendMessage(Messages.unknownFile, message)
                             return
                         }
-
                         if (file.isDirectory) {
                             sendRandomFile(message, file)
                         } else {
@@ -74,7 +72,6 @@ object Files {
                                 title = title.replace("\$GUILD\$", message.guild.name)
                             } catch (e: IllegalStateException) {
                             }
-
                             if (title.contains(message.member!!.effectiveName)) {
                                 embedBuilder.setAuthor(title, null, message.member!!.effectiveAvatarUrl)
                             } else if (title.contains(message.guild.getMember(BoneBot.JDA!!.selfUser)!!.effectiveName)) {
@@ -126,7 +123,6 @@ object Files {
                 sendRandomFile(message, dir.listFiles()!![rand])
                 return
             }
-
             val file = dir.listFiles()!![rand]
             val embedBuilder = EmbedBuilder()
             var title = Messages.fileTitle
@@ -139,7 +135,6 @@ object Files {
                 title = title.replace("\$GUILD\$", message.guild.name)
             } catch (e: IllegalStateException) {
             }
-
             if (title.contains(message.member!!.effectiveName)) {
                 embedBuilder.setAuthor(title, null, message.member!!.effectiveAvatarUrl)
             } else if (title.contains(message.guild.getMember(BoneBot.JDA!!.selfUser)!!.effectiveName)) {
