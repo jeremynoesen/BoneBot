@@ -72,24 +72,14 @@ Any version of Windows, macOS, or Linux that can run Java 11 or later.
 You can also grab `BoneBot.jar` from the latest releases.
 
 ## Installation
+### Manual
 1. Create a new folder where you would like the bot to be installed. 
 2. Place `BoneBot.jar` in this directory.
-3. Head over to the [Discord Developer Portal](https://discord.com/developers/applications) and create an application.
-4. Add a bot to the application in the bot tab.
-5. Copy the bot token from this page. You will need it later.
-
-## Running
-All methods of running for the first time will generate all necessary configuration files and folders, but will fail to start the bot. You will need to set `bot-token` in `resources/config.txt` to the token you copied earlier for the bot to start.
-
-### Manual
-Use the commands below, filling in the path to the bot folder.
-```
-cd /path/to/BoneBot-folder
-java -jar BoneBot.jar
-```
 
 ### Systemd
-On Unix systems, you can use systemd to run BoneBot as a service. Create the following service file in `/etc/systemd/system/bonebot.service`, and fill in the paths to the bot folder and jar file, as well as the user and group to run the service as:
+1. Create a new folder where you would like the bot to be installed.
+2. Place `BoneBot.jar` in this directory.
+3. Create the following `bonebot.service` file in `/etc/systemd/system/`, making sure to change the `WorkingDirectory` and `ExecStart`, as well as the `User`:
 ```
 [Unit]
 Description=Service to start BoneBot
@@ -99,17 +89,15 @@ After=network-online.target
 WorkingDirectory=/path/to/BoneBot-folder
 ExecStart=/usr/bin/java -jar /path/to/BoneBot.jar
 User=set_user_here
-Group=set_group_here
 Restart=always
 
 [Install]
 WantedBy=multi-user.target
 ```
-Then run `sudo systemctl enable bonebot && sudo systemctl start bonebot` to start the service and allow it to start on boot.
 
 ### Docker
-If you wish to run BoneBot in a Docker container, you can create the following `Dockerfile` to create the image, and the use following `docker-compose.yml` to run the container. These can be placed in a directory of your choice.
-#### Dockerfile
+1. Create a new folder where you would like the container data to be.
+2. Create the following `Dockerfile` in this directory:
 ```Dockerfile
 FROM ubuntu:20.04 as runtime
 ENV DEBIAN_FRONTEND=noninteractive
@@ -128,8 +116,7 @@ ENV LC_ALL en_US.UTF-8
 
 ENTRYPOINT ["java", "-jar", "BoneBot.jar"]
 ```
-
-#### docker-compose.yml
+3. Create the following `docker-compose.yml` in the same directory, making sure to change the `context` and `volumes`:
 ```yaml
 version: '3'
 services:
@@ -142,6 +129,35 @@ services:
     volumes:
     - /path/to/volume:/app/resources
 ```
+
+## Bot Application
+You must create a Discord Application before you continue. This creates the bot user that will be used to run the bot.
+1. Head over to the [Discord Developer Portal](https://discord.com/developers/applications) and create an application.
+2. Add a bot to the application in the "Bot" tab.
+3. Give the bot the following intents:
+   - Server Members Intent
+   - Message Content Intent
+4. Copy the bot token from this page. You will need it later.
+5. Invite the bot using this link, replacing `CLIENT_ID` with the application ID from the "General Information" tab: https://discord.com/api/oauth2/authorize?client_id=CLIENT_ID&permissions=379968&scope=bot
+6. Give the bot the following user/role permissions:
+   - View Channels
+   - Send Messages
+   - Embed Links
+   - Attach Files
+   - Add Reactions
+   - Use External Emoji
+   - Read Message History
+
+## Running
+All methods of running for the first time will generate all necessary configuration files and folders, but will fail to start the bot. You will need to set `bot-token` in `resources/config.txt` to the token you copied earlier for the bot to start.
+
+### Manual
+Run `cd /path/to/BoneBot-folder && java -jar BoneBot.jar` to start the bot.
+
+### Systemd
+Run `sudo systemctl enable bonebot && sudo systemctl start bonebot` to start the service and allow it to start on boot.
+
+### Docker
 Run `docker compose -f /path/to/docker-compose.yml up -d` to start the container.
 
 ## Configuration
@@ -332,6 +348,7 @@ bot-token: TOKEN
 ```
 
 ##### Messages
+Located at `resources/messages.txt`
 ```
 help-title: $BOT$ Help
 help-about: $BOT$ aims to add more life to a server by responding and reacting to messages. It also adds commands, which are listed below.
@@ -360,20 +377,6 @@ file-cooldown: Another file can be sent in **$TIME$** seconds.
 quote-cooldown: Another quote can be sent in **$TIME$** seconds.
 command-cooldown: Commands can be used again in **$TIME$** seconds.
 ```
-
-### Permissions
-The following user/role permissions are required for BoneBot to work:
-- View Channels
-- Send Messages
-- Embed Links
-- Attach Files
-- Add Reactions
-- Use External Emoji
-- Read Message History
-
-The following intents are required for BoneBot to work:
-- Server Members Intent
-- Message Content Intent
 
 ## Demonstration
 Below are a few images showing what BoneBot can do. Simple actions, such as reactions, text responses, and status messages, are not shown due to those being basic Discord functions.
