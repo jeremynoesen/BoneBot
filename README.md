@@ -80,7 +80,7 @@ You can also grab `BoneBot.jar` from the latest releases.
 1. Create a new folder where you would like the bot to be installed.
 2. Place `BoneBot.jar` in this directory.
 3. Create the following `bonebot.service` file in `/etc/systemd/system/`, making sure to change the `WorkingDirectory` and `ExecStart`, as well as the `User`:
-```
+```ini
 [Unit]
 Description=Service to start BoneBot
 After=network-online.target
