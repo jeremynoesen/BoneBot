@@ -158,8 +158,7 @@ Run `cd /path/to/BoneBot-folder && java -jar BoneBot.jar` to start the bot.
 Run `sudo systemctl enable bonebot && sudo systemctl start bonebot` to start the service and allow it to start on boot.
 
 ### Docker
-Run `docker compose -f /path/to/docker-compose.yml up -d` to start the container.
-
+Run `docker compose up -d` in the directory of `docker-compose.yml` to start the container.
 ## Configuration
 **After changing any of text configurations, save the file and restart the bot.**
 
