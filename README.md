@@ -73,13 +73,11 @@ You can also grab `BoneBot.jar` from the latest releases.
 
 ## Installation
 ### Manual
-1. Create a new folder where you would like the bot to be installed. 
-2. Place `BoneBot.jar` in this directory.
+Place `BoneBot.jar` where you would like it to be installed.
 
 ### Systemd
-1. Create a new folder where you would like the bot to be installed.
-2. Place `BoneBot.jar` in this directory.
-3. Create the following `bonebot.service` file in `/etc/systemd/system/`, making sure to change the `WorkingDirectory` and `ExecStart`, as well as the `User`:
+1. Place `BoneBot.jar` where you would like it to be installed.
+2. Create the following `bonebot.service` file in `/etc/systemd/system/`, making sure to change the `WorkingDirectory` and `ExecStart`, as well as the `User`:
 ```ini
 [Unit]
 Description=Service to start BoneBot
@@ -96,8 +94,7 @@ WantedBy=multi-user.target
 ```
 
 ### Docker
-1. Create a new folder where you would like the container data to be.
-2. Create the following `Dockerfile` in this directory:
+1. Create the following `Dockerfile` wherever you would like:
 ```Dockerfile
 FROM ubuntu:20.04 as runtime
 ENV DEBIAN_FRONTEND=noninteractive
@@ -116,14 +113,14 @@ ENV LC_ALL en_US.UTF-8
 
 ENTRYPOINT ["java", "-jar", "BoneBot.jar"]
 ```
-3. Create the following `docker-compose.yml` in the same directory, making sure to change the `context` and `volumes`:
+2. Create the following `docker-compose.yml` wherever you would like, making sure to change the `context` to the path of the directory containing the Dockerfile, and `volumes` to wherever you would like the volume to be stored:
 ```yaml
 version: '3'
 services:
   bonebot:
     container_name: bonebot
     build:
-      context: /path/to/dir/containing/Dockerfile
+      context: /path/to/dir/containing/Dockerfile/
     restart: unless-stopped
     network_mode: host
     volumes:
