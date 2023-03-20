@@ -113,7 +113,7 @@ ENV LC_ALL en_US.UTF-8
 
 ENTRYPOINT ["java", "-jar", "BoneBot.jar"]
 ```
-2. Create the following `docker-compose.yml` wherever you would like, making sure to change the `context` to the path of the directory containing the Dockerfile, and `volumes` to wherever you would like the volume to be stored:
+2. Create the following `docker-compose.yml` wherever you would like, making sure to change the `context` to the path of the directory containing the `Dockerfile`, and `volumes` to wherever you would like the volume to be stored:
 ```yaml
 version: '3'
 services:
