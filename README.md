@@ -107,7 +107,7 @@ RUN apt install default-jre-headless wget locales -y
 
 WORKDIR /app
 
-RUN wget https://github.com/jeremynoesen/BoneBot/releases/download/1.6.6/BoneBot.jar
+RUN wget https://github.com/jeremynoesen/BoneBot/releases/download/1.6.7/BoneBot.jar
 
 RUN locale-gen en_US.UTF-8
 ENV LANG en_US.UTF-8
