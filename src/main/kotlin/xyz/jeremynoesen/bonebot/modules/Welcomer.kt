@@ -51,7 +51,7 @@ object Welcomer {
                 embedBuilder.setAuthor(
                         Messages.welcomeTitle
                                 .replace("\$GUILD\$", guild.name)
-                                .replace("\$NAME\$", user.name)
+                                .replace("\$NAME\$", guild.getMember(user)!!.effectiveName)
                                 .replace("\$BOT\$", guild.getMember(BoneBot.JDA!!.selfUser)!!.effectiveName)
                                 .replace("\\n", "\n")
                                 .replace("  ", " ")
@@ -61,7 +61,7 @@ object Welcomer {
                 embedBuilder.setThumbnail(guild.iconUrl)
                 embedBuilder.setDescription(
                         toSend.replace("\$PING\$", user.asMention)
-                                .replace("\$NAME\$", user.name)
+                                .replace("\$NAME\$", guild.getMember(user)!!.effectiveName)
                                 .replace("\$GUILD\$", guild.name)
                                 .replace("\$BOT\$", guild.getMember(BoneBot.JDA!!.selfUser)!!.effectiveName)
                                 .replace("\\n", "\n")

@@ -151,8 +151,8 @@ constructor(private val command: Message) {
                 }
             }
         } else if (command.mentions.members.size > 0 &&
-                (input.split(command.mentions.members[command.mentions.members.size - 1].user.name).size > 1 ||
-                        input.split(command.mentions.members[command.mentions.members.size - 1].effectiveName).size > 1)
+                (input.split(command.mentions.members[command.mentions.members.size - 1].effectiveName).size > 1 ||
+                        input.split(command.mentions.members[command.mentions.members.size - 1].user.name).size > 1)
         ) {
             image =
                     getImageFromURL(command.mentions.members[command.mentions.members.size - 1].effectiveAvatarUrl + "?size=4096")
@@ -175,8 +175,8 @@ constructor(private val command: Message) {
                     }
                 }
             } else if (reply.mentions.members.size > 0 &&
-                    (altInput.split(reply.mentions.members[reply.mentions.members.size - 1].user.name).size > 1 ||
-                            altInput.split(reply.mentions.members[reply.mentions.members.size - 1].effectiveName).size > 1)
+                    (altInput.split(reply.mentions.members[reply.mentions.members.size - 1].effectiveName).size > 1 ||
+                            altInput.split(reply.mentions.members[reply.mentions.members.size - 1].user.name).size > 1)
             ) {
                 image =
                         getImageFromURL(reply.mentions.members[reply.mentions.members.size - 1].effectiveAvatarUrl + "?size=4096")
@@ -243,8 +243,8 @@ constructor(private val command: Message) {
             }
         }
         for (i in command.mentions.members.indices) output =
-                input.replace("@${command.mentions.members[i].user.name}", "")
-                        .replace("@${command.mentions.members[i].effectiveName}", "")
+                input.replace("@${command.mentions.members[i].effectiveName}", "")
+                        .replace("@${command.mentions.members[i].user.name}", "")
                         .replace("  ", " ")
         return output
     }

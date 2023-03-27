@@ -386,8 +386,7 @@ object Commands {
         var l = 0
         if (message.mentions.members.size > 0) {
             for (i in message.mentions.members.indices) {
-                if (message.contentDisplay.split(message.mentions.members[i].user.name).size > 1 ||
-                        message.contentDisplay.split(message.mentions.members[i].effectiveName).size > 1) {
+                if (message.contentDisplay.split(message.mentions.members[i].effectiveName).size > 1) {
                     env["BB_MENTION_${l}_NAME"] =
                             message.mentions.members[i].effectiveName
                     env["BB_MENTION_${l}_PING"] =
@@ -447,8 +446,7 @@ object Commands {
             l = 0
             if (reply.mentions.members.size > 0) {
                 for (i in reply.mentions.members.indices) {
-                    if (reply.contentDisplay.split(reply.mentions.members[i].user.name).size > 1 ||
-                            reply.contentDisplay.split(reply.mentions.members[i].effectiveName).size > 1) {
+                    if (reply.contentDisplay.split(reply.mentions.members[i].effectiveName).size > 1) {
                         env["BB_REPLY_MENTION_${l}_NAME"] =
                                 reply.mentions.members[i].effectiveName
                         env["BB_REPLY_MENTION_${l}_PING"] =
