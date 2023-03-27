@@ -2,7 +2,7 @@ package xyz.jeremynoesen.bonebot.modules
 
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.entities.Guild
-import net.dv8tion.jda.api.entities.User
+import net.dv8tion.jda.api.entities.Member
 import net.dv8tion.jda.api.utils.FileUpload
 import xyz.jeremynoesen.bonebot.BoneBot
 import xyz.jeremynoesen.bonebot.Config
@@ -24,11 +24,11 @@ object Welcomer {
     /**
      * Send the welcome message embed
      *
-     * @param user User to welcome
+     * @param member Member to welcome
      * @param guild Guild to welcome them to
      */
-    fun welcome(user: User, guild: Guild) {
-        user.openPrivateChannel().queue { channel ->
+    fun welcome(member: Member, guild: Guild) {
+        member.user.openPrivateChannel().queue { channel ->
             run {
                 var toSend = Messages.welcomeMessage
                 var file: File? = null
@@ -51,7 +51,7 @@ object Welcomer {
                 embedBuilder.setAuthor(
                         Messages.welcomeTitle
                                 .replace("\$GUILD\$", guild.name)
-                                .replace("\$NAME\$", guild.getMember(user)!!.effectiveName)
+                                .replace("\$NAME\$", member.effectiveName)
                                 .replace("\$BOT\$", guild.getMember(BoneBot.JDA!!.selfUser)!!.effectiveName)
                                 .replace("\\n", "\n")
                                 .replace("  ", " ")
@@ -60,8 +60,8 @@ object Welcomer {
                 )
                 embedBuilder.setThumbnail(guild.iconUrl)
                 embedBuilder.setDescription(
-                        toSend.replace("\$PING\$", user.asMention)
-                                .replace("\$NAME\$", guild.getMember(user)!!.effectiveName)
+                        toSend.replace("\$PING\$", member.asMention)
+                                .replace("\$NAME\$", member.effectiveName)
                                 .replace("\$GUILD\$", guild.name)
                                 .replace("\$BOT\$", guild.getMember(BoneBot.JDA!!.selfUser)!!.effectiveName)
                                 .replace("\\n", "\n")

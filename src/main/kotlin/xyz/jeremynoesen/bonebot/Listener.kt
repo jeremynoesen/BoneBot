@@ -80,7 +80,7 @@ class Listener : ListenerAdapter() {
             numThreads++
             thread {
                 if (Welcomer.enabled)
-                    Welcomer.welcome(e.user, e.guild)
+                    Welcomer.welcome(e.member, e.guild)
                 numThreads--
             }
         }
