@@ -94,7 +94,8 @@ constructor(private val command: Message) {
                     val baos = ByteArrayOutputStream()
                     ImageIO.write(meme, "png", baos)
                     val bytes = baos.toByteArray()
-                    command.channel.sendMessageEmbeds(embedBuilder.build()).addFiles(FileUpload.fromData(bytes, "meme.png")).queue()
+                    command.channel.sendMessageEmbeds(embedBuilder.build())
+                            .addFiles(FileUpload.fromData(bytes, "meme.png")).queue()
                     prevTime = System.currentTimeMillis()
                 } else {
                     Messages.sendMessage(Messages.memeInputMissing, command)
@@ -141,7 +142,8 @@ constructor(private val command: Message) {
         } else if (command.embeds.size > 0 && command.embeds[0].image != null) {
             image = getImageFromURL(command.embeds[0].image!!.url!!)
             imageInput = true
-        } else if (command.contentDisplay.contains("http://") || command.contentDisplay.contains("https://")) {
+        } else if (command.contentDisplay.contains("http://") ||
+                command.contentDisplay.contains("https://")) {
             for (word in input.split(" ", "\n")) {
                 try {
                     image = getImageFromURL(word.replace("<", "").replace(">", ""))
@@ -155,7 +157,8 @@ constructor(private val command: Message) {
                         input.split(command.mentions.members[command.mentions.members.size - 1].user.name).size > 1)
         ) {
             image =
-                    getImageFromURL(command.mentions.members[command.mentions.members.size - 1].effectiveAvatarUrl + "?size=4096")
+                    getImageFromURL(command.mentions.members[command.mentions.members.size - 1]
+                            .effectiveAvatarUrl + "?size=4096")
             imageInput = true
         } else if (command.referencedMessage != null) {
             val reply = command.referencedMessage!!
@@ -165,10 +168,12 @@ constructor(private val command: Message) {
             } else if (reply.embeds.size > 0 && reply.embeds[0].image != null) {
                 image = getImageFromURL(reply.embeds[0].image!!.url!!)
                 imageInput = true
-            } else if (reply.contentDisplay.contains("http://") || reply.contentDisplay.contains("https://")) {
+            } else if (reply.contentDisplay.contains("http://") ||
+                    reply.contentDisplay.contains("https://")) {
                 for (word in reply.contentDisplay.split(" ", "\n")) {
                     try {
-                        image = getImageFromURL(word.replace("<", "").replace(">", ""))
+                        image = getImageFromURL(word.replace("<", "")
+                                .replace(">", ""))
                         imageInput = true
                         break
                     } catch (e: java.lang.Exception) {
@@ -179,7 +184,8 @@ constructor(private val command: Message) {
                             altInput.split(reply.mentions.members[reply.mentions.members.size - 1].user.name).size > 1)
             ) {
                 image =
-                        getImageFromURL(reply.mentions.members[reply.mentions.members.size - 1].effectiveAvatarUrl + "?size=4096")
+                        getImageFromURL(reply.mentions.members[reply.mentions.members.size - 1]
+                                .effectiveAvatarUrl + "?size=4096")
                 imageInput = true
             }
             if (image != null) {
@@ -274,19 +280,23 @@ constructor(private val command: Message) {
         val bottomText = ArrayList<String>()
         sections[0] = sections[0].trim()
         val topWrapLength =
-                floor(sections[0].length / (metrics.stringWidth(sections[0]) / (width.toFloat() - (width / 6.4)))).toInt()
+                floor(sections[0].length /
+                        (metrics.stringWidth(sections[0]) / (width.toFloat() - (width / 6.4)))).toInt()
         topText.addAll(
                 listOf(
-                        *WordUtils.wrap(sections[0], topWrapLength, "\n\n", true).split("\n\n").toTypedArray()
+                        *WordUtils.wrap(sections[0], topWrapLength, "\n\n", true)
+                                .split("\n\n").toTypedArray()
                 )
         )
         if (sections.size > 1) {
             sections[1] = sections[1].trim()
             val bottomWrapLength =
-                    floor(sections[1].length / (metrics.stringWidth(sections[1]) / (width.toFloat() - (width / 6.4)))).toInt()
+                    floor(sections[1].length /
+                            (metrics.stringWidth(sections[1]) / (width.toFloat() - (width / 6.4)))).toInt()
             bottomText.addAll(
                     listOf(
-                            *WordUtils.wrap(sections[1], bottomWrapLength, "\n\n", true).split("\n\n").toTypedArray()
+                            *WordUtils.wrap(sections[1], bottomWrapLength, "\n\n", true)
+                                    .split("\n\n").toTypedArray()
                     )
             )
         }

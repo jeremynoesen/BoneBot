@@ -70,7 +70,8 @@ object Welcomer {
                 )
                 if (file != null) {
                     embedBuilder.setImage("attachment://" + file.name.replace(" ", "_"))
-                    channel.sendMessageEmbeds(embedBuilder.build()).addFiles(FileUpload.fromData(file, file.name.replace(" ", "_"))).queue()
+                    channel.sendMessageEmbeds(embedBuilder.build()).addFiles(FileUpload.fromData(file,
+                            file.name.replace(" ", "_"))).queue()
                 } else {
                     channel.sendMessageEmbeds(embedBuilder.build()).queue()
                 }

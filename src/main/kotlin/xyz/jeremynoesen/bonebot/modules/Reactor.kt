@@ -65,7 +65,8 @@ object Reactor {
                         val randomReactions = reactions[trigger]!!.split("\$||\$")
                         val selectedReaction = randomReactions[Random.nextInt(randomReactions.size)]
                         for (reactionEmojis in selectedReaction.split("\$&&\$")) {
-                            message.addReaction(Emoji.fromFormatted(reactionEmojis.trim())).queueAfter(delay, TimeUnit.MILLISECONDS)
+                            message.addReaction(Emoji.fromFormatted(reactionEmojis.trim()))
+                                    .queueAfter(delay, TimeUnit.MILLISECONDS)
                         }
                     }
                 }

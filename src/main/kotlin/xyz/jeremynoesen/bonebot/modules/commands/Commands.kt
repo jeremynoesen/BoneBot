@@ -105,7 +105,8 @@ object Commands {
                     }
                 } else {
                     val remaining = ((cooldown * 1000) - (System.currentTimeMillis() - prevTime)) / 1000
-                    Messages.sendMessage(Messages.commandCooldown.replace("\$TIME\$", (remaining + 1).toString()), message)
+                    Messages.sendMessage(Messages.commandCooldown
+                            .replace("\$TIME\$", (remaining + 1).toString()), message)
                     done = true
                     return true
                 }
@@ -189,7 +190,8 @@ object Commands {
         embedBuilder.setDescription("$commandList\n\n[**Source Code**](https://github.com/jeremynoesen/BoneBot)")
         if (file != null) {
             embedBuilder.setImage("attachment://" + file.name.replace(" ", "_"))
-            message.channel.sendMessageEmbeds(embedBuilder.build()).addFiles(FileUpload.fromData(file, file.name.replace(" ", "_"))).queue()
+            message.channel.sendMessageEmbeds(embedBuilder.build()).addFiles(FileUpload.fromData(file,
+                    file.name.replace(" ", "_"))).queue()
         } else {
             message.channel.sendMessageEmbeds(embedBuilder.build()).queue()
         }
@@ -296,8 +298,8 @@ object Commands {
                     embedBuilder.setDescription(toSend)
                     if (file != null) {
                         embedBuilder.setImage("attachment://" + file.name.replace(" ", "_"))
-                        message.channel.sendMessageEmbeds(embedBuilder.build()).addFiles(FileUpload.fromData(file, file.name.replace(" ", "_"))).setMessageReference(message)
-                                .queue()
+                        message.channel.sendMessageEmbeds(embedBuilder.build()).addFiles(FileUpload.fromData(file,
+                                file.name.replace(" ", "_"))).setMessageReference(message).queue()
                     } else {
                         message.channel.sendMessageEmbeds(embedBuilder.build()).setMessageReference(message).queue()
                     }
@@ -305,7 +307,8 @@ object Commands {
                     embedBuilder.setDescription(toSend)
                     if (file != null) {
                         embedBuilder.setImage("attachment://" + file.name.replace(" ", "_"))
-                        message.channel.sendMessageEmbeds(embedBuilder.build()).addFiles(FileUpload.fromData(file, file.name.replace(" ", "_"))).queue()
+                        message.channel.sendMessageEmbeds(embedBuilder.build()).addFiles(FileUpload.fromData(file,
+                                file.name.replace(" ", "_"))).queue()
                     } else {
                         message.channel.sendMessageEmbeds(embedBuilder.build()).queue()
                     }
@@ -316,8 +319,8 @@ object Commands {
                             .replace("  ", " ")
                     if (file != null) {
                         if (toSend.isNotEmpty())
-                            message.channel.sendMessage(toSend).addFiles(FileUpload.fromData(file)).setMessageReference(message)
-                                    .queue()
+                            message.channel.sendMessage(toSend).addFiles(FileUpload.fromData(file))
+                                    .setMessageReference(message).queue()
                         else
                             message.channel.sendFiles(FileUpload.fromData(file)).setMessageReference(message).queue()
                     } else {
@@ -347,6 +350,29 @@ object Commands {
      */
     private fun setPathVariables(message: Message): Map<String, String> {
         val env = HashMap<String, String>()
+        env["BB_GUILD_NAME"] = message.guild.name
+        env["BB_GUILD_ID"] = message.guild.id
+        env["BB_GUILD_ICON"] = message.guild.iconUrl + "?size=4096"
+        env["BB_GUILD_MEMBER_COUNT"] = message.guild.memberCount.toString()
+        env["BB_GUILD_ROLE_COUNT"] = message.guild.roles.size.toString()
+        env["BB_GUILD_CHANNEL_COUNT"] = message.guild.channels.size.toString()
+        env["BB_GUILD_TEXT_CHANNEL_COUNT"] = message.guild.textChannels.size.toString()
+        env["BB_GUILD_VOICE_CHANNEL_COUNT"] = message.guild.voiceChannels.size.toString()
+        env["BB_GUILD_CATEGORY_COUNT"] = message.guild.categories.size.toString()
+        env["BB_GUILD_OWNER_NAME"] = message.guild.owner!!.effectiveName
+        env["BB_GUILD_OWNER_PING"] = message.guild.owner!!.asMention
+        env["BB_GUILD_OWNER_ID"] = message.guild.owner!!.id
+        env["BB_GUILD_OWNER_AVATAR"] = message.guild.owner!!.effectiveAvatarUrl + "?size=4096"
+        if (message.guild.owner!!.roles.size > 0) {
+            for (i in message.member!!.roles.indices) {
+                env["BB_GUILD_OWNER_ROLE_$i"] = message.member!!.roles[i].id
+            }
+        }
+        env["BB_GUILD_OWNER_ROLE_COUNT"] = message.guild.owner!!.roles.size.toString()
+        env["BB_CHANNEL_MENTION"] = message.channel.asMention
+        env["BB_CHANNEL_NAME"] = message.channel.name
+        env["BB_CHANNEL_ID"] = message.channel.id
+        env["BB_CHANNEL_TYPE"] = message.channel.type.name
         env["BB_CONTENT"] =
                 message.contentDisplay.replace(message.contentDisplay.split(" ")[0], "").trim()
         env["BB_NAME"] = message.member!!.effectiveName

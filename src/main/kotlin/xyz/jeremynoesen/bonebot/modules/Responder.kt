@@ -72,7 +72,8 @@ object Responder {
                         for (responseMessage in selectedResponse.split("\$&&\$")) {
                             var toSend = responseMessage.replace("\$PING\$", message.member!!.asMention)
                                     .replace("\$NAME\$", message.member!!.effectiveName)
-                                    .replace("\$BOT\$", message.guild.getMember(BoneBot.JDA!!.selfUser)!!.effectiveName)
+                                    .replace("\$BOT\$", message.guild.getMember(BoneBot.JDA!!.selfUser)!!
+                                            .effectiveName)
                                     .replace("\\n", "\n")
                                     .replace("  ", " ")
                                     .trim()
@@ -110,9 +111,11 @@ object Responder {
                                 }
                                 if (file != null) {
                                     if (toSend.isNotEmpty())
-                                        message.channel.sendMessage(toSend).addFiles(FileUpload.fromData(file)).setMessageReference(message).queue()
+                                        message.channel.sendMessage(toSend).addFiles(FileUpload.fromData(file))
+                                                .setMessageReference(message).queue()
                                     else
-                                        message.channel.sendFiles(FileUpload.fromData(file)).setMessageReference(message).queue()
+                                        message.channel.sendFiles(FileUpload.fromData(file))
+                                                .setMessageReference(message).queue()
                                 } else {
                                     if (toSend.isNotEmpty())
                                         message.channel.sendMessage(toSend).setMessageReference(message).queue()

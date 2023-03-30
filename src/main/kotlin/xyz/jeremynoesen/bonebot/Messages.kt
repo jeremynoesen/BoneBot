@@ -14,8 +14,8 @@ import java.util.*
  */
 object Messages {
     var helpTitle = "\$BOT\$ Help"
-    var helpAbout =
-            "\$BOT\$ aims to add more life to a server by responding and reacting to messages. It also adds commands, which are listed below."
+    var helpAbout = "\$BOT\$ aims to add more life to a server by responding and reacting to messages. It also adds" +
+            " commands, which are listed below."
     var helpFormat = "• **`\$CMD\$`**: \$DESC\$"
     var helpDescription = "Show this help message."
     var memeDescription = "Generate a random or custom meme."

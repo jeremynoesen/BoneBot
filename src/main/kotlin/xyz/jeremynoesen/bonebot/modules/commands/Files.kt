@@ -50,7 +50,8 @@ object Files {
                     try {
                         val file = File(
                                 "resources/files/" +
-                                        message.contentDisplay.substring(Commands.prefix.length + Messages.fileCommand.length)
+                                        message.contentDisplay.substring(Commands.prefix.length +
+                                                Messages.fileCommand.length)
                                                 .replace("..", "")
                                                 .replace("  ", " ").trim()
                         )
@@ -64,7 +65,8 @@ object Files {
                             val embedBuilder = EmbedBuilder()
                             var title = Messages.fileTitle
                                     .replace("\$NAME\$", message.member!!.effectiveName)
-                                    .replace("\$BOT\$", message.guild.getMember(BoneBot.JDA!!.selfUser)!!.effectiveName)
+                                    .replace("\$BOT\$", message.guild
+                                            .getMember(BoneBot.JDA!!.selfUser)!!.effectiveName)
                                     .replace("\\n", "\n")
                                     .replace("  ", " ")
                                     .trim()
@@ -83,7 +85,8 @@ object Files {
                             }
                             embedBuilder.setColor(Config.embedColor)
                             embedBuilder.setImage("attachment://" + file.name.replace(" ", "_"))
-                            message.channel.sendMessageEmbeds(embedBuilder.build()).addFiles(FileUpload.fromData(file, file.name.replace(" ", "_"))).queue()
+                            message.channel.sendMessageEmbeds(embedBuilder.build()).addFiles(FileUpload
+                                    .fromData(file, file.name.replace(" ", "_"))).queue()
                         }
                     } catch (e: Exception) {
                         Messages.sendMessage(Messages.unknownFile, message)
@@ -91,7 +94,8 @@ object Files {
                 }
             } else {
                 val remaining = ((cooldown * 1000) - (System.currentTimeMillis() - prevTime)) / 1000
-                Messages.sendMessage(Messages.fileCooldown.replace("\$TIME\$", (remaining + 1).toString()), message)
+                Messages.sendMessage(Messages.fileCooldown
+                        .replace("\$TIME\$", (remaining + 1).toString()), message)
             }
         } catch (e: Exception) {
             Messages.sendMessage(Messages.error, message)
@@ -146,7 +150,8 @@ object Files {
             }
             embedBuilder.setColor(Config.embedColor)
             embedBuilder.setImage("attachment://" + file.name.replace(" ", "_"))
-            message.channel.sendMessageEmbeds(embedBuilder.build()).addFiles(FileUpload.fromData(file, file.name.replace(" ", "_"))).queue()
+            message.channel.sendMessageEmbeds(embedBuilder.build())
+                    .addFiles(FileUpload.fromData(file, file.name.replace(" ", "_"))).queue()
         } else {
             Messages.sendMessage(Messages.noFiles, message)
         }

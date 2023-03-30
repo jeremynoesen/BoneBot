@@ -86,7 +86,8 @@ object Quotes {
                 }
             } else {
                 val remaining = ((cooldown * 1000) - (System.currentTimeMillis() - prevTime)) / 1000
-                Messages.sendMessage(Messages.quoteCooldown.replace("\$TIME\$", (remaining + 1).toString()), message)
+                Messages.sendMessage(Messages.quoteCooldown
+                        .replace("\$TIME\$", (remaining + 1).toString()), message)
             }
         } catch (e: Exception) {
             Messages.sendMessage(Messages.error, message)
