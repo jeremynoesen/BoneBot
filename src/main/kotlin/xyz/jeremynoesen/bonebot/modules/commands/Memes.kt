@@ -262,7 +262,7 @@ constructor(private val command: Message) {
         meme = BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB)
         val g2d = meme!!.graphics as Graphics2D
         val font =
-                Font.createFont(Font.TRUETYPE_FONT, javaClass.getResourceAsStream("/Impact.ttf"))
+                Font.createFont(Font.TRUETYPE_FONT, javaClass.getResourceAsStream("/Impact-Noto-Emoji.ttf"))
                         .deriveFont(((height + width) / 20.0f) * fontScale)
         g2d.font = font
         val metrics = g2d.getFontMetrics(font)
