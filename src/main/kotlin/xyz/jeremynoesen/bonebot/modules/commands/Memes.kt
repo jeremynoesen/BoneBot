@@ -263,8 +263,17 @@ constructor(private val command: Message) {
      */
     @Throws(IOException::class, FontFormatException::class)
     private fun processImage() {
-        val width = if (size == 0) image!!.width else size
-        val height = if (size == 0) image!!.height else (width * (image!!.height / image!!.width.toDouble())).toInt()
+        var width = image!!.width
+        var height = image!!.height
+        if (size != 0) {
+            if (width > height) {
+                height = (size * (height / width.toDouble())).toInt()
+                width = size
+            } else {
+                width = (size * (width / height.toDouble())).toInt()
+                height = size
+            }
+        }
         meme = BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB)
         val g2d = meme!!.graphics as Graphics2D
         val font =
@@ -361,7 +370,7 @@ constructor(private val command: Message) {
         var enabled = true
 
         /**
-         * Width of generated memes in pixels
+         * Maximum size of a single dimension of generated memes in pixels
          */
         var size = 1200
 

@@ -234,9 +234,9 @@ placeholders will also be specified per module.
     - Each separate line denotes a separate text.
     - The format is `<top text> \n <bottom text>`.
 - Text input can use all placeholders except for `$REPLY$`.
-- To set the size of generates memes, set `memes-size` in the main configuration to any number. This sets the image
-  width to this number, and varies the height based on this width. Set it to `0` to use the image's original dimensions
-  with no scaling.
+- To set the size of generates memes, set `memes-size` in the main configuration to any number. This limits the larger
+  dimension to this value, and scales the other dimension accordingly. Set it to `0` to use the image's original
+  dimensions with no scaling.
 - To set the font size of text, set `memes-font-scale` in the main configuration. It defaults to `1.0`.
 - To set a cool down for the generator, set `memes-cooldown` in the main configuration to any whole number in seconds.
 - To enable or disable the generator, set `memes-enabled` in the main configuration to `true` or `false`.
