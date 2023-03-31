@@ -205,9 +205,6 @@ constructor(private val command: Message) {
         } else if (texts.isNotEmpty()) {
             text = texts[Random().nextInt(texts.size)]
         }
-        if(text!!.startsWith(Commands.prefix + Messages.memeCommand)) {
-            text = text!!.substring(Commands.prefix.length + Messages.memeCommand.length, text!!.length)
-        }
     }
 
     /**
@@ -255,6 +252,9 @@ constructor(private val command: Message) {
                 input.replace("@${command.mentions.members[i].effectiveName}", "")
                         .replace("@${command.mentions.members[i].user.name}", "")
                         .replace("  ", " ")
+        if(output.startsWith(Commands.prefix + Messages.memeCommand)) {
+            output = output.substring(Commands.prefix.length + Messages.memeCommand.length, text!!.length)
+        }
         return output
     }
 
