@@ -9,7 +9,6 @@ import xyz.jeremynoesen.bonebot.Messages
 import java.io.File
 import java.lang.IllegalStateException
 import java.util.*
-import kotlin.collections.HashSet
 
 /**
  * Module to send files from a directory
@@ -42,56 +41,52 @@ object Files {
         try {
             if ((System.currentTimeMillis() - prevTime) >= cooldown * 1000) {
                 prevTime = System.currentTimeMillis()
+                var file: File?
                 if (message.contentDisplay.trim()
-                                .lowercase() == Commands.prefix + Messages.fileCommand.lowercase()
-                ) {
-                    sendRandomFile(message, File("resources/files"))
+                                .lowercase() == Commands.prefix + Messages.fileCommand.lowercase()) {
+                    file = getRandomFile(File("resources/files"))
                 } else {
-                    try {
-                        val file = File(
-                                "resources/files/" +
-                                        message.contentDisplay.substring(Commands.prefix.length +
-                                                Messages.fileCommand.length)
-                                                .replace("..", "")
-                                                .replace("  ", " ").trim()
-                        )
-                        if (!file.exists() || file.isHidden) {
-                            Messages.sendMessage(Messages.unknownFile, message)
-                            return
-                        }
-                        if (file.isDirectory) {
-                            sendRandomFile(message, file)
-                        } else {
-                            val embedBuilder = EmbedBuilder()
-                            var title = Messages.fileTitle
-                                    .replace("\$NAME\$", message.member!!.effectiveName)
-                                    .replace("\$BOT\$", message.guild
-                                            .getMember(BoneBot.JDA!!.selfUser)!!.effectiveName)
-                                    .replace("\\n", "\n")
-                                    .replace("  ", " ")
-                                    .trim()
-                            try {
-                                title = title.replace("\$GUILD\$", message.guild.name)
-                            } catch (e: IllegalStateException) {
-                            }
-                            if (title.contains(message.member!!.effectiveName)) {
-                                embedBuilder.setAuthor(title, null, message.member!!.effectiveAvatarUrl)
-                            } else if (title.contains(message.guild.getMember(BoneBot.JDA!!.selfUser)!!.effectiveName)) {
-                                embedBuilder.setAuthor(title, null, BoneBot.JDA!!.selfUser.effectiveAvatarUrl)
-                            } else if (title.contains(message.guild.name)) {
-                                embedBuilder.setAuthor(title, null, message.guild.iconUrl)
-                            } else {
-                                embedBuilder.setAuthor(title, null)
-                            }
-                            embedBuilder.setColor(Config.embedColor)
-                            embedBuilder.setImage("attachment://" + file.name.replace(" ", "_"))
-                            message.channel.sendMessageEmbeds(embedBuilder.build()).addFiles(FileUpload
-                                    .fromData(file, file.name.replace(" ", "_"))).queue()
-                        }
-                    } catch (e: Exception) {
-                        Messages.sendMessage(Messages.unknownFile, message)
+                    file = File("resources/files/" +
+                            message.contentDisplay.substring(Commands.prefix.length +
+                                    Messages.fileCommand.length)
+                                    .replace("..", "")
+                                    .replace("  ", " ").trim()
+                    )
+                    if (!file.exists() || file.isHidden) {
+                        file = null
+                    } else if (file.isDirectory) {
+                        file = getRandomFile(file)
                     }
                 }
+                if (file == null) {
+                    Messages.sendMessage(Messages.unknownFile, message)
+                    return
+                }
+                val embedBuilder = EmbedBuilder()
+                var title = Messages.fileTitle
+                        .replace("\$NAME\$", message.member!!.effectiveName)
+                        .replace("\$BOT\$", message.guild
+                                .getMember(BoneBot.JDA!!.selfUser)!!.effectiveName)
+                        .replace("\\n", "\n")
+                        .replace("  ", " ")
+                        .trim()
+                try {
+                    title = title.replace("\$GUILD\$", message.guild.name)
+                } catch (e: IllegalStateException) {
+                }
+                if (title.contains(message.member!!.effectiveName)) {
+                    embedBuilder.setAuthor(title, null, message.member!!.effectiveAvatarUrl)
+                } else if (title.contains(message.guild.getMember(BoneBot.JDA!!.selfUser)!!.effectiveName)) {
+                    embedBuilder.setAuthor(title, null, BoneBot.JDA!!.selfUser.effectiveAvatarUrl)
+                } else if (title.contains(message.guild.name)) {
+                    embedBuilder.setAuthor(title, null, message.guild.iconUrl)
+                } else {
+                    embedBuilder.setAuthor(title, null)
+                }
+                embedBuilder.setColor(Config.embedColor)
+                embedBuilder.setImage("attachment://" + file.name.replace(" ", "_"))
+                message.channel.sendMessageEmbeds(embedBuilder.build()).addFiles(FileUpload
+                        .fromData(file, file.name.replace(" ", "_"))).queue()
             } else {
                 val remaining = ((cooldown * 1000) - (System.currentTimeMillis() - prevTime)) / 1000
                 Messages.sendMessage(Messages.fileCooldown
@@ -104,12 +99,11 @@ object Files {
     }
 
     /**
-     * Send a random file from a directory
+     * Get random file to send
      *
-     * @param message Message initiating action
-     * @param dir Directory to grab files from
+     * @param dir Directory to look in for files
      */
-    private fun sendRandomFile(message: Message, dir: File) {
+    private fun getRandomFile(dir: File): File? {
         val r = Random()
         if (dir.listFiles()!!.isNotEmpty()) {
             var rand = r.nextInt(dir.listFiles()!!.size)
@@ -119,41 +113,14 @@ object Files {
                 if (prev.contains(rand)) continue
                 prev.add(rand)
                 if (prev.size == dir.listFiles()!!.size) {
-                    Messages.sendMessage(Messages.noFiles, message)
-                    return
+                    return null
                 }
             }
             if (dir.listFiles()!![rand].isDirectory) {
-                sendRandomFile(message, dir.listFiles()!![rand])
-                return
+                return getRandomFile(dir.listFiles()!![rand])
             }
-            val file = dir.listFiles()!![rand]
-            val embedBuilder = EmbedBuilder()
-            var title = Messages.fileTitle
-                    .replace("\$NAME\$", message.member!!.effectiveName)
-                    .replace("\$BOT\$", message.guild.getMember(BoneBot.JDA!!.selfUser)!!.effectiveName)
-                    .replace("\\n", "\n")
-                    .replace("  ", " ")
-                    .trim()
-            try {
-                title = title.replace("\$GUILD\$", message.guild.name)
-            } catch (e: IllegalStateException) {
-            }
-            if (title.contains(message.member!!.effectiveName)) {
-                embedBuilder.setAuthor(title, null, message.member!!.effectiveAvatarUrl)
-            } else if (title.contains(message.guild.getMember(BoneBot.JDA!!.selfUser)!!.effectiveName)) {
-                embedBuilder.setAuthor(title, null, BoneBot.JDA!!.selfUser.effectiveAvatarUrl)
-            } else if (title.contains(message.guild.name)) {
-                embedBuilder.setAuthor(title, null, message.guild.iconUrl)
-            } else {
-                embedBuilder.setAuthor(title, null)
-            }
-            embedBuilder.setColor(Config.embedColor)
-            embedBuilder.setImage("attachment://" + file.name.replace(" ", "_"))
-            message.channel.sendMessageEmbeds(embedBuilder.build())
-                    .addFiles(FileUpload.fromData(file, file.name.replace(" ", "_"))).queue()
-        } else {
-            Messages.sendMessage(Messages.noFiles, message)
+            return dir.listFiles()!![rand]
         }
+        return null
     }
 }
