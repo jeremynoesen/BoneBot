@@ -252,8 +252,8 @@ constructor(private val command: Message) {
                 input.replace("@${command.mentions.members[i].effectiveName}", "")
                         .replace("@${command.mentions.members[i].user.name}", "")
                         .replace("  ", " ")
-        if(output.startsWith(Commands.prefix + Messages.memeCommand)) {
-            output = output.substring(Commands.prefix.length + Messages.memeCommand.length, text!!.length)
+        if (output.startsWith(Commands.prefix + Messages.memeCommand)) {
+            output = output.substring(Commands.prefix.length + Messages.memeCommand.length, output.length)
         }
         return output
     }
