@@ -134,6 +134,7 @@ constructor(private val command: Message) {
                 command.contentDisplay.length
         )
         var altInput = ""
+        if (command.referencedMessage != null) altInput = command.referencedMessage!!.contentDisplay
         if (command.attachments.size > 0 && command.attachments[0].isImage) {
             image = getImageFromURL(command.attachments[0].url)
         } else if (command.embeds.size > 0 && command.embeds[0].image != null) {
@@ -156,7 +157,6 @@ constructor(private val command: Message) {
                             .effectiveAvatarUrl + "?size=4096")
         } else if (command.referencedMessage != null) {
             val reply = command.referencedMessage!!
-            altInput = reply.contentDisplay
             if (reply.attachments.size > 0 && reply.attachments[0].isImage) {
                 image = getImageFromURL(reply.attachments[0].url)
             } else if (reply.embeds.size > 0 && reply.embeds[0].image != null) {
