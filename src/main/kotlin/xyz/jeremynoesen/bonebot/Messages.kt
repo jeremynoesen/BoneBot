@@ -157,7 +157,7 @@ object Messages {
                 lineScanner.close()
             }
             fileScanner.close()
-        } catch (e: FileNotFoundException) {
+        } catch (_: FileNotFoundException) {
         }
         val file = File("resources/messages.txt")
         file.delete()
@@ -210,7 +210,7 @@ object Messages {
                     .trim()
             try {
                 toSend = toSend.replace("\$GUILD\$", cause.guild.name)
-            } catch (e: IllegalStateException) {
+            } catch (_: IllegalStateException) {
             }
             if (toSend.isNotEmpty())
                 cause.channel.sendMessage(toSend).setMessageReference(cause).queue()
@@ -223,7 +223,7 @@ object Messages {
                     .trim()
             try {
                 toSend = toSend.replace("\$GUILD\$", cause.guild.name)
-            } catch (e: IllegalStateException) {
+            } catch (_: IllegalStateException) {
             }
             if (toSend.isNotEmpty())
                 cause.channel.sendMessage(toSend).queue()

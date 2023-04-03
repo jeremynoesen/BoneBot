@@ -63,7 +63,7 @@ object Responder {
                             .trim()
                     try {
                         editedTrigger = editedTrigger.replace("\$GUILD\$", message.guild.name)
-                    } catch (e: IllegalStateException) {
+                    } catch (_: IllegalStateException) {
                     }
                     if (msg.contains(Regex(editedTrigger)) || msg.lowercase().contains(editedTrigger.lowercase())) {
                         prevTime = System.currentTimeMillis()
@@ -79,7 +79,7 @@ object Responder {
                                     .trim()
                             try {
                                 toSend = toSend.replace("\$GUILD\$", message.guild.name)
-                            } catch (e: IllegalStateException) {
+                            } catch (_: IllegalStateException) {
                             }
                             var file: File? = null
                             if (toSend.contains("\$FILE\$")) {

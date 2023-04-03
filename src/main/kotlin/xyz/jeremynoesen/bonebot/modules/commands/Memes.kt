@@ -66,7 +66,7 @@ constructor(private val command: Message) {
                             .replace("\\n", "\n")
                     try {
                         text = text!!.replace("\$GUILD\$", command.guild.name)
-                    } catch (e: IllegalStateException) {
+                    } catch (_: IllegalStateException) {
                     }
                     processImage()
                     val embedBuilder = EmbedBuilder()
@@ -78,7 +78,7 @@ constructor(private val command: Message) {
                             .trim()
                     try {
                         title = title.replace("\$GUILD\$", command.guild.name)
-                    } catch (e: IllegalStateException) {
+                    } catch (_: IllegalStateException) {
                     }
                     if (title.contains(command.member!!.effectiveName)) {
                         embedBuilder.setAuthor(title, null, command.member!!.effectiveAvatarUrl)
@@ -144,7 +144,7 @@ constructor(private val command: Message) {
                 try {
                     image = getImageFromURL(word.replace("<", "").replace(">", ""))
                     break
-                } catch (e: java.lang.Exception) {
+                } catch (_: java.lang.Exception) {
                 }
             }
         } else if (command.mentions.members.size > 0 &&
@@ -168,7 +168,7 @@ constructor(private val command: Message) {
                         image = getImageFromURL(word.replace("<", "")
                                 .replace(">", ""))
                         break
-                    } catch (e: java.lang.Exception) {
+                    } catch (_: java.lang.Exception) {
                     }
                 }
             } else if (reply.mentions.users.size > 0 &&

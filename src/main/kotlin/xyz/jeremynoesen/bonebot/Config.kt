@@ -143,7 +143,7 @@ object Config {
                 lineScanner.close()
             }
             fileScanner.close()
-        } catch (e: FileNotFoundException) {
+        } catch (_: FileNotFoundException) {
         }
         val file = File("resources/config.txt")
         file.delete()

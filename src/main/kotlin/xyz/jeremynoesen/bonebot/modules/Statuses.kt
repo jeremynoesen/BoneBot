@@ -57,7 +57,7 @@ object Statuses {
                 }
                 try {
                     Thread.sleep(delay * 1000L)
-                } catch (e: InterruptedException) {
+                } catch (_: InterruptedException) {
                 }
             }
         }.start()

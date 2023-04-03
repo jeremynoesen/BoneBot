@@ -171,7 +171,7 @@ object Commands {
                 .trim()
         try {
             commandList = commandList.replace("\$GUILD\$", message.guild.name)
-        } catch (e: IllegalStateException) {
+        } catch (_: IllegalStateException) {
         }
         val embedBuilder = EmbedBuilder()
         var title = Messages.helpTitle
@@ -182,7 +182,7 @@ object Commands {
                 .trim()
         try {
             title = title.replace("\$GUILD\$", message.guild.name)
-        } catch (e: IllegalStateException) {
+        } catch (_: IllegalStateException) {
         }
         embedBuilder.setAuthor(title, null, null)
         embedBuilder.setThumbnail(message.guild.getMember(BoneBot.JDA!!.selfUser)!!.effectiveAvatarUrl)
@@ -217,7 +217,7 @@ object Commands {
                             .trim()
             try {
                 toSend = toSend.replace("\$GUILD\$", message.guild.name)
-            } catch (e: IllegalStateException) {
+            } catch (_: IllegalStateException) {
             }
             if (toSend.contains("\$CMD\$")) {
                 val cmd = toSend.split("\$CMD\$")[1].trim()
