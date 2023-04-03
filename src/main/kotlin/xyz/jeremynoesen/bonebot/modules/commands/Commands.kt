@@ -465,28 +465,28 @@ object Commands {
             }
             env["BB_REPLY_URL_COUNT"] = k.toString()
             l = 0
-            if (reply.mentions.members.size > 0) {
-                for (i in reply.mentions.members.indices) {
-                    if (reply.contentDisplay.split(reply.mentions.members[i].effectiveName).size > 1 ||
-                            reply.contentDisplay.split(reply.mentions.members[i].user.name).size > 1) {
+            if (reply.mentions.users.size > 0) {
+                for (i in reply.mentions.users.indices) {
+                    if (reply.contentDisplay.split(reply.mentions.users[i].name).size > 1) {
+                        val member = reply.guild.getMember(reply.mentions.users[i])
                         env["BB_REPLY_MENTION_${l}_DISPLAY_NAME"] =
-                                reply.mentions.members[i].effectiveName
+                                member!!.effectiveName
                         env["BB_REPLY_MENTION_${l}_USER_NAME"] =
-                                reply.mentions.members[i].user.name
+                                member.user.name
                         env["BB_REPLY_MENTION_${l}_PING"] =
-                                reply.mentions.members[i].asMention
+                                member.asMention
                         env["BB_REPLY_MENTION_${l}_ID"] =
-                                reply.mentions.members[i].id
+                                member.id
                         env["BB_REPLY_MENTION_${l}_AVATAR"] =
-                                reply.mentions.members[i].effectiveAvatarUrl + "?size=4096"
-                        if (reply.mentions.members[i].roles.size > 0) {
-                            for (r in reply.mentions.members[i].roles.indices) {
-                                env["BB_REPLY_MENTION_${l}_ROLE_ID_$r"] = reply.mentions.members[i].roles[r].id
-                                env["BB_REPLY_MENTION_${l}_ROLE_NAME_$r"] = reply.mentions.members[i].roles[r].name
-                                env["BB_REPLY_MENTION_${l}_ROLE_MENTION_$r"] = reply.mentions.members[i].roles[r].asMention
+                                member.effectiveAvatarUrl + "?size=4096"
+                        if (member.roles.size > 0) {
+                            for (r in member.roles.indices) {
+                                env["BB_REPLY_MENTION_${l}_ROLE_ID_$r"] = member.roles[r].id
+                                env["BB_REPLY_MENTION_${l}_ROLE_NAME_$r"] = member.roles[r].name
+                                env["BB_REPLY_MENTION_${l}_ROLE_MENTION_$r"] = member.roles[r].asMention
                             }
                         }
-                        env["BB_REPLY_MENTION_${l}_ROLE_COUNT"] = reply.mentions.members[i].roles.size.toString()
+                        env["BB_REPLY_MENTION_${l}_ROLE_COUNT"] = member.roles.size.toString()
                         l++
                     }
                 }
