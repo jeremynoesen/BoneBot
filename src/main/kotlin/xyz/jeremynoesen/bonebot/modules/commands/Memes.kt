@@ -336,7 +336,7 @@ constructor(private val command: Message) {
             val shape = TextLayout(line, font, g2d.fontRenderContext).getOutline(null)
             g2d.stroke = BasicStroke(outlineThickness)
             val x = ((width - metrics.stringWidth(line)) / 2f).toInt()
-            val y = (height - (bottomText.size - i - 0.8) * g2d.font.size).toInt()
+            val y = (height - (bottomText.size - i - 0.75) * g2d.font.size).toInt()
             val rect = shape.bounds
             rect.width += outlineThickness.toInt() + 1
             rect.height += outlineThickness.toInt()
