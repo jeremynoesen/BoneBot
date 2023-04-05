@@ -343,6 +343,7 @@ placeholders will also be specified per module.
 - Messages can include all placeholders
     - `$PING$` and `$REPLY$` can not be used for embed titles.
     - Command labels can not use any placeholders.
+    - Some messages have placeholders specific to their message, which can be found in the file.
 - Standard Discord Markdown formatting is supported.
 - This file can modify all built-in responses, command descriptions, and commands.
 - The `help-about` message can include a file foe the embed using the `$FILE$` format.
