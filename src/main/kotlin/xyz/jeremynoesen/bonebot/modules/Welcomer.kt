@@ -51,8 +51,10 @@ object Welcomer {
                 embedBuilder.setAuthor(
                         Messages.welcomeTitle
                                 .replace("\$GUILD\$", guild.name)
-                                .replace("\$NAME\$", member.effectiveName)
-                                .replace("\$BOT\$", guild.getMember(BoneBot.JDA!!.selfUser)!!.effectiveName)
+                                .replace("\$AUTHORDISPLAYNAME\$", member.effectiveName)
+                                .replace("\$AUTHORUSERNAME\$", member.user.name)
+                                .replace("\$BOTDISPLAYNAME\$", guild.getMember(BoneBot.JDA!!.selfUser)!!.effectiveName)
+                                .replace("\$BOTUSERNAME\$", BoneBot.JDA!!.selfUser.name)
                                 .replace("\\n", "\n")
                                 .replace("  ", " ")
                                 .trim(),
@@ -60,10 +62,13 @@ object Welcomer {
                 )
                 embedBuilder.setThumbnail(guild.iconUrl)
                 embedBuilder.setDescription(
-                        toSend.replace("\$PING\$", member.asMention)
-                                .replace("\$NAME\$", member.effectiveName)
+                        toSend.replace("\$AUTHORMENTION\$", member.asMention)
+                                .replace("\$AUTHORDISPLAYNAME\$", member.effectiveName)
+                                .replace("\$AUTHORUSERNAME\$", member.user.name)
                                 .replace("\$GUILD\$", guild.name)
-                                .replace("\$BOT\$", guild.getMember(BoneBot.JDA!!.selfUser)!!.effectiveName)
+                                .replace("\$BOTMENTION\$", guild.getMember(BoneBot.JDA!!.selfUser)!!.asMention)
+                                .replace("\$BOTDISPLAYNAME\$", guild.getMember(BoneBot.JDA!!.selfUser)!!.effectiveName)
+                                .replace("\$BOTUSERNAME\$", BoneBot.JDA!!.selfUser.name)
                                 .replace("\\n", "\n")
                                 .replace("  ", " ")
                                 .trim()

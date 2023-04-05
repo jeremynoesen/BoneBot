@@ -38,19 +38,19 @@ object Statuses {
                     when {
                         status.lowercase().startsWith("playing") -> {
                             status = status.substring(7, status.length)
-                                    .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name).trim()
+                                    .replace("\$BOTDISPLAYNAME\$", BoneBot.JDA!!.selfUser.name).trim()
                             BoneBot.JDA!!.presence.activity = Activity.playing(status)
                         }
 
                         status.lowercase().startsWith("watching") -> {
                             status = status.substring(8, status.length)
-                                    .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name).trim()
+                                    .replace("\$BOTDISPLAYNAME\$", BoneBot.JDA!!.selfUser.name).trim()
                             BoneBot.JDA!!.presence.activity = Activity.watching(status)
                         }
 
                         status.lowercase().startsWith("listening to") -> {
                             status = status.substring(12, status.length)
-                                    .replace("\$BOT\$", BoneBot.JDA!!.selfUser.name).trim()
+                                    .replace("\$BOTDISPLAYNAME\$", BoneBot.JDA!!.selfUser.name).trim()
                             BoneBot.JDA!!.presence.activity = Activity.listening(status)
                         }
                     }

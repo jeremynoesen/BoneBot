@@ -55,9 +55,13 @@ object Responder {
             if ((System.currentTimeMillis() - prevTime) >= cooldown * 1000) {
                 val msg = message.contentDisplay
                 for (trigger in responses.keys) {
-                    var editedTrigger = trigger.replace("\$PING\$", message.member!!.asMention)
-                            .replace("\$NAME\$", message.member!!.effectiveName)
-                            .replace("\$BOT\$", message.guild.getMember(BoneBot.JDA!!.selfUser)!!.effectiveName)
+                    var editedTrigger = trigger.replace("\$AUTHORMENTION\$", message.member!!.asMention)
+                            .replace("\$AUTHORDISPLAYNAME\$", message.member!!.effectiveName)
+                            .replace("\$AUTHORUSERNAME\$", message.author.name)
+                            .replace("\$BOTMENTION\$", message.guild.getMember(BoneBot.JDA!!.selfUser)!!.asMention)
+                            .replace("\$BOTDISPLAYNAME\$", message.guild.getMember(BoneBot.JDA!!.selfUser)!!
+                                    .effectiveName)
+                            .replace("\$BOTUSERNAME\$", BoneBot.JDA!!.selfUser.name)
                             .replace("\\n", "\n")
                             .replace("  ", " ")
                             .trim()
@@ -70,10 +74,16 @@ object Responder {
                         val randomResponses = responses[trigger]!!.split("\$||\$")
                         val selectedResponse = randomResponses[Random.nextInt(randomResponses.size)]
                         for (responseMessage in selectedResponse.split("\$&&\$")) {
-                            var toSend = responseMessage.replace("\$PING\$", message.member!!.asMention)
-                                    .replace("\$NAME\$", message.member!!.effectiveName)
-                                    .replace("\$BOT\$", message.guild.getMember(BoneBot.JDA!!.selfUser)!!
+                            var toSend = responseMessage.replace("\$AUTHORMENTION\$", message.member!!.asMention)
+                                    .replace("\$AUTHORDISPLAYNAME\$", message.member!!.effectiveName)
+                                    .replace("\$AUTHORUSERNAME\$", message.author.name)
+                                    .replace("\$BOTMENTION\$", message.guild.getMember(BoneBot.JDA!!.selfUser)!!
+                                            .asMention)
+                                    .replace("\$BOTDISPLAYNAME\$", message.guild.getMember(BoneBot.JDA!!.selfUser)!!
                                             .effectiveName)
+                                    .replace("\$BOTUSERNAME\$", BoneBot.JDA!!.selfUser.name)
+                                    .replace("\$CHANNELMENTION\$", message.channel.asMention)
+                                    .replace("\$CHANNELNAME\$", message.channel.name)
                                     .replace("\\n", "\n")
                                     .replace("  ", " ")
                                     .trim()

@@ -50,9 +50,15 @@ object Reactor {
             if ((System.currentTimeMillis() - prevTime) >= cooldown * 1000) {
                 val msg = message.contentDisplay
                 for (trigger in reactions.keys) {
-                    var editedTrigger = trigger.replace("\$PING\$", message.member!!.asMention)
-                            .replace("\$NAME\$", message.member!!.effectiveName)
-                            .replace("\$BOT\$", message.guild.getMember(BoneBot.JDA!!.selfUser)!!.effectiveName)
+                    var editedTrigger = trigger.replace("\$AUTHORMENTION\$", message.member!!.asMention)
+                            .replace("\$AUTHORDISPLAYNAME\$", message.member!!.effectiveName)
+                            .replace("\$AUTHORUSERNAME\$", message.author.name)
+                            .replace("\$BOTMENTION\$", message.guild.getMember(BoneBot.JDA!!.selfUser)!!.asMention)
+                            .replace("\$BOTDISPLAYNAME\$", message.guild.getMember(BoneBot.JDA!!.selfUser)!!
+                                    .effectiveName)
+                            .replace("\$BOTUSERNAME\$", BoneBot.JDA!!.selfUser.name)
+                            .replace("\$CHANNELMENTION\$", message.channel.asMention)
+                            .replace("\$CHANNELNAME\$", message.channel.name)
                             .replace("\\n", "\n")
                             .replace("  ", " ")
                             .trim()

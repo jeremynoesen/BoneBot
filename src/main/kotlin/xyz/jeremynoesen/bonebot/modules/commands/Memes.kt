@@ -60,9 +60,15 @@ constructor(private val command: Message) {
                 readTextAndImage()
                 if (image != null && text != null) {
                     text = text!!
-                            .replace("\$PING\$", command.member!!.asMention)
-                            .replace("\$NAME\$", command.member!!.effectiveName)
-                            .replace("\$BOT\$", command.guild.getMember(BoneBot.JDA!!.selfUser)!!.effectiveName)
+                            .replace("\$AUTHORMENTION\$", command.member!!.asMention)
+                            .replace("\$AUTHORDISPLAYNAME\$", command.member!!.effectiveName)
+                            .replace("\$AUTHORUSERNAME\$", command.author.name)
+                            .replace("\$BOTMENTION\$", command.guild.getMember(BoneBot.JDA!!.selfUser)!!.asMention)
+                            .replace("\$BOTDISPLAYNAME\$", command.guild.getMember(BoneBot.JDA!!.selfUser)!!
+                                    .effectiveName)
+                            .replace("\$BOTUSERNAME\$", BoneBot.JDA!!.selfUser.name)
+                            .replace("\$CHANNELMENTION\$", command.channel.asMention)
+                            .replace("\$CHANNELNAME\$", command.channel.name)
                             .replace("\\n", "\n")
                     try {
                         text = text!!.replace("\$GUILD\$", command.guild.name)
@@ -71,8 +77,12 @@ constructor(private val command: Message) {
                     processImage()
                     val embedBuilder = EmbedBuilder()
                     var title = Messages.memeTitle
-                            .replace("\$NAME\$", command.member!!.effectiveName)
-                            .replace("\$BOT\$", command.guild.getMember(BoneBot.JDA!!.selfUser)!!.effectiveName)
+                            .replace("\$AUTHORDISPLAYNAME\$", command.member!!.effectiveName)
+                            .replace("\$AUTHORUSERNAME\$", command.author.name)
+                            .replace("\$BOTDISPLAYNAME\$", command.guild.getMember(BoneBot.JDA!!.selfUser)!!
+                                    .effectiveName)
+                            .replace("\$BOTUSERNAME\$", BoneBot.JDA!!.selfUser.name)
+                            .replace("\$CHANNELNAME\$", command.channel.name)
                             .replace("\\n", "\n")
                             .replace("  ", " ")
                             .trim()

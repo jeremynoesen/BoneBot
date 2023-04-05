@@ -220,9 +220,14 @@ Run `docker compose up -d` in the directory of `docker-compose.yml` to start the
 Use these placeholders in most configurations. Places they are disallowed will be specified per module. Module-specific
 placeholders will also be specified per module.
 
-- `$PING$` - Place a ping of the author in the message.
-- `$NAME$` - Place the author's name in the message.
-- `$BOT$` - Place the bot's name in the message.
+- `$AUTHORMENTION$` - Place a mention of the author in the message.
+- `$AUTHORDISPLAYNAME$` - Place the author's display name in the message.
+- `$AUTHORUSERNAME$` - Place the author's username in the message.
+- `$BOTMENTION$` - Place a mention of the bot in the message.
+- `$BOTDISPLAYNAME$` - Place the bot's display name in the message.
+- `$BOTUSERNAME$` - Place the bot's username in the message.
+- `$CHANNELMENTION$` - Place a mention of the channel in the message.
+- `$CHANNELNAME$` - Place the channel's name in the message.
 - `$GUILD$` - Place the guild's name in the message.
 - `$REPLY$` - Send the message as a reply to the author.
 - `\n` - Place a new line character in the message.
@@ -326,14 +331,14 @@ placeholders will also be specified per module.
 - Statuses will be put into `resources/statuses.txt`.
 - Each line designates a new entry.
 - Each line must start with `playing`, `watching`, or `listening to`.
-- The only placeholder that works for statuses is `$BOT$`.
+- The only placeholder that works for statuses is `$BOTDISPLAYNAME$`.
 - The main config has option `statuses-delay` to set how long each status shows in seconds as a whole number.
 - To enable or disable statuses, set `statuses-enabled` in the main configuration to `true` or `false`.
 
 ### Welcomer
 
 - The welcome message is located `resources/messages.txt` under `welcome-message`.
-- The welcomer can use all placeholders except `$REPLY$`.
+- The welcomer can use all placeholders except `$REPLY$`, `$CHANNELMENTION$`, and `$CHANNELNAME$`.
 - You can send a single file in the embed by adding `$FILE$ path/to/file $FILE$`.
 - To enable or disable the welcomer, set `welcomer-enabled` in the main configuration to `true` or `false`.
 
@@ -341,7 +346,7 @@ placeholders will also be specified per module.
 
 - All messages built in to the bot are editable, located in `resources/messages.txt`.
 - Messages can include all placeholders
-    - `$PING$` and `$REPLY$` can not be used for embed titles.
+    - `$AUTHORMENTION$`, `$BOTMENTION$`, `$CHANNELMENTION$`, and `$REPLY$` can not be used for embed titles.
     - Command labels can not use any placeholders.
     - Some messages have placeholders specific to their message, which can be found in the file.
 - Standard Discord Markdown formatting is supported.
@@ -398,8 +403,8 @@ bot-token: TOKEN
 Located at `resources/messages.txt`
 
 ```
-help-title: $BOT$ Help
-help-about: $BOT$ aims to add more life to a server by responding and reacting to messages. It also adds commands, which are listed below.
+help-title: $BOTDISPLAYNAME$ Help
+help-about: $BOTDISPLAYNAME$ aims to add more life to a server by responding and reacting to messages. It also adds commands, which are listed below.
 help-format: • **`$CMD$`**: $DESC$
 help-description: Show this help message.
 meme-description: Generate a random or custom meme.
@@ -409,11 +414,11 @@ help-command: help
 meme-command: meme
 file-command: file
 quote-command: quote
-meme-title: $NAME$ generated a meme:
-welcome-title: $NAME$ joined $GUILD$
-quote-title: "$NAME$ summoned a quote:"
-file-title: "$NAME$ summoned a file:"
-welcome-message: "Welcome $PING$ to **$GUILD$**!"
+meme-title: $AUTHORDISPLAYNAME$ generated a meme:
+welcome-title: $AUTHORDISPLAYNAME$ joined $GUILD$
+quote-title: "$AUTHORDISPLAYNAME$ summoned a quote:"
+file-title: "$AUTHORDISPLAYNAME$ summoned a file:"
+welcome-message: "Welcome $AUTHORMENTION$ to **$GUILD$**!"
 error: **An error occurred!** Please check the console!
 unknown-command: **Unknown command!**
 no-files: There are **no files** to send!

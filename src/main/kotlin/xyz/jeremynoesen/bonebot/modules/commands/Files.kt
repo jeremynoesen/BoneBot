@@ -64,9 +64,12 @@ object Files {
                 }
                 val embedBuilder = EmbedBuilder()
                 var title = Messages.fileTitle
-                        .replace("\$NAME\$", message.member!!.effectiveName)
-                        .replace("\$BOT\$", message.guild
+                        .replace("\$AUTHORDISPLAYNAME\$", message.member!!.effectiveName)
+                        .replace("\$AUTHORUSERNAME\$", message.author.name)
+                        .replace("\$BOTDISPLAYNAME\$", message.guild
                                 .getMember(BoneBot.JDA!!.selfUser)!!.effectiveName)
+                        .replace("\$BOTUSERNAME\$", BoneBot.JDA!!.selfUser.name)
+                        .replace("\$CHANNELNAME\$", message.channel.name)
                         .replace("\\n", "\n")
                         .replace("  ", " ")
                         .trim()

@@ -163,9 +163,14 @@ object Commands {
                     .replace("\$DESC\$", commands[command]!!.first) + "\n"
         }
         commandList = commandList
-                .replace("\$PING\$", message.member!!.asMention)
-                .replace("\$NAME\$", message.member!!.effectiveName)
-                .replace("\$BOT\$", message.guild.getMember(BoneBot.JDA!!.selfUser)!!.effectiveName)
+                .replace("\$AUTHORMENTION\$", message.member!!.asMention)
+                .replace("\$AUTHORDISPLAYNAME\$", message.member!!.effectiveName)
+                .replace("\$AUTHORUSERNAME\$", message.author.name)
+                .replace("\$BOTMENTION\$", message.guild.getMember(BoneBot.JDA!!.selfUser)!!.asMention)
+                .replace("\$BOTDISPLAYNAME\$", message.guild.getMember(BoneBot.JDA!!.selfUser)!!.effectiveName)
+                .replace("\$BOTUSERNAME\$", BoneBot.JDA!!.selfUser.name)
+                .replace("\$CHANNELMENTION\$", message.channel.asMention)
+                .replace("\$CHANNELNAME\$", message.channel.name)
                 .replace("\\n", "\n")
                 .replace("  ", " ")
                 .trim()
@@ -175,8 +180,11 @@ object Commands {
         }
         val embedBuilder = EmbedBuilder()
         var title = Messages.helpTitle
-                .replace("\$NAME\$", message.member!!.effectiveName)
-                .replace("\$BOT\$", message.guild.getMember(BoneBot.JDA!!.selfUser)!!.effectiveName)
+                .replace("\$AUTHORDISPLAYNAME\$", message.member!!.effectiveName)
+                .replace("\$AUTHORUSERNAME\$", message.author.name)
+                .replace("\$BOTDISPLAYNAME\$", message.guild.getMember(BoneBot.JDA!!.selfUser)!!.effectiveName)
+                .replace("\$BOTUSERNAME\$", BoneBot.JDA!!.selfUser.name)
+                .replace("\$CHANNELNAME\$", message.channel.name)
                 .replace("\\n", "\n")
                 .replace("  ", " ")
                 .trim()
@@ -209,9 +217,15 @@ object Commands {
         for (commandMessage in selectedCommand.split("\$&&\$")) {
             var toSend =
                     commandMessage
-                            .replace("\$PING\$", message.member!!.asMention)
-                            .replace("\$NAME\$", message.member!!.effectiveName)
-                            .replace("\$BOT\$", message.guild.getMember(BoneBot.JDA!!.selfUser)!!.effectiveName)
+                            .replace("\$AUTHORMENTION\$", message.member!!.asMention)
+                            .replace("\$AUTHORDISPLAYNAME\$", message.member!!.effectiveName)
+                            .replace("\$AUTHORUSERNAME\$", message.author.name)
+                            .replace("\$BOTMENTION\$", message.guild.getMember(BoneBot.JDA!!.selfUser)!!.asMention)
+                            .replace("\$BOTDISPLAYNAME\$", message.guild.getMember(BoneBot.JDA!!.selfUser)!!
+                                    .effectiveName)
+                            .replace("\$BOTUSERNAME\$", BoneBot.JDA!!.selfUser.name)
+                            .replace("\$CHANNELMENTION\$", message.channel.asMention)
+                            .replace("\$CHANNELNAME\$", message.channel.name)
                             .replace("\\n", "\n")
                             .replace("  ", " ")
                             .trim()
@@ -359,19 +373,19 @@ object Commands {
         env["BB_CHANNEL_NAME"] = message.channel.name
         env["BB_CHANNEL_ID"] = message.channel.id
         env["BB_CHANNEL_TYPE"] = message.channel.type.name
-        env["BB_DISPLAY_NAME"] = message.member!!.effectiveName
-        env["BB_USER_NAME"] = message.member!!.user.name
-        env["BB_PING"] = message.member!!.asMention
-        env["BB_ID"] = message.member!!.id
-        env["BB_AVATAR"] = message.member!!.effectiveAvatarUrl + "?size=4096"
+        env["BB_AUTHOR_DISPLAY_NAME"] = message.member!!.effectiveName
+        env["BB_AUTHOR_USER_NAME"] = message.author.name
+        env["BB_AUTHOR_MENTION"] = message.member!!.asMention
+        env["BB_AUTHOR_ID"] = message.member!!.id
+        env["BB_AUTHOR_AVATAR"] = message.member!!.effectiveAvatarUrl + "?size=4096"
         if (message.member!!.roles.size > 0) {
             for (i in message.member!!.roles.indices) {
-                env["BB_ROLE_ID_$i"] = message.member!!.roles[i].id
-                env["BB_ROLE_NAME_$i"] = message.member!!.roles[i].name
-                env["BB_ROLE_MENTION_$i"] = message.member!!.roles[i].asMention
+                env["BB_AUTHOR_ROLE_ID_$i"] = message.member!!.roles[i].id
+                env["BB_AUTHOR_ROLE_NAME_$i"] = message.member!!.roles[i].name
+                env["BB_AUTHOR_ROLE_MENTION_$i"] = message.member!!.roles[i].asMention
             }
         }
-        env["BB_ROLE_COUNT"] = message.member!!.roles.size.toString()
+        env["BB_AUTHOR_ROLE_COUNT"] = message.member!!.roles.size.toString()
         if (message.attachments.size > 0) {
             for (i in message.attachments.indices) {
                 env["BB_FILE_$i"] = message.attachments[i].url
@@ -405,7 +419,7 @@ object Commands {
                             message.mentions.members[i].effectiveName
                     env["BB_MENTION_${l}_USER_NAME"] =
                             message.mentions.members[i].user.name
-                    env["BB_MENTION_${l}_PING"] =
+                    env["BB_MENTION_${l}_MENTION"] =
                             message.mentions.members[i].asMention
                     env["BB_MENTION_${l}_ID"] =
                             message.mentions.members[i].id
@@ -427,19 +441,19 @@ object Commands {
         if (message.referencedMessage != null) {
             val reply = message.referencedMessage!!
             env["BB_REPLY_CONTENT"] = reply.contentDisplay
-            env["BB_REPLY_DISPLAY_NAME"] = reply.member!!.effectiveName
-            env["BB_REPLY_USER_NAME"] = reply.member!!.user.name
-            env["BB_REPLY_PING"] = reply.member!!.asMention
-            env["BB_REPLY_ID"] = reply.member!!.id
-            env["BB_REPLY_AVATAR"] = reply.member!!.effectiveAvatarUrl + "?size=4096"
+            env["BB_REPLY_AUTHOR_DISPLAY_NAME"] = reply.member!!.effectiveName
+            env["BB_REPLY_AUTHOR_USER_NAME"] = reply.author.name
+            env["BB_REPLY_AUTHOR_MENTION"] = reply.member!!.asMention
+            env["BB_REPLY_AUTHOR_ID"] = reply.member!!.id
+            env["BB_REPLY_AUTHOR_AVATAR"] = reply.member!!.effectiveAvatarUrl + "?size=4096"
             if (reply.member!!.roles.size > 0) {
                 for (i in reply.member!!.roles.indices) {
-                    env["BB_REPLY_ROLE_ID_$i"] = reply.member!!.roles[i].id
-                    env["BB_REPLY_ROLE_NAME_$i"] = reply.member!!.roles[i].name
-                    env["BB_REPLY_ROLE_MENTION_$i"] = reply.member!!.roles[i].asMention
+                    env["BB_REPLY_AUTHOR_ROLE_ID_$i"] = reply.member!!.roles[i].id
+                    env["BB_REPLY_AUTHOR_ROLE_NAME_$i"] = reply.member!!.roles[i].name
+                    env["BB_REPLY_AUTHOR_ROLE_MENTION_$i"] = reply.member!!.roles[i].asMention
                 }
             }
-            env["BB_REPLY_ROLE_COUNT"] = reply.member!!.roles.size.toString()
+            env["BB_AUTHOR_REPLY_ROLE_COUNT"] = reply.member!!.roles.size.toString()
             if (reply.attachments.size > 0) {
                 for (i in reply.attachments.indices) {
                     env["BB_REPLY_FILE_$i"] = reply.attachments[i].url
@@ -473,7 +487,7 @@ object Commands {
                                 member!!.effectiveName
                         env["BB_REPLY_MENTION_${l}_USER_NAME"] =
                                 member.user.name
-                        env["BB_REPLY_MENTION_${l}_PING"] =
+                        env["BB_REPLY_MENTION_${l}_MENTION"] =
                                 member.asMention
                         env["BB_REPLY_MENTION_${l}_ID"] =
                                 member.id

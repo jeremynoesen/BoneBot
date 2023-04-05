@@ -13,8 +13,8 @@ import java.util.*
  * @author Jeremy Noesen
  */
 object Messages {
-    var helpTitle = "\$BOT\$ Help"
-    var helpAbout = "\$BOT\$ aims to add more life to a server by responding and reacting to messages. It also adds" +
+    var helpTitle = "\$BOTDISPLAYNAME\$ Help"
+    var helpAbout = "\$BOTDISPLAYNAME\$ aims to add more life to a server by responding and reacting to messages. It also adds" +
             " commands, which are listed below."
     var helpFormat = "• **`\$CMD\$`**: \$DESC\$"
     var helpDescription = "Show this help message."
@@ -25,11 +25,11 @@ object Messages {
     var memeCommand = "meme"
     var fileCommand = "file"
     var quoteCommand = "quote"
-    var memeTitle = "\$NAME\$ generated a meme:"
-    var welcomeTitle = "\$NAME\$ joined \$GUILD\$"
-    var quoteTitle = "\$NAME\$ summoned a quote:"
-    var fileTitle = "\$NAME\$ summoned a file:"
-    var welcomeMessage = "Welcome \$PING\$ to **\$GUILD\$**!"
+    var memeTitle = "\$AUTHORDISPLAYNAME\$ generated a meme:"
+    var welcomeTitle = "\$AUTHORDISPLAYNAME\$ joined \$GUILD\$"
+    var quoteTitle = "\$AUTHORDISPLAYNAME\$ summoned a quote:"
+    var fileTitle = "\$AUTHORDISPLAYNAME\$ summoned a file:"
+    var welcomeMessage = "Welcome \$AUTHORMENTION\$ to **\$GUILD\$**!"
     var error = "**An error occurred!** Please check the console!"
     var unknownCommand = "**Unknown command!**"
     var noFiles = "There are **no files** to send!"
@@ -202,9 +202,14 @@ object Messages {
         var toSend = message
         if (toSend.contains("\$REPLY\$")) {
             toSend = toSend.replace("\$REPLY\$", "")
-                    .replace("\$PING\$", cause.member!!.asMention)
-                    .replace("\$NAME\$", cause.member!!.effectiveName)
-                    .replace("\$BOT\$", cause.guild.getMember(BoneBot.JDA!!.selfUser)!!.effectiveName)
+                    .replace("\$AUTHORMENTION\$", cause.member!!.asMention)
+                    .replace("\$AUTHORDISPLAYNAME\$", cause.member!!.effectiveName)
+                    .replace("\$AUTHORUSERNAME\$", cause.author.name)
+                    .replace("\$BOTMENTION\$", cause.guild.getMember(BoneBot.JDA!!.selfUser)!!.asMention)
+                    .replace("\$BOTDISPLAYNAME\$", cause.guild.getMember(BoneBot.JDA!!.selfUser)!!.effectiveName)
+                    .replace("\$BOTUSERNAME\$", BoneBot.JDA!!.selfUser.name)
+                    .replace("\$CHANNELMENTION\$", cause.channel.asMention)
+                    .replace("\$CHANNELNAME\$", cause.channel.name)
                     .replace("\\n", "\n")
                     .replace("  ", " ")
                     .trim()
@@ -215,9 +220,14 @@ object Messages {
             if (toSend.isNotEmpty())
                 cause.channel.sendMessage(toSend).setMessageReference(cause).queue()
         } else {
-            toSend = toSend.replace("\$PING\$", cause.member!!.asMention)
-                    .replace("\$NAME\$", cause.member!!.effectiveName)
-                    .replace("\$BOT\$", cause.guild.getMember(BoneBot.JDA!!.selfUser)!!.effectiveName)
+            toSend = toSend.replace("\$AUTHORMENTION\$", cause.member!!.asMention)
+                    .replace("\$AUTHORDISPLAYNAME\$", cause.member!!.effectiveName)
+                    .replace("\$AUTHORUSERNAME\$", cause.author.name)
+                    .replace("\$BOTMENTION\$", cause.guild.getMember(BoneBot.JDA!!.selfUser)!!.asMention)
+                    .replace("\$BOTDISPLAYNAME\$", cause.guild.getMember(BoneBot.JDA!!.selfUser)!!.effectiveName)
+                    .replace("\$BOTUSERNAME\$", BoneBot.JDA!!.selfUser.name)
+                    .replace("\$CHANNELMENTION\$", cause.channel.asMention)
+                    .replace("\$CHANNELNAME\$", cause.channel.name)
                     .replace("\\n", "\n")
                     .replace("  ", " ")
                     .trim()
